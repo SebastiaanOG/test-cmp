@@ -1,0 +1,19 @@
+{
+	"name": "ls_syn_serverless_m10mdf",
+	"properties": {
+		"parameters": {
+			"DatabaseName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=syn-m10mdf-dt-ondemand.sql.azuresynapse.net;Initial Catalog=\"@{Concat(linkedService().DatabaseName,'-sqlcs')}\""
+		},
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

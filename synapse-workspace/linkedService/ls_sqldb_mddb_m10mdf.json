@@ -1,0 +1,14 @@
+{
+	"name": "ls_sqldb_mddb_m10mdf",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=sql-m10mdf-dev.database.windows.net;Initial Catalog=sqldbmddb-m10mdf-dev"
+		},
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

@@ -1,0 +1,419 @@
+{
+	"name": "21 BronzeToStaging - Copy Data",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy Data - Blob to SQL Staging",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "sp Drop and-or Create Table",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "ParquetSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": {
+							"value": "@{concat('TRUNCATE TABLE', ' ', pipeline().parameters.sink_entity_name)}",
+							"type": "Expression"
+						},
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_datalake",
+						"type": "DatasetReference",
+						"parameters": {
+							"Filesystem": "bronze",
+							"FolderPath": {
+								"value": "@pipeline().parameters.source_entity_folder_path",
+								"type": "Expression"
+							},
+							"FileName": {
+								"value": "@pipeline().parameters.source_entity_file_name",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_sql_m10mdf_table",
+						"type": "DatasetReference",
+						"parameters": {
+							"name": {
+								"value": "@pipeline().parameters.entity_name",
+								"type": "Expression"
+							},
+							"structure": {
+								"value": "@pipeline().parameters.sink_entity_structure",
+								"type": "Expression"
+							},
+							"schema": {
+								"value": "@pipeline().parameters.system_name",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			},
+			{
+				"name": "spStartPipelineRun",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[audit].[spStartPipelineRun]",
+					"storedProcedureParameters": {
+						"pipeline_run_id": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "Guid"
+						},
+						"pipeline_name": {
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"process_run_id": {
+							"value": {
+								"value": "@pipeline().parameters.process_run_id",
+								"type": "Expression"
+							},
+							"type": "Int32"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_sqldb_m10mdf",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "spEndPipelineRun",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Insert DataLogStaging",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[audit].[spEndPipelineRun]",
+					"storedProcedureParameters": {
+						"pipeline_run_id": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "Guid"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_sqldb_m10mdf",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Insert DataLogStaging",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Copy Data - Blob to SQL Staging",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[audit].[spInsertDataLogStaging]",
+					"storedProcedureParameters": {
+						"pipeline_run_id": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "Guid"
+						},
+						"process_run_id": {
+							"value": {
+								"value": "@pipeline().parameters.process_run_id",
+								"type": "Expression"
+							},
+							"type": "Int32"
+						},
+						"system_name": {
+							"value": {
+								"value": "@pipeline().parameters.system_name",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"entity_name": {
+							"value": {
+								"value": "@pipeline().parameters.entity_name",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_sqldb_m10mdf",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "LU - Create schema script",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "spStartPipelineRun",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[ETL].[spCreateSchema]",
+						"storedProcedureParameters": {
+							"system_name": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.system_name",
+									"type": "Expression"
+								}
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sql_m10mdf_mddb_table",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "sp Create Schema from script",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "LU - Create schema script",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[etl].[spCreateSchema]",
+					"storedProcedureParameters": {
+						"create_schema_script": {
+							"value": {
+								"value": "@activity('LU - Create schema script').output.firstrow.CreateSchemaStatement",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_sqldb_m10mdf",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "LU - Drop and-or Create Table script",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "sp Create Schema from script",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[etl].[spCreateTableFromMetadata]",
+						"storedProcedureParameters": {
+							"system_name": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.system_name",
+									"type": "Expression"
+								}
+							},
+							"entity_name": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.entity_name",
+									"type": "Expression"
+								}
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sql_m10mdf_mddb_table",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "sp Drop and-or Create Table",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "LU - Drop and-or Create Table script",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[etl].[spCreateTableFromMetadata]",
+					"storedProcedureParameters": {
+						"create_table_script": {
+							"value": {
+								"value": "@activity('LU - Drop and-or Create Table script').output.firstrow.CreateTableStatement",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_sqldb_m10mdf",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"parameters": {
+			"entity_name": {
+				"type": "string"
+			},
+			"system_name": {
+				"type": "string"
+			},
+			"source_entity_file_name": {
+				"type": "string"
+			},
+			"source_entity_folder_path": {
+				"type": "string"
+			},
+			"source_entity_file_structure": {
+				"type": "array"
+			},
+			"sink_entity_name": {
+				"type": "string"
+			},
+			"sink_entity_structure": {
+				"type": "array"
+			},
+			"source_sink_mapping": {
+				"type": "array"
+			},
+			"process_run_id": {
+				"type": "string"
+			},
+			"process_run_date": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "ETL DWH/20 BronzeToStaging"
+		},
+		"annotations": [],
+		"lastPublishTime": "2020-10-15T16:10:32Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

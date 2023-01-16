@@ -1,0 +1,7 @@
+{
+	"name": "MPE_kv-m10mdf",
+	"properties": {
+		"privateLinkResourceId": "/subscriptions/dfb8519d-6db0-4527-9b79-3972f2d8e178/resourceGroups/m10pitwallmdf-dt-rg/providers/Microsoft.KeyVault/vaults/kv-m10mdf-dev",
+		"groupId": "vault"
+	}
+}

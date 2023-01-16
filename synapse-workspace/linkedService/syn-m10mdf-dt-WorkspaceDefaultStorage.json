@@ -1,0 +1,15 @@
+{
+    "name": "syn-m10mdf-dt-WorkspaceDefaultStorage",
+    "type": "Microsoft.Synapse/workspaces/linkedservices",
+    "properties": {
+        "typeProperties": {
+            "url": "https://stm10mdfdev.dfs.core.windows.net"
+        },
+        "type": "AzureBlobFS",
+        "connectVia": {
+            "referenceName": "AutoResolveIntegrationRuntime",
+            "type": "IntegrationRuntimeReference"
+        },
+        "annotations": []
+    }
+}

@@ -1,0 +1,10 @@
+{
+	"name": "ls_kv_m10mdf",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://kv-m10mdf-dev.vault.azure.net/"
+		}
+	}
+}

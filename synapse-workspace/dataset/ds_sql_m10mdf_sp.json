@@ -1,0 +1,12 @@
+{
+	"name": "ds_sql_m10mdf_sp",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sqldb_m10mdf",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}
