@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>sqldbmddb-m10mdf</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{a0bb9ae3-30b9-4c8b-94b7-b727da225647}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.SqlAzureV12DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>sqldbmddb_m10mdfp_dt</RootNamespace>
+    <AssemblyName>sqldbmddb_m10mdf_dt</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="etl\" />
+    <Folder Include="etl\Tables\" />
+    <Folder Include="etl\Views\" />
+    <Folder Include="Security\" />
+    <Folder Include="etl\Functions\" />
+    <Folder Include="etl\Stored Procedures\" />
+    <Folder Include="PostDeploy" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="etl\Tables\StorageTables.sql" />
+    <Build Include="etl\Tables\TypeMap.sql" />
+    <Build Include="etl\Tables\SystemStorageDays.sql" />
+    <Build Include="etl\Tables\MetadataTables.sql" />
+    <Build Include="etl\Tables\MetadataSystem.sql" />
+    <Build Include="etl\Tables\MetadataStructure.sql" />
+    <Build Include="etl\Views\vwMetaData.sql" />
+    <Build Include="etl\Functions\fnCreateSQLServerQuery.sql" />
+    <Build Include="etl\Functions\fnCreateTableName.sql" />
+    <Build Include="etl\Functions\fnCreateStagingFolderPath.sql" />
+    <Build Include="etl\Functions\fnCreateStagingFileName.sql" />
+    <Build Include="etl\Functions\fnCreateQuery.sql" />
+    <Build Include="etl\Functions\fnCreatePostgresQuery.sql" />
+    <Build Include="etl\Functions\fnCreateOracleQuery.sql" />
+    <Build Include="etl\Functions\fnCreateMySQLQuery.sql" />
+    <Build Include="etl\Functions\fnCreateEntityTranslator.sql" />
+    <Build Include="etl\Functions\fnCreateEntityStructure.sql" />
+    <Build Include="etl\Functions\fnCreateDB2Query.sql" />
+    <Build Include="etl\Functions\fnConvertDataTypeOracle.sql" />
+    <Build Include="etl\Stored Procedures\spUpdateLastProcessRun.sql" />
+    <Build Include="etl\Stored Procedures\spUpdateLastIncrement.sql" />
+    <Build Include="etl\Stored Procedures\spSystemStorageDays.sql" />
+    <Build Include="etl\Stored Procedures\spScriptStorage.sql" />
+    <Build Include="etl\Stored Procedures\spInsertTable.sql" />
+    <Build Include="etl\Stored Procedures\spInsertSystem.sql" />
+    <Build Include="etl\Stored Procedures\spInsertStructureSalesForce.sql" />
+    <Build Include="etl\Stored Procedures\spInsertStructureSQL.sql" />
+    <Build Include="etl\Stored Procedures\spInsertStructureOracle.sql" />
+    <Build Include="etl\Stored Procedures\spInsertStructureMySQL.sql" />
+    <Build Include="etl\Stored Procedures\spInsertStructureJson.sql" />
+    <Build Include="etl\Stored Procedures\spInsertStructureFromView.sql" />
+    <Build Include="etl\Stored Procedures\spInsertMetadata.sql" />
+    <Build Include="etl\Stored Procedures\spCreateTableFromMetadata.sql" />
+    <Build Include="etl\Stored Procedures\spCreateSchema.sql" />
+    <Build Include="etl\Stored Procedures\spCopySrcToRes.sql" />
+    <Build Include="etl\Stored Procedures\spCopyResToStg.sql" />
+    <Build Include="etl\Stored Procedures\spLookupStoredProcedures.sql" />
+    <Build Include="etl\Stored Procedures\spLookupLevels.sql" />
+    <Build Include="Security\etl.sql" />
+    <Build Include="Security\audit.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="PostDeploy\PostDeploymentScript.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </PostDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <ArtifactReference Include="C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\Extensions\Microsoft\SQLDB\Extensions\SqlServer\AzureV12\SqlSchemas\master.dacpac">
+      <HintPath>C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\Extensions\Microsoft\SQLDB\Extensions\SqlServer\AzureV12\SqlSchemas\master.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseVariableLiteralValue>master</DatabaseVariableLiteralValue>
+    </ArtifactReference>
+    <ArtifactReference Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\AzureV12\SqlSchemas\master.dacpac">
+      <HintPath>$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\AzureV12\SqlSchemas\master.dacpac</HintPath>
+      <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
+      <DatabaseVariableLiteralValue>master</DatabaseVariableLiteralValue>
+    </ArtifactReference>
+  </ItemGroup>
+</Project>
