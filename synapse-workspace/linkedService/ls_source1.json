@@ -10,20 +10,11 @@
 					"referenceName": "ls_kv_m10mdf",
 					"type": "LinkedServiceReference"
 				},
-				"secretName": "sqlserver-source1-sqlcs"
-			},
-			"userName": "",
-			"password": {
-				"type": "AzureKeyVaultSecret",
-				"store": {
-					"referenceName": "AzureKeyVault",
-					"type": "LinkedServiceReference"
-				},
-				"secretName": "password"
+				"secretName": "sqlserver-source1-sqlcs3"
 			}
 		},
 		"connectVia": {
-			"referenceName": "shir_m10mdf_01",
+			"referenceName": "AutoResolveIntegrationRuntime",
 			"type": "IntegrationRuntimeReference"
 		}
 	}

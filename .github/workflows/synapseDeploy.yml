@@ -1,0 +1,83 @@
+name: Deployment of UAT workspace
+
+on:
+  push:
+    branches:
+      - uat
+      # - main # add if main logic
+  workflow_dispatch:
+
+env:
+  SYNAPSE_WS_NAME: compass-ws
+  SJORSTEST: test1234
+
+jobs:
+  # display-variables:
+  #   name: Debugging
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Use variables
+  #     run: |
+  #       echo "clientId: ${{ secrets.SP_CMP_ID }}"
+  #       echo "clientSecret:  ${{ secrets.SP_CMP_SECRET }}"
+  #       echo "subscriptionId: ${{ vars.SUBID }}"
+  #       echo "resourceGroup: ${{ vars.RESOURCE_GROUP }}"
+  #       echo "tenantId: ${{ vars.TENANT_ID }}"
+
+  deployment:
+    runs-on: ubuntu-latest
+    # environment: 
+    #   name: development
+    #   url: https://github.com
+    steps:
+    - name: Pre-run | Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Pre-run | Azure login
+      uses: Azure/login@v1
+      with:
+        creds: '{"clientId":"${{ secrets.SP_CMP_ID }}","clientSecret":"${{ secrets.SP_CMP_SECRET }}","subscriptionId":"${{ vars.SUBID }}","tenantId":"${{ vars.TENANT_ID }}"}'
+        enable-AzPSSession: true 
+
+    - name: Pre-run | Install and cache PowerShell modules
+      uses: potatoqualitee/psmodulecache@v5.2
+      with:
+        modules-to-cache: Az.Synapse, Az.Accounts
+
+    - name: Pre-run | Allow GitHub runner dynamic IP to Synapse firewall
+      shell: pwsh
+      run: |
+        .\scripts\synapse\modifyFirewall.ps1 -WorkspaceName ${{ env.SYNAPSE_WS_NAME }} -action create
+
+    - name: Pre-run | Disable triggers in workspace
+      shell: pwsh
+      run: |
+        .\scripts\synapse\modifyTriggers.ps1 -WorkspaceName ${{ env.SYNAPSE_WS_NAME }} -action disable
+
+    # work work
+    - name: Synapse workspace deployment
+      uses: Azure/Synapse-workspace-deployment@V1.7.0
+      with:
+        TargetWorkspaceName: ${{ env.SYNAPSE_WS_NAME }}
+        ArtifactsFolder: './synapse-workspace'
+        environment: 'Azure Public'
+        clientId: ${{ secrets.SP_CMP_ID }}          # repository secret 
+        clientSecret:  ${{ secrets.SP_CMP_SECRET }}  # repository secret 
+        subscriptionId: ${{ vars.SUBID }}   # variable per environment
+        resourceGroup: ${{ vars.RESOURCE_GROUP }}   # variable per environment
+        tenantId: ${{ vars.TENANT_ID }}   # repository variable <- done
+        DeleteArtifactsNotInTemplate: 'true'
+        operation: 'validateDeploy'
+        OverrideArmParameters: './parameters/parametersUAT.yaml'
+
+    - name: Post-run | Remove GitHub runner dynamic IP from Synapse firewall
+      shell: pwsh
+      run: |
+        .\scripts\synapse\modifyFirewall.ps1 -WorkspaceName ${{ env.SYNAPSE_WS_NAME }} -action delete
+      if: always()
+
+    - name: Post-run | Enable triggers in workspace
+      shell: pwsh
+      run: |
+        .\scripts\synapse\modifyTriggers.ps1 -WorkspaceName ${{ env.SYNAPSE_WS_NAME }} -action enable
+      if: always()

@@ -4,7 +4,7 @@
 		"annotations": [],
 		"type": "AzureKeyVault",
 		"typeProperties": {
-			"baseUrl": "https://kv-m10mdf-dev.vault.azure.net/"
+			"baseUrl": "https://pos-kv.vault.azure.net/"
 		}
 	}
 }
