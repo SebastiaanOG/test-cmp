@@ -16,16 +16,16 @@ jobs:
         name: [dwh, mdb]
        
 
-    # # msbuild for m10 framework doesn't build on windows-latest
-    # runs-on: windows-2019
-    # steps:
-    # - name: Checkout this repository
-    #   uses: actions/checkout@v1
+    # msbuild for m10 framework doesn't build on windows-latest
+    runs-on: windows-2019
+    steps:
+    - name: Checkout this repository
+      uses: actions/checkout@v1
     
-    # - name: Setup MSBuild
-    #   uses: microsoft/setup-msbuild@v1.1
-    #   with:
-    #     msbuild-architecture: x64
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.1
+      with:
+        msbuild-architecture: x64
     
     # - name: Build database project
     #   run: msbuild database\sqldb.sln /p:Configuration=Release
