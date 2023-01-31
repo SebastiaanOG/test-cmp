@@ -87,7 +87,7 @@ jobs:
         # ${{ steps.condval.outputs.value }} gets value from condition
         # ${{ secrets.AUTH_SP }} contains SP id and secert (repo secret)
         # connection-string: '${{ vars.SERVER }};Initial Catalog=${{ steps.condition.outputs.value }};${{ secrets.AUTH_SP }}'
-        connection-string: 'Server=tcp:${{ vars.DB_SERVER }}.database.windows.net,1433;Initial Catalog=${{ matrix.name }};Authentication='Active Directory Service Principal';User ID=${{ vars.SP_ID }};Password=${{ secrets.SP_SECRET }};'
+        connection-string: 'Server=tcp:${{ vars.DB_SERVER }}.database.windows.net,1433;Initial Catalog=${{ matrix.name }};Authentication=${{ vars.AUTH_TYPE }};User ID=${{ vars.SP_ID }};Password=${{ secrets.SP_SECRET }};'
         path: '${{ github.workspace }}\${{ matrix.name }}.dacpac'
         action: 'Publish'
 
