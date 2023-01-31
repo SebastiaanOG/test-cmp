@@ -39,6 +39,7 @@ jobs:
 
   # Here we start the deployment
   release:
+    needs: build
     environment: Development
     strategy:
       matrix:
