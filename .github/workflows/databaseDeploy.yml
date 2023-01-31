@@ -1,0 +1,95 @@
+name: GitHub Actions for SQL db | Parallel build and release using matrix stratergy
+
+on:
+  # uses main branch and specific path
+  push:
+    branches:
+      - feature/init_database
+    paths:
+      - database/**
+
+jobs:
+  build:
+    # a matrix can be used to iterate the actions over several inputs
+    strategy:
+      matrix:
+        name: [dwh, mdb]
+       
+
+    # msbuild for m10 framework doesn't build on windows-latest
+    runs-on: windows-2019
+    steps:
+    - name: Checkout this repository
+      uses: actions/checkout@v1
+    
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.1
+      with:
+        msbuild-architecture: x64
+    
+    - name: Build database project
+      run: msbuild database\sqldb.sln /p:Configuration=Release
+    
+    - name: Publish build artifacts for ${{ matrix.name }}
+      uses: actions/upload-artifact@master
+      with:
+        name: ${{ matrix.name }}
+        # ${{ github.workspace }} picks up the local path of the runner where the building of artifacts takes place
+        path: ${{ github.workspace }}\database\${{ matrix.name }}\bin\Release\
+
+  # Here we start the deployment
+  release:
+    environment: Development
+    strategy:
+      matrix:
+        name: [dwh, mdb]
+    runs-on: windows-latest
+    # environment can always be used for additional check which can always involve manual approval
+    # environment: prd
+    # downloads the dacpac file to a local path of the runner
+    steps:
+    - name: download the artifact for ${{ matrix.name }}
+      uses: actions/download-artifact@v2.0.6
+      with:
+        name: ${{ matrix.name }}
+
+    - name: use credentials
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    # conditioning helps to specify data catalogs/target databases where the dacpac file needs to be deployed
+    # This is not needed currently as the the folder names is same as the target dbs [dwh, mdb]
+    # - uses: haya14busa/action-cond@v1
+    #   id: condition
+    #   with:
+    #     cond: ${{ matrix.name == 'dwh' }}
+    #     if_true: "test2"
+    #     if_false: "testdbtf"
+    
+    # Store the connection string in the KV. Make sure the SP can access the secrets in KV
+    # We will be using Github secrets and variables
+    # - name: log in keyvault
+    #   uses: Azure/get-keyvault-secrets@v1
+    #   with: 
+    #     keyvault: "pos-kv"
+    #     secrets: 'dwh, mdb'
+    #   id: connection_string
+   
+    # No need of dynamic firewall setting when you allow Azure services to access the server by default.
+
+    - name: publish ${{ matrix.name }}
+      uses: azure/sql-action@v2
+      with:
+        # connection string via SP is bugged, track: https://github.com/Azure/sql-action/issues/137
+        # ${{ vars.SERVER }} contains server name (repo variable)
+        # ${{ steps.condval.outputs.value }} gets value from condition
+        # ${{ secrets.AUTH_SP }} contains SP id and secert (repo secret)
+        # connection-string: '${{ vars.SERVER }};Initial Catalog=${{ steps.condition.outputs.value }};${{ secrets.AUTH_SP }}'
+        connection-string: 'Server=tcp:${{ vars.DB_SERVER }}.database.windows.net,1433;Initial Catalog=${{ matrix.name }};Authentication="Active Directory Service Principal";User ID=${{ vars.SP_ID }};Password=${{ secrets.SP_SECRET }};'
+        path: '${{ github.workspace }}\${{ matrix.name }}.dacpac'
+        action: 'Publish'
+
+    - name: logout
+      run: |
+         az logout
