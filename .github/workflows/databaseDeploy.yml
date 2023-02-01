@@ -1,7 +1,7 @@
 name: GitHub Actions for SQL database | Parallelly build and release using matrix stratergy
 
 on:
-  ## uses main branch and specific path
+  ## Uses specified branch and path
   push:
     branches:
       - feature/init_database
@@ -15,7 +15,7 @@ jobs:
       matrix:
         name: [dwh, mdb]
        
-  ## msbuild for m10 framework doesn't build on windows-latest
+  ## MSBuild for sqldb.sln doesn't work on windows-latest
     runs-on: windows-2019
     steps:
     - name: Checkout this repository | Required to build projects
