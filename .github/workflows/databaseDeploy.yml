@@ -57,8 +57,13 @@ jobs:
     - name: use credentials
       uses: azure/login@v1
       with:
-        # creds: '{"clientId":"${{ vars.SP_ID }}","clientSecret":"${{ secrets.SP_SECRET }}","subscriptionId":"${{ vars.SUBSCRIPTION_ID }}","tenantId":"${{ vars.TENANT_ID }}"}'
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        creds: '{
+                  "clientId":"${{ vars.SP_ID }}",
+                  "clientSecret":"${{ secrets.SP_SECRET }}",
+                  "subscriptionId":"${{ vars.SUBSCRIPTION_ID }}",
+                  "tenantId":"${{ vars.TENANT_ID }}"
+                }'
+        # creds: ${{ secrets.AZURE_CREDENTIALS }}
     # conditioning helps to specify data catalogs/target databases where the dacpac file needs to be deployed
     # This is not needed currently as the the folder names is same as the target dbs [dwh, mdb]
     # - uses: haya14busa/action-cond@v1
