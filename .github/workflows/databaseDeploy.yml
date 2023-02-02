@@ -61,7 +61,7 @@ jobs:
                 }'
 
   ## Conditioning helps to specify data catalogs/target databases where the dacpac file needs to be deployed
-  ## As the the database folder names is same as the target dbs [dwh, mdb], this action is not required atm
+  ## As the database folder names are same as the target dbs [dwh, mdb], this action is not required atm
     # - uses: haya14busa/action-cond@v1
     #   id: condition
     #   with:
@@ -87,6 +87,6 @@ jobs:
         path: '${{ github.workspace }}\${{ matrix.name }}.dacpac'
         action: 'Publish'
 
-    - name: Logout from Azure
+    - name: Logout from Azure | Yeeet! 
       run: |
          az logout
