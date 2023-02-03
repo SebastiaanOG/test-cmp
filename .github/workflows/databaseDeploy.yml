@@ -4,7 +4,7 @@ on:
   ## Uses specified branch and path
   push:
     branches:
-      - feature/init_database
+      - main
     paths:
       - database/**
 
