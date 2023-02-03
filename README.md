@@ -4,6 +4,7 @@ This repository contains the relevant code to configure and provision the Compas
 
 ## Database projects
 - The root folder is set to /database
+- The development of the databases takes place on the development environment. 
 - All environments are provisioned via the CD workflow.
 
 ## Synapse workspace
