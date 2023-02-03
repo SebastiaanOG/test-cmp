@@ -4,7 +4,7 @@ on:
   ## Uses specified branch and path
   push:
     branches:
-      - main
+      - development
     paths:
       - database/**
 
