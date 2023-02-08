@@ -39,7 +39,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "10 SourceToBronze",
+						"referenceName": "10 SourceToRaw",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,
@@ -56,7 +56,7 @@
 				}
 			},
 			{
-				"name": "Execute 20 BronzeToStaging",
+				"name": "Execute 20 RawToStaging",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
@@ -69,7 +69,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "20 BronzeToStaging",
+						"referenceName": "20 RawToStaging",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,
@@ -86,11 +86,11 @@
 				}
 			},
 			{
-				"name": "Execute 30 StagingToGold",
+				"name": "Execute 30 StagingToDWH",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "Execute 20 BronzeToStaging",
+						"activity": "Execute 20 RawToStaging",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -99,7 +99,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "30 StagingToGold",
+						"referenceName": "30 StagingToDWH",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,

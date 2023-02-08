@@ -61,11 +61,11 @@ jobs:
         TargetWorkspaceName: ${{ env.SYNAPSE_WS_NAME }}
         ArtifactsFolder: './synapse-workspace'
         environment: 'Azure Public'
-        clientId: ${{ secrets.SP_CMP_ID }}          # repository secret 
-        clientSecret:  ${{ secrets.SP_CMP_SECRET }}  # repository secret 
-        subscriptionId: ${{ vars.SUBID }}   # variable per environment
-        resourceGroup: ${{ vars.RESOURCE_GROUP }}   # variable per environment
-        tenantId: ${{ vars.TENANT_ID }}   # repository variable <- done
+        clientId: ${{ vars.SP_ID }}
+        clientSecret:  ${{ secrets.SP_SECRET }}
+        subscriptionId: ${{ vars.SUBSCRIPTION_ID }}
+        resourceGroup: ${{ vars.RESOURCE_GROUP }}
+        tenantId: ${{ vars.TENANT_ID }}
         DeleteArtifactsNotInTemplate: 'true'
         operation: 'validateDeploy'
         OverrideArmParameters: './parameters/parametersUAT.yaml'

@@ -1,8 +1,8 @@
 {
-	"name": "ds_sql_m10mdf_sp",
+	"name": "ds_sql_mdb_table",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_sqldb_m10mdf",
+			"referenceName": "ls_sqldb_mdb",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],

@@ -1,12 +1,12 @@
 {
-	"name": "ds_source1_table",
+	"name": "ds_sql_dwh_sp",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_source1",
+			"referenceName": "ls_sqldb_dwh",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
-		"type": "SqlServerTable",
+		"type": "AzureSqlTable",
 		"schema": []
 	}
 }
