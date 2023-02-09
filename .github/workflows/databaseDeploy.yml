@@ -1,21 +1,21 @@
 name: GitHub Actions for SQL database | Parallelly build and release using matrix stratergy
 
 on:
-  ## Uses specified branch and path
+  # Uses specified branch and path
   push:
     branches:
       - development
     paths:
-      - database/**
+      - database-project/**
 
 jobs:
   build:
-  ## A matrix can be used to iterate the actions over several inputs parallelly
+  # A matrix can be used to iterate the actions over several inputs parallelly
     strategy:
       matrix:
         name: [dwh, mdb]
        
-  ## MSBuild for sqldb.sln doesn't work on windows-latest
+  # MSBuild for sqldb.sln doesn't work on windows-latest
     runs-on: windows-2019
     steps:
     - name: Checkout this repository | Required to build projects
@@ -35,7 +35,7 @@ jobs:
         name: ${{ matrix.name }}
         path: ${{ github.workspace }}\database\${{ matrix.name }}\bin\Release\
 
-  ## Release on the development environment
+  # Release on the development environment
   release:
     needs: build
     environment: Development
@@ -59,34 +59,16 @@ jobs:
                   "subscriptionId":"${{ vars.SUBSCRIPTION_ID }}",
                   "tenantId":"${{ vars.TENANT_ID }}"
                 }'
-
-  ## Conditioning helps to specify data catalogs/target databases where the dacpac file needs to be deployed
-  ## As the database folder names are same as the target dbs [dwh, mdb], this action is not required atm
-    # - uses: haya14busa/action-cond@v1
-    #   id: condition
-    #   with:
-    #     cond: ${{ matrix.name == 'dwh' }}
-    #     if_true: "test2"
-    #     if_false: "testdbtf"
-    
-  ## Store the connection string in the KV. Make sure the SP can access the secrets in KV
-  ## As we are using Github secrets and variables, this action is not required atm
-    # - name: log in keyvault
-    #   uses: Azure/get-keyvault-secrets@v1
-    #   with: 
-    #     keyvault: "pos-kv"
-    #     secrets: 'dwh, mdb'
-    #   id: connection_string
-   
-  ## There is no need of dynamic firewall setting when you allow Azure services to access the server by default.
+  
+    # TBD how this can be tested until self-hosted GitHub Actions runners are available. Remove this comment when they're available
     - name: Publish ${{ matrix.name }} | Publishes dacpac files to target dbs
       uses: azure/sql-action@v2
       with:
-  ## connection string via SP is bugged, track: https://github.com/Azure/sql-action/issues/137
+        # connection string via SP is bugged, track: https://github.com/Azure/sql-action/issues/137
         connection-string: 'Server=tcp:${{ vars.DB_SERVER }}.database.windows.net,1433;Initial Catalog=${{ matrix.name }};Authentication=${{ vars.AUTH_TYPE }};User ID=${{ vars.SP_ID }};Password=${{ secrets.SP_SECRET }};'
         path: '${{ github.workspace }}\${{ matrix.name }}.dacpac'
         action: 'Publish'
 
-    - name: Logout from Azure | Yeeet! 
+    - name: Logout from Azure 
       run: |
          az logout
