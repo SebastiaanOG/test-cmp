@@ -84,7 +84,7 @@ jobs:
       uses: azure/sql-action@v2
       with:
         # connection string via SP is bugged, track: https://github.com/Azure/sql-action/issues/137
-        connection-string: 'Server=tcp:${{ vars.SQL_SERVER }}.database.windows.net,1433;Initial Catalog=${{ matrix.name }};Authentication='Active Directory Service Principal';User ID=${{ vars.SP_ID }};Password=${{ secrets.SP_SECRET }};'
+        connection-string: 'Server=tcp:${{ vars.SQL_SERVER }}.database.windows.net,1433;Initial Catalog=${{ matrix.name }};Authentication=Active Directory Service Principal;User ID=${{ vars.SP_ID }};Password=${{ secrets.SP_SECRET }};'
         path: '${{ github.workspace }}\${{ matrix.name }}.dacpac'
         action: 'Publish'
 
