@@ -1,0 +1,76 @@
+name: GitHub Actions for SQL database | Parallelly build and release using matrix stratergy
+
+on:
+  # Uses specified branch and path
+  push:
+    branches:
+      - development
+      - uat
+      - main
+    paths:
+      - database-project/**
+
+jobs:
+  build:
+  # A matrix can be used to iterate the actions over several inputs parallelly
+    strategy:
+      matrix:
+        name: [dwh, mdb]
+       
+  # MSBuild for sqldb.sln doesn't work on windows-latest
+    runs-on: windows-2019
+    steps:
+    - name: Checkout this repository | Required to build projects
+      uses: actions/checkout@v1
+    
+    - name: Setup MSBuild | Required to build db projects
+      uses: microsoft/setup-msbuild@v1.1
+      with:
+        msbuild-architecture: x64
+    
+    - name: Build database project | Build the projects from the sln file
+      run: msbuild database\sqldb.sln /p:Configuration=Release
+    
+    - name: Publish build artifacts for ${{ matrix.name }} | Upload dacpac files to workflow run
+      uses: actions/upload-artifact@master
+      with:
+        name: ${{ matrix.name }}
+        path: ${{ github.workspace }}\database\${{ matrix.name }}\bin\Release\
+
+  # Release on the development environment
+  release:
+    needs: build
+    environment: Development
+    strategy:
+      matrix:
+        name: [dwh, mdb]
+    runs-on: windows-latest
+
+    steps:
+    - name: Download the artifact for ${{ matrix.name }} | Download dacpac files on the windows runner
+      uses: actions/download-artifact@v2.0.6
+      with:
+        name: ${{ matrix.name }}
+
+    - name: Use credentials | Log in into Azure
+      uses: azure/login@v1
+      with:
+        creds: '{
+                  "clientId":"${{ vars.SP_ID }}",
+                  "clientSecret":"${{ secrets.SP_SECRET }}",
+                  "subscriptionId":"${{ vars.SUBSCRIPTION_ID }}",
+                  "tenantId":"${{ vars.TENANT_ID }}"
+                }'
+  
+    # TBD how this can be tested until self-hosted GitHub Actions runners are available. Remove this comment when they're available
+    - name: Publish ${{ matrix.name }} | Publishes dacpac files to target dbs
+      uses: azure/sql-action@v2
+      with:
+        # connection string via SP is bugged, track: https://github.com/Azure/sql-action/issues/137
+        connection-string: 'Server=tcp:${{ vars.DB_SERVER }}.database.windows.net,1433;Initial Catalog=${{ matrix.name }};Authentication=${{ vars.AUTH_TYPE }};User ID=${{ vars.SP_ID }};Password=${{ secrets.SP_SECRET }};'
+        path: '${{ github.workspace }}\${{ matrix.name }}.dacpac'
+        action: 'Publish'
+
+    - name: Logout from Azure 
+      run: |
+         az logout
