@@ -11,6 +11,23 @@ on:
       - database-project/**
 
 jobs:
+  init:
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ steps.get_env.outputs.env }}
+    steps:
+      - id: get_env
+        run: |
+          if [[ '${{ github.head_ref || github.ref_name }}' == 'main' ]]; then
+            echo "env=Production" >> $GITHUB_OUTPUT
+          elif [[ '${{ github.head_ref || github.ref_name }}' == 'uat' ]]; then
+            echo "env=Acceptance" >> $GITHUB_OUTPUT
+          elif [[ '${{ github.head_ref || github.ref_name }}' == 'development' ]]; then
+            echo "env=Development" >> $GITHUB_OUTPUT
+          else
+            echo "env=does_not_support" >> $GITHUB_OUTPUT
+          fi
+
   build:
   # A matrix can be used to iterate the actions over several inputs parallelly
     strategy:
@@ -39,8 +56,8 @@ jobs:
 
   # Release on the development environment
   release:
-    needs: build
-    environment: Development
+    needs: [init, build]
+    environment: "${{needs.init.outputs.environment}}"
     strategy:
       matrix:
         name: [dwh, mdb]
@@ -67,7 +84,7 @@ jobs:
       uses: azure/sql-action@v2
       with:
         # connection string via SP is bugged, track: https://github.com/Azure/sql-action/issues/137
-        connection-string: 'Server=tcp:${{ vars.DB_SERVER }}.database.windows.net,1433;Initial Catalog=${{ matrix.name }};Authentication=${{ vars.AUTH_TYPE }};User ID=${{ vars.SP_ID }};Password=${{ secrets.SP_SECRET }};'
+        connection-string: 'Server=tcp:${{ vars.SQL_SERVER }}.database.windows.net,1433;Initial Catalog=${{ matrix.name }};Authentication='Active Directory Service Principal';User ID=${{ vars.SP_ID }};Password=${{ secrets.SP_SECRET }};'
         path: '${{ github.workspace }}\${{ matrix.name }}.dacpac'
         action: 'Publish'
 

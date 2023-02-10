@@ -1,34 +1,36 @@
-name: Deployment of UAT workspace
+name: Deployment of Synapse workspace
 
 on:
   push:
     branches:
+      # Synapse development is directly integrated with git
       - uat
-      # - main # add if main logic
-  workflow_dispatch:
-
-env:
-  SYNAPSE_WS_NAME: compass-ws
-  SJORSTEST: test1234
+      - main
+    paths:
+      - synapse-workspace/**
 
 jobs:
-  # display-variables:
-  #   name: Debugging
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: Use variables
-  #     run: |
-  #       echo "clientId: ${{ secrets.SP_CMP_ID }}"
-  #       echo "clientSecret:  ${{ secrets.SP_CMP_SECRET }}"
-  #       echo "subscriptionId: ${{ vars.SUBID }}"
-  #       echo "resourceGroup: ${{ vars.RESOURCE_GROUP }}"
-  #       echo "tenantId: ${{ vars.TENANT_ID }}"
+  init:
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ steps.get_env.outputs.env }}
+    steps:
+      - id: get_env
+        run: |
+          if [[ '${{ github.head_ref || github.ref_name }}' == 'main' ]]; then
+            echo "env=Production" >> $GITHUB_OUTPUT
+          elif [[ '${{ github.head_ref || github.ref_name }}' == 'uat' ]]; then
+            echo "env=Acceptance" >> $GITHUB_OUTPUT
+          elif [[ '${{ github.head_ref || github.ref_name }}' == 'development' ]]; then
+            echo "env=Development" >> $GITHUB_OUTPUT
+          else
+            echo "env=does_not_support" >> $GITHUB_OUTPUT
+          fi
 
   deployment:
     runs-on: ubuntu-latest
-    # environment: 
-    #   name: development
-    #   url: https://github.com
+    needs: init
+    environment: "${{needs.init.outputs.environment}}"
     steps:
     - name: Pre-run | Checkout repository
       uses: actions/checkout@v2
@@ -36,7 +38,12 @@ jobs:
     - name: Pre-run | Azure login
       uses: Azure/login@v1
       with:
-        creds: '{"clientId":"${{ secrets.SP_CMP_ID }}","clientSecret":"${{ secrets.SP_CMP_SECRET }}","subscriptionId":"${{ vars.SUBID }}","tenantId":"${{ vars.TENANT_ID }}"}'
+        creds: '{
+                  "clientId":"${{ vars.SP_ID }}",
+                  "clientSecret":"${{ secrets.SP_SECRET }}",
+                  "subscriptionId":"${{ vars.SUBSCRIPTION_ID }}",
+                  "tenantId":"${{ vars.TENANT_ID }}"
+                }'
         enable-AzPSSession: true 
 
     - name: Pre-run | Install and cache PowerShell modules
@@ -44,37 +51,25 @@ jobs:
       with:
         modules-to-cache: Az.Synapse, Az.Accounts
 
-    - name: Pre-run | Allow GitHub runner dynamic IP to Synapse firewall
-      shell: pwsh
-      run: |
-        .\scripts\synapse\modifyFirewall.ps1 -WorkspaceName ${{ env.SYNAPSE_WS_NAME }} -action create
-
     - name: Pre-run | Disable triggers in workspace
       shell: pwsh
       run: |
-        .\scripts\synapse\modifyTriggers.ps1 -WorkspaceName ${{ env.SYNAPSE_WS_NAME }} -action disable
+        .\scripts\synapse\modifyTriggers.ps1 -WorkspaceName ${{ vars.SYNAPSE_WS_NAME }} -action disable
 
-    # work work
     - name: Synapse workspace deployment
       uses: Azure/Synapse-workspace-deployment@V1.7.0
       with:
-        TargetWorkspaceName: ${{ env.SYNAPSE_WS_NAME }}
+        TargetWorkspaceName: ${{ vars.SYNAPSE_WS_NAME }}
         ArtifactsFolder: './synapse-workspace'
         environment: 'Azure Public'
         clientId: ${{ vars.SP_ID }}
         clientSecret:  ${{ secrets.SP_SECRET }}
         subscriptionId: ${{ vars.SUBSCRIPTION_ID }}
-        resourceGroup: ${{ vars.RESOURCE_GROUP }}
+        resourceGroup: ${{ vars.RESOURCE_GROUP_SYNAPSE }}
         tenantId: ${{ vars.TENANT_ID }}
         DeleteArtifactsNotInTemplate: 'true'
         operation: 'validateDeploy'
         OverrideArmParameters: './parameters/parametersUAT.yaml'
-
-    - name: Post-run | Remove GitHub runner dynamic IP from Synapse firewall
-      shell: pwsh
-      run: |
-        .\scripts\synapse\modifyFirewall.ps1 -WorkspaceName ${{ env.SYNAPSE_WS_NAME }} -action delete
-      if: always()
 
     - name: Post-run | Enable triggers in workspace
       shell: pwsh
