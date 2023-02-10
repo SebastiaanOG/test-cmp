@@ -5,6 +5,8 @@ on:
   push:
     branches:
       - development
+      - uat
+      - main
     paths:
       - database-project/**
 
