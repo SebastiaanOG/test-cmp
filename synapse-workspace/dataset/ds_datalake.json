@@ -2,7 +2,7 @@
 	"name": "ds_datalake",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "syn-m10mdf-dt-WorkspaceDefaultStorage",
+			"referenceName": "ls_st_datalake",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
