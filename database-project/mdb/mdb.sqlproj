@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <Name>sqldbmddb-m10mdf</Name>
+    <Name>mdb</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{a0bb9ae3-30b9-4c8b-94b7-b727da225647}</ProjectGuid>
@@ -11,8 +11,8 @@
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
-    <RootNamespace>sqldbmddb_m10mdfp_dt</RootNamespace>
-    <AssemblyName>sqldbmddb_m10mdf_dt</AssemblyName>
+    <RootNamespace>mdb_dt</RootNamespace>
+    <AssemblyName>mdb_dt</AssemblyName>
     <ModelCollation>1033, CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>

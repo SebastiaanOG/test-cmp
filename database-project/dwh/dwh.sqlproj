@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <Name>sqldb-m10mdf</Name>
+    <Name>dwh</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{034f1013-0142-440e-9a0b-66b7fd9ffbff}</ProjectGuid>
@@ -11,8 +11,8 @@
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
-    <RootNamespace>sqldb_m10mdf_dev</RootNamespace>
-    <AssemblyName>sqldb_m10mdf_dev</AssemblyName>
+    <RootNamespace>dwh_dev</RootNamespace>
+    <AssemblyName>dwh_dev</AssemblyName>
     <ModelCollation>1033, CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
