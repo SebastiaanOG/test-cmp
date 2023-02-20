@@ -103,7 +103,7 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"storedProcedureName": "[ETL].[spInsertMetadata]",
+								"storedProcedureName": "[elt].[spInsertMetadata]",
 								"storedProcedureParameters": {
 									"Json": {
 										"value": {
