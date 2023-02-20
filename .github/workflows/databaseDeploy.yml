@@ -46,13 +46,13 @@ jobs:
         msbuild-architecture: x64
     
     - name: Build database project | Build the projects from the sln file
-      run: msbuild database\sqldb.sln /p:Configuration=Release
+      run: msbuild database-project\sqldb.sln /p:Configuration=Release
     
     - name: Publish build artifacts for ${{ matrix.name }} | Upload dacpac files to workflow run
       uses: actions/upload-artifact@master
       with:
         name: ${{ matrix.name }}
-        path: ${{ github.workspace }}\database\${{ matrix.name }}\bin\Release\
+        path: ${{ github.workspace }}\database-project\${{ matrix.name }}\bin\Release\
 
   # Release on the development environment
   release:
