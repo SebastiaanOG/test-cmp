@@ -90,6 +90,7 @@
     <Build Include="audit\Stored Procedures\spEndPipelineRun.sql" />
     <Build Include="Security\etl.sql" />
     <Build Include="Security\audit.sql" />
+    <Build Include="Security\authorisation.sql" />
   </ItemGroup>
   <Import Condition="'$(NetCoreBuild)' == 'true'" Project="$(NETCoreTargetsPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>

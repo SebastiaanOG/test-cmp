@@ -105,6 +105,7 @@
     <Build Include="etl\Stored Procedures\spLookupLevels.sql" />
     <Build Include="Security\etl.sql" />
     <Build Include="Security\audit.sql" />
+    <Build Include="Security\authorisation.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="PostDeploy\PostDeploymentScript.sql">
