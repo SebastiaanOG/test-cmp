@@ -58,8 +58,8 @@
     <Folder Include="Properties" />
     <Folder Include="gold\" />
     <Folder Include="gold\Tables\" />
-    <Folder Include="etl\" />
-    <Folder Include="etl\Tables\" />
+    <Folder Include="elt\" />
+    <Folder Include="elt\Tables\" />
     <Folder Include="audit\" />
     <Folder Include="audit\Tables\" />
     <Folder Include="PowerBI\" />
@@ -67,20 +67,20 @@
     <Folder Include="gold\Views\" />
     <Folder Include="Security\" />
     <Folder Include="gold\Stored Procedures\" />
-    <Folder Include="etl\Stored Procedures\" />
+    <Folder Include="elt\Stored Procedures\" />
     <Folder Include="audit\Stored Procedures\" />
     <Folder Include="PostDeploy" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="etl\Tables\StorageTables.sql" />
+    <Build Include="elt\Tables\StorageTables.sql" />
     <Build Include="audit\Tables\ProcessRun.sql" />
     <Build Include="audit\Tables\ProcessError.sql" />
     <Build Include="audit\Tables\PipelineRun.sql" />
     <Build Include="audit\Tables\DataLog.sql" />
-    <Build Include="etl\Stored Procedures\spLookupStoredProcedures.sql" />
-    <Build Include="etl\Stored Procedures\spLookupLevels.sql" />
-    <Build Include="etl\Stored Procedures\spCreateTableFromMetadata.sql" />
-    <Build Include="etl\Stored Procedures\spCreateSchema.sql" />
+    <Build Include="elt\Stored Procedures\spLookupStoredProcedures.sql" />
+    <Build Include="elt\Stored Procedures\spLookupLevels.sql" />
+    <Build Include="elt\Stored Procedures\spCreateTableFromMetadata.sql" />
+    <Build Include="elt\Stored Procedures\spCreateSchema.sql" />
     <Build Include="audit\Stored Procedures\spStartProcessRun.sql" />
     <Build Include="audit\Stored Procedures\spStartPipelineRun.sql" />
     <Build Include="audit\Stored Procedures\spInsertDataLogStorage.sql" />
@@ -88,7 +88,7 @@
     <Build Include="audit\Stored Procedures\spErrorLog.sql" />
     <Build Include="audit\Stored Procedures\spEndProcessRun.sql" />
     <Build Include="audit\Stored Procedures\spEndPipelineRun.sql" />
-    <Build Include="Security\etl.sql" />
+    <Build Include="Security\elt.sql" />
     <Build Include="Security\audit.sql" />
     <Build Include="Security\authorisation.sql" />
   </ItemGroup>

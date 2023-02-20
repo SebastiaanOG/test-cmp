@@ -85,7 +85,7 @@
 			}
 		},
 		"folder": {
-			"name": "ETL DWH/10 SourceToRaw"
+			"name": "ELT DWH/10 SourceToRaw"
 		},
 		"annotations": [],
 		"lastPublishTime": "2020-12-08T16:08:09Z"
