@@ -21,7 +21,7 @@ DECLARE @ErrorLine	  TINYINT
 			[SystemName] [nvarchar](64) NOT NULL,
 			[SchemaName] [nvarchar](50) NOT NULL,
 			[EntityName] [nvarchar](64) NOT NULL,
-			[CopyToRes] [bit] NOT NULL,
+			[CopyToRaw] [bit] NOT NULL,
 			[CopyToStg] [bit] NOT NULL,
 			[SourceQuery] [nvarchar](max) NULL,
 			[IsActive] [bit] NULL,
@@ -35,7 +35,7 @@ DECLARE @ErrorLine	  TINYINT
 				,[SystemName]
 				,[SchemaName]
 				,[EntityName]
-				,[CopyToRes]
+				,[CopyToRaw]
 				,[CopyToStg]
 				,[SourceQuery]
 				,[IsActive]
@@ -94,7 +94,7 @@ BEGIN TRY
 					 ,[SystemName]
 					 ,[SchemaName]
 					 ,[EntityName]
-					 ,[CopyToRes]
+					 ,[CopyToRaw]
 					 ,[CopyToStg]
 					 ,[SourceQuery]
 					 ,[IsActive]
@@ -109,7 +109,7 @@ BEGIN TRY
 				,@SystemName
 				,@lSchema
 				,@lTable
-				,[CopyToRes]
+				,[CopyToRaw]
 				,[CopyToStg]
 				,[SourceQuery]
 				,1
@@ -146,7 +146,7 @@ BEGIN TRANSACTION
 							 ,[SystemName]
 							 ,[SchemaName]
 							 ,[EntityName]
-							 ,[CopyToRes]
+							 ,[CopyToRaw]
 							 ,[CopyToStg]
 							 ,[SourceQuery]
 							 ,[IsActive]
@@ -210,7 +210,7 @@ BEGIN
 							,@SystemName
 							,@lSchema
 							,@lTable
-							,[CopyToRes]
+							,[CopyToRaw]
 							,[CopyToStg]
 							,[SourceQuery]
 							,0

@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy - Source To Reservoir Adventureworks",
+				"name": "Copy - Source To Raw Adventureworks",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {

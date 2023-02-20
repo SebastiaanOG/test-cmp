@@ -99,7 +99,7 @@
     <Build Include="elt\Stored Procedures\spInsertMetadata.sql" />
     <Build Include="elt\Stored Procedures\spCreateTableFromMetadata.sql" />
     <Build Include="elt\Stored Procedures\spCreateSchema.sql" />
-    <Build Include="elt\Stored Procedures\spCopySrcToRes.sql" />
+    <Build Include="elt\Stored Procedures\spCopySrcToRaw.sql" />
     <Build Include="elt\Stored Procedures\spCopyResToStg.sql" />
     <Build Include="elt\Stored Procedures\spLookupStoredProcedures.sql" />
     <Build Include="elt\Stored Procedures\spLookupLevels.sql" />

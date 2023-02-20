@@ -117,7 +117,7 @@ SELECT @Cols = (Select CONCAT(STRING_AGG(
 			AND [elt].[fnCreateTableName](t.SystemName, t.EntityName) = [elt].[fnCreateTableName](@lSourceSchema, @lSourceTable))
 ------------------------------------------------------------------------------------------------------------------------------------------
 /*
-Create Temptable to compare Reservoir/staging with Storage
+Create Temptable to compare Raw/staging with Storage
 */
 ------------------------------------------------------------------------------------------------------------------------------------------
 SELECT  @TSQL2 = ''
