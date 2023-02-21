@@ -61,7 +61,7 @@ jobs:
     strategy:
       matrix:
         name: [dwh, mdb]
-    runs-on: windows-latest
+    runs-on: self-hosted
 
     steps:
     - name: Download the artifact for ${{ matrix.name }} | Download dacpac files on the windows runner
