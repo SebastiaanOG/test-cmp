@@ -7,8 +7,8 @@ on:
       - development
       - uat
       - main
-    paths:
-      - database-project/**
+    # paths:
+      # - database-project/**
 
 jobs:
   init:
