@@ -1,4 +1,4 @@
-name: GitHub Actions for SQL database | Parallelly build and release using matrix stratergy
+name: GitHub Actions for SQL database | Parallelly build and release using matrix strategy
 
 on:
   # Uses specified branch and path
@@ -7,12 +7,12 @@ on:
       - development
       - uat
       - main
-    # paths:
-      # - database-project/**
+    paths:
+      - database-project/**
 
 jobs:
   init:
-    runs-on: self-hosted
+    runs-on: windows-latest
     outputs:
       environment: ${{ steps.get_env.outputs.env }}
     steps:
@@ -61,7 +61,7 @@ jobs:
     strategy:
       matrix:
         name: [dwh, mdb]
-    runs-on: self-hosted
+    runs-on: windows-latest
 
     steps:
     - name: Download the artifact for ${{ matrix.name }} | Download dacpac files on the windows runner
