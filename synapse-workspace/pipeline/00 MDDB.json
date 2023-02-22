@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "Select * from etl.metadatasystem\nwhere active =1 ",
+						"sqlReaderQuery": "Select * from elt.metadatasystem\nwhere active =1 ",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},

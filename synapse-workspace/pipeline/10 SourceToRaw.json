@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderStoredProcedureName": "[ETL].[spCopySrcToRes]",
+						"sqlReaderStoredProcedureName": "[elt].[spCopySrcToRaw]",
 						"storedProcedureParameters": {
 							"process_run_date": {
 								"type": "Datetime",
@@ -66,7 +66,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderStoredProcedureName": "[etl].[spSystemStorageDays]",
+						"sqlReaderStoredProcedureName": "[elt].[spSystemStorageDays]",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -134,7 +134,7 @@
 				}
 			},
 			{
-				"name": "ForEach - Source To Reservoir",
+				"name": "ForEach - Source To Raw",
 				"type": "ForEach",
 				"dependsOn": [
 					{
@@ -229,7 +229,7 @@
 												},
 												"userProperties": [],
 												"typeProperties": {
-													"storedProcedureName": "[etl].[spUpdateLastIncrement]",
+													"storedProcedureName": "[elt].[spUpdateLastIncrement]",
 													"storedProcedureParameters": {
 														"source_system_name": {
 															"value": {
@@ -279,7 +279,7 @@
 												},
 												"userProperties": [],
 												"typeProperties": {
-													"storedProcedureName": "[ETL].[spUpdateLastProcessRun]",
+													"storedProcedureName": "[elt].[spUpdateLastProcessRun]",
 													"storedProcedureParameters": {
 														"process_run_date": {
 															"value": {
@@ -329,7 +329,7 @@
 			}
 		},
 		"folder": {
-			"name": "ETL DWH/10 SourceToRaw"
+			"name": "ELT DWH/10 SourceToRaw"
 		},
 		"annotations": [],
 		"lastPublishTime": "2020-12-08T16:08:10Z"

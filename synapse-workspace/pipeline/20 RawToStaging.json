@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderStoredProcedureName": "[etl].[spCopyResToStg]",
+						"sqlReaderStoredProcedureName": "[elt].[spCopyRawToStg]",
 						"storedProcedureParameters": {
 							"pipeline_run_id": {
 								"type": "Guid",
@@ -45,7 +45,7 @@
 				}
 			},
 			{
-				"name": "ForEach - StagingToReservoir",
+				"name": "ForEach - StagingToRaw",
 				"type": "ForEach",
 				"dependsOn": [
 					{
@@ -132,7 +132,7 @@
 			}
 		},
 		"folder": {
-			"name": "ETL DWH/20 RawToStaging"
+			"name": "ELT DWH/20 RawToStaging"
 		},
 		"annotations": [],
 		"lastPublishTime": "2020-10-16T08:33:32Z"

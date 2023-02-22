@@ -94,7 +94,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderStoredProcedureName": "[ETL].[spCreateSchema]",
+						"sqlReaderStoredProcedureName": "[elt].[spCreateSchema]",
 						"storedProcedureParameters": {
 							"system_name": {
 								"type": "String",
@@ -133,7 +133,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[etl].[spCreateSchema]",
+					"storedProcedureName": "[elt].[spCreateSchema]",
 					"storedProcedureParameters": {
 						"create_schema_script": {
 							"value": {
@@ -171,7 +171,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderStoredProcedureName": "[etl].[spCreateTableFromMetadata]",
+						"sqlReaderStoredProcedureName": "[elt].[spCreateTableFromMetadata]",
 						"storedProcedureParameters": {
 							"system_name": {
 								"type": "String",
@@ -217,7 +217,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[etl].[spCreateTableFromMetadata]",
+					"storedProcedureName": "[elt].[spCreateTableFromMetadata]",
 					"storedProcedureParameters": {
 						"create_table_script": {
 							"value": {
@@ -267,7 +267,7 @@
 			}
 		},
 		"folder": {
-			"name": "ETL DWH/20 RawToStaging"
+			"name": "ELT DWH/20 RawToStaging"
 		},
 		"annotations": [],
 		"lastPublishTime": "2020-10-15T16:10:32Z"
