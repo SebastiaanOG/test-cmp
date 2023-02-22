@@ -12,7 +12,7 @@ on:
 
 jobs:
   init:
-    runs-on: windows-latest
+    runs-on: self-hosted
     outputs:
       environment: ${{ steps.get_env.outputs.env }}
     steps:
