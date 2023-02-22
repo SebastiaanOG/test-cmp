@@ -35,7 +35,7 @@ jobs:
         name: [dwh, mdb]
        
   # MSBuild for sqldb.sln doesn't work on windows-latest
-    runs-on: windows-2019
+    runs-on: [self-hosted]
     steps:
     - name: Checkout this repository | Required to build projects
       uses: actions/checkout@v1
