@@ -56,20 +56,13 @@
   <Import Condition="'$(NetCoreBuild)' != 'true' AND '$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
-    <Folder Include="gold\" />
-    <Folder Include="gold\Tables\" />
     <Folder Include="elt\" />
     <Folder Include="elt\Tables\" />
     <Folder Include="audit\" />
     <Folder Include="audit\Tables\" />
-    <Folder Include="PowerBI\" />
-    <Folder Include="PowerBI\Views\" />
-    <Folder Include="gold\Views\" />
     <Folder Include="Security\" />
-    <Folder Include="gold\Stored Procedures\" />
     <Folder Include="elt\Stored Procedures\" />
     <Folder Include="audit\Stored Procedures\" />
-    <Folder Include="PostDeploy" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="elt\Tables\StorageTables.sql" />
