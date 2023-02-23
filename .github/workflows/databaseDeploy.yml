@@ -8,7 +8,8 @@ on:
       - uat
       - main
     paths:
-      # - database-project/**
+      - database-project/**
+      - .github/workflows/databaseDeploy.yml
 
 jobs:
   init:
