@@ -8,11 +8,11 @@ on:
       - uat
       - main
     paths:
-     # - database-project/**
+      # - database-project/**
 
 jobs:
   init:
-    runs-on: [self-hosted]
+    runs-on: ubuntu-latest
     outputs:
       environment: ${{ steps.get_env.outputs.env }}
     steps:
@@ -35,7 +35,7 @@ jobs:
         name: [dwh, mdb]
        
   # MSBuild for sqldb.sln doesn't work on windows-latest
-    runs-on: [self-hosted]
+    runs-on: windows-2019
     steps:
     - name: Checkout this repository | Required to build projects
       uses: actions/checkout@v1
@@ -56,12 +56,12 @@ jobs:
 
   # Release on the development environment
   release:
+    runs-on: self-hosted
     needs: [init, build]
     environment: "${{needs.init.outputs.environment}}"
     strategy:
       matrix:
         name: [dwh, mdb]
-    runs-on: windows-latest
 
     steps:
     - name: Download the artifact for ${{ matrix.name }} | Download dacpac files on the windows runner
