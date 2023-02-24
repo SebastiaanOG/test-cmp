@@ -8,6 +8,7 @@ on:
       - main
     paths:
       - synapse-workspace/**
+      - .github/workflows/synapseDeploy.yml
 
 jobs:
   init:
@@ -34,6 +35,9 @@ jobs:
     steps:
     - name: Pre-run | Checkout repository
       uses: actions/checkout@v2
+
+    - name: Pre-run | Install Azure CLI on self-hosted runner
+      run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
     - name: Pre-run | Azure login
       uses: Azure/login@v1

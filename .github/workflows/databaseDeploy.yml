@@ -8,7 +8,8 @@ on:
       - uat
       - main
     paths:
-      # - database-project/**
+      - database-project/**
+      - .github/workflows/databaseDeploy.yml
 
 jobs:
   init:
@@ -64,10 +65,13 @@ jobs:
         name: [dwh, mdb]
 
     steps:
-    - name: Download the artifact for ${{ matrix.name }} | Download dacpac files on the windows runner
+    - name: Download the artifact for ${{ matrix.name }} | Download dacpac files on self-hosted runner
       uses: actions/download-artifact@v2.0.6
       with:
         name: ${{ matrix.name }}
+
+    - name: Install Azure CLI on self-hosted runner
+      run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
     - name: Use credentials | Log in into Azure
       uses: azure/login@v1
