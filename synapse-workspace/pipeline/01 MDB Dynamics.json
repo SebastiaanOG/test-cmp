@@ -28,6 +28,10 @@
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
+					"dataset": {
+						"referenceName": "ds_source_dynamics_table",
+						"type": "DatasetReference"
+					},
 					"firstRowOnly": false
 				}
 			},
@@ -71,6 +75,10 @@
 									},
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "ds_source_dynamics_table",
+									"type": "DatasetReference"
 								},
 								"firstRowOnly": false
 							}
@@ -119,7 +127,7 @@
 										"type": "String"
 									},
 									"SystemCode": {
-										"value": "eis",
+										"value": "dynamics",
 										"type": "String"
 									},
 									"SystemName": {
@@ -161,6 +169,10 @@
 						"sqlReaderQuery": "SELECT top 1 DB_NAME() AS [CurrentDatabase] \nFROM sys.databases",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_source_dynamics_table",
+						"type": "DatasetReference"
 					},
 					"firstRowOnly": true
 				}
