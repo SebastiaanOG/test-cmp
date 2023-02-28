@@ -1,5 +1,5 @@
 {
-	"name": "00 MDDB",
+	"name": "00 MDB",
 	"properties": {
 		"activities": [
 			{
@@ -59,16 +59,16 @@
 								},
 								"cases": [
 									{
-										"value": "eis",
+										"value": "dynamics",
 										"activities": [
 											{
-												"name": "Execute Pipeline 01 MDDB Source2",
+												"name": "Execute Pipeline 01 MDB Dynamics",
 												"type": "ExecutePipeline",
 												"dependsOn": [],
 												"userProperties": [],
 												"typeProperties": {
 													"pipeline": {
-														"referenceName": "02 MDDB Source2",
+														"referenceName": "01 MDB Dynamics",
 														"type": "PipelineReference"
 													},
 													"waitOnCompletion": true

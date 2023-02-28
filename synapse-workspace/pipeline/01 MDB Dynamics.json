@@ -1,5 +1,5 @@
 {
-	"name": "02 MDDB Source2",
+	"name": "01 MDB Dynamics",
 	"properties": {
 		"activities": [
 			{
@@ -27,10 +27,6 @@
 						"sqlReaderQuery": "SELECT SCHEMA_NAME(T.schema_id) AS [SCHEMA_NAME],\n\t\tT.name AS [TABLE_NAME], \n       I.rows AS [ROWCOUNT] \nFROM   sys.tables AS T \n       INNER JOIN sys.sysindexes AS I \n               ON T.object_id = I.id \n                  AND I.indid < 2\nWHERE i.rows > 0",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
-					},
-					"dataset": {
-						"referenceName": "ds_source2_table",
-						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
 				}
@@ -75,10 +71,6 @@
 									},
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
-								},
-								"dataset": {
-									"referenceName": "ds_source2_table",
-									"type": "DatasetReference"
 								},
 								"firstRowOnly": false
 							}
@@ -169,10 +161,6 @@
 						"sqlReaderQuery": "SELECT top 1 DB_NAME() AS [CurrentDatabase] \nFROM sys.databases",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
-					},
-					"dataset": {
-						"referenceName": "ds_source2_table",
-						"type": "DatasetReference"
 					},
 					"firstRowOnly": true
 				}
