@@ -6,7 +6,7 @@
 		],
 		"type": "AzureKeyVault",
 		"typeProperties": {
-			"baseUrl": "https://pos-kv.vault.azure.net/"
+			"baseUrl": "https://kv-vo-cmp-dev-weu-001.vault.azure.net/"
 		}
 	}
 }
