@@ -1,12 +1,30 @@
 {
-	"name": "ds_source2_table",
+	"name": "ds_source_dynamics_table",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_source2",
+			"referenceName": "ls_source_dynamics",
 			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"schema": {
+				"type": "string"
+			},
+			"table_name": {
+				"type": "string"
+			}
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
-		"schema": []
+		"schema": [],
+		"typeProperties": {
+			"schema": {
+				"value": "@dataset().schema",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().table_name",
+				"type": "Expression"
+			}
+		}
 	}
 }
