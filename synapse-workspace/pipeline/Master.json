@@ -26,7 +26,7 @@
 				}
 			},
 			{
-				"name": "Execute 10 SourceToStaging",
+				"name": "Execute 10 SourceToRaw",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
@@ -60,7 +60,7 @@
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "Execute 10 SourceToStaging",
+						"activity": "Execute 10 SourceToRaw",
 						"dependencyConditions": [
 							"Succeeded"
 						]
