@@ -1,6 +1,7 @@
 {
 	"name": "ds_datalake_delete",
 	"properties": {
+		"description": "This dataset makes sure that files which exceed a retention period are deleted. ",
 		"linkedServiceName": {
 			"referenceName": "ls_st_datalake",
 			"type": "LinkedServiceReference"
