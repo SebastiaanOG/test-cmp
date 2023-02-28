@@ -3,13 +3,13 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Execute 00 MDDB",
+				"name": "Execute 00 MDB",
 				"type": "ExecutePipeline",
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "00 MDDB",
+						"referenceName": "00 MDB",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,
@@ -30,7 +30,7 @@
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "Execute 00 MDDB",
+						"activity": "Execute 00 MDB",
 						"dependencyConditions": [
 							"Succeeded"
 						]
