@@ -49,6 +49,7 @@
 					"activities": [
 						{
 							"name": "Switch - Choose Source",
+							"description": "Use systemname from elt.metadatasystem as input for this switch statement",
 							"type": "Switch",
 							"dependsOn": [],
 							"userProperties": [],
@@ -59,7 +60,7 @@
 								},
 								"cases": [
 									{
-										"value": "dynamics",
+										"value": "Dyn01DataDb01A",
 										"activities": [
 											{
 												"name": "Execute Pipeline 01 MDB Dynamics",
