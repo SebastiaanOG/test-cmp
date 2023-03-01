@@ -1,5 +1,5 @@
 {
-	"name": "02 MDDB Source2",
+	"name": "01 MDB Dynamics",
 	"properties": {
 		"activities": [
 			{
@@ -29,7 +29,7 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "ds_source2_table",
+						"referenceName": "ds_source_dynamics_table",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
@@ -77,7 +77,7 @@
 									"partitionOption": "None"
 								},
 								"dataset": {
-									"referenceName": "ds_source2_table",
+									"referenceName": "ds_source_dynamics_table",
 									"type": "DatasetReference"
 								},
 								"firstRowOnly": false
@@ -127,7 +127,7 @@
 										"type": "String"
 									},
 									"SystemCode": {
-										"value": "eis",
+										"value": "dynamics",
 										"type": "String"
 									},
 									"SystemName": {
@@ -171,7 +171,7 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "ds_source2_table",
+						"referenceName": "ds_source_dynamics_table",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": true
@@ -185,7 +185,7 @@
 			}
 		},
 		"folder": {
-			"name": "MDDB"
+			"name": "MDB"
 		},
 		"annotations": [],
 		"lastPublishTime": "2020-12-04T14:48:06Z"

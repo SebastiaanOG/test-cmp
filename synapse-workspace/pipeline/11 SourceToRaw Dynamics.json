@@ -1,9 +1,9 @@
 {
-	"name": "11 SourceToRaw Source2",
+	"name": "11 SourceToRaw Dynamics",
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy - Source To Raw Adventureworks",
+				"name": "Copy - Source To Raw",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -17,7 +17,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "@pipeline().parameters.source_entity_query",
+						"sqlReaderQuery": {
+							"value": "@pipeline().parameters.source_entity_query",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -38,7 +41,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_source2_table",
+						"referenceName": "ds_source_dynamics_table",
 						"type": "DatasetReference"
 					}
 				],

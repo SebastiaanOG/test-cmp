@@ -1,5 +1,5 @@
 {
-	"name": "00 MDDB",
+	"name": "00 MDB",
 	"properties": {
 		"activities": [
 			{
@@ -49,6 +49,7 @@
 					"activities": [
 						{
 							"name": "Switch - Choose Source",
+							"description": "Use systemname from elt.metadatasystem as input for this switch statement",
 							"type": "Switch",
 							"dependsOn": [],
 							"userProperties": [],
@@ -59,16 +60,16 @@
 								},
 								"cases": [
 									{
-										"value": "eis",
+										"value": "Dyn01DataDb01A",
 										"activities": [
 											{
-												"name": "Execute Pipeline 01 MDDB Source2",
+												"name": "Execute Pipeline 01 MDB Dynamics",
 												"type": "ExecutePipeline",
 												"dependsOn": [],
 												"userProperties": [],
 												"typeProperties": {
 													"pipeline": {
-														"referenceName": "02 MDDB Source2",
+														"referenceName": "01 MDB Dynamics",
 														"type": "PipelineReference"
 													},
 													"waitOnCompletion": true
@@ -90,11 +91,11 @@
 			},
 			"process_run_date": {
 				"type": "string",
-				"defaultValue": "2019-12-10"
+				"defaultValue": "2023-02-28"
 			}
 		},
 		"folder": {
-			"name": "MDDB"
+			"name": "MDB"
 		},
 		"annotations": [],
 		"lastPublishTime": "2020-10-16T08:50:32Z"

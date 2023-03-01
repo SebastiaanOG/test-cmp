@@ -47,14 +47,7 @@
 			{
 				"name": "Lookup - Get System Storage Days",
 				"type": "Lookup",
-				"dependsOn": [
-					{
-						"activity": "ForEach - Source To Reservoir",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -164,7 +157,7 @@
 								},
 								"cases": [
 									{
-										"value": "eis",
+										"value": "Dyn01DataDb01A",
 										"activities": [
 											{
 												"name": "Execute Pipeline 11",
@@ -173,7 +166,7 @@
 												"userProperties": [],
 												"typeProperties": {
 													"pipeline": {
-														"referenceName": "11 SourceToRaw Source2",
+														"referenceName": "11 SourceToRaw Dynamics",
 														"type": "PipelineReference"
 													},
 													"waitOnCompletion": true,
