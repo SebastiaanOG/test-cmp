@@ -63,10 +63,6 @@
 						"referenceName": "ds_sql_dwh_table",
 						"type": "DatasetReference",
 						"parameters": {
-							"name": {
-								"value": "@pipeline().parameters.entity_name",
-								"type": "Expression"
-							},
 							"structure": {
 								"value": "@pipeline().parameters.sink_entity_structure",
 								"type": "Expression"
