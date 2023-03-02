@@ -19,6 +19,6 @@ The CI/CD workflow for the database projects is as follows:
   1. Init – checks for the initialization branch [main, uat or development].
   2. The build step involves building the database projects using MSBuild. MSBuild builds the database projects using the sqldb.sln file.
   3. The release step involves deploying the dacpac files to the target databases using sql-action.
-- The databases are built and released parallelly using the matrix strategy found in the workflow. Currently, the build workflow runs on windows-2019 runner and the release workflow runs on self-hosted runner. Once the deployment of the database takes place on the development, acceptance and production follows after some additional checks/tests.
+- The databases are built and released parallelly using the matrix strategy found in the workflow. Currently, the build workflow runs on windows-2019 runner and the release workflow runs on self-hosted runner. Once the deployment of the database takes place on the development, acceptance and production [uat and main respectively] follows after some additional checks/tests.
 
 
