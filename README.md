@@ -13,7 +13,7 @@ Please review the development strategy document for detailed information on how 
 - The root folder is set to /synapse-workspace
 - Acceptance and production are provisioned via the CD workflow.
 
-## CI/CD Workflow
+## CI/CD workflow
 The CI/CD workflow for the database projects is as follows:
 - When a feature branch is merged with the development branch, CI/CD workflow takes place via GitHub Actions. The yaml file which triggers the workflow can be found in .github/workflows. The steps involved in CI/CD of the database is as follows:
   1. Init – checks for the initialization branch [main, uat or development].
