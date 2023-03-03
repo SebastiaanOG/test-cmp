@@ -3,6 +3,8 @@
 This repository contains the relevant code to configure and provision the Compass data warehouse.
 Please review the development strategy document for detailed information on how we develop solutions within our data platform.
 
+- The link to the development strategy document: https://tinyurl.com/5n824nh5 
+
 ## Database projects
 - The root folder is set to /database-project
 - The development of the database projects takes place on the development environment. 
