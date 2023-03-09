@@ -61,8 +61,8 @@
     <Folder Include="audit\" />
     <Folder Include="audit\Tables\" />
     <Folder Include="Security\" />
-    <Folder Include="elt\Stored Procedures\" />
-    <Folder Include="audit\Stored Procedures\" />
+    <Folder Include="elt\StoredProcedures\" />
+    <Folder Include="audit\StoredProcedures\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="elt\Tables\StorageTables.sql" />
@@ -70,17 +70,17 @@
     <Build Include="audit\Tables\ProcessError.sql" />
     <Build Include="audit\Tables\PipelineRun.sql" />
     <Build Include="audit\Tables\DataLog.sql" />
-    <Build Include="elt\Stored Procedures\spLookupStoredProcedures.sql" />
-    <Build Include="elt\Stored Procedures\spLookupLevels.sql" />
-    <Build Include="elt\Stored Procedures\spCreateTableFromMetadata.sql" />
-    <Build Include="elt\Stored Procedures\spCreateSchema.sql" />
-    <Build Include="audit\Stored Procedures\spStartProcessRun.sql" />
-    <Build Include="audit\Stored Procedures\spStartPipelineRun.sql" />
-    <Build Include="audit\Stored Procedures\spInsertDataLogStorage.sql" />
-    <Build Include="audit\Stored Procedures\spInsertDataLogStaging.sql" />
-    <Build Include="audit\Stored Procedures\spErrorLog.sql" />
-    <Build Include="audit\Stored Procedures\spEndProcessRun.sql" />
-    <Build Include="audit\Stored Procedures\spEndPipelineRun.sql" />
+    <Build Include="elt\StoredProcedures\spLookupStoredProcedures.sql" />
+    <Build Include="elt\StoredProcedures\spLookupLevels.sql" />
+    <Build Include="elt\StoredProcedures\spCreateTableFromMetadata.sql" />
+    <Build Include="elt\StoredProcedures\spCreateSchema.sql" />
+    <Build Include="audit\StoredProcedures\spStartProcessRun.sql" />
+    <Build Include="audit\StoredProcedures\spStartPipelineRun.sql" />
+    <Build Include="audit\StoredProcedures\spInsertDataLogStorage.sql" />
+    <Build Include="audit\StoredProcedures\spInsertDataLogStaging.sql" />
+    <Build Include="audit\StoredProcedures\spErrorLog.sql" />
+    <Build Include="audit\StoredProcedures\spEndProcessRun.sql" />
+    <Build Include="audit\StoredProcedures\spEndPipelineRun.sql" />
     <Build Include="Security\elt.sql" />
     <Build Include="Security\audit.sql" />
     <Build Include="Security\authorisation.sql" />
