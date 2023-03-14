@@ -14,14 +14,10 @@
 
 RETURNS VARCHAR(MAX) AS
 -----------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------
---Author:			Tony Jordan
---Date:				2020-09-01
+
 --Description:		Op basis van de entiteit worden de bijbehorende gegevens opgezocht en verwerkt tot een SQL Server Query.
 --					Wanneer er gegevens zijn ingevuld in de Increment parameters wordt er een extra WHERE clause toegevoegd om op datum te filteren.
-
-
---To do				
+		
 -----------------------------------------------------------------------------------------------------------
 --Debug:
 --DECLARE

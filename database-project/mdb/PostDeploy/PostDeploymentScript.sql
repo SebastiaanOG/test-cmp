@@ -21,303 +21,154 @@ GO
 TRUNCATE TABLE [elt].[TypeMap]
 
 /*Insert metadata records */
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'bigint', N'int64', N'sqlserver', N'bigint')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'bit', N'int16', N'sqlserver', N'bit')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'datetime', N'datetime', N'sqlserver', N'datetime')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'decimal', N'decimal', N'sqlserver', N'decimal')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'float', N'double', N'sqlserver', N'float')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'int', N'int32', N'sqlserver', N'int')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'money', N'decimal', N'sqlserver', N'money')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'nvarchar', N'string', N'sqlserver', N'nvarchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'smallint', N'int32', N'sqlserver', N'smallint')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'timestamp', N'byte[]', N'sqlserver', N'timestamp')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'tinyint', N'int16', N'sqlserver', N'tinyint')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'uniqueidentifier', N'guid', N'sqlserver', N'uniqueidentifier')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'varbinary', N'byte[]', N'sqlserver', N'varbinary')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'varchar', N'string', N'sqlserver', N'varchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'xml', N'string', N'sqlserver', N'xml')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'numeric', N'double', N'mysqlserver', N'decimal')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'double', N'double', N'mysqlserver', N'int')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'enum', N'string', N'mysqlserver', N'varchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'text', N'string', N'mysqlserver', N'varchar(max)')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'tinyint', N'int32', N'mysqlserver', N'int')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'char', N'string', N'mysqlserver', N'varchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'address', N'string', N'salesforce', N'varchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'bit', N'int16', N'mysql', N'bit')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'date', N'date', N'salesforce', N'date')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'float', N'double', N'salesforce', N'decimal')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'id', N'string', N'salesforce', N'nvarchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'integer', N'int32', N'salesforce', N'int')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'string', N'string', N'salesforce', N'varchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'int32', N'int32', N'json', N'int')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'byte[]', N'byte[]', N'json', N'varbinary')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'string', N'string', N'json', N'nvarchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'boolean', N'int', N'salesforce', N'bit')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'number(10)', N'int32', N'oracle', N'int')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'char(36)', N'string', N'oracle', N'uniqueidentifier')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'number(19,4)', N'double', N'oracle', N'money')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'number(10,4)', N'double', N'oracle', N'small money')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'datetime2', N'date', N'sqlserver', N'datetime2')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'smalldatetime', N'datetime', N'sqlserver', N'datetime')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'geometry', N'string', N'sqlserver', N'varchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'ntext', N'string', N'sqlserver', N'ntext')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'char', N'string', N'sqlserver', N'char')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'date', N'date', N'sqlserver', N'date')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'tinyint', N'byte', N'sql server', N'tinyint')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'smallint', N'int16', N'sql server', N'smallint')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'int', N'int32', N'sql server', N'int')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'bigint', N'int64', N'sql server', N'bigint')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'bit', N'boolean', N'sql server', N'boolean')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'float', N'double', N'sql server', N'double')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'real', N'single', N'sql server', N'float')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'money', N'decimal', N'sql server', N'money')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'smallmoney', N'decimal', N'sql server', N'smallmoney')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'nchar', N'string', N'sql server', N'nchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'nvarchar', N'string', N'sql server', N'nvarchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'char', N'string', N'sql server', N'char')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'varchar', N'string', N'sql server', N'varchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'binary', N'byte[]', N'sql server', N'binary')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'varbinary', N'byte[]', N'sql server', N'varbinary')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'date', N'datetime', N'sql server', N'date')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'smalldatetime', N'datetime', N'sql server', N'smalldatetime')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'datetime2', N'datetime', N'sql server', N'datetime2')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'datetime', N'datetime', N'sql server', N'datetime')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'time', N'timespan', N'sql server', N'time')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'decimal', N'decimal', N'sql server', N'decimal')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'number', N'double', N'oracle', N'decimal')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'long', N'string', N'oracle', N'nvarchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'binary_float', N'single', N'oracle', N'real')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'binary_double', N'double', N'oracle', N'float')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'varchar2', N'string', N'oracle', N'varchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'nvarchar2', N'string', N'oracle', N'nvarchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'raw', N'byte[]', N'oracle', N'varbinary')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'long raw', N'byte[]', N'oracle', N'varbinary')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'blob', N'byte[]', N'oracle', N'varbinary')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'clob', N'string', N'oracle', N'varchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'nclob', N'string', N'oracle', N'nvarchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'rowid', N'string', N'oracle', N'varchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'urowid', N'string', N'oracle', N'varchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'timestamp', N'datetime', N'oracle', N'datetime2')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'double', N'double', N'mongodb', N'float')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'string', N'string', N'mongodb', N'nvarchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'binary data', N'string', N'mongodb', N'nvarchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'object id', N'string', N'mongodb', N'nvarchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'boolean', N'int16', N'mongodb', N'bit')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'date', N'datetime', N'mongodb', N'datetime2')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'32-bit integer', N'int32', N'mongodb', N'int')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'timestamp', N'string', N'mongodb', N'nvarchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'64-bit integer', N'int64', N'mongodb', N'bigint')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'decimal 128', N'double', N'mongodb', N'decimal')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'dbpointer', N'string', N'mongodb', N'nvarchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'javascript', N'string', N'mongodb', N'nvarchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'max key', N'string', N'mongodb', N'nvarchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'min key', N'string', N'mongodb', N'nvarchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'symbol', N'string', N'mongodb', N'nvarchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'regular expression', N'string', N'mongodb', N'nvarchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'undefined/null', N'string', N'mongodb', N'nvarchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'integer', N'int32', N'teradata', N'int')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'smallint', N'int16', N'teradata', N'smallint')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'bigint', N'int64', N'teradata', N'bigint')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'byteint', N'int16', N'teradata', N'smallint')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'decimal', N'double', N'teradata', N'decimal')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'float', N'double', N'teradata', N'decimal')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'byte', N'byte[]', N'teradata', N'binary')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'varbyte', N'byte[]', N'teradata', N'varbinary')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'blob', N'byte[]', N'teradata', N'varbinary')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'char', N'string', N'teradata', N'nchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'clob', N'sting', N'teradata', N'nvarchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'varchar', N'sting', N'teradata', N'nvarchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'graphic', N'string', N'teradata', N'nchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'json', N'sting', N'teradata', N'nvarchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'vargraphic', N'sting', N'teradata', N'nvarchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'date', N'datetime', N'teradata', N'date')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'timestamp', N'datetime', N'teradata', N'datetime2')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'time', N'timespan', N'teradata', N'time')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'time with time zone', N'timespan', N'teradata', N'time')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'timestamp with time zone', N'timespan', N'teradata', N'time')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'datetime', N'datetime', N'json', N'date')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'decimal', N'decimal', N'json', N'decimal')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'guid', N'guid', N'json', N'uniqueidentifier')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'int64', N'int64', N'json', N'bigint')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'double', N'double', N'json', N'float')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'int16', N'int16', N'json', N'tinyint')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'bit', N'int16', N'mysqlserver', N'bit')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'tinytext', N'string', N'mysqlserver', N'varchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'number(19)', N'int64', N'oracle', N'bigint')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'char', N'string', N'oracle', N'char')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'date', N'datetime', N'oracle', N'datetime')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'number(10,2)', N'double', N'oracle', N'decimal')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'float', N'double', N'oracle', N'float')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'nchar', N'string', N'oracle', N'nvarchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'number(3)', N'int16', N'oracle', N'tinyint')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'bit', N'string', N'salesforce', N'varchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'datetime', N'date', N'salesforce', N'datetime')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'double', N'double', N'salesforce', N'decimal')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'varchar', N'string', N'salesforce', N'varchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'numeric', N'double', N'sqlserver', N'decimal')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'int', N'int32', N'mysqlserver', N'int')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'smallint', N'int16', N'mysqlserver', N'smallint')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'bigint', N'int64', N'mysqlserver', N'bigint')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'tinyint(1)', N'int16', N'mysqlserver', N'bit')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'float', N'double', N'mysqlserver', N'float')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'decimal', N'double', N'mysqlserver', N'decimal')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'longtext', N'string', N'mysqlserver', N'nchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'mediumtext', N'string', N'mysqlserver', N'nvarchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'varchar', N'string', N'mysqlserver', N'nvarchar')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'date', N'datetime', N'mysqlserver', N'date')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'datetime', N'datetime', N'mysqlserver', N'datetime')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'time', N'timespan', N'mysqlserver', N'time')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'timestamp', N'timespan', N'mysqlserver', N'timestamp')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'mediumblob', N'byte[]', N'mysqlserver', N'varbinary')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'binary', N'byte[]', N'mysqlserver', N'varbinary')
-GO
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'longblob', N'byte[]', N'mysqlserver', N'varbinary')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'bigint', N'int64', N'sqlserver', N'bigint')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'bit', N'int16', N'sqlserver', N'bit')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'datetime', N'datetime', N'sqlserver', N'datetime')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'decimal', N'decimal', N'sqlserver', N'decimal')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'float', N'double', N'sqlserver', N'float')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'int', N'int32', N'sqlserver', N'int')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'money', N'decimal', N'sqlserver', N'money')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'nvarchar', N'string', N'sqlserver', N'nvarchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'smallint', N'int32', N'sqlserver', N'smallint')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'timestamp', N'byte[]', N'sqlserver', N'timestamp')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'tinyint', N'int16', N'sqlserver', N'tinyint')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'UNIQUEIDENTIFIER', N'guid', N'sqlserver', N'Nvarchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'varbinary', N'byte[]', N'sqlserver', N'varbinary')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'varchar', N'string', N'sqlserver', N'varchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'xml', N'string', N'sqlserver', N'xml')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'numeric', N'double', N'mysqlserver', N'decimal')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'double', N'double', N'mysqlserver', N'int')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'enum', N'string', N'mysqlserver', N'varchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'text', N'string', N'mysqlserver', N'varchar(max)')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'tinyint', N'int32', N'mysqlserver', N'int')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'char', N'string', N'mysqlserver', N'varchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'address', N'string', N'salesforce', N'varchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'bit', N'int16', N'mysql', N'bit')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'date', N'date', N'salesforce', N'date')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'float', N'double', N'salesforce', N'decimal')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'id', N'string', N'salesforce', N'nvarchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'integer', N'int32', N'salesforce', N'int')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'string', N'string', N'salesforce', N'varchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'int32', N'int32', N'json', N'int')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'byte[]', N'byte[]', N'json', N'varbinary')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'string', N'string', N'json', N'nvarchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'boolean', N'int', N'salesforce', N'bit')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'number(10)', N'int32', N'oracle', N'int')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'char(36)', N'guid', N'oracle', N'Nvarchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'number(19,4)', N'double', N'oracle', N'money')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'number(10,4)', N'double', N'oracle', N'small money')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'datetime2', N'date', N'sqlserver', N'datetime2')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'smalldatetime', N'datetime', N'sqlserver', N'datetime')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'geometry', N'string', N'sqlserver', N'varchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'ntext', N'string', N'sqlserver', N'ntext')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'char', N'string', N'sqlserver', N'char')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'date', N'date', N'sqlserver', N'date')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'tinyint', N'byte', N'sql server', N'tinyint')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'smallint', N'int16', N'sql server', N'smallint')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'int', N'int32', N'sql server', N'int')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'bigint', N'int64', N'sql server', N'bigint')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'bit', N'boolean', N'sql server', N'boolean')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'float', N'double', N'sql server', N'double')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'real', N'single', N'sql server', N'float')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'money', N'decimal', N'sql server', N'money')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'smallmoney', N'decimal', N'sql server', N'smallmoney')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'nchar', N'string', N'sql server', N'nchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'nvarchar', N'string', N'sql server', N'nvarchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'char', N'string', N'sql server', N'char')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'varchar', N'string', N'sql server', N'varchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'binary', N'byte[]', N'sql server', N'binary')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'varbinary', N'byte[]', N'sql server', N'varbinary')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'date', N'datetime', N'sql server', N'date')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'smalldatetime', N'datetime', N'sql server', N'smalldatetime')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'datetime2', N'datetime', N'sql server', N'datetime2')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'datetime', N'datetime', N'sql server', N'datetime')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'time', N'timespan', N'sql server', N'time')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'decimal', N'decimal', N'sql server', N'decimal')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'number', N'double', N'oracle', N'decimal')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'long', N'string', N'oracle', N'nvarchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'binary_float', N'single', N'oracle', N'real')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'binary_double', N'double', N'oracle', N'float')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'varchar2', N'string', N'oracle', N'varchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'nvarchar2', N'string', N'oracle', N'nvarchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'raw', N'byte[]', N'oracle', N'varbinary')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'long raw', N'byte[]', N'oracle', N'varbinary')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'blob', N'byte[]', N'oracle', N'varbinary')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'clob', N'string', N'oracle', N'varchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'nclob', N'string', N'oracle', N'nvarchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'rowid', N'string', N'oracle', N'varchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'urowid', N'string', N'oracle', N'varchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'timestamp', N'datetime', N'oracle', N'datetime2')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'double', N'double', N'mongodb', N'float')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'string', N'string', N'mongodb', N'nvarchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'binary data', N'string', N'mongodb', N'nvarchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'object id', N'string', N'mongodb', N'nvarchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'boolean', N'int16', N'mongodb', N'bit')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'date', N'datetime', N'mongodb', N'datetime2')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'32-bit integer', N'int32', N'mongodb', N'int')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'timestamp', N'string', N'mongodb', N'nvarchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'64-bit integer', N'int64', N'mongodb', N'bigint')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'decimal 128', N'double', N'mongodb', N'decimal')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'dbpointer', N'string', N'mongodb', N'nvarchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'javascript', N'string', N'mongodb', N'nvarchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'max key', N'string', N'mongodb', N'nvarchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'min key', N'string', N'mongodb', N'nvarchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'symbol', N'string', N'mongodb', N'nvarchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'regular expression', N'string', N'mongodb', N'nvarchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'undefined/null', N'string', N'mongodb', N'nvarchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'integer', N'int32', N'teradata', N'int')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'smallint', N'int16', N'teradata', N'smallint')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'bigint', N'int64', N'teradata', N'bigint')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'byteint', N'int16', N'teradata', N'smallint')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'decimal', N'double', N'teradata', N'decimal')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'float', N'double', N'teradata', N'decimal')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'byte', N'byte[]', N'teradata', N'binary')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'varbyte', N'byte[]', N'teradata', N'varbinary')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'blob', N'byte[]', N'teradata', N'varbinary')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'char', N'string', N'teradata', N'nchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'clob', N'sting', N'teradata', N'nvarchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'varchar', N'sting', N'teradata', N'nvarchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'graphic', N'string', N'teradata', N'nchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'json', N'sting', N'teradata', N'nvarchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'vargraphic', N'sting', N'teradata', N'nvarchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'date', N'datetime', N'teradata', N'date')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'timestamp', N'datetime', N'teradata', N'datetime2')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'time', N'timespan', N'teradata', N'time')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'time with time zone', N'timespan', N'teradata', N'time')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'timestamp with time zone', N'timespan', N'teradata', N'time')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'datetime', N'datetime', N'json', N'date')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'decimal', N'decimal', N'json', N'decimal')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'guid', N'guid', N'json', N'Nvarchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'int64', N'int64', N'json', N'bigint')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'double', N'double', N'json', N'float')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'int16', N'int16', N'json', N'tinyint')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'bit', N'int16', N'mysqlserver', N'bit')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'tinytext', N'string', N'mysqlserver', N'varchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'number(19)', N'int64', N'oracle', N'bigint')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'char', N'string', N'oracle', N'char')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'date', N'datetime', N'oracle', N'datetime')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'number(10,2)', N'double', N'oracle', N'decimal')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'float', N'double', N'oracle', N'float')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'nchar', N'string', N'oracle', N'nvarchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'number(3)', N'int16', N'oracle', N'tinyint')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'bit', N'string', N'salesforce', N'varchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'datetime', N'date', N'salesforce', N'datetime')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'double', N'double', N'salesforce', N'decimal')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'varchar', N'string', N'salesforce', N'varchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'numeric', N'double', N'sqlserver', N'decimal')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'int', N'int32', N'mysqlserver', N'int')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'smallint', N'int16', N'mysqlserver', N'smallint')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'bigint', N'int64', N'mysqlserver', N'bigint')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'tinyint(1)', N'int16', N'mysqlserver', N'bit')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'float', N'double', N'mysqlserver', N'float')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'decimal', N'double', N'mysqlserver', N'decimal')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'longtext', N'string', N'mysqlserver', N'nchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'mediumtext', N'string', N'mysqlserver', N'nvarchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'varchar', N'string', N'mysqlserver', N'nvarchar')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'date', N'datetime', N'mysqlserver', N'date')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'datetime', N'datetime', N'mysqlserver', N'datetime')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'time', N'timespan', N'mysqlserver', N'time')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'timestamp', N'timespan', N'mysqlserver', N'timestamp')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'mediumblob', N'byte[]', N'mysqlserver', N'varbinary')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'binary', N'byte[]', N'mysqlserver', N'varbinary')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'longblob', N'byte[]', N'mysqlserver', N'varbinary')
 GO
