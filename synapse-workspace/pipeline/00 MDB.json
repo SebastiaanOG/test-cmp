@@ -76,6 +76,24 @@
 												}
 											}
 										]
+									},
+									{
+										"value": "cmp-test",
+										"activities": [
+											{
+												"name": "Execute Pipeline 02 MDB CMP Test",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "02 MDB CMP Test",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true
+												}
+											}
+										]
 									}
 								]
 							}
