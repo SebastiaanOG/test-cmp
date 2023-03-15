@@ -87,7 +87,7 @@
 												"userProperties": [],
 												"typeProperties": {
 													"pipeline": {
-														"referenceName": "02 MDB CMP Test",
+														"referenceName": "02 MDB CMP test",
 														"type": "PipelineReference"
 													},
 													"waitOnCompletion": true

@@ -1,5 +1,5 @@
 {
-	"name": "02 MDB CMP Test",
+	"name": "02 MDB CMP test",
 	"properties": {
 		"activities": [
 			{
@@ -29,7 +29,7 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "ds_source_dynamics_table",
+						"referenceName": "ds_source_cmptest",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
@@ -77,7 +77,7 @@
 									"partitionOption": "None"
 								},
 								"dataset": {
-									"referenceName": "ds_source_dynamics_table",
+									"referenceName": "ds_source_cmptest",
 									"type": "DatasetReference"
 								},
 								"firstRowOnly": false
@@ -127,7 +127,7 @@
 										"type": "String"
 									},
 									"SystemCode": {
-										"value": "dynamics",
+										"value": "cmptest",
 										"type": "String"
 									},
 									"SystemName": {
@@ -171,7 +171,7 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "ds_source_dynamics_table",
+						"referenceName": "ds_source_cmptest",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": true
