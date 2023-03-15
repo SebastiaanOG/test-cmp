@@ -29,6 +29,7 @@ BEGIN
 																			WHEN t.[DataType] = 'Decimal' THEN Concat('(',NumericPrecision,',',NumericScale,')')
 																			WHEN t.[DataType] = 'Numeric' THEN Concat('(',NumericPrecision,',',NumericScale,')')--Specifieke uitzondering voor XML, in de INFORMATION_SCHEMA.COLUMNS krijgt deze voor CharacterMaximumLength de waarde -1 maar als je dit gebruikt bij het aanmaken van de tabel krijg je een error.
 																			WHEN t.[CharacterMaximumLength] = -1 THEN '(MAX)'
+																			WHEN t.[CharacterMaximumLength] > 8000 THEN '(MAX)'
 																			WHEN t.[CharacterMaximumLength] IS NULL THEN ''
 																			ELSE CONCAT('(',  t.[CharacterMaximumLength], ')')
 																		END
