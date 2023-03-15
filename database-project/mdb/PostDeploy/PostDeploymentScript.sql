@@ -60,7 +60,7 @@ INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [Sink
 INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'datetime2', N'date', N'sqlserver', N'datetime2')
 INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'smalldatetime', N'datetime', N'sqlserver', N'datetime')
 INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'geometry', N'string', N'sqlserver', N'varchar')
-INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'ntext', N'string', N'sqlserver', N'ntext')
+INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'ntext', N'string', N'sqlserver', N'nvarchar')
 INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'char', N'string', N'sqlserver', N'char')
 INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'date', N'date', N'sqlserver', N'date')
 INSERT [etl].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'tinyint', N'byte', N'sql server', N'tinyint')
