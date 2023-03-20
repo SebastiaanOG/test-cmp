@@ -96,7 +96,7 @@ SELECT @Cols = (Select CONCAT(STRING_AGG(
 																		, ']'
 																		, t.[SinkDataType]
 																		, CASE
-																			WHEN t.[DataType] = 'XML' THEN '' --Specifieke uitzondering voor XML, in de INFORMATION_SCHEMA.COLUMNS krijgt deze voor CharacterMaximumLength de waarde -1 maar als je dit gebruikt bij het aanmaken van de tabel krijg je een error.
+																			WHEN t.[DataType] = 'XML' THEN '' -- Specific exception for XML, the INFORMATION_SCHEMA.COLUMNS gets the value -1 for CharacterMaximumLength but if this is used when creating the table you get an error.
 																			WHEN t.[CharacterMaximumLength] = -1 THEN '(MAX)'
 																			WHEN t.[DataType] = 'decimal' then Concat('(',[NumericPrecision],',',[NumericScale],')')
 																			WHEN t.[DataType] = 'numeric' then Concat('(',[NumericPrecision],',',[NumericScale],')')
@@ -901,7 +901,7 @@ Create Stored Procedure that builds SCD type 1 in Storage layer AND Staging is I
 	        ,       @STPSQL = @STPSQL + @lCR + '                ROLLBACK TRANSACTION; '
 	        ,       @STPSQL = @STPSQL + @lCR + '        END'
 	        ,       @STPSQL = @STPSQL + @lCR + ''
-	        ,       @STPSQL = @STPSQL + @lCR + '        --  Audit Fout'
+	        ,       @STPSQL = @STPSQL + @lCR + '        --  Audit Error'
 	        ,       @STPSQL = @STPSQL + @lCR + '		EXECUTE [audit].[spErrorLog]'
 	        ,       @STPSQL = @STPSQL + @lCR + '		   @ProcessID    = @ProcessRunID'
 	        ,       @STPSQL = @STPSQL + @lCR + '		  ,@Schema		 = @Schema'
@@ -1024,7 +1024,7 @@ Create Stored Procedure that builds SCD type 0 in Storage layer (Never Changing 
 						,       @STPSQL = @STPSQL + @lCR + '                ROLLBACK TRANSACTION; '
 						,       @STPSQL = @STPSQL + @lCR + '        END'
 						,       @STPSQL = @STPSQL + @lCR + ''
-						,       @STPSQL = @STPSQL + @lCR + '        --  Audit Fout'
+						,       @STPSQL = @STPSQL + @lCR + '        --  Audit Error'
 						,       @STPSQL = @STPSQL + @lCR + '		EXECUTE [audit].[spErrorLog]'
 						,       @STPSQL = @STPSQL + @lCR + '		   @ProcessID    = @ProcessRunID'
 					    ,       @STPSQL = @STPSQL + @lCR + '		  ,@Schema		 = @Schema'

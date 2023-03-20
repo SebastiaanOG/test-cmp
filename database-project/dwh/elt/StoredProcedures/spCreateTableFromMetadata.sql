@@ -5,7 +5,7 @@ CREATE PROCEDURE [elt].[spCreateTableFromMetadata]
      @create_table_script nvarchar(max)
 AS
 
---Let op: deze parameter wordt gevoed vanuit ADF
+--Note: this parameter is fed from Synapse
 	BEGIN TRY
 
 		BEGIN TRANSACTION
