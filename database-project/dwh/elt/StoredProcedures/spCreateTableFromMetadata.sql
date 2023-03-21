@@ -1,34 +1,31 @@
-﻿
-
-
-CREATE PROCEDURE [elt].[spCreateTableFromMetadata]
-     @create_table_script nvarchar(max)
+﻿CREATE PROCEDURE [elt].[spCreateTableFromMetadata]
+    @create_table_script nvarchar(MAX)
 AS
 
 --Let op: deze parameter wordt gevoed vanuit ADF
-	BEGIN TRY
+BEGIN TRY
 
-		BEGIN TRANSACTION
-	EXEC(@create_table_script)	
-		COMMIT TRANSACTION
+    BEGIN TRANSACTION
+    EXEC(@create_table_script)
+    COMMIT TRANSACTION
 
 
-	END TRY
+END TRY
 
-	BEGIN CATCH
-		DECLARE
-			@ErrorMessage     NVARCHAR(MAX)
-			, @ErrorSeverity  TINYINT
-			, @ErrorState     TINYINT
-			, @ErrorLine	  TINYINT
+BEGIN CATCH
+    DECLARE
+        @ErrorMessage nvarchar(MAX),
+        @ErrorSeverity tinyint,
+        @ErrorState tinyint,
+        @ErrorLine tinyint
 
-		SET @ErrorMessage  = ERROR_MESSAGE()
-		SET @ErrorSeverity = ERROR_SEVERITY()
-		SET @ErrorState    = ERROR_STATE()
-		SET @ErrorLine	   = ERROR_LINE()
-		
-		RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState, @ErrorLine)
+    SET @ErrorMessage = ERROR_MESSAGE()
+    SET @ErrorSeverity = ERROR_SEVERITY()
+    SET @ErrorState = ERROR_STATE()
+    SET @ErrorLine = ERROR_LINE()
 
-		ROLLBACK TRANSACTION
+    RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState, @ErrorLine)
 
-	END CATCH
+    ROLLBACK TRANSACTION
+
+END CATCH

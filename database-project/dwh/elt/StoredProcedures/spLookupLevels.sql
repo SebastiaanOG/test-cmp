@@ -1,10 +1,8 @@
-﻿
-CREATE PROCEDURE [elt].[spLookupLevels] AS
+﻿CREATE PROCEDURE [elt].[spLookupLevels] AS
 
-SELECT DISTINCT 
-	Level
+SELECT DISTINCT Level
 FROM [elt].[StorageTables]
-WHERE 1=1
-	AND [Active] = 1
-ORDER BY 
-	Level ASC
+WHERE 1 = 1
+    AND [Active] = 1
+ORDER BY
+    Level ASC
