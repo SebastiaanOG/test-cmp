@@ -1,25 +1,30 @@
 ﻿CREATE VIEW [elt].[vwMetaData]
 AS
-     SELECT st.[SystemCode],
-			st.[SystemName], 
-            sy.[SystemType],
-			st.[SchemaName],
-            st.[EntityName], 
-            st.[Name],
-			st.[SemanticName],
-			st.[DataType],
-            st.[CharacterMaximumLength], 
-            st.[IsNullable], 
-            st.[OrdinalPosition], 
-            st.[NumericPrecision], 
-            st.[NumericScale], 
-            st.[DatetimeCulture], 
-            st.[DatetimeFormat], 
-			tm.[SourceDataType], 
-            tm.InterimDataType  , 
-            tm.SinkDataType 
-     FROM [elt].[MetadataStructure] st
-          INNER JOIN [elt].[MetadataSystem] sy ON sy.[SystemName] = st.[SystemName]
-          INNER JOIN [elt].[TypeMap] tm	ON st.[DataType] = tm.[SourceDataType]
-											AND sy.[SystemType] = tm.[SystemType]
-     WHERE st.IsActive = 1;
+SELECT
+    [ELT].[METADATASTRUCTURE].[SystemCode],
+    [ELT].[METADATASTRUCTURE].[SystemName],
+    [ELT].[METADATASYSTEM].[SystemType],
+    [ELT].[METADATASTRUCTURE].[SchemaName],
+    [ELT].[METADATASTRUCTURE].[EntityName],
+    [ELT].[METADATASTRUCTURE].[Name],
+    [ELT].[METADATASTRUCTURE].[SemanticName],
+    [ELT].[METADATASTRUCTURE].[DataType],
+    [ELT].[METADATASTRUCTURE].[CharacterMaximumLength],
+    [ELT].[METADATASTRUCTURE].[IsNullable],
+    [ELT].[METADATASTRUCTURE].[OrdinalPosition],
+    [ELT].[METADATASTRUCTURE].[NumericPrecision],
+    [ELT].[METADATASTRUCTURE].[NumericScale],
+    [ELT].[METADATASTRUCTURE].[DatetimeCulture],
+    [ELT].[METADATASTRUCTURE].[DatetimeFormat],
+    [ELT].[TYPEMAP].[SourceDataType],
+    [ELT].[TYPEMAP].INTERIMDATATYPE,
+    [ELT].[TYPEMAP].SINKDATATYPE
+FROM [elt].[MetadataStructure]
+INNER JOIN
+    [elt].[MetadataSystem] ON
+        [ELT].[METADATASYSTEM].[SystemName] = [ELT].[METADATASTRUCTURE].[SystemName]
+INNER JOIN
+    [elt].[TypeMap] ON
+        [ELT].[METADATASTRUCTURE].[DataType] = [ELT].[TYPEMAP].[SourceDataType]
+        AND [ELT].[METADATASYSTEM].[SystemType] = [ELT].[TYPEMAP].[SystemType]
+WHERE [ELT].[METADATASTRUCTURE].ISACTIVE = 1;

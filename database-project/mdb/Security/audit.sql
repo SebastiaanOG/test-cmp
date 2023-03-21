@@ -1,3 +1,2 @@
 ﻿CREATE SCHEMA [audit]
-    AUTHORIZATION [dbo];
-
+AUTHORIZATION [dbo];

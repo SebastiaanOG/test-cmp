@@ -1,29 +1,59 @@
-﻿CREATE PROCEDURE [elt].[spCopySrcToRaw] @process_run_date DATE, @process_run_id int
+﻿CREATE PROCEDURE [elt].[spCopySrcToRaw]
+    @process_run_date DATE, @process_run_id INT
 AS
 
-    BEGIN
-        WITH CTE
-             AS (SELECT DISTINCT 
-                        vcm.SystemName, 
-                        vcm.SystemType,
-						vcm.SchemaName,
-                        vcm.EntityName
-                 FROM elt.vwMetaData vcm)
-             SELECT vcm.SystemName AS source_system_name, 
-                    [elt].[fnCreateQuery](vcm.SystemName, vcm.SystemType, vcm.SchemaName, vcm.EntityName, @process_run_id, r.SourceQuery, r.IncrementColumnName, @process_run_date, r.IncrementRange, CAST(r.LastIncrement AS DATE), CAST(r.LastIncrement AS TIME(3)) ) AS source_entity_query, 
-                    vcm.EntityName AS source_entity_name, 
-					r.IncrementColumnName AS source_entity_increment_column,
-                    [elt].[fnCreateEntityStructure](vcm.SystemName, vcm.SchemaName, vcm.EntityName) AS source_entity_structure, 
-                    [elt].[fnCreateStagingFileName](vcm.EntityName, vcm.SchemaName, r.IncrementColumnName, @process_run_date, r.IncrementRange) AS sink_entity_file_name, 
-                    [elt].[fnCreateStagingFolderPath](vcm.SystemName, @process_run_date) AS sink_entity_folder_path, 
-                    [elt].[fnCreateEntityStructure](vcm.SystemName, vcm.SchemaName, vcm.EntityName) AS sink_entity_structure, 
-                    [elt].[fnCreateEntityTranslator](vcm.SystemName, vcm.SchemaName, vcm.EntityName)  AS source_sink_mapping
-             FROM elt.[MetadataTables] r
-                  INNER JOIN CTE vcm ON vcm.SystemName = r.SystemName
-                                        AND vcm.EntityName = r.EntityName
-										AND vcm.SchemaName = r.SchemaName
-             WHERE r.CopyToRaw = 1
-			 AND r.IsActive = 1
-			 --AND vcm.SystemName = @system_name
-             ORDER BY vcm.SystemName ASC
-    END;
+BEGIN
+    WITH CTE
+    AS (SELECT DISTINCT
+        ELT.VWMETADATA.SYSTEMNAME,
+        ELT.VWMETADATA.SYSTEMTYPE,
+        ELT.VWMETADATA.SCHEMANAME,
+        ELT.VWMETADATA.ENTITYNAME
+        FROM ELT.VWMETADATA
+    )
+
+    SELECT
+        CTE.SYSTEMNAME AS SOURCE_SYSTEM_NAME,
+        CTE.ENTITYNAME AS SOURCE_ENTITY_NAME,
+        ELT.[METADATATABLES].INCREMENTCOLUMNNAME AS SOURCE_ENTITY_INCREMENT_COLUMN,
+        [elt].[fnCreateQuery](
+            CTE.SYSTEMNAME,
+            CTE.SYSTEMTYPE,
+            CTE.SCHEMANAME,
+            CTE.ENTITYNAME,
+            @process_run_id,
+            ELT.[METADATATABLES].SOURCEQUERY,
+            ELT.[METADATATABLES].INCREMENTCOLUMNNAME,
+            @process_run_date,
+            ELT.[METADATATABLES].INCREMENTRANGE,
+            CAST(ELT.[METADATATABLES].LASTINCREMENT AS DATE),
+            CAST(ELT.[METADATATABLES].LASTINCREMENT AS TIME(3))
+        ) AS SOURCE_ENTITY_QUERY,
+        [elt].[fnCreateEntityStructure](
+            CTE.SYSTEMNAME, CTE.SCHEMANAME, CTE.ENTITYNAME
+        ) AS SOURCE_ENTITY_STRUCTURE,
+        [elt].[fnCreateStagingFileName](
+            CTE.ENTITYNAME,
+            CTE.SCHEMANAME,
+            ELT.[METADATATABLES].INCREMENTCOLUMNNAME,
+            @process_run_date,
+            ELT.[METADATATABLES].INCREMENTRANGE
+        ) AS SINK_ENTITY_FILE_NAME,
+        [elt].[fnCreateStagingFolderPath](
+            CTE.SYSTEMNAME, @process_run_date
+        ) AS SINK_ENTITY_FOLDER_PATH,
+        [elt].[fnCreateEntityStructure](
+            CTE.SYSTEMNAME, CTE.SCHEMANAME, CTE.ENTITYNAME
+        ) AS SINK_ENTITY_STRUCTURE,
+        [elt].[fnCreateEntityTranslator](
+            CTE.SYSTEMNAME, CTE.SCHEMANAME, CTE.ENTITYNAME
+        ) AS SOURCE_SINK_MAPPING
+    FROM ELT.[MetadataTables]
+    INNER JOIN CTE ON CTE.SYSTEMNAME = ELT.[METADATATABLES].SYSTEMNAME
+        AND CTE.ENTITYNAME = ELT.[METADATATABLES].ENTITYNAME
+        AND CTE.SCHEMANAME = ELT.[METADATATABLES].SCHEMANAME
+    WHERE ELT.[METADATATABLES].COPYTORAW = 1
+        AND ELT.[METADATATABLES].ISACTIVE = 1
+    --AND vcm.SystemName = @system_name
+    ORDER BY CTE.SYSTEMNAME ASC
+END;
