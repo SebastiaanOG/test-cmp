@@ -11,13 +11,6 @@ Post-Deployment Script Template
 */
 
 /* Truncate before insert */
-TRUNCATE TABLE [elt].[MetadataSystem]
-
-/*Insert metadata records */
-INSERT [elt].[MetadataSystem] ([SystemCode], [SystemName], [SystemType], [Active], [Created]) VALUES (N'YOUFORCE', N'yf', N'json', 1, CAST(N'2022-12-07T10:22:03.320' AS DateTime))
-GO
-
-/* Truncate before insert */
 TRUNCATE TABLE [elt].[TypeMap]
 
 /*Insert metadata records */
