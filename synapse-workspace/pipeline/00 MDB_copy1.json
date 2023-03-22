@@ -55,7 +55,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"on": {
-									"value": "@item().systemname",
+									"value": "@item().systemcode",
 									"type": "Expression"
 								},
 								"cases": [
