@@ -1,0 +1,122 @@
+{
+	"name": "00 MDB_copy1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lookup - Get all sources",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "Select * from elt.metadatasystem\nwhere active =1 ",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sql_mdb_table",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach - Source",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lookup - Get all sources",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup - Get all sources').output.value",
+						"type": "Expression"
+					},
+					"batchCount": 50,
+					"activities": [
+						{
+							"name": "Switch - Choose Source",
+							"description": "Use systemcode from elt.metadatasystem as input for this switch statement",
+							"type": "Switch",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"on": {
+									"value": "@item().systemname",
+									"type": "Expression"
+								},
+								"cases": [
+									{
+										"value": "Dyn01DataDb01A",
+										"activities": [
+											{
+												"name": "Execute Pipeline 01 MDB Dynamics",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "01 MDB Dynamics",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true
+												}
+											}
+										]
+									},
+									{
+										"value": "cmptest",
+										"activities": [
+											{
+												"name": "Execute Pipeline 02 MDB CMP Test",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "02 MDB CMP test",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true
+												}
+											}
+										]
+									}
+								]
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"process_run_id": {
+				"type": "int",
+				"defaultValue": -1
+			},
+			"process_run_date": {
+				"type": "string",
+				"defaultValue": "2023-02-28"
+			}
+		},
+		"folder": {
+			"name": "MDB"
+		},
+		"annotations": [],
+		"lastPublishTime": "2020-10-16T08:50:32Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
