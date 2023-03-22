@@ -27,7 +27,7 @@ SELECT @query_statement =
 					)
 		ELSE CONCAT('PRINT(','''','Geen te updaten increment','''',')')
 		END
-		--Misschien nog een optie toevoegen die de LastIncrement kolom weer NULL maakt als er geen source_entity_increment_column is.
+		--Maybe add another option that makes the LastIncrement column NULL again if there is no source_entity_increment_column.
 		
 END
 
