@@ -127,7 +127,10 @@
 										"type": "String"
 									},
 									"SystemCode": {
-										"value": "@activity('LU_System_details').output.firstrow.SystemCode",
+										"value": {
+											"value": "@activity('LU_System_details').output.firstrow.SystemCode",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"SystemName": {
@@ -138,7 +141,10 @@
 										"type": "String"
 									},
 									"SystemType": {
-										"value": "@activity('LU_System_details').output.firstrow.SystemType",
+										"value": {
+											"value": "@activity('LU_System_details').output.firstrow.SystemType",
+											"type": "Expression"
+										},
 										"type": "String"
 									}
 								}
