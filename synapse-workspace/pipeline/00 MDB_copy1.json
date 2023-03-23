@@ -60,7 +60,7 @@
 								},
 								"cases": [
 									{
-										"value": "Dyn01DataDb01A",
+										"value": "dynamics",
 										"activities": [
 											{
 												"name": "Execute Pipeline 01 MDB Dynamics",
