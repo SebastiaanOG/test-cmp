@@ -7,9 +7,9 @@
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "LU_Database_name",
+						"activity": "LU_System_details",
 						"dependencyConditions": [
-							"Succeeded"
+							"Completed"
 						]
 					}
 				],
@@ -127,7 +127,7 @@
 										"type": "String"
 									},
 									"SystemCode": {
-										"value": "cmptest",
+										"value": "@activity('LU_System_details').output.firstrow.SystemCode",
 										"type": "String"
 									},
 									"SystemName": {
@@ -138,7 +138,7 @@
 										"type": "String"
 									},
 									"SystemType": {
-										"value": "sqlserver",
+										"value": "@activity('LU_System_details').output.firstrow.SystemType",
 										"type": "String"
 									}
 								}
@@ -172,6 +172,42 @@
 					},
 					"dataset": {
 						"referenceName": "ds_source_cmptest",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": true
+				}
+			},
+			{
+				"name": "LU_System_details",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "LU_Database_name",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "SELECT SystemCode, SystemType\nFROM [elt].[MetadataSystem]\nWHERE SystemName = '@{activity('LU_Database_name').output.firstRow.currentdatabase}'",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sql_mdb_table",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": true
