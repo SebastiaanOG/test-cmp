@@ -49,18 +49,18 @@
 					"activities": [
 						{
 							"name": "Switch - Choose Source",
-							"description": "Use systemname from elt.metadatasystem as input for this switch statement",
+							"description": "Use systemcode from elt.metadatasystem as input for this switch statement",
 							"type": "Switch",
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
 								"on": {
-									"value": "@item().systemname",
+									"value": "@item().systemcode",
 									"type": "Expression"
 								},
 								"cases": [
 									{
-										"value": "Dyn01DataDb01A",
+										"value": "dynamics",
 										"activities": [
 											{
 												"name": "Execute Pipeline 01 MDB Dynamics",
@@ -78,7 +78,7 @@
 										]
 									},
 									{
-										"value": "cmp-test",
+										"value": "cmptest",
 										"activities": [
 											{
 												"name": "Execute Pipeline 02 MDB CMP Test",
