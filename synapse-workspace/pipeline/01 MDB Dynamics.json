@@ -190,7 +190,7 @@
 					{
 						"activity": "LU_Tables",
 						"dependencyConditions": [
-							"Completed"
+							"Succeeded"
 						]
 					}
 				],
