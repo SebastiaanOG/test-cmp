@@ -7,7 +7,7 @@
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "LU_System_details",
+						"activity": "LU_Database_name",
 						"dependencyConditions": [
 							"Completed"
 						]
@@ -40,7 +40,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "LU_Tables",
+						"activity": "LU_System_details",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -188,7 +188,7 @@
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "LU_Database_name",
+						"activity": "LU_Tables",
 						"dependencyConditions": [
 							"Completed"
 						]
