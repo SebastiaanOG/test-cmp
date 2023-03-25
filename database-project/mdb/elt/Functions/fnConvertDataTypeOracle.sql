@@ -13,23 +13,15 @@ BEGIN
     SET @result = (SELECT SinkDataType
         FROM Elt.TypeMap
         WHERE SourceDataType = CASE WHEN @datatype = 'number'
-            AND @NumericScale = 0 THEN 'number(' + CAST(
-                @NumericPrecision AS VARCHAR
-            ) + ')'
+            AND @NumericScale = 0 THEN 'number(' + CAST(@NumericPrecision AS VARCHAR) + ')'
             WHEN
                 @datatype = 'number'
                 AND @NumericScale = 4
-                AND @NumericPrecision = 19 THEN 'number(' + CAST(
-                    @NumericPrecision AS VARCHAR
-                ) + ',' + CAST(@NumericScale AS VARCHAR) + ')'
+                AND @NumericPrecision = 19 THEN 'number(' + CAST(@NumericPrecision AS VARCHAR) + ',' + CAST(@NumericScale AS VARCHAR) + ')'
             WHEN
                 @datatype = 'number'
                 AND @NumericScale = 4
-                AND @NumericPrecision = 10 THEN 'number(' + CAST(
-                    @NumericPrecision AS VARCHAR
-                ) + ',' + CAST(
-                    @NumericScale AS VARCHAR
-                ) + ')'
+                AND @NumericPrecision = 10 THEN 'number(' + CAST(@NumericPrecision AS VARCHAR) + ',' + CAST(@NumericScale AS VARCHAR) + ')'
             WHEN
                 @datatype = 'number'
                 AND @NumericScale != 0 THEN 'number(10,2)'
