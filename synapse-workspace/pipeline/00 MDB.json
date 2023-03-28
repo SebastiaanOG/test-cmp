@@ -104,7 +104,12 @@
 														"referenceName": "02 MDB CMP test",
 														"type": "PipelineReference"
 													},
-													"waitOnCompletion": true
+													"waitOnCompletion": true,
+													"parameters": {
+														"system_code": "@item().systemcode",
+														"system_name": "@item().systemname",
+														"system_type": "@item().systemtype"
+													}
 												}
 											}
 										]
