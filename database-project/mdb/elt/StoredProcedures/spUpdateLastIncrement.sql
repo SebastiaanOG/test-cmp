@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [elt].[spUpdateLastIncrement]
+CREATE PROCEDURE [elt].[spUpdateLastIncrement]
     @source_system_name nvarchar(100),
     @source_entity_name nvarchar(100),
     @source_entity_increment_column nvarchar(100)
@@ -27,7 +27,7 @@ BEGIN
                 )
             ELSE CONCAT('PRINT(', '''', 'Geen te updaten increment', '''', ')')
         END
-        --Misschien nog een optie toevoegen die de LastIncrement kolom weer NULL maakt als er geen source_entity_increment_column is.
+        --Maybe add another option that makes the LastIncrement column NULL again if there is no source_entity_increment_column.
 
 END
 

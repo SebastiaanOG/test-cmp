@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [audit].[spInsertDataLogStaging]
+CREATE PROCEDURE [audit].[spInsertDataLogStaging]
     @pipeline_run_id uniqueidentifier,
     @process_run_id [int],
     @system_name [nvarchar](100),
@@ -31,7 +31,7 @@ BEGIN
             ON sys.schemas.schema_id = sys.tables.schema_id
                 AND sys.schemas.name = @system_name
         WHERE 1 = 1
-            --Zie fnCreateTableName
+            --see fnCreateTableName
             AND sys.tables.name = @entity_name
     /*LOWER(REPLACE(@entity_name, ' ', '_'))*/
 

@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE [elt].[spInsertMetadata]
 (       @SystemCode	varchar(100) -- = 'adventureworks'
 ,		@SystemType	varchar(100) -- = (SqlServer, MySQLServer, Json, SalesForce)
-,		@SystemName sysname -- 'adventureworkslt' (Table_catalog of invulling)
+,		@SystemName sysname -- 'adventureworkslt' (Table_catalog for filling)
 ,		@lSchema sysname    --= 'TOB'
 ,       @lTable sysname     --= 'PMEOBJECT'
 --,		@lIncrementField varchar(255) --='ModifiedDate'
@@ -29,7 +29,7 @@ IF @SystemType NOT IN
 			, 'SalesForce'
 			, 'Oracle')
 BEGIN
-	RAISERROR('Correct Systeem type is verplicht, geaccepteerde waardes: (SqlServer, MySQLServer, Json, SalesForce, Oracle)', 16,16)
+	RAISERROR('Correct System type is required, accepted values: (SqlServer, MySQLServer, Json, SalesForce, Oracle)', 16,16)
 END	
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*
@@ -121,7 +121,7 @@ Adding the records of the source system to the [elt].[MetadataStructure] table
 			/* Update Removed Columns in source to IsActive = 0 and Is Deleted = 1 if Column not in Json*/ 
 				PRINT CHAR(13) + '*** Update Columns in elt.MetadataStructure that are not in the source ***'				
 								
-						UPDATE [elt].[MetadataStructure] WITH (ROWLOCK)  --Via Merge proberen met andere Update!!
+						UPDATE [elt].[MetadataStructure] WITH (ROWLOCK)  -- Trying via merge with an other update!
 						SET   IsActive  = 0
 							, IsDeleted = 1
 							, LastModifiedDate = GETDATE()

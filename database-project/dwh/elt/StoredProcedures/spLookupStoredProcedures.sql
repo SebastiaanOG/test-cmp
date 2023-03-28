@@ -1,10 +1,10 @@
-﻿CREATE PROCEDURE [elt].[spLookupStoredProcedures]
+CREATE PROCEDURE [elt].[spLookupStoredProcedures]
     @level INT
 AS
 BEGIN
 
     SELECT
-        [Schema], --*1 Project is het schema van de storage-laag. *2 De stored procedures dienen als voorzetsel 'Load_' in de naam te hebben.
+        [Schema], --*1 Project is the schema of the storage layer. *2 Stored procedures should have 'Load_' as a preposition in the name.
         [EntityName],
         CONCAT(
             '[', [Schema]/*1*/, '].[Load_'/*2*/, [EntityName], ']'
@@ -16,3 +16,4 @@ BEGIN
         AND [Active] = 1
 
 END
+

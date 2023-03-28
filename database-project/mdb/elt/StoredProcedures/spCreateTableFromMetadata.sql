@@ -27,7 +27,7 @@ BEGIN
 																		, CASE
 																			WHEN t.[DataType] = 'XML' THEN ''
 																			WHEN t.[DataType] = 'Decimal' THEN Concat('(',NumericPrecision,',',NumericScale,')')
-																			WHEN t.[DataType] = 'Numeric' THEN Concat('(',NumericPrecision,',',NumericScale,')')--Specifieke uitzondering voor XML, in de INFORMATION_SCHEMA.COLUMNS krijgt deze voor CharacterMaximumLength de waarde -1 maar als je dit gebruikt bij het aanmaken van de tabel krijg je een error.
+																			WHEN t.[DataType] = 'Numeric' THEN Concat('(',NumericPrecision,',',NumericScale,')') -- Specific exception for XML, the INFORMATION_SCHEMA.COLUMNS gets the value -1 for CharacterMaximumLength but if this is used when creating the table you get an error.
 																			WHEN t.[CharacterMaximumLength] = -1 THEN '(MAX)'
 																			WHEN t.[CharacterMaximumLength] > 8000 THEN '(MAX)'
 																			WHEN t.[CharacterMaximumLength] IS NULL THEN ''
@@ -46,13 +46,13 @@ BEGIN
 			WHERE 1=1
 			AND [elt].[fnCreateTableName](t.SystemName, t.EntityName) = [elt].[fnCreateTableName](@system_name, @entity_name)
 
---			TJ: Onderstaande was tot 22-07-2020 werkzaam, tabellen met CharacterMaximumLength = -1 gingen hierop stuk. Om in de toekomst te testen met een error message van deze stored procedure zou je dit deel nog eens kunnen gebruiken.
+--			TJ: The below was working until 22-07-2020, tables with CharacterMaximumLength = -1 failed at this. To test it in the future with an error message from this stored procedure you could use this part again.
 --			SELECT @create_statement = CONCAT('CREATE TABLE ', [elt].[fnCreateTableName](@system_name, @entity_name), '(', STRING_AGG(CONVERT(varchar(max), CONCAT('[',t.[Name], '] ', t.[DataType], IIF(t.[CharacterMaximumLength] IS NULL, '', CONCAT('(',  t.[CharacterMaximumLength], ')')), ' ', IIF(t.[IsNullable] = 'NO', 'NOT NULL', 'NULL'))), ',') WITHIN GROUP (ORDER BY t.[OrdinalPosition] ASC), ', [ProcessRunId] INT NOT NULL', ')')
 --			FROM [elt].[vwMetaData] t
 --			WHERE 1=1
 --			AND [elt].[fnCreateTableName](t.SystemName, t.EntityName) = [elt].[fnCreateTableName](@system_name, @entity_name)
 
---			DvB: 02-10-2020 Toevoeging dat alleen wanneer de tabel actief is opnieuw wordt opgebouwd.
+--			DvB: 02-10-2020 Addition when only an active table is rebuilt.
 
 	IF (Select [IsActive] from [elt].[MetadataTables] where @entity_name = EntityName AND SystemName = @system_name) = 1
 			BEGIN
