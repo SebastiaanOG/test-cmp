@@ -30,7 +30,7 @@ BEGIN TRY
 		ON sc.schema_id = t.schema_id
 		AND sc.name = @system_name
 WHERE 1=1
-AND t.name = @entity_name /*LOWER(REPLACE(@entity_name, ' ', '_'))*/ --Zie fnCreateTableName
+AND t.name = @entity_name /*LOWER(REPLACE(@entity_name, ' ', '_'))*/ --see fnCreateTableName
 
 		  
 	COMMIT TRANSACTION
