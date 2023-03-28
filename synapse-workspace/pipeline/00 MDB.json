@@ -72,7 +72,21 @@
 														"referenceName": "01 MDB Dynamics",
 														"type": "PipelineReference"
 													},
-													"waitOnCompletion": true
+													"waitOnCompletion": true,
+													"parameters": {
+														"system_code": {
+															"value": "@item().systemcode",
+															"type": "Expression"
+														},
+														"system_name": {
+															"value": "@item().systemname",
+															"type": "Expression"
+														},
+														"system_type": {
+															"value": "@item().systemtype",
+															"type": "Expression"
+														}
+													}
 												}
 											}
 										]
