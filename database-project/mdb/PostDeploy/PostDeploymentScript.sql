@@ -25,7 +25,7 @@ INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [Sink
 INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'smallint', N'int32', N'sqlserver', N'smallint')
 INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'timestamp', N'byte[]', N'sqlserver', N'timestamp')
 INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'tinyint', N'int16', N'sqlserver', N'tinyint')
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'UNIQUEIDENTIFIER', N'guid', N'sqlserver', N'Nvarchar')
+INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'uniqueidentifier', N'string', N'sqlserver', N'Nvarchar')
 INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'varbinary', N'byte[]', N'sqlserver', N'varbinary')
 INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'varchar', N'string', N'sqlserver', N'varchar')
 INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'xml', N'string', N'sqlserver', N'xml')
