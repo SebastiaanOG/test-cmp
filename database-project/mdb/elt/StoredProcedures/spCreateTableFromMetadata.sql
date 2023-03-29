@@ -31,6 +31,7 @@ BEGIN
 																			WHEN t.[CharacterMaximumLength] = -1 THEN '(MAX)'
 																			WHEN t.[CharacterMaximumLength] > 8000 THEN '(MAX)'
 																			WHEN t.[CharacterMaximumLength] IS NULL THEN ''
+																			WHEN t.[DataType] = 'uniqueidentifier' THEN '(36)' -- Uniqueidentifier does not get ingested correctly, so we transform to nvarchar.
 																			ELSE CONCAT('(',  t.[CharacterMaximumLength], ')')
 																		END
 																		, ' '
