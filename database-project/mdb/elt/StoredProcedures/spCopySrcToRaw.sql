@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [elt].[spCopySrcToRaw] @process_run_date DATE, @process_run_id int
+CREATE PROCEDURE [elt].[spCopySrcToRaw] @process_run_date DATE, @process_run_id int
 AS
 
     BEGIN

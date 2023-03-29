@@ -5,14 +5,7 @@
 			{
 				"name": "LU_Tables",
 				"type": "Lookup",
-				"dependsOn": [
-					{
-						"activity": "LU_Database_name",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -127,18 +120,24 @@
 										"type": "String"
 									},
 									"SystemCode": {
-										"value": "dynamics",
+										"value": {
+											"value": "@pipeline().parameters.system_code",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"SystemName": {
 										"value": {
-											"value": "@activity('LU_Database_name').output.firstrow.currentdatabase",
+											"value": "@pipeline().parameters.system_name",
 											"type": "Expression"
 										},
 										"type": "String"
 									},
 									"SystemType": {
-										"value": "sqlserver",
+										"value": {
+											"value": "@pipeline().parameters.system_type",
+											"type": "Expression"
+										},
 										"type": "String"
 									}
 								}
@@ -150,38 +149,21 @@
 						}
 					]
 				}
-			},
-			{
-				"name": "LU_Database_name",
-				"type": "Lookup",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT top 1 DB_NAME() AS [CurrentDatabase] \nFROM sys.databases",
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
-					},
-					"dataset": {
-						"referenceName": "ds_source_dynamics_table",
-						"type": "DatasetReference"
-					},
-					"firstRowOnly": true
-				}
 			}
 		],
 		"parameters": {
 			"process_run_id": {
 				"type": "string",
 				"defaultValue": "-1"
+			},
+			"system_code": {
+				"type": "string"
+			},
+			"system_name": {
+				"type": "string"
+			},
+			"system_type": {
+				"type": "string"
 			}
 		},
 		"folder": {

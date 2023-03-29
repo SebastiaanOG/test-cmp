@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [elt].[spLookupStoredProcedures]
+CREATE PROCEDURE [elt].[spLookupStoredProcedures]
     @level INT
 AS
 BEGIN

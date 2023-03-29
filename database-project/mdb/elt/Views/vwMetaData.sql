@@ -1,4 +1,4 @@
-﻿CREATE VIEW [elt].[vwMetaData]
+CREATE VIEW [elt].[vwMetaData]
 AS
      SELECT st.[SystemCode],
 			st.[SystemName], 
