@@ -1,5 +1,5 @@
 
-CREATE PROCEDURE [elt].[cmptest]
+CREATE PROCEDURE [elt].[Load_cmptest]
         @ProcessRunID      INT
 ,       @PipelineRunID      uniqueidentifier
 ,       @TaskName           VARCHAR(100)
