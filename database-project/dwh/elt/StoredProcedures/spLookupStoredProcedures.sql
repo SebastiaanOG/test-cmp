@@ -16,4 +16,3 @@ BEGIN
         AND [Active] = 1
 
 END
-
