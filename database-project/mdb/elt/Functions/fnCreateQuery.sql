@@ -1,26 +1,14 @@
 ﻿CREATE FUNCTION [elt].[fnCreateQuery](@system_name VARCHAR(64),
-                                                           @system_type VARCHAR(
-                                                           64
-                                                           ),
-                                                           @schema_name VARCHAR(
-                                                           50
-                                                           ),
-                                                           @entity_name VARCHAR(
-                                                           64
-                                                           ),
-                                                           @process_run_id INT,
-                                                           @select_query VARCHAR(
-                                                           MAX
-                                                           ) = NULL,
-                                                           @IncrementColumnName VARCHAR(
-                                                           64
-                                                           ) = NULL,
-                                                           @process_run_date DATE = NULL,
-                                                           @IncrementRange INT = NULL,
-                                                           @LastIncrementDate DATE = NULL,
-                                                           @LastIncrementTime TIME(
-                                                           3
-                                                           ) = NULL
+                                       @system_type VARCHAR(64),
+                                       @schema_name VARCHAR(50),
+                                       @entity_name VARCHAR(64),
+                                       @process_run_id INT,
+                                       @select_query VARCHAR(MAX) = NULL,
+                                       @IncrementColumnName VARCHAR(64) = NULL,
+                                       @process_run_date DATE = NULL,
+                                       @IncrementRange INT = NULL,
+                                       @LastIncrementDate DATE = NULL,
+                                       @LastIncrementTime TIME(3) = NULL
 )
 RETURNS VARCHAR(MAX)
 AS
