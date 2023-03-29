@@ -17,7 +17,7 @@ DECLARE @InputInsertedRows       INT = 0
 BEGIN TRY  
 	BEGIN TRANSACTION
 
-        DROP TABLE IF EXISTS [curated].[cmptest]
+        TRUNCATE TABLE IF EXISTS [curated].[cmptest]
         
         CREATE TABLE [curated].[cmptest]
         (

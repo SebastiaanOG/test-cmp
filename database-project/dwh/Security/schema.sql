@@ -1,0 +1,6 @@
+CREATE SCHEMA [elt]
+    AUTHORIZATION [dbo];
+GO
+CREATE SCHEMA [curated]
+    AUTHORIZATION [dbo];
+GO

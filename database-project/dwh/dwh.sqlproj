@@ -81,10 +81,9 @@
     <Build Include="audit\StoredProcedures\spErrorLog.sql" />
     <Build Include="audit\StoredProcedures\spEndProcessRun.sql" />
     <Build Include="audit\StoredProcedures\spEndPipelineRun.sql" />
-    <Build Include="Security\elt.sql" />
+    <Build Include="Security\schema.sql" />
     <Build Include="Security\audit.sql" />
     <Build Include="Security\authorisation.sql" />
-    <Build Include="elt\StoredProcedures\create_schema.sql" />
     <None Include="elt\StoredProcedures\Curated\cmptest.sql" />
   </ItemGroup>
   <Import Condition="'$(NetCoreBuild)' == 'true'" Project="$(NETCoreTargetsPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
