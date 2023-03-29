@@ -103,7 +103,7 @@
     <Build Include="elt\StoredProcedures\spCopyRawToStg.sql" />
     <Build Include="elt\StoredProcedures\spLookupStoredProcedures.sql" />
     <Build Include="elt\StoredProcedures\spLookupLevels.sql" />
-    <Build Include="Security\elt.sql" />
+    <Build Include="Security\schema.sql" />
     <Build Include="Security\audit.sql" />
     <Build Include="Security\authorisation.sql" />
   </ItemGroup>
