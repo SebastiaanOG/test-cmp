@@ -18,7 +18,11 @@ BEGIN TRY
 	BEGIN TRANSACTION
 
         TRUNCATE TABLE IF EXISTS [curated].[cmptest]
-        
+
+        IF  NOT EXISTS (SELECT * FROM sys.objects
+        WHERE object_id = OBJECT_ID(N'[curated].[cmptest]') AND type in (N'U'))
+
+        BEGIN
         CREATE TABLE [curated].[cmptest]
         (
                 [Perioden]nvarchar(50) NULL
@@ -26,6 +30,7 @@ BEGIN TRY
         ,       [Diesel_2]float NULL
         ,       [Lpg_3]float NULL
         )
+        END
 
         --  insert new records
         INSERT  INTO [curated].[cmptest]

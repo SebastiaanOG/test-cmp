@@ -81,7 +81,8 @@
     <Build Include="audit\StoredProcedures\spErrorLog.sql" />
     <Build Include="audit\StoredProcedures\spEndProcessRun.sql" />
     <Build Include="audit\StoredProcedures\spEndPipelineRun.sql" />
-    <Build Include="Security\schema.sql" />
+    <Build Include="Security\etl.sql" />
+    <Build Include="Security\curated.sql" />
     <Build Include="Security\audit.sql" />
     <Build Include="Security\authorisation.sql" />
     <None Include="elt\StoredProcedures\Curated\cmptest.sql" />
