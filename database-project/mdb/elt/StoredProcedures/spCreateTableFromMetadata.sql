@@ -30,8 +30,8 @@ BEGIN
 																			WHEN t.[DataType] = 'Numeric' THEN Concat('(',NumericPrecision,',',NumericScale,')') -- Specific exception for XML, the INFORMATION_SCHEMA.COLUMNS gets the value -1 for CharacterMaximumLength but if this is used when creating the table you get an error.
 																			WHEN t.[CharacterMaximumLength] = -1 THEN '(MAX)'
 																			WHEN t.[CharacterMaximumLength] > 8000 THEN '(MAX)'
-																			WHEN t.[CharacterMaximumLength] IS NULL THEN ''
 																			WHEN t.[DataType] = 'uniqueidentifier' THEN '(36)' -- Uniqueidentifier does not get ingested correctly, so we transform to nvarchar.
+																			WHEN t.[CharacterMaximumLength] IS NULL THEN ''
 																			ELSE CONCAT('(',  t.[CharacterMaximumLength], ')')
 																		END
 																		, ' '
