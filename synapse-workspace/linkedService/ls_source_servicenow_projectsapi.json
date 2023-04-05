@@ -4,7 +4,7 @@
 		"annotations": [],
 		"type": "HttpServer",
 		"typeProperties": {
-			"url": "https://vanoorddev.service-now.com/api/now/table",
+			"url": "https://vanoorddev.service-now.com/api/now/table/",
 			"enableServerCertificateValidation": true,
 			"authenticationType": "Basic",
 			"userName": "vo-compass-itbm-portfolio",
