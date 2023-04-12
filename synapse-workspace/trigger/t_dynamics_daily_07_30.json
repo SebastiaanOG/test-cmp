@@ -3,7 +3,7 @@
 	"properties": {
 		"description": "Triggers Dynamics pipelines everyday at 7.30 am.",
 		"annotations": [],
-		"runtimeState": "Started",
+		"runtimeState": "Stopped",
 		"pipelines": [
 			{
 				"pipelineReference": {
