@@ -118,7 +118,7 @@
 			"type": "object",
 			"defaultValue": {
 				"minutes": [
-					9
+					26
 				],
 				"hours": [
 					11
