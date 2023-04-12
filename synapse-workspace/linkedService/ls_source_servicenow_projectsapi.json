@@ -1,7 +1,9 @@
 {
 	"name": "ls_source_servicenow_projectsapi",
 	"properties": {
-		"annotations": [],
+		"annotations": [
+			"DataSource"
+		],
 		"type": "HttpServer",
 		"typeProperties": {
 			"url": "https://vanoorddev.service-now.com/api/now/table/",
