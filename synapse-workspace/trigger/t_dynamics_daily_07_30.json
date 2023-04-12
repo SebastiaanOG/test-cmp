@@ -18,10 +18,18 @@
 		"type": "ScheduleTrigger",
 		"typeProperties": {
 			"recurrence": {
-				"frequency": "Hour",
-				"interval": 24,
+				"frequency": "Day",
+				"interval": 1,
 				"startTime": "2023-04-12T11:04:00",
-				"timeZone": "W. Europe Standard Time"
+				"timeZone": "W. Europe Standard Time",
+				"schedule": {
+					"minutes": [
+						7
+					],
+					"hours": [
+						11
+					]
+				}
 			}
 		}
 	}
