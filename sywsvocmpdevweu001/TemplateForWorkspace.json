@@ -1,0 +1,2756 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"workspaceName": {
+			"type": "string",
+			"metadata": "Workspace name",
+			"defaultValue": "sywsvocmpdevweu001"
+		},
+		"ls_source_cmptest_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_source_cmptest'",
+			"defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=sql-vo-cmp-dev-weu-001.database.windows.net;Initial Catalog=cmp-test"
+		},
+		"ls_source_dynamics_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_source_dynamics'",
+			"defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=sql-vo-dyn-acc-weu-001.database.windows.net;Initial Catalog=Dyn01DataDb01A"
+		},
+		"ls_sqldb_dwh_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_sqldb_dwh'",
+			"defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=sql-vo-cmp-dev-weu-001.database.windows.net;Initial Catalog=dwh"
+		},
+		"ls_sqldb_mdb_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ls_sqldb_mdb'",
+			"defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=sql-vo-cmp-dev-weu-001.database.windows.net;Initial Catalog=mdb"
+		},
+		"sywsvocmpdevweu001-WorkspaceDefaultSqlServer_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'sywsvocmpdevweu001-WorkspaceDefaultSqlServer'",
+			"defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=tcp:sywsvocmpdevweu001.sql.azuresynapse.net,1433;Initial Catalog=@{linkedService().DBName}"
+		},
+		"ls_kv_cmp_properties_typeProperties_baseUrl": {
+			"type": "secureString",
+			"metadata": "Secure string for 'baseUrl' of 'ls_kv_cmp'"
+		},
+		"t_dynamics_daily_07_30_freq": {
+			"type": "string",
+			"defaultValue": "Hour"
+		},
+		"t_dynamics_daily_07_30_properties_typeProperties_recurrence_triggerSuffix": {
+			"type": "int",
+			"defaultValue": 24
+		},
+		"t_dynamics_daily_07_30_properties_typeProperties_recurrence_startTime": {
+			"type": "string",
+			"defaultValue": "2023-04-03T07:30:00Z"
+		},
+		"t_dynamics_daily_07_30_properties_typeProperties_recurrence_timeZone": {
+			"type": "string",
+			"defaultValue": "UTC"
+		},
+		"t_master_daily_07_freq": {
+			"type": "string",
+			"defaultValue": "Day"
+		},
+		"t_master_daily_07_properties_typeProperties_recurrence_triggerSuffix": {
+			"type": "int",
+			"defaultValue": 1
+		},
+		"t_master_daily_07_properties_typeProperties_recurrence_startTime": {
+			"type": "string",
+			"defaultValue": "2023-03-08T07:16:00"
+		},
+		"t_master_daily_07_properties_typeProperties_recurrence_timeZone": {
+			"type": "string",
+			"defaultValue": "W. Europe Standard Time"
+		},
+		"t_master_daily_07_properties_typeProperties_recurrence_schedule": {
+			"type": "object",
+			"defaultValue": {
+				"minutes": [
+					0
+				],
+				"hours": [
+					7
+				]
+			}
+		},
+		"AutoResolveIntegrationRuntime_properties_typeProperties_computeProperties": {
+			"type": "object",
+			"defaultValue": {
+				"location": "AutoResolve",
+				"dataFlowProperties": {
+					"computeType": "General",
+					"coreCount": 8,
+					"timeToLive": 0
+				}
+			}
+		},
+		"mpe_sywsvocmpdevweu001_dwh_sql_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/39f65c21-47e0-4565-88dc-f5ef56774287/resourceGroups/rg-vo-cmp-sql-dev-weu-001/providers/Microsoft.Sql/servers/sql-vo-cmp-dev-weu-001"
+		},
+		"mpe_sywsvocmpdevweu001_dynamics_sql_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/edc01e04-52e9-4a28-964d-87bd7f8ae257/resourceGroups/rg-vo-dyn-db-acc-weu-001/providers/Microsoft.Sql/servers/sql-vo-dyn-acc-weu-001"
+		},
+		"mpe_sywsvocmpdevweu001_stvocmpdevweu002_blob_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/39f65c21-47e0-4565-88dc-f5ef56774287/resourceGroups/rg-vo-cmp-app-dev-weu-001/providers/Microsoft.Storage/storageAccounts/stvocmpdevweu002"
+		},
+		"mpe_sywsvocmpdevweu001_stvocmpdevweu002_dfs_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/39f65c21-47e0-4565-88dc-f5ef56774287/resourceGroups/rg-vo-cmp-app-dev-weu-001/providers/Microsoft.Storage/storageAccounts/stvocmpdevweu002"
+		},
+		"synapse-ws-sql--sywsvocmpdevweu001_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/39f65c21-47e0-4565-88dc-f5ef56774287/resourceGroups/rg-vo-cmp-app-dev-weu-001/providers/Microsoft.Synapse/workspaces/sywsvocmpdevweu001"
+		},
+		"synapse-ws-sqlOnDemand--sywsvocmpdevweu001_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/39f65c21-47e0-4565-88dc-f5ef56774287/resourceGroups/rg-vo-cmp-app-dev-weu-001/providers/Microsoft.Synapse/workspaces/sywsvocmpdevweu001"
+		}
+	},
+	"variables": {
+		"workspaceId": "[concat('Microsoft.Synapse/workspaces/', parameters('workspaceName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('workspaceName'), '/00 MDB')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Lookup - Get all sources",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "Select * from elt.metadatasystem\nwhere active =1 ",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ds_sql_mdb_table",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "ForEach - Source",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Lookup - Get all sources",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Lookup - Get all sources').output.value",
+								"type": "Expression"
+							},
+							"batchCount": 50,
+							"activities": [
+								{
+									"name": "Switch - Choose Source",
+									"description": "Use systemcode from elt.metadatasystem as input for this switch statement",
+									"type": "Switch",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"on": {
+											"value": "@item().systemcode",
+											"type": "Expression"
+										},
+										"cases": [
+											{
+												"value": "dynamics",
+												"activities": [
+													{
+														"name": "Execute Pipeline 01 MDB Dynamics",
+														"type": "ExecutePipeline",
+														"dependsOn": [],
+														"userProperties": [],
+														"typeProperties": {
+															"pipeline": {
+																"referenceName": "01 MDB Dynamics",
+																"type": "PipelineReference"
+															},
+															"waitOnCompletion": true,
+															"parameters": {
+																"system_code": {
+																	"value": "@item().systemcode",
+																	"type": "Expression"
+																},
+																"system_name": {
+																	"value": "@item().systemname",
+																	"type": "Expression"
+																},
+																"system_type": {
+																	"value": "@item().systemtype",
+																	"type": "Expression"
+																}
+															}
+														}
+													}
+												]
+											},
+											{
+												"value": "cmptest",
+												"activities": [
+													{
+														"name": "Execute Pipeline 02 MDB CMP Test",
+														"type": "ExecutePipeline",
+														"dependsOn": [],
+														"userProperties": [],
+														"typeProperties": {
+															"pipeline": {
+																"referenceName": "02 MDB CMP test",
+																"type": "PipelineReference"
+															},
+															"waitOnCompletion": true,
+															"parameters": {
+																"system_code": {
+																	"value": "@item().systemcode",
+																	"type": "Expression"
+																},
+																"system_name": {
+																	"value": "@item().systemname",
+																	"type": "Expression"
+																},
+																"system_type": {
+																	"value": "@item().systemtype",
+																	"type": "Expression"
+																}
+															}
+														}
+													}
+												]
+											}
+										]
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"process_run_id": {
+						"type": "int",
+						"defaultValue": -1
+					},
+					"process_run_date": {
+						"type": "string",
+						"defaultValue": "2023-02-28"
+					}
+				},
+				"folder": {
+					"name": "MDB"
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-10-16T08:50:32Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/ds_sql_mdb_table')]",
+				"[concat(variables('workspaceId'), '/pipelines/01 MDB Dynamics')]",
+				"[concat(variables('workspaceId'), '/pipelines/02 MDB CMP test')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/01 MDB Dynamics')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "LU_Tables",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "SELECT SCHEMA_NAME(T.schema_id) AS [SCHEMA_NAME],\n\t\tT.name AS [TABLE_NAME], \n       I.rows AS [ROWCOUNT] \nFROM   sys.tables AS T \n       INNER JOIN sys.sysindexes AS I \n               ON T.object_id = I.id \n                  AND I.indid < 2\nWHERE i.rows > 0",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ds_source_dynamics_table",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "FE_INS_Metadata",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "LU_Tables",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('LU_Tables').output.value",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"batchCount": 15,
+							"activities": [
+								{
+									"name": "LU_Structure",
+									"type": "Lookup",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": {
+												"value": "@concat('SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = ',  '''' , string(item().Table_name) , '''' , 'AND TABLE_SCHEMA = ', '''' , string(item().Schema_name) , '''' )",
+												"type": "Expression"
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"dataset": {
+											"referenceName": "ds_source_dynamics_table",
+											"type": "DatasetReference",
+											"parameters": {}
+										},
+										"firstRowOnly": false
+									}
+								},
+								{
+									"name": "Insert_Structure",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [
+										{
+											"activity": "LU_Structure",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 60,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[elt].[spInsertMetadata]",
+										"storedProcedureParameters": {
+											"Json": {
+												"value": {
+													"value": "@string(activity('LU_Structure').output.value)",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"lSchema": {
+												"value": {
+													"value": "@item().SCHEMA_NAME",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"lTable": {
+												"value": {
+													"value": "@item().TABLE_NAME",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"SystemCode": {
+												"value": {
+													"value": "@pipeline().parameters.system_code",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"SystemName": {
+												"value": {
+													"value": "@pipeline().parameters.system_name",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"SystemType": {
+												"value": {
+													"value": "@pipeline().parameters.system_type",
+													"type": "Expression"
+												},
+												"type": "String"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "ls_sqldb_mdb",
+										"type": "LinkedServiceReference"
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"process_run_id": {
+						"type": "string",
+						"defaultValue": "-1"
+					},
+					"system_code": {
+						"type": "string"
+					},
+					"system_name": {
+						"type": "string"
+					},
+					"system_type": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "MDB"
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-12-04T14:48:06Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/ds_source_dynamics_table')]",
+				"[concat(variables('workspaceId'), '/linkedServices/ls_sqldb_mdb')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/02 MDB CMP test')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "LU_Tables",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "SELECT SCHEMA_NAME(T.schema_id) AS [SCHEMA_NAME],\n\t\tT.name AS [TABLE_NAME], \n       I.rows AS [ROWCOUNT] \nFROM   sys.tables AS T \n       INNER JOIN sys.sysindexes AS I \n               ON T.object_id = I.id \n                  AND I.indid < 2\nWHERE i.rows > 0",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ds_source_cmptest",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "FE_INS_Metadata",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "LU_Tables",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('LU_Tables').output.value",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"batchCount": 15,
+							"activities": [
+								{
+									"name": "LU_Structure",
+									"type": "Lookup",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": {
+												"value": "@concat('SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = ',  '''' , string(item().Table_name) , '''' , 'AND TABLE_SCHEMA = ', '''' , string(item().Schema_name) , '''' )",
+												"type": "Expression"
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"dataset": {
+											"referenceName": "ds_source_cmptest",
+											"type": "DatasetReference",
+											"parameters": {}
+										},
+										"firstRowOnly": false
+									}
+								},
+								{
+									"name": "Insert_Structure",
+									"type": "SqlServerStoredProcedure",
+									"dependsOn": [
+										{
+											"activity": "LU_Structure",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 60,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"storedProcedureName": "[elt].[spInsertMetadata]",
+										"storedProcedureParameters": {
+											"Json": {
+												"value": {
+													"value": "@string(activity('LU_Structure').output.value)",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"lSchema": {
+												"value": {
+													"value": "@item().SCHEMA_NAME",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"lTable": {
+												"value": {
+													"value": "@item().TABLE_NAME",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"SystemCode": {
+												"value": {
+													"value": "@pipeline().parameters.system_code",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"SystemName": {
+												"value": {
+													"value": "@pipeline().parameters.system_name",
+													"type": "Expression"
+												},
+												"type": "String"
+											},
+											"SystemType": {
+												"value": {
+													"value": "@pipeline().parameters.system_type",
+													"type": "Expression"
+												},
+												"type": "String"
+											}
+										}
+									},
+									"linkedServiceName": {
+										"referenceName": "ls_sqldb_mdb",
+										"type": "LinkedServiceReference"
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"process_run_id": {
+						"type": "string",
+						"defaultValue": "-1"
+					},
+					"system_code": {
+						"type": "string"
+					},
+					"system_name": {
+						"type": "string"
+					},
+					"system_type": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "MDB"
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-12-04T14:48:06Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/ds_source_cmptest')]",
+				"[concat(variables('workspaceId'), '/linkedServices/ls_sqldb_mdb')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/10 SourceToRaw')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Lookup - Get all tables",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[elt].[spCopySrcToRaw]",
+								"storedProcedureParameters": {
+									"process_run_date": {
+										"type": "Datetime",
+										"value": {
+											"value": "@pipeline().parameters.process_run_date",
+											"type": "Expression"
+										}
+									},
+									"process_run_id": {
+										"type": "Int32",
+										"value": {
+											"value": "1",
+											"type": "Expression"
+										}
+									},
+									"use_case_code": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().parameters.use_case_code",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ds_sql_mdb_table",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Lookup - Get System Storage Days",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[elt].[spSystemStorageDays]",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ds_sql_mdb_table",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "ForEach - Delete Old Data",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Lookup - Get System Storage Days",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Lookup - Get System Storage Days').output.value",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "Delete Old Data",
+									"type": "Delete",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"dataset": {
+											"referenceName": "ds_datalake_delete",
+											"type": "DatasetReference",
+											"parameters": {
+												"folder_path": {
+													"value": "@item().FolderPath",
+													"type": "Expression"
+												}
+											}
+										},
+										"enableLogging": false,
+										"storeSettings": {
+											"type": "AzureBlobFSReadSettings",
+											"recursive": true,
+											"modifiedDatetimeEnd": {
+												"value": "@{Adddays(utcnow(), item().StorageDays)}",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "ForEach - Source To Raw",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Lookup - Get all tables",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Lookup - Get all tables').output.value",
+								"type": "Expression"
+							},
+							"batchCount": 50,
+							"activities": [
+								{
+									"name": "Switch - Choose Copy Data",
+									"type": "Switch",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"on": {
+											"value": "@item().source_system_name",
+											"type": "Expression"
+										},
+										"cases": [
+											{
+												"value": "Dyn01DataDb01A",
+												"activities": [
+													{
+														"name": "Execute Pipeline 11",
+														"type": "ExecutePipeline",
+														"dependsOn": [],
+														"userProperties": [],
+														"typeProperties": {
+															"pipeline": {
+																"referenceName": "11 SourceToRaw Dynamics",
+																"type": "PipelineReference"
+															},
+															"waitOnCompletion": true,
+															"parameters": {
+																"source_entity_structure": {
+																	"value": "@json(item().source_entity_structure)",
+																	"type": "Expression"
+																},
+																"source_entity_query": {
+																	"value": "@item().source_entity_query",
+																	"type": "Expression"
+																},
+																"sink_entity_file_name": {
+																	"value": "@item().sink_entity_file_name",
+																	"type": "Expression"
+																},
+																"sink_entity_folder_path": {
+																	"value": "@item().sink_entity_folder_path",
+																	"type": "Expression"
+																},
+																"sink_entity_structure": {
+																	"value": "@json(item().sink_entity_structure)",
+																	"type": "Expression"
+																},
+																"source_sink_mapping": {
+																	"value": "@json(item().source_sink_mapping)",
+																	"type": "Expression"
+																},
+																"process_run_id": {
+																	"value": "@pipeline().parameters.process_run_id",
+																	"type": "Expression"
+																}
+															}
+														}
+													},
+													{
+														"name": "spUpdateLastIncrement",
+														"type": "SqlServerStoredProcedure",
+														"dependsOn": [
+															{
+																"activity": "Execute Pipeline 11",
+																"dependencyConditions": [
+																	"Succeeded"
+																]
+															}
+														],
+														"policy": {
+															"timeout": "7.00:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"storedProcedureName": "[elt].[spUpdateLastIncrement]",
+															"storedProcedureParameters": {
+																"source_system_name": {
+																	"value": {
+																		"value": "@item().source_system_name",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"source_entity_name": {
+																	"value": {
+																		"value": "@item().source_entity_name",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"source_entity_increment_column": {
+																	"value": {
+																		"value": "@item().source_entity_increment_column",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																}
+															}
+														},
+														"linkedServiceName": {
+															"referenceName": "ls_sqldb_mdb",
+															"type": "LinkedServiceReference"
+														}
+													},
+													{
+														"name": "spUpdateLastProcessRun",
+														"type": "SqlServerStoredProcedure",
+														"dependsOn": [
+															{
+																"activity": "spUpdateLastIncrement",
+																"dependencyConditions": [
+																	"Succeeded"
+																]
+															}
+														],
+														"policy": {
+															"timeout": "7.00:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"storedProcedureName": "[elt].[spUpdateLastProcessRun]",
+															"storedProcedureParameters": {
+																"process_run_date": {
+																	"value": {
+																		"value": "@pipeline().parameters.process_run_date",
+																		"type": "Expression"
+																	},
+																	"type": "Datetime"
+																},
+																"source_system_name": {
+																	"value": {
+																		"value": "@item().source_system_name",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"source_entity_name": {
+																	"value": {
+																		"value": "@item().source_entity_name",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																}
+															}
+														},
+														"linkedServiceName": {
+															"referenceName": "ls_sqldb_mdb",
+															"type": "LinkedServiceReference"
+														}
+													}
+												]
+											},
+											{
+												"value": "cmp-test",
+												"activities": [
+													{
+														"name": "Execute Pipeline 12",
+														"type": "ExecutePipeline",
+														"dependsOn": [],
+														"userProperties": [],
+														"typeProperties": {
+															"pipeline": {
+																"referenceName": "12 SourceToRaw CMP test",
+																"type": "PipelineReference"
+															},
+															"waitOnCompletion": true,
+															"parameters": {
+																"source_entity_structure": {
+																	"value": "@json(item().source_entity_structure)",
+																	"type": "Expression"
+																},
+																"source_entity_query": {
+																	"value": "@item().source_entity_query",
+																	"type": "Expression"
+																},
+																"sink_entity_file_name": {
+																	"value": "@item().sink_entity_file_name",
+																	"type": "Expression"
+																},
+																"sink_entity_folder_path": {
+																	"value": "@item().sink_entity_folder_path",
+																	"type": "Expression"
+																},
+																"sink_entity_structure": {
+																	"value": "@json(item().sink_entity_structure)",
+																	"type": "Expression"
+																},
+																"source_sink_mapping": {
+																	"value": "@json(item().source_sink_mapping)",
+																	"type": "Expression"
+																},
+																"process_run_id": {
+																	"value": "@pipeline().parameters.process_run_id",
+																	"type": "Expression"
+																}
+															}
+														}
+													},
+													{
+														"name": "spUpdateLastIncrement 12",
+														"type": "SqlServerStoredProcedure",
+														"dependsOn": [
+															{
+																"activity": "Execute Pipeline 12",
+																"dependencyConditions": [
+																	"Succeeded"
+																]
+															}
+														],
+														"policy": {
+															"timeout": "7.00:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"storedProcedureName": "[elt].[spUpdateLastIncrement]",
+															"storedProcedureParameters": {
+																"source_system_name": {
+																	"value": {
+																		"value": "@item().source_system_name",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"source_entity_name": {
+																	"value": {
+																		"value": "@item().source_entity_name",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"source_entity_increment_column": {
+																	"value": {
+																		"value": "@item().source_entity_increment_column",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																}
+															}
+														},
+														"linkedServiceName": {
+															"referenceName": "ls_sqldb_mdb",
+															"type": "LinkedServiceReference"
+														}
+													},
+													{
+														"name": "spUpdateLastProcessRun 12",
+														"type": "SqlServerStoredProcedure",
+														"dependsOn": [
+															{
+																"activity": "spUpdateLastIncrement 12",
+																"dependencyConditions": [
+																	"Succeeded"
+																]
+															}
+														],
+														"policy": {
+															"timeout": "7.00:00:00",
+															"retry": 0,
+															"retryIntervalInSeconds": 30,
+															"secureOutput": false,
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"storedProcedureName": "[elt].[spUpdateLastProcessRun]",
+															"storedProcedureParameters": {
+																"process_run_date": {
+																	"value": {
+																		"value": "@pipeline().parameters.process_run_date",
+																		"type": "Expression"
+																	},
+																	"type": "DateTime"
+																},
+																"source_system_name": {
+																	"value": {
+																		"value": "@item().source_system_name",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																},
+																"source_entity_name": {
+																	"value": {
+																		"value": "@item().source_entity_name",
+																		"type": "Expression"
+																	},
+																	"type": "String"
+																}
+															}
+														},
+														"linkedServiceName": {
+															"referenceName": "ls_sqldb_mdb",
+															"type": "LinkedServiceReference"
+														}
+													}
+												]
+											}
+										]
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"process_run_id": {
+						"type": "int",
+						"defaultValue": -1
+					},
+					"process_run_date": {
+						"type": "string",
+						"defaultValue": "2022-11-11"
+					},
+					"use_case_code": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "ELT DWH/10 SourceToRaw"
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-12-08T16:08:10Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/ds_sql_mdb_table')]",
+				"[concat(variables('workspaceId'), '/datasets/ds_datalake_delete')]",
+				"[concat(variables('workspaceId'), '/pipelines/11 SourceToRaw Dynamics')]",
+				"[concat(variables('workspaceId'), '/linkedServices/ls_sqldb_mdb')]",
+				"[concat(variables('workspaceId'), '/pipelines/12 SourceToRaw CMP test')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/11 SourceToRaw Dynamics')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy - Source To Raw",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "@pipeline().parameters.source_entity_query",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"value": "@pipeline().parameters.source_sink_mapping",
+								"type": "Expression"
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_source_dynamics_table",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_datalake",
+								"type": "DatasetReference",
+								"parameters": {
+									"Filesystem": "raw",
+									"FolderPath": {
+										"value": "@pipeline().parameters.sink_entity_folder_path",
+										"type": "Expression"
+									},
+									"FileName": {
+										"value": "@pipeline().parameters.sink_entity_file_name",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"source_entity_structure": {
+						"type": "array"
+					},
+					"source_entity_query": {
+						"type": "string"
+					},
+					"sink_entity_file_name": {
+						"type": "string"
+					},
+					"sink_entity_folder_path": {
+						"type": "string"
+					},
+					"sink_entity_structure": {
+						"type": "array"
+					},
+					"source_sink_mapping": {
+						"type": "array"
+					},
+					"process_run_id": {
+						"type": "int"
+					}
+				},
+				"folder": {
+					"name": "ELT DWH/10 SourceToRaw"
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-12-08T16:08:09Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/ds_source_dynamics_table')]",
+				"[concat(variables('workspaceId'), '/datasets/ds_datalake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/12 SourceToRaw CMP test')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy - Source To Raw",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "@pipeline().parameters.source_entity_query",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "ParquetSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "ParquetWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"value": "@pipeline().parameters.source_sink_mapping",
+								"type": "Expression"
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_source_cmptest",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_datalake",
+								"type": "DatasetReference",
+								"parameters": {
+									"Filesystem": "raw",
+									"FolderPath": {
+										"value": "@pipeline().parameters.sink_entity_folder_path",
+										"type": "Expression"
+									},
+									"FileName": {
+										"value": "@pipeline().parameters.sink_entity_file_name",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"source_entity_structure": {
+						"type": "array"
+					},
+					"source_entity_query": {
+						"type": "string"
+					},
+					"sink_entity_file_name": {
+						"type": "string"
+					},
+					"sink_entity_folder_path": {
+						"type": "string"
+					},
+					"sink_entity_structure": {
+						"type": "array"
+					},
+					"source_sink_mapping": {
+						"type": "array"
+					},
+					"process_run_id": {
+						"type": "int"
+					}
+				},
+				"folder": {
+					"name": "ELT DWH/10 SourceToRaw"
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-12-08T16:08:09Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/ds_source_cmptest')]",
+				"[concat(variables('workspaceId'), '/datasets/ds_datalake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/20 RawToStaging')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Lookup - TablesToCopy",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[elt].[spCopyRawToStg]",
+								"storedProcedureParameters": {
+									"pipeline_run_id": {
+										"type": "Guid",
+										"value": {
+											"value": "@pipeline().RunId",
+											"type": "Expression"
+										}
+									},
+									"process_run_date": {
+										"type": "Datetime",
+										"value": {
+											"value": "@pipeline().parameters.process_run_date",
+											"type": "Expression"
+										}
+									},
+									"use_case_code": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().parameters.use_case_code",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ds_sql_mdb_table",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "ForEach - StagingToRaw",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Lookup - TablesToCopy",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Lookup - TablesToCopy').output.value",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"batchCount": 50,
+							"activities": [
+								{
+									"name": "Execute Pipeline 21 RawToStaging",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "21 RawToStaging - Copy Data",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"entity_name": {
+												"value": "@item().entity_name",
+												"type": "Expression"
+											},
+											"system_name": {
+												"value": "@item().system_name",
+												"type": "Expression"
+											},
+											"source_entity_file_name": {
+												"value": "@item().source_entity_file_name",
+												"type": "Expression"
+											},
+											"source_entity_folder_path": {
+												"value": "@item().source_entity_folder_path",
+												"type": "Expression"
+											},
+											"source_entity_file_structure": {
+												"value": "@item().source_entity_structure",
+												"type": "Expression"
+											},
+											"sink_entity_name": {
+												"value": "@item().sink_entity_name",
+												"type": "Expression"
+											},
+											"sink_entity_structure": {
+												"value": "@json(item().sink_entity_structure)",
+												"type": "Expression"
+											},
+											"source_sink_mapping": {
+												"value": "@json(item().source_sink_mapping)",
+												"type": "Expression"
+											},
+											"process_run_id": {
+												"value": "@pipeline().parameters.process_run_id",
+												"type": "Expression"
+											},
+											"process_run_date": {
+												"value": "@pipeline().parameters.process_run_date",
+												"type": "Expression"
+											}
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"process_run_id": {
+						"type": "int"
+					},
+					"process_run_date": {
+						"type": "string"
+					},
+					"use_case_code": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "ELT DWH/20 RawToStaging"
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-10-16T08:33:32Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/ds_sql_mdb_table')]",
+				"[concat(variables('workspaceId'), '/pipelines/21 RawToStaging - Copy Data')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/21 RawToStaging - Copy Data')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy Data - Blob to SQL Staging",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "sp Drop and-or Create Table",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "ParquetSource",
+								"storeSettings": {
+									"type": "AzureBlobFSReadSettings",
+									"recursive": true
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": {
+									"value": "@{concat('TRUNCATE TABLE', ' ', pipeline().parameters.sink_entity_name)}",
+									"type": "Expression"
+								},
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_datalake",
+								"type": "DatasetReference",
+								"parameters": {
+									"Filesystem": "raw",
+									"FolderPath": {
+										"value": "@pipeline().parameters.source_entity_folder_path",
+										"type": "Expression"
+									},
+									"FileName": {
+										"value": "@pipeline().parameters.source_entity_file_name",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_sql_dwh_table",
+								"type": "DatasetReference",
+								"parameters": {
+									"table_name": "@pipeline().parameters.entity_name",
+									"structure": {
+										"value": "@pipeline().parameters.sink_entity_structure",
+										"type": "Expression"
+									},
+									"schema": {
+										"value": "@pipeline().parameters.system_name",
+										"type": "Expression"
+									}
+								}
+							}
+						]
+					},
+					{
+						"name": "LU - Create schema script",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[elt].[spCreateSchema]",
+								"storedProcedureParameters": {
+									"system_name": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().parameters.system_name",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ds_sql_mdb_table",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "sp Create Schema from script",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "LU - Create schema script",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[elt].[spCreateSchema]",
+							"storedProcedureParameters": {
+								"create_schema_script": {
+									"value": {
+										"value": "@activity('LU - Create schema script').output.firstrow.CreateSchemaStatement",
+										"type": "Expression"
+									},
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "ls_sqldb_dwh",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "LU - Drop and-or Create Table script",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "sp Create Schema from script",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[elt].[spCreateTableFromMetadata]",
+								"storedProcedureParameters": {
+									"system_name": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().parameters.system_name",
+											"type": "Expression"
+										}
+									},
+									"entity_name": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().parameters.entity_name",
+											"type": "Expression"
+										}
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ds_sql_mdb_table",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "sp Drop and-or Create Table",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "LU - Drop and-or Create Table script",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[elt].[spCreateTableFromMetadata]",
+							"storedProcedureParameters": {
+								"create_table_script": {
+									"value": {
+										"value": "@activity('LU - Drop and-or Create Table script').output.firstrow.CreateTableStatement",
+										"type": "Expression"
+									},
+									"type": "String"
+								}
+							}
+						},
+						"linkedServiceName": {
+							"referenceName": "ls_sqldb_dwh",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"entity_name": {
+						"type": "string"
+					},
+					"system_name": {
+						"type": "string"
+					},
+					"source_entity_file_name": {
+						"type": "string"
+					},
+					"source_entity_folder_path": {
+						"type": "string"
+					},
+					"source_entity_file_structure": {
+						"type": "array"
+					},
+					"sink_entity_name": {
+						"type": "string"
+					},
+					"sink_entity_structure": {
+						"type": "array"
+					},
+					"source_sink_mapping": {
+						"type": "array"
+					},
+					"process_run_id": {
+						"type": "string"
+					},
+					"process_run_date": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "ELT DWH/20 RawToStaging"
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-10-15T16:10:32Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/ds_datalake')]",
+				"[concat(variables('workspaceId'), '/datasets/ds_sql_dwh_table')]",
+				"[concat(variables('workspaceId'), '/datasets/ds_sql_mdb_table')]",
+				"[concat(variables('workspaceId'), '/linkedServices/ls_sqldb_dwh')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/30 StagingToDWH')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Lookup Levels",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[elt].[spLookupLevels]",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "ds_sql_dwh_sp",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "ForEach Level",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Lookup Levels",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Lookup Levels').output.value",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "Execute Pipeline 31 StagingToStorage",
+									"type": "ExecutePipeline",
+									"dependsOn": [
+										{
+											"activity": "Lookup Stored Procedures",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "31 StagingToDWH - Stored Procedures",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {
+											"procedures": {
+												"value": "@activity('Lookup Stored Procedures').output.value",
+												"type": "Expression"
+											},
+											"process_run_id": {
+												"value": "@pipeline().parameters.process_run_id",
+												"type": "Expression"
+											}
+										}
+									}
+								},
+								{
+									"name": "Lookup Stored Procedures",
+									"type": "Lookup",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderStoredProcedureName": "[elt].[spLookupStoredProcedures]",
+											"storedProcedureParameters": {
+												"level": {
+													"type": "Int32",
+													"value": {
+														"value": "@{item().Level}",
+														"type": "Expression"
+													}
+												}
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"dataset": {
+											"referenceName": "ds_sql_dwh_sp",
+											"type": "DatasetReference",
+											"parameters": {}
+										},
+										"firstRowOnly": false
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"process_run_id": {
+						"type": "int"
+					},
+					"process_run_date": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "ELT DWH/30 StagingToDWH"
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-10-15T16:10:33Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/ds_sql_dwh_sp')]",
+				"[concat(variables('workspaceId'), '/pipelines/31 StagingToDWH - Stored Procedures')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/31 StagingToDWH - Stored Procedures')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "ForEach Stored Procedure",
+						"type": "ForEach",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@pipeline().parameters.procedures",
+								"type": "Expression"
+							},
+							"batchCount": 50,
+							"activities": [
+								{
+									"name": "Load_Stored Procedure",
+									"type": "Lookup",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderStoredProcedureName": {
+												"value": "@item().Procedure",
+												"type": "Expression"
+											},
+											"storedProcedureParameters": {
+												"PipelineRunID": {
+													"type": "Guid",
+													"value": {
+														"value": "@pipeline().RunId",
+														"type": "Expression"
+													}
+												},
+												"ProcessRunID": {
+													"type": "Int32",
+													"value": {
+														"value": "@pipeline().parameters.process_run_id",
+														"type": "Expression"
+													}
+												},
+												"TaskName": {
+													"type": "String",
+													"value": {
+														"value": "@item().Procedure",
+														"type": "Expression"
+													}
+												}
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"dataset": {
+											"referenceName": "ds_sql_dwh_sp",
+											"type": "DatasetReference",
+											"parameters": {}
+										},
+										"firstRowOnly": false
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"procedures": {
+						"type": "array"
+					},
+					"process_run_id": {
+						"type": "int"
+					}
+				},
+				"folder": {
+					"name": "ELT DWH/30 StagingToDWH"
+				},
+				"annotations": [],
+				"lastPublishTime": "2020-10-15T16:10:32Z"
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/datasets/ds_sql_dwh_sp')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Master')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "Execute 00 MDB",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "00 MDB",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"process_run_id": {
+									"value": "@pipeline().RunId",
+									"type": "Expression"
+								},
+								"process_run_date": {
+									"value": "@pipeline().TriggerTime",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "Execute 10 SourceToRaw",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Execute 00 MDB",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "10 SourceToRaw",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"process_run_id": {
+									"value": "@pipeline().RunId",
+									"type": "Expression"
+								},
+								"process_run_date": {
+									"value": "@pipeline().TriggerTime",
+									"type": "Expression"
+								},
+								"use_case_code": {
+									"value": "@pipeline().parameters.use_case_code",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "Execute 20 RawToStaging",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Execute 10 SourceToRaw",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "20 RawToStaging",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"process_run_id": {
+									"value": "@pipeline().RunId",
+									"type": "Expression"
+								},
+								"process_run_date": {
+									"value": "@pipeline().TriggerTime",
+									"type": "Expression"
+								},
+								"use_case_code": {
+									"value": "@pipeline().parameters.use_case_code",
+									"type": "Expression"
+								}
+							}
+						}
+					},
+					{
+						"name": "Execute 30 StagingToDWH",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Execute 20 RawToStaging",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "30 StagingToDWH",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"process_run_id": {
+									"value": "@pipeline().RunId",
+									"type": "Expression"
+								},
+								"process_run_date": {
+									"value": "@pipeline().TriggerTime",
+									"type": "Expression"
+								}
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"use_case_code": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/pipelines/00 MDB')]",
+				"[concat(variables('workspaceId'), '/pipelines/10 SourceToRaw')]",
+				"[concat(variables('workspaceId'), '/pipelines/20 RawToStaging')]",
+				"[concat(variables('workspaceId'), '/pipelines/30 StagingToDWH')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ds_datalake')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_st_datalake",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"Filesystem": {
+						"type": "string"
+					},
+					"FolderPath": {
+						"type": "string"
+					},
+					"FileName": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": {
+							"value": "@dataset().FileName",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().FolderPath",
+							"type": "Expression"
+						},
+						"fileSystem": {
+							"value": "@dataset().Filesystem",
+							"type": "Expression"
+						}
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/ls_st_datalake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ds_datalake_delete')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"description": "This dataset makes sure that files which exceed a retention period are deleted. ",
+				"linkedServiceName": {
+					"referenceName": "ls_st_datalake",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"folder_path": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "Parquet",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": {
+							"value": "@dataset().folder_path",
+							"type": "Expression"
+						},
+						"fileSystem": "raw"
+					},
+					"compressionCodec": "snappy"
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/ls_st_datalake')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ds_source_cmptest')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_source_cmptest",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/ls_source_cmptest')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ds_source_dynamics_table')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_source_dynamics",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/ls_source_dynamics')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ds_sql_dwh_sp')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_sqldb_dwh",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/ls_sqldb_dwh')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ds_sql_dwh_table')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_sqldb_dwh",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"table_name": {
+						"type": "string"
+					},
+					"structure": {
+						"type": "string"
+					},
+					"schema": {
+						"type": "string"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().schema",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().table_name",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/ls_sqldb_dwh')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ds_sql_mdb_table')]",
+			"type": "Microsoft.Synapse/workspaces/datasets",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_sqldb_mdb",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/linkedServices/ls_sqldb_mdb')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ls_kv_cmp')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [
+					"Core"
+				],
+				"type": "AzureKeyVault",
+				"typeProperties": {
+					"baseUrl": "[parameters('ls_kv_cmp_properties_typeProperties_baseUrl')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ls_source_cmptest')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [
+					"DataSource"
+				],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('ls_source_cmptest_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ls_source_dynamics')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"description": "The Dynamics 365 environment from the E&E tender support desk",
+				"annotations": [
+					"DataSource"
+				],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('ls_source_dynamics_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ls_sqldb_dwh')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [
+					"Core"
+				],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('ls_sqldb_dwh_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ls_sqldb_mdb')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [
+					"Core"
+				],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('ls_sqldb_mdb_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/ls_st_datalake')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [
+					"Core"
+				],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "https://stvocmpdevweu002.dfs.core.windows.net/"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/sywsvocmpdevweu001-WorkspaceDefaultSqlServer')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"parameters": {
+					"DBName": {
+						"type": "String"
+					}
+				},
+				"annotations": [],
+				"type": "AzureSqlDW",
+				"typeProperties": {
+					"connectionString": "[parameters('sywsvocmpdevweu001-WorkspaceDefaultSqlServer_connectionString')]"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/sywsvocmpdevweu001-WorkspaceDefaultStorage')]",
+			"type": "Microsoft.Synapse/workspaces/linkedServices",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "https://stvocmpdevweu001.dfs.core.windows.net"
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/t_dynamics_daily_07_30')]",
+			"type": "Microsoft.Synapse/workspaces/triggers",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"description": "Triggers Dynamics pipelines everyday at 7.30 am.",
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "Master",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"use_case_code": "dynamics"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "[parameters('t_dynamics_daily_07_30_freq')]",
+						"interval": "[parameters('t_dynamics_daily_07_30_properties_typeProperties_recurrence_triggerSuffix')]",
+						"startTime": "[parameters('t_dynamics_daily_07_30_properties_typeProperties_recurrence_startTime')]",
+						"timeZone": "[parameters('t_dynamics_daily_07_30_properties_typeProperties_recurrence_timeZone')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/pipelines/Master')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/t_master_daily_07')]",
+			"type": "Microsoft.Synapse/workspaces/triggers",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"description": "A daily trigger of the masterpipeline which runs at 07:00 CET",
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "Master",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "[parameters('t_master_daily_07_freq')]",
+						"interval": "[parameters('t_master_daily_07_properties_typeProperties_recurrence_triggerSuffix')]",
+						"startTime": "[parameters('t_master_daily_07_properties_typeProperties_recurrence_startTime')]",
+						"timeZone": "[parameters('t_master_daily_07_properties_typeProperties_recurrence_timeZone')]",
+						"schedule": "[parameters('t_master_daily_07_properties_typeProperties_recurrence_schedule')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/pipelines/Master')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/AutoResolveIntegrationRuntime')]",
+			"type": "Microsoft.Synapse/workspaces/integrationRuntimes",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": "[parameters('AutoResolveIntegrationRuntime_properties_typeProperties_computeProperties')]"
+				},
+				"managedVirtualNetwork": {
+					"type": "ManagedVirtualNetworkReference",
+					"referenceName": "default"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/WorkspaceSystemIdentity')]",
+			"type": "Microsoft.Synapse/workspaces/credentials",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"type": "ManagedIdentity",
+				"typeProperties": {}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/default')]",
+			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/default/mpe_sywsvocmpdevweu001_dwh_sql')]",
+			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks/managedPrivateEndpoints",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"privateLinkResourceId": "[parameters('mpe_sywsvocmpdevweu001_dwh_sql_properties_privateLinkResourceId')]",
+				"groupId": "sqlServer",
+				"fqdns": [
+					"sql-vo-cmp-dev-weu-001.database.windows.net"
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/default/mpe_sywsvocmpdevweu001_dynamics_sql')]",
+			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks/managedPrivateEndpoints",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"privateLinkResourceId": "[parameters('mpe_sywsvocmpdevweu001_dynamics_sql_properties_privateLinkResourceId')]",
+				"groupId": "sqlServer",
+				"fqdns": [
+					"sql-vo-dyn-acc-weu-001.database.windows.net"
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/default/mpe_sywsvocmpdevweu001_stvocmpdevweu002_blob')]",
+			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks/managedPrivateEndpoints",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"privateLinkResourceId": "[parameters('mpe_sywsvocmpdevweu001_stvocmpdevweu002_blob_properties_privateLinkResourceId')]",
+				"groupId": "blob",
+				"fqdns": [
+					"stvocmpdevweu002.blob.core.windows.net"
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/default/mpe_sywsvocmpdevweu001_stvocmpdevweu002_dfs')]",
+			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks/managedPrivateEndpoints",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"privateLinkResourceId": "[parameters('mpe_sywsvocmpdevweu001_stvocmpdevweu002_dfs_properties_privateLinkResourceId')]",
+				"groupId": "dfs",
+				"fqdns": [
+					"stvocmpdevweu002.dfs.core.windows.net"
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/default/synapse-ws-sql--sywsvocmpdevweu001')]",
+			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks/managedPrivateEndpoints",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"privateLinkResourceId": "[parameters('synapse-ws-sql--sywsvocmpdevweu001_properties_privateLinkResourceId')]",
+				"groupId": "sql",
+				"fqdns": [
+					"sywsvocmpdevweu001.8d6b3b62-4de6-416f-bc03-f1e31b34da66.sql.azuresynapse.net"
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/default/synapse-ws-sqlOnDemand--sywsvocmpdevweu001')]",
+			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks/managedPrivateEndpoints",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"privateLinkResourceId": "[parameters('synapse-ws-sqlOnDemand--sywsvocmpdevweu001_properties_privateLinkResourceId')]",
+				"groupId": "sqlOnDemand",
+				"fqdns": [
+					"sywsvocmpdevweu001-ondemand.8d6b3b62-4de6-416f-bc03-f1e31b34da66.sql.azuresynapse.net"
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
+			]
+		}
+	]
+}
