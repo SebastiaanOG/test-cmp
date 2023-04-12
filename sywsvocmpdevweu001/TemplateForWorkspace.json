@@ -36,22 +36,6 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'baseUrl' of 'ls_kv_cmp'"
 		},
-		"t_dynamics_daily_07_30_freq": {
-			"type": "string",
-			"defaultValue": "Hour"
-		},
-		"t_dynamics_daily_07_30_properties_typeProperties_recurrence_triggerSuffix": {
-			"type": "int",
-			"defaultValue": 24
-		},
-		"t_dynamics_daily_07_30_properties_typeProperties_recurrence_startTime": {
-			"type": "string",
-			"defaultValue": "2023-04-03T07:30:00Z"
-		},
-		"t_dynamics_daily_07_30_properties_typeProperties_recurrence_timeZone": {
-			"type": "string",
-			"defaultValue": "UTC"
-		},
 		"t_master_daily_07_freq": {
 			"type": "string",
 			"defaultValue": "Day"
@@ -113,6 +97,33 @@
 		"synapse-ws-sqlOnDemand--sywsvocmpdevweu001_properties_privateLinkResourceId": {
 			"type": "string",
 			"defaultValue": "/subscriptions/39f65c21-47e0-4565-88dc-f5ef56774287/resourceGroups/rg-vo-cmp-app-dev-weu-001/providers/Microsoft.Synapse/workspaces/sywsvocmpdevweu001"
+		},
+		"t_dynamics_daily_07_30_freq": {
+			"type": "string",
+			"defaultValue": "Day"
+		},
+		"t_dynamics_daily_07_30_properties_typeProperties_recurrence_triggerSuffix": {
+			"type": "int",
+			"defaultValue": 1
+		},
+		"t_dynamics_daily_07_30_properties_typeProperties_recurrence_startTime": {
+			"type": "string",
+			"defaultValue": "2023-04-12T11:04:00"
+		},
+		"t_dynamics_daily_07_30_properties_typeProperties_recurrence_timeZone": {
+			"type": "string",
+			"defaultValue": "W. Europe Standard Time"
+		},
+		"t_dynamics_daily_07_30_properties_typeProperties_recurrence_schedule": {
+			"type": "object",
+			"defaultValue": {
+				"minutes": [
+					7
+				],
+				"hours": [
+					11
+				]
+			}
 		}
 	},
 	"variables": {
@@ -2563,39 +2574,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/t_dynamics_daily_07_30')]",
-			"type": "Microsoft.Synapse/workspaces/triggers",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"description": "Triggers Dynamics pipelines everyday at 7.30 am.",
-				"annotations": [],
-				"runtimeState": "Stopped",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "Master",
-							"type": "PipelineReference"
-						},
-						"parameters": {
-							"use_case_code": "dynamics"
-						}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "[parameters('t_dynamics_daily_07_30_freq')]",
-						"interval": "[parameters('t_dynamics_daily_07_30_properties_typeProperties_recurrence_triggerSuffix')]",
-						"startTime": "[parameters('t_dynamics_daily_07_30_properties_typeProperties_recurrence_startTime')]",
-						"timeZone": "[parameters('t_dynamics_daily_07_30_properties_typeProperties_recurrence_timeZone')]"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('workspaceId'), '/pipelines/Master')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('workspaceName'), '/t_master_daily_07')]",
 			"type": "Microsoft.Synapse/workspaces/triggers",
 			"apiVersion": "2019-06-01-preview",
@@ -2750,6 +2728,40 @@
 			},
 			"dependsOn": [
 				"[concat(variables('workspaceId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/t_dynamics_daily_07_30')]",
+			"type": "Microsoft.Synapse/workspaces/triggers",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"description": "Triggers Dynamics pipelines everyday at 7.30 am.",
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "Master",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"use_case_code": "dynamics"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "[parameters('t_dynamics_daily_07_30_freq')]",
+						"interval": "[parameters('t_dynamics_daily_07_30_properties_typeProperties_recurrence_triggerSuffix')]",
+						"startTime": "[parameters('t_dynamics_daily_07_30_properties_typeProperties_recurrence_startTime')]",
+						"timeZone": "[parameters('t_dynamics_daily_07_30_properties_typeProperties_recurrence_timeZone')]",
+						"schedule": "[parameters('t_dynamics_daily_07_30_properties_typeProperties_recurrence_schedule')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/pipelines/Master')]"
 			]
 		}
 	]
