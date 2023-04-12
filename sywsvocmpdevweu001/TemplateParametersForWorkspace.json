@@ -88,10 +88,10 @@
 		"t_dynamics_daily_07_30_properties_typeProperties_recurrence_schedule": {
 			"value": {
 				"minutes": [
-					26
+					30
 				],
 				"hours": [
-					11
+					7
 				]
 			}
 		}

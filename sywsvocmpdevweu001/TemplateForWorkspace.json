@@ -118,10 +118,10 @@
 			"type": "object",
 			"defaultValue": {
 				"minutes": [
-					26
+					30
 				],
 				"hours": [
-					11
+					7
 				]
 			}
 		}
@@ -2737,7 +2737,7 @@
 			"properties": {
 				"description": "Triggers Dynamics pipelines everyday at 7.30 am.",
 				"annotations": [],
-				"runtimeState": "Started",
+				"runtimeState": "Stopped",
 				"pipelines": [
 					{
 						"pipelineReference": {
