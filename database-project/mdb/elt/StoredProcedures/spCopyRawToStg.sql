@@ -1,4 +1,4 @@
-CREATE PROCEDURE [elt].[spCopyRawToStg] @process_run_date DATE, @pipeline_run_id uniqueidentifier
+CREATE PROCEDURE [elt].[spCopyRawToStg] @process_run_date DATE, @pipeline_run_id uniqueidentifier, @use_case_code varchar(max)
 AS
    BEGIN
         WITH CTE
@@ -6,8 +6,9 @@ AS
                         vcm.SystemName, 
                         vcm.SystemType,
 						vcm.SchemaName,
-                        vcm.EntityName
-                 FROM elt.vwMetaData vcm)
+                        vcm.EntityName,
+                        vcm.UseCaseCode
+                 FROM elt.vwMetaDataRaw vcm WHERE vcm.UseCaseCode = @use_case_code)
              SELECT vcm.SystemName AS source_system_name, 
                     [elt].[fnCreateStagingFileName](vcm.EntityName, vcm.SchemaName, r.IncrementColumnName, @process_run_date, r.IncrementRange) AS source_entity_file_name, 
                     [elt].[fnCreateStagingFolderPath](vcm.SystemName, @process_run_date) AS source_entity_folder_path, 
@@ -16,7 +17,8 @@ AS
 					vcm.SystemName AS system_name,
 					vcm.EntityName AS entity_name,
                     [elt].[fnCreateEntityStructure](vcm.SystemName, vcm.SchemaName, vcm.EntityName) AS sink_entity_structure, 
-                    [elt].[fnCreateEntityTranslator](vcm.SystemName, vcm.SchemaName, vcm.EntityName) AS source_sink_mapping
+                    [elt].[fnCreateEntityTranslator](vcm.SystemName, vcm.SchemaName, vcm.EntityName) AS source_sink_mapping,
+                    vcm.UseCaseCode AS use_case_code
                     --CASE
                     --    WHEN r.IncrementColumnName IS NOT NULL
                     --    THEN 'yes'

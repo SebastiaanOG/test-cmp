@@ -63,6 +63,38 @@ IF EXISTS (SELECT TOP 1 [IsActive] FROM [elt].[MetadataTables]
 	SET @TableActive = 0;
 	
 PRINT '*** Set @TableActive = ' + trim(str(@TableActive)) + ' ***'
+
+/*Inserts required metadata tables records into UseCaseEntity table */
+MERGE INTO [elt].[UseCaseEntity] AS Target
+USING (
+    SELECT
+        [MetadataTables].[SystemCode],
+        [MetadataTables].[EntityName],
+        [MetadataTables].[SchemaName],
+        [MetadataTables].[IsActive]
+    FROM [elt].[MetadataTables]
+) AS Source ([SystemCode], [EntityName], [SchemaName], [IsActive])
+ON
+    Target.[EntityName] = Source.[EntityName] AND Target.[UseCaseCode] = Source.[SystemCode]
+WHEN NOT MATCHED BY TARGET THEN
+    INSERT ([UseCaseCode], [SystemCode], [EntityName], [SchemaName], [Active])
+    VALUES (Source.[SystemCode], Source.[SystemCode], Source.[EntityName], Source.[SchemaName], Source.[IsActive]);
+
+
+/*Inserts distinct metadata tables records into UseCase table */
+MERGE INTO [elt].[UseCase] AS Target
+USING (
+    SELECT DISTINCT
+        [SystemName],
+        [SystemCode],
+        [IsActive]
+    FROM [elt].[MetadataTables]
+) AS Source ([UseCaseName], [UseCaseCode], [Active])
+ON Target.[UseCaseCode] = Source.[UseCaseCode]
+WHEN NOT MATCHED BY TARGET THEN
+    INSERT ([UseCaseName], [UseCaseCode], [Active])
+    VALUES (Source.[UseCaseName], Source.[UseCaseCode], Source.[Active]);
+
 	
 IF NOT EXISTS ( SELECT top 1 * from [elt].[MetadataStructure]
 								WHERE [SystemCode] = @SystemCode

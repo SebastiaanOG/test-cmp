@@ -21,7 +21,7 @@ BEGIN
 		ELSE
 			BEGIN
 				SELECT @select_clause = CONCAT('SELECT', CHAR(32), STRING_AGG(CONCAT('"', [Name], '"'), ',') WITHIN GROUP (ORDER BY[OrdinalPosition] ASC) , ',', '''',  @process_run_id, '''', ' AS "ProcessRunId"', ' FROM ', '"', @schema_name, '"."', @entity_name, '"') 
-				FROM [elt].vwMetaData		
+				FROM [elt].vwMetaDataRaw		
 				WHERE SystemName = @system_name
 				  AND EntityName = @entity_name
 			END

@@ -43,13 +43,13 @@ BEGIN
 										  , ', [ProcessRunId] INT NOT NULL'
 										  , ')'
 										  )
-			FROM [elt].[vwMetaData] t
+			FROM [elt].[vwMetaDataRaw] t
 			WHERE 1=1
 			AND [elt].[fnCreateTableName](t.SystemName, t.EntityName) = [elt].[fnCreateTableName](@system_name, @entity_name)
 
 --			TJ: The below was working until 22-07-2020, tables with CharacterMaximumLength = -1 failed at this. To test it in the future with an error message from this stored procedure you could use this part again.
 --			SELECT @create_statement = CONCAT('CREATE TABLE ', [elt].[fnCreateTableName](@system_name, @entity_name), '(', STRING_AGG(CONVERT(varchar(max), CONCAT('[',t.[Name], '] ', t.[DataType], IIF(t.[CharacterMaximumLength] IS NULL, '', CONCAT('(',  t.[CharacterMaximumLength], ')')), ' ', IIF(t.[IsNullable] = 'NO', 'NOT NULL', 'NULL'))), ',') WITHIN GROUP (ORDER BY t.[OrdinalPosition] ASC), ', [ProcessRunId] INT NOT NULL', ')')
---			FROM [elt].[vwMetaData] t
+--			FROM [elt].[vwMetaDataRaw] t
 --			WHERE 1=1
 --			AND [elt].[fnCreateTableName](t.SystemName, t.EntityName) = [elt].[fnCreateTableName](@system_name, @entity_name)
 

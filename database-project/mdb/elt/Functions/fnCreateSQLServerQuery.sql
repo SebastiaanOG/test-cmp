@@ -78,7 +78,7 @@ BEGIN
                 @entity_name,
                 ']'
             )
-            FROM [elt].[vwMetaData]
+            FROM [elt].[vwMetaDataRaw]
             WHERE [SystemName] = @system_name
                 AND [EntityName] = @entity_name
         END

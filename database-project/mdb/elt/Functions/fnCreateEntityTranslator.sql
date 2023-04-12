@@ -17,7 +17,7 @@ BEGIN
             '}}'
         )
     FROM
-        [elt].VWMETADATA
+        [elt].vwMetaDataRaw
     WHERE
         SYSTEMNAME = @systemname
         AND ENTITYNAME = @entityname

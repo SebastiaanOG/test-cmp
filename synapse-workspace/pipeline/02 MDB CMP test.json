@@ -22,7 +22,7 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "ds_source_dynamics_table",
+						"referenceName": "ds_source_cmptest",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
@@ -71,7 +71,7 @@
 									"partitionOption": "None"
 								},
 								"dataset": {
-									"referenceName": "ds_source_dynamics_table",
+									"referenceName": "ds_source_cmptest",
 									"type": "DatasetReference"
 								},
 								"firstRowOnly": false

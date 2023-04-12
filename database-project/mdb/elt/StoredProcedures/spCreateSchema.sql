@@ -12,7 +12,7 @@ BEGIN
 
         BEGIN TRANSACTION
             SELECT DISTINCT @create_statement = CONCAT('CREATE SCHEMA ', '[', @system_name, ']' )
-            FROM [elt].[vwMetaData]
+            FROM [elt].[vwMetaDataRaw]
             WHERE [SystemName] = @system_name
 
  

@@ -112,7 +112,7 @@ SELECT @Cols = (Select CONCAT(STRING_AGG(
 										  ) WITHIN GROUP (ORDER BY t.[OrdinalPosition] ASC)
 										  , ''
 										  )
-			FROM [elt].[vwMetaData] t
+			FROM [elt].[vwMetaDataRaw] t
 			WHERE 1=1
 			AND [elt].[fnCreateTableName](t.SystemName, t.EntityName) = [elt].[fnCreateTableName](@lSourceSchema, @lSourceTable))
 ------------------------------------------------------------------------------------------------------------------------------------------
@@ -200,7 +200,7 @@ Build Hash
                                     ELSE @Vcols2 + ''
                                 END 
                             END    
-        from    elt.[vwMetaData] T
+        from    elt.[vwMetaDataRaw] T
         left    join    INFORMATION_SCHEMA.COLUMNS C ON T.EntityName = C.TABLE_NAME COLLATE Latin1_General_CI_AS 
                                                             AND T.OrdinalPosition = C.ORDINAL_POSITION
 		LEFT JOIN elt.MetadataStructure  M ON M.EntityName = T.EntityName
@@ -229,7 +229,7 @@ Set @INSQL2 =
 ,'
 													  ) WITHIN GROUP (ORDER BY t.[OrdinalPosition] ASC)
 					+''
-					FROM [elt].[vwMetaData] t
+					FROM [elt].[vwMetaDataRaw] t
 					where 1 = 1
 					and EntityName = @lSourceTable 
 					AND SystemName = @lSourceSchema

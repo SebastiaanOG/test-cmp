@@ -71,7 +71,9 @@
     <Build Include="elt\Tables\MetadataTables.sql" />
     <Build Include="elt\Tables\MetadataSystem.sql" />
     <Build Include="elt\Tables\MetadataStructure.sql" />
-    <Build Include="elt\Views\vwMetaData.sql" />
+    <Build Include="elt\Tables\UseCase.sql" />
+    <Build Include="elt\Tables\UseCaseEntity.sql" />
+    <Build Include="elt\Views\vwMetaDataRaw.sql" />
     <Build Include="elt\Functions\fnCreateSQLServerQuery.sql" />
     <Build Include="elt\Functions\fnCreateTableName.sql" />
     <Build Include="elt\Functions\fnCreateStagingFolderPath.sql" />

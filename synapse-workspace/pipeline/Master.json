@@ -51,6 +51,10 @@
 						"process_run_date": {
 							"value": "@pipeline().TriggerTime",
 							"type": "Expression"
+						},
+						"use_case_code": {
+							"value": "@pipeline().parameters.use_case_code",
+							"type": "Expression"
 						}
 					}
 				}
@@ -80,6 +84,10 @@
 						},
 						"process_run_date": {
 							"value": "@pipeline().TriggerTime",
+							"type": "Expression"
+						},
+						"use_case_code": {
+							"value": "@pipeline().parameters.use_case_code",
 							"type": "Expression"
 						}
 					}
@@ -116,6 +124,11 @@
 				}
 			}
 		],
+		"parameters": {
+			"use_case_code": {
+				"type": "string"
+			}
+		},
 		"annotations": []
 	}
 }
