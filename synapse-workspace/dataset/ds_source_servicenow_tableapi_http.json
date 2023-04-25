@@ -22,7 +22,7 @@
 			"location": {
 				"type": "HttpServerLocation",
 				"relativeUrl": {
-					"value": "@concat(dataset().relative_api_path, '?sysparm_query=name=', dataset().filter_on_table, '&sysparm_fields=', dataset().fields_to_include)",
+					"value": "@concat(dataset().relative_api_path, '?sysparm_query=name=', dataset().filter_on_table, '&sysparm_fields=', dataset().fields_to_include, '&sysparm_limit=5000')",
 					"type": "Expression"
 				}
 			}
