@@ -17,12 +17,12 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT SCHEMA_NAME(T.schema_id) AS [SCHEMA_NAME],\n\t\tT.name AS [TABLE_NAME], \n       I.rows AS [ROWCOUNT] \nFROM   sys.tables AS T \n       INNER JOIN sys.sysindexes AS I \n               ON T.object_id = I.id \n                  AND I.indid < 2\nWHERE i.rows > 0",
+						"sqlReaderQuery": "SELECT * FROM elt.MetadataTables\nWHERE IsActive = 1 AND SystemCode = 'snprojects'",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "ds_source_dynamics_table",
+						"referenceName": "ds_sql_mdb_table",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
@@ -53,7 +53,7 @@
 							"type": "Lookup",
 							"dependsOn": [],
 							"policy": {
-								"timeout": "7.00:00:00",
+								"timeout": "0.12:00:00",
 								"retry": 0,
 								"retryIntervalInSeconds": 30,
 								"secureOutput": false,
@@ -62,19 +62,27 @@
 							"userProperties": [],
 							"typeProperties": {
 								"source": {
-									"type": "AzureSqlSource",
-									"sqlReaderQuery": {
-										"value": "@concat('SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = ',  '''' , string(item().Table_name) , '''' , 'AND TABLE_SCHEMA = ', '''' , string(item().Schema_name) , '''' )",
-										"type": "Expression"
+									"type": "JsonSource",
+									"storeSettings": {
+										"type": "HttpReadSettings",
+										"requestMethod": "GET"
 									},
-									"queryTimeout": "02:00:00",
-									"partitionOption": "None"
+									"formatSettings": {
+										"type": "JsonReadSettings"
+									}
 								},
 								"dataset": {
-									"referenceName": "ds_source_dynamics_table",
-									"type": "DatasetReference"
-								},
-								"firstRowOnly": false
+									"referenceName": "ds_source_servicenow_tableapi_http",
+									"type": "DatasetReference",
+									"parameters": {
+										"relative_api_path": "sys_dictionary",
+										"filter_on_table": {
+											"value": "@item().EntityName",
+											"type": "Expression"
+										},
+										"fields_to_include": "element,internal_type,max_length,unique,mandatory"
+									}
+								}
 							}
 						},
 						{
@@ -149,35 +157,6 @@
 							}
 						}
 					]
-				}
-			},
-			{
-				"name": "Lookup1",
-				"type": "Lookup",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "JsonSource",
-						"storeSettings": {
-							"type": "HttpReadSettings",
-							"requestMethod": "GET"
-						},
-						"formatSettings": {
-							"type": "JsonReadSettings"
-						}
-					},
-					"dataset": {
-						"referenceName": "ds_source_servicenow_tableapi_http",
-						"type": "DatasetReference"
-					}
 				}
 			}
 		],
