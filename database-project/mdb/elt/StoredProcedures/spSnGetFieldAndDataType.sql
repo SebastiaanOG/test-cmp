@@ -1,7 +1,3 @@
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 CREATE PROCEDURE [elt].[spGetFieldTypeAndDataType]
     @json NVARCHAR(MAX)
 AS
@@ -23,4 +19,3 @@ BEGIN
         elt.ServiceNowType t2
     ON t1.FieldType = t2.name
 END
-GO
