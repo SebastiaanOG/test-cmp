@@ -1,4 +1,4 @@
-CREATE PROCEDURE [elt].[spGetFieldTypeAndDataType]
+CREATE PROCEDURE [elt].[spSnGetFieldAndDataType]
     @json NVARCHAR(MAX)
 AS
 BEGIN
