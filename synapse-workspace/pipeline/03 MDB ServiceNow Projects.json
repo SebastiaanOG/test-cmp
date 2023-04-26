@@ -49,6 +49,77 @@
 					"batchCount": 15,
 					"activities": [
 						{
+							"name": "Insert_Structure",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "LU_Structure_Type",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 60,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[elt].[spInsertMetadata]",
+								"storedProcedureParameters": {
+									"Json": {
+										"value": {
+											"value": "@string(activity('LU_Structure_Type').output.value)",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"lSchema": {
+										"value": {
+											"value": "@item().SchemaName",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"lTable": {
+										"value": {
+											"value": "@item().EntityName",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"SystemCode": {
+										"value": {
+											"value": "@pipeline().parameters.system_code",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"SystemName": {
+										"value": {
+											"value": "@pipeline().parameters.system_name",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"SystemType": {
+										"value": {
+											"value": "@pipeline().parameters.system_type",
+											"type": "Expression"
+										},
+										"type": "String"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "ls_sqldb_mdb",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
 							"name": "LU_Structure",
 							"type": "Lookup",
 							"dependsOn": [],
@@ -82,12 +153,13 @@
 										},
 										"fields_to_include": "element,internal_type,max_length,unique,mandatory"
 									}
-								}
+								},
+								"firstRowOnly": false
 							}
 						},
 						{
-							"name": "Insert_Structure",
-							"type": "SqlServerStoredProcedure",
+							"name": "LU_Structure_Type",
+							"type": "Lookup",
 							"dependsOn": [
 								{
 									"activity": "LU_Structure",
@@ -97,63 +169,34 @@
 								}
 							],
 							"policy": {
-								"timeout": "7.00:00:00",
+								"timeout": "0.12:00:00",
 								"retry": 0,
-								"retryIntervalInSeconds": 60,
+								"retryIntervalInSeconds": 30,
 								"secureOutput": false,
 								"secureInput": false
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"storedProcedureName": "[elt].[spInsertMetadata]",
-								"storedProcedureParameters": {
-									"Json": {
-										"value": {
-											"value": "@string(activity('LU_Structure').output.value)",
-											"type": "Expression"
-										},
-										"type": "String"
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderStoredProcedureName": "[elt].[spGetFieldTypeAndDataType]",
+									"storedProcedureParameters": {
+										"json": {
+											"type": "String",
+											"value": {
+												"value": "@string(activity('LU_Structure').output.value[0].result)",
+												"type": "Expression"
+											}
+										}
 									},
-									"lSchema": {
-										"value": {
-											"value": "@item().SCHEMA_NAME",
-											"type": "Expression"
-										},
-										"type": "String"
-									},
-									"lTable": {
-										"value": {
-											"value": "@item().TABLE_NAME",
-											"type": "Expression"
-										},
-										"type": "String"
-									},
-									"SystemCode": {
-										"value": {
-											"value": "@pipeline().parameters.system_code",
-											"type": "Expression"
-										},
-										"type": "String"
-									},
-									"SystemName": {
-										"value": {
-											"value": "@pipeline().parameters.system_name",
-											"type": "Expression"
-										},
-										"type": "String"
-									},
-									"SystemType": {
-										"value": {
-											"value": "@pipeline().parameters.system_type",
-											"type": "Expression"
-										},
-										"type": "String"
-									}
-								}
-							},
-							"linkedServiceName": {
-								"referenceName": "ls_sqldb_mdb",
-								"type": "LinkedServiceReference"
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "ds_sql_mdb_table",
+									"type": "DatasetReference"
+								},
+								"firstRowOnly": false
 							}
 						}
 					]
