@@ -53,8 +53,7 @@ AS
 								            [type] nvarchar(500) '$.type'
 												) AS Js
 										WHERE
-										-- case statement to not insert a row where an entity has an empty column name
-                                        CASE
+                                        CASE -- case statement to not insert a row where an entity has an empty column name
                                             WHEN [name] = '' THEN 0
                                             ELSE 1
                                         END = 1
