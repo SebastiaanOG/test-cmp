@@ -147,7 +147,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"relative_api_path": "sys_dictionary",
-										"filter_on_table": "pm_project",
+										"filter_on_table": "@item().EntityName",
 										"fields_to_include": "element,internal_type,max_length,unique,mandatory"
 									}
 								},
