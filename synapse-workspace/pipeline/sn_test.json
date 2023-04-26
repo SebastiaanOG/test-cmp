@@ -38,9 +38,16 @@
 				}
 			},
 			{
-				"name": "LU_Structure_copy1",
+				"name": "LU_Structure_Type",
 				"type": "Lookup",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "LU_Structure",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -52,7 +59,16 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT *\nFROM elt.ServiceNowType",
+						"sqlReaderStoredProcedureName": "[elt].[spGetFieldTypeAndDataType]",
+						"storedProcedureParameters": {
+							"json": {
+								"type": "String",
+								"value": {
+									"value": "@string(activity('LU_Structure').output.value[0].result)",
+									"type": "Expression"
+								}
+							}
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
