@@ -147,7 +147,10 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"relative_api_path": "sys_dictionary",
-										"filter_on_table": "@item().EntityName",
+										"filter_on_table": {
+											"value": "@item().EntityName",
+											"type": "Expression"
+										},
 										"fields_to_include": "element,internal_type,max_length,unique,mandatory"
 									}
 								},
