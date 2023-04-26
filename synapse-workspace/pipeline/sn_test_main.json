@@ -79,14 +79,14 @@
 									},
 									"lSchema": {
 										"value": {
-											"value": "@item().SCHEMA_NAME",
+											"value": "@item().SchemaName",
 											"type": "Expression"
 										},
 										"type": "String"
 									},
 									"lTable": {
 										"value": {
-											"value": "@item().TABLE_NAME",
+											"value": "@item().EntityName",
 											"type": "Expression"
 										},
 										"type": "String"
