@@ -72,7 +72,7 @@
 								"storedProcedureParameters": {
 									"Json": {
 										"value": {
-											"value": "@string(activity('LU_Structure').output.value)",
+											"value": "@string(activity('LU_Structure_Type').output.value)",
 											"type": "Expression"
 										},
 										"type": "String"
