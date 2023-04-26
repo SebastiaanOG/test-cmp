@@ -179,7 +179,7 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderStoredProcedureName": "[elt].[spGetFieldTypeAndDataType]",
+									"sqlReaderStoredProcedureName": "[elt].[spSnGetFieldAndDataType]",
 									"storedProcedureParameters": {
 										"json": {
 											"type": "String",
