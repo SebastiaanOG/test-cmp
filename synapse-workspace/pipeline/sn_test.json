@@ -91,7 +91,7 @@
 			},
 			"system_name": {
 				"type": "string",
-				"defaultValue": "servicenow_projects"
+				"defaultValue": "servicenow-projects"
 			},
 			"system_type": {
 				"type": "string",
