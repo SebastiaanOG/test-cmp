@@ -14,6 +14,9 @@
 			},
 			"fields_to_include": {
 				"type": "string"
+			},
+			"field_to_filter": {
+				"type": "string"
 			}
 		},
 		"annotations": [],
@@ -22,7 +25,7 @@
 			"location": {
 				"type": "HttpServerLocation",
 				"relativeUrl": {
-					"value": "@concat(dataset().relative_api_path, '?sysparm_query=name=', dataset().filter_on_table, '&sysparm_fields=', dataset().fields_to_include)",
+					"value": "@concat(dataset().relative_api_path, '?sysparm_query=',dataset().field_to_filter, '=', dataset().filter_on_table, '&sysparm_fields=', dataset().fields_to_include)",
 					"type": "Expression"
 				}
 			}
