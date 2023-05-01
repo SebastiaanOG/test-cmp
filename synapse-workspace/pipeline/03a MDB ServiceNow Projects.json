@@ -105,7 +105,7 @@
 							"typeProperties": {
 								"variableName": "sys_id",
 								"value": {
-									"value": "@if(greater(length(string(activity('LU_parent_table').output.value[0]['super_class'])), 0), activity('LU_parent_table').output.result[0]['super_class']['value'], 'stop' )",
+									"value": "@if(greater(length(string(activity('LU_parent_table').output.value[0].result[0]['super_class'])), 0), activity('LU_parent_table').output.value[0].result[0]['super_class']['value'], 'stop' )",
 									"type": "Expression"
 								}
 							}
@@ -125,7 +125,7 @@
 							"typeProperties": {
 								"variableName": "parent_tables",
 								"value": {
-									"value": "@activity('LU_parent_table').output.value[0]['name']",
+									"value": "@activity('LU_parent_table').output.value[0].results[0]['name']",
 									"type": "Expression"
 								}
 							}
