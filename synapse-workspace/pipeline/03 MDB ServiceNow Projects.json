@@ -122,7 +122,14 @@
 						{
 							"name": "LU_Structure",
 							"type": "Lookup",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "If base table has parent",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"timeout": "0.12:00:00",
 								"retry": 0,
@@ -254,7 +261,36 @@
 								"expression": {
 									"value": "@greater(length(string(activity('LU_Table_Information').output.result[0]['super_class'])), 0)",
 									"type": "Expression"
-								}
+								},
+								"ifTrueActivities": [
+									{
+										"name": "Execute Pipeline 03a",
+										"type": "ExecutePipeline",
+										"dependsOn": [],
+										"userProperties": [],
+										"typeProperties": {
+											"pipeline": {
+												"referenceName": "03a MDB ServiceNow Projects",
+												"type": "PipelineReference"
+											},
+											"waitOnCompletion": true,
+											"parameters": {
+												"sys_id": {
+													"value": "@activity('LU_Table_Information').output.result[0]['super_class']['value']",
+													"type": "Expression"
+												},
+												"table_name": {
+													"value": "@activity('LU_Table_Information').output.result[0]['name']",
+													"type": "Expression"
+												},
+												"base_table": {
+													"value": "@item()",
+													"type": "Expression"
+												}
+											}
+										}
+									}
+								]
 							}
 						}
 					]
