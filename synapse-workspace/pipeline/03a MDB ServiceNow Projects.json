@@ -87,7 +87,8 @@
 										"fields_to_include": "super_class, name",
 										"field_to_filter": "sys_id"
 									}
-								}
+								},
+								"firstRowOnly": false
 							}
 						},
 						{
