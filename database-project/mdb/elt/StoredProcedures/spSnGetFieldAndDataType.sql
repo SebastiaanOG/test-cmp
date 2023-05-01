@@ -1,5 +1,5 @@
 CREATE PROCEDURE [elt].[spSnGetFieldAndDataType]
-    @json NVARCHAR(MAX)
+    @json NVARCHAR(MAX) -- takes the [result] output as input from 'LU_Structure' activity
 AS
 BEGIN
     SELECT 
