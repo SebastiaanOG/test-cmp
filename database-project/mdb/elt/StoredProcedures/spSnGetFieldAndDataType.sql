@@ -16,6 +16,6 @@ BEGIN
             Len INT '$.max_length'
         ) t1
     LEFT JOIN 
-        elt.ServiceNowType t2
+        elt.ServiceNowType t2 -- Should be replaced with TypeMap table with ServiceNow api field datatypes
     ON t1.FieldType = t2.name
 END
