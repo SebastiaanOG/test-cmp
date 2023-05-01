@@ -260,7 +260,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"expression": {
-									"value": "@greater(length(string(activity('LU_Table_Information').output.result[0]['super_class'])), 0)",
+									"value": "@greater(length(string(activity('LU_Table_Information').output.value[0]['super_class'])), 0)",
 									"type": "Expression"
 								},
 								"ifTrueActivities": [
