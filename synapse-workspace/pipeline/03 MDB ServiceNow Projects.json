@@ -277,11 +277,11 @@
 											"waitOnCompletion": true,
 											"parameters": {
 												"sys_id": {
-													"value": "@activity('LU_Table_Information').output.result[0]['super_class']['value']",
+													"value": "@activity('LU_Table_Information').output.value[0].result[0]['super_class']['value']",
 													"type": "Expression"
 												},
 												"table_name": {
-													"value": "@activity('LU_Table_Information').output.result[0]['name']",
+													"value": "@activity('LU_Table_Information').output.value[0].result[0]['name']",
 													"type": "Expression"
 												},
 												"base_table": {
