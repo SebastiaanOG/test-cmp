@@ -158,7 +158,8 @@
 											"value": "@item().EntityName",
 											"type": "Expression"
 										},
-										"fields_to_include": "element,internal_type,max_length,unique,mandatory"
+										"fields_to_include": "element,internal_type,max_length,unique,mandatory",
+										"field_to_filter": "name"
 									}
 								},
 								"firstRowOnly": false
