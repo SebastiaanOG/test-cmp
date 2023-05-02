@@ -400,13 +400,16 @@
 				"defaultValue": "-1"
 			},
 			"system_code": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "snprojects"
 			},
 			"system_name": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "servicenow-projects"
 			},
 			"system_type": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "json"
 			}
 		},
 		"folder": {
