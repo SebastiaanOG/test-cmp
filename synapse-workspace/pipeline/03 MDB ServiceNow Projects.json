@@ -265,7 +265,7 @@
 								},
 								"ifFalseActivities": [
 									{
-										"name": "Stored procedure1",
+										"name": "Insert MetadataTables",
 										"type": "SqlServerStoredProcedure",
 										"dependsOn": [],
 										"policy": {
@@ -276,6 +276,39 @@
 											"secureInput": false
 										},
 										"userProperties": [],
+										"typeProperties": {
+											"storedProcedureName": "[elt].[SnInsertParentTables]",
+											"storedProcedureParameters": {
+												"base_table": {
+													"value": {
+														"value": "@item()",
+														"type": "Expression"
+													},
+													"type": "String"
+												},
+												"parent_tables": {
+													"value": {
+														"value": "@string(createArray(activity('LU_Table_Information').output.result[0]['name']))",
+														"type": "Expression"
+													},
+													"type": "String"
+												},
+												"system_code": {
+													"value": {
+														"value": "@pipeline().parameters.system_code",
+														"type": "Expression"
+													},
+													"type": "String"
+												},
+												"system_name": {
+													"value": {
+														"value": "@pipeline().parameters.system_name",
+														"type": "Expression"
+													},
+													"type": "String"
+												}
+											}
+										},
 										"linkedServiceName": {
 											"referenceName": "ls_sqldb_mdb",
 											"type": "LinkedServiceReference"
