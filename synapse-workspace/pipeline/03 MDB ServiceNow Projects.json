@@ -124,7 +124,7 @@
 							"type": "Lookup",
 							"dependsOn": [
 								{
-									"activity": "If base table has parent",
+									"activity": "Get SN Parent Tables",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -155,7 +155,7 @@
 									"parameters": {
 										"relative_api_path": "sys_dictionary",
 										"filter_on_table": {
-											"value": "@item().EntityName",
+											"value": "@activity('Get SN Parent Tables').output.value[0].transformed_value",
 											"type": "Expression"
 										},
 										"fields_to_include": "element,internal_type,max_length,unique,mandatory",
@@ -344,6 +344,42 @@
 										}
 									}
 								]
+							}
+						},
+						{
+							"name": "Get SN Parent Tables",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "If base table has parent",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "SELECT STRING_AGG(REPLACE(value, '\"', ''), '^OR') AS transformed_value\nFROM (\n    SELECT ParentTable FROM [elt].[MetadataTables] where EntityName = '@{item()}' AND SystemName = '@{pipeline().parameters.system_name}' AND SystemCode = '@{pipeline().parameters.system_code}' ) as subquery \nCROSS APPLY OPENJSON(subquery.ParentTable)\n    WITH (value VARCHAR(500) '$')",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "ds_sql_mdb_table",
+									"type": "DatasetReference"
+								},
+								"firstRowOnly": false
 							}
 						}
 					]
