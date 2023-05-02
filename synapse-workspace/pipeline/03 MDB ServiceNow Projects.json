@@ -288,7 +288,7 @@
 												},
 												"parent_tables": {
 													"value": {
-														"value": "@string(createArray(activity('LU_Table_Information').output.result[0]['name']))",
+														"value": "@string(createArray(activity('LU_Table_Information').output.value[0].result[0]['name']))",
 														"type": "Expression"
 													},
 													"type": "String"
