@@ -271,7 +271,7 @@
 										"userProperties": [],
 										"typeProperties": {
 											"pipeline": {
-												"referenceName": "03a MDB ServiceNow Projects",
+												"referenceName": "031 MDB ServiceNow Projects",
 												"type": "PipelineReference"
 											},
 											"waitOnCompletion": true,
