@@ -195,6 +195,13 @@
 												"value": "@string(activity('LU_Structure').output.value[0].result)",
 												"type": "Expression"
 											}
+										},
+										"SystemType": {
+											"type": "String",
+											"value": {
+												"value": "@pipeline().parameters.system_type",
+												"type": "Expression"
+											}
 										}
 									},
 									"queryTimeout": "02:00:00",
