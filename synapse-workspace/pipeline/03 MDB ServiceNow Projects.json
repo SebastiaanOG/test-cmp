@@ -155,7 +155,7 @@
 									"parameters": {
 										"relative_api_path": "sys_dictionary",
 										"filter_on_table": {
-											"value": "@activity('Get SN Parent Tables').output.value[0].transformed_value",
+											"value": "@activity('Get SN Parent Tables').output.transformed_value",
 											"type": "Expression"
 										},
 										"fields_to_include": "element,internal_type,max_length,unique,mandatory",
