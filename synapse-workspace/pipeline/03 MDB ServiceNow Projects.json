@@ -281,7 +281,7 @@
 											"storedProcedureParameters": {
 												"base_table": {
 													"value": {
-														"value": "@item()",
+														"value": "@item().EntityName",
 														"type": "Expression"
 													},
 													"type": "String"
