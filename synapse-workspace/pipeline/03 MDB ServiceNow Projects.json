@@ -155,7 +155,7 @@
 									"parameters": {
 										"relative_api_path": "sys_dictionary",
 										"filter_on_table": {
-											"value": "@activity('LU_Parent_Tables').output.value[0].transformed_value",
+											"value": "@activity('LU_Parent_Tables').output.parent_tables_query",
 											"type": "Expression"
 										},
 										"fields_to_include": "element,internal_type,max_length,unique,mandatory",
@@ -376,9 +376,29 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": {
-										"value": "SELECT STRING_AGG(REPLACE(value, '\"', ''), '^ORname=') AS transformed_value\nFROM (\n    SELECT ParentTable FROM [elt].[MetadataTables] where EntityName = '@{item().EntityName}' AND SystemName = '@{pipeline().parameters.system_name}' AND SystemCode = '@{pipeline().parameters.system_code}' ) as subquery \nCROSS APPLY OPENJSON(subquery.ParentTable)\n    WITH (value VARCHAR(500) '$')",
-										"type": "Expression"
+									"sqlReaderStoredProcedureName": "[elt].[SnGetParentTables]",
+									"storedProcedureParameters": {
+										"EntityName": {
+											"type": "String",
+											"value": {
+												"value": "@item().EntityName",
+												"type": "Expression"
+											}
+										},
+										"SystemCode": {
+											"type": "String",
+											"value": {
+												"value": "@pipeline().parameters.system_code",
+												"type": "Expression"
+											}
+										},
+										"SystemName": {
+											"type": "String",
+											"value": {
+												"value": "@pipeline().parameters.system_name",
+												"type": "Expression"
+											}
+										}
 									},
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
