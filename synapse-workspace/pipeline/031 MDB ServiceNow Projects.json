@@ -154,6 +154,63 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "Insert ParentTable into MetadataTables",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Set_final_array",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[elt].[SnInsertParentTables]",
+					"storedProcedureParameters": {
+						"base_table": {
+							"value": {
+								"value": "@pipeline().parameters.base_table",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"parent_tables": {
+							"value": {
+								"value": "@string(variables('final_array'))",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"system_code": {
+							"value": {
+								"value": "@pipeline().parameters.system_code",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"system_name": {
+							"value": {
+								"value": "@pipeline().parameters.system_name",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_sqldb_mdb",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"parameters": {
@@ -164,6 +221,12 @@
 				"type": "string"
 			},
 			"base_table": {
+				"type": "string"
+			},
+			"system_code": {
+				"type": "string"
+			},
+			"system_name": {
 				"type": "string"
 			}
 		},
