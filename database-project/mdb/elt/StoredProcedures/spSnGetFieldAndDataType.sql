@@ -1,10 +1,11 @@
 CREATE PROCEDURE [elt].[spSnGetFieldAndDataType]
-    @json NVARCHAR(MAX) -- takes the [result] output as input from 'LU_Structure' activity
+    @json NVARCHAR(MAX),
+    @SystemType nvarchar(255)
 AS
 BEGIN
     SELECT 
         t1.Field AS name,
-        t2.scalar_type AS type
+        tm.InterimDataType AS type
     FROM 
         OPENJSON(@json)
         WITH (
@@ -16,6 +17,7 @@ BEGIN
             Len INT '$.max_length'
         ) t1
     LEFT JOIN 
-        elt.ServiceNowType t2 -- Should be replaced with TypeMap table with ServiceNow api field datatypes
-    ON t1.FieldType = t2.name
+        elt.TypeMap tm
+    ON t1.FieldType = tm.SourceDataType
+    AND tm.SystemType = @SystemType
 END

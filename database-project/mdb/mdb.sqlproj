@@ -65,6 +65,8 @@
     <Folder Include="PostDeploy" />
   </ItemGroup>
   <ItemGroup>
+    <Build Include="elt\StoredProcedures\SnGetParentTables.sql" />
+    <Build Include="elt\StoredProcedures\SnInsertParentTables.sql" />
     <Build Include="elt\Tables\StorageTables.sql" />
     <Build Include="elt\Tables\TypeMap.sql" />
     <Build Include="elt\Tables\SystemStorageDays.sql" />
