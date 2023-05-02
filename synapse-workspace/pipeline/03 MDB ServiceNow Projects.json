@@ -155,7 +155,7 @@
 									"parameters": {
 										"relative_api_path": "sys_dictionary",
 										"filter_on_table": {
-											"value": "@activity('LU_Parent_Tables').output.parent_tables_query",
+											"value": "@activity('LU_Parent_Tables').output.value[0].parent_tables_query",
 											"type": "Expression"
 										},
 										"fields_to_include": "element,internal_type,max_length,unique,mandatory",
