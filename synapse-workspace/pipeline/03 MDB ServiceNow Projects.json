@@ -377,7 +377,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "SELECT STRING_AGG(REPLACE(value, '\"', ''), '^OR') AS transformed_value\nFROM (\n    SELECT ParentTable FROM [elt].[MetadataTables] where EntityName = '@{item()}' AND SystemName = '@{pipeline().parameters.system_name}' AND SystemCode = '@{pipeline().parameters.system_code}' ) as subquery \nCROSS APPLY OPENJSON(subquery.ParentTable)\n    WITH (value VARCHAR(500) '$')",
+										"value": "SELECT STRING_AGG(REPLACE(value, '\"', ''), '^OR') AS transformed_value\nFROM (\n    SELECT ParentTable FROM [elt].[MetadataTables] where EntityName = '@{item().EntityName}' AND SystemName = '@{pipeline().parameters.system_name}' AND SystemCode = '@{pipeline().parameters.system_code}' ) as subquery \nCROSS APPLY OPENJSON(subquery.ParentTable)\n    WITH (value VARCHAR(500) '$')",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
