@@ -112,7 +112,7 @@
 							}
 						},
 						{
-							"name": "Append variable1",
+							"name": "Append_parent_table_array",
 							"type": "AppendVariable",
 							"dependsOn": [
 								{
@@ -136,7 +136,7 @@
 				}
 			},
 			{
-				"name": "Set_final_array",
+				"name": "Set_final_parent_array",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
@@ -156,11 +156,11 @@
 				}
 			},
 			{
-				"name": "Insert ParentTable into MetadataTables",
+				"name": "sp Insert ParentTable into MetadataTables",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "Set_final_array",
+						"activity": "Set_final_parent_array",
 						"dependencyConditions": [
 							"Succeeded"
 						]

@@ -124,7 +124,7 @@
 							"type": "Lookup",
 							"dependsOn": [
 								{
-									"activity": "Get SN Parent Tables",
+									"activity": "LU_Parent_Tables",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -155,7 +155,7 @@
 									"parameters": {
 										"relative_api_path": "sys_dictionary",
 										"filter_on_table": {
-											"value": "@activity('Get SN Parent Tables').output.value[0].transformed_value",
+											"value": "@activity('LU_Parent_Tables').output.value[0].transformed_value",
 											"type": "Expression"
 										},
 										"fields_to_include": "element,internal_type,max_length,unique,mandatory",
@@ -247,7 +247,7 @@
 							}
 						},
 						{
-							"name": "If base table has parent",
+							"name": "IF_base_table_has_parent_table",
 							"type": "IfCondition",
 							"dependsOn": [
 								{
@@ -265,7 +265,7 @@
 								},
 								"ifFalseActivities": [
 									{
-										"name": "Insert ParentTable into MetadataTables",
+										"name": "sp Insert ParentTable into MetadataTables",
 										"type": "SqlServerStoredProcedure",
 										"dependsOn": [],
 										"policy": {
@@ -317,7 +317,7 @@
 								],
 								"ifTrueActivities": [
 									{
-										"name": "Execute Pipeline 03a",
+										"name": "Execute Pipeline 031",
 										"type": "ExecutePipeline",
 										"dependsOn": [],
 										"userProperties": [],
@@ -355,11 +355,11 @@
 							}
 						},
 						{
-							"name": "Get SN Parent Tables",
+							"name": "LU_Parent_Tables",
 							"type": "Lookup",
 							"dependsOn": [
 								{
-									"activity": "If base table has parent",
+									"activity": "IF_base_table_has_parent_table",
 									"dependencyConditions": [
 										"Succeeded"
 									]
