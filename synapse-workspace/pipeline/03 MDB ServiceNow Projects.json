@@ -337,7 +337,7 @@
 													"type": "Expression"
 												},
 												"base_table": {
-													"value": "@item()",
+													"value": "@item().EntityName",
 													"type": "Expression"
 												},
 												"system_code": {
