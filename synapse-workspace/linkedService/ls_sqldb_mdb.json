@@ -1,12 +1,18 @@
 {
 	"name": "ls_sqldb_mdb",
 	"properties": {
+		"parameters": {
+			"dbname": {
+				"type": "string",
+				"defaultValue": "mdb"
+			}
+		},
 		"annotations": [
 			"Core"
 		],
 		"type": "AzureSqlDatabase",
 		"typeProperties": {
-			"connectionString": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=sql-vo-cmp-dev-weu-001.database.windows.net;Initial Catalog=mdb"
+			"connectionString": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=sql-vo-cmp-dev-weu-001.database.windows.net;Initial Catalog=@{linkedService().dbname}"
 		},
 		"connectVia": {
 			"referenceName": "AutoResolveIntegrationRuntime",
