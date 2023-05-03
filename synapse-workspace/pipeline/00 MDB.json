@@ -106,9 +106,18 @@
 													},
 													"waitOnCompletion": true,
 													"parameters": {
-														"system_code": "@item().systemcode",
-														"system_name": "@item().systemname",
-														"system_type": "@item().systemtype"
+														"system_code": {
+															"value": "@item().systemcode",
+															"type": "Expression"
+														},
+														"system_name": {
+															"value": "@item().systemname",
+															"type": "Expression"
+														},
+														"system_type": {
+															"value": "@item().systemtype",
+															"type": "Expression"
+														}
 													}
 												}
 											}
