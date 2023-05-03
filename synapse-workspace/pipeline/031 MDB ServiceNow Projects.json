@@ -175,7 +175,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[elt].[SnInsertParentTables]",
+					"storedProcedureName": "[elt].[spSnInsertParentTables]",
 					"storedProcedureParameters": {
 						"base_table": {
 							"value": {
