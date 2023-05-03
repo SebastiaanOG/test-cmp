@@ -1,4 +1,4 @@
-CREATE PROCEDURE [elt].[SnInsertParentTables]
+CREATE PROCEDURE [elt].[spSnInsertParentTables]
     @parent_tables nvarchar(255),
 	@base_table nvarchar(255),
     @system_name nvarchar(255),

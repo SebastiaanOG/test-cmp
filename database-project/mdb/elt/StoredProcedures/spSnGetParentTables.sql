@@ -1,4 +1,4 @@
-CREATE PROCEDURE [elt].[SnGetParentTables]
+CREATE PROCEDURE [elt].[spSnGetParentTables]
     @EntityName nvarchar(255),
 	@SystemName nvarchar(255),
     @SystemCode nvarchar(255)
