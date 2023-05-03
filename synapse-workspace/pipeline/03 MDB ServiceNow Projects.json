@@ -284,7 +284,7 @@
 										},
 										"userProperties": [],
 										"typeProperties": {
-											"storedProcedureName": "[elt].[SnInsertParentTables]",
+											"storedProcedureName": "[elt].[spSnInsertParentTables]",
 											"storedProcedureParameters": {
 												"base_table": {
 													"value": {
@@ -383,7 +383,7 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderStoredProcedureName": "[elt].[SnGetParentTables]",
+									"sqlReaderStoredProcedureName": "[elt].[spSnGetParentTables]",
 									"storedProcedureParameters": {
 										"EntityName": {
 											"type": "String",
