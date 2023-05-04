@@ -114,7 +114,6 @@
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="PostDeploy\PostDeploymentScript.sql">
-    <PostDeploy Include="PostDeploy\PostDeploymentScriptSnProjects.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </PostDeploy>
   </ItemGroup>
