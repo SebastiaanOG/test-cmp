@@ -5,7 +5,7 @@ AS
 BEGIN
     SELECT 
         t1.Field AS name,
-        tm.InterimDataType AS type
+        tm.SourceDataType AS type
     FROM 
         OPENJSON(@json)
         WITH (
