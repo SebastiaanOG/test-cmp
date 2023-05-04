@@ -130,7 +130,7 @@ INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [Sink
 INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'timestamp with time zone', N'timespan', N'teradata', N'time')
 INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'datetime', N'datetime', N'json', N'date')
 INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'decimal', N'decimal', N'json', N'decimal')
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'guid', N'guid', N'json', N'Nvarchar')
+INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'guid', N'string', N'json', N'Nvarchar')
 INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'int64', N'int64', N'json', N'bigint')
 INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'double', N'double', N'json', N'float')
 INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'int16', N'int16', N'json', N'tinyint')
