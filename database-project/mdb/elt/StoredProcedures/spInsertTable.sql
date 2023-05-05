@@ -210,7 +210,7 @@ BEGIN
 							,[IncrementRange]
 							,[LastIncrement]
 							,[lastmodified]
-                            ,[ParentTabe])
+                            ,[ParentTable])
 							
 							SELECT
 							@SystemCode
