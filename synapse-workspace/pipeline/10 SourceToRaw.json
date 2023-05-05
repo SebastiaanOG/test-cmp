@@ -159,12 +159,12 @@
 							"userProperties": [],
 							"typeProperties": {
 								"on": {
-									"value": "@item().source_system_name",
+									"value": "@item().source_system_code",
 									"type": "Expression"
 								},
 								"cases": [
 									{
-										"value": "Dyn01DataDb01A",
+										"value": "dynamics",
 										"activities": [
 											{
 												"name": "Execute Pipeline 11",
@@ -312,7 +312,7 @@
 										]
 									},
 									{
-										"value": "cmp-test",
+										"value": "cmptest",
 										"activities": [
 											{
 												"name": "Execute Pipeline 12",
@@ -460,7 +460,7 @@
 										]
 									},
 									{
-										"value": "servicenow-projects",
+										"value": "snprojects",
 										"activities": [
 											{
 												"name": "Execute Pipeline 13",
