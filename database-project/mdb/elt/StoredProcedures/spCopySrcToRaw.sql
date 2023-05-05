@@ -5,13 +5,15 @@ AS
     BEGIN
         WITH CTE
              AS (SELECT DISTINCT 
-                        vcm.SystemName, 
+                        vcm.SystemName,
+                        vcm.SystemCode, 
                         vcm.SystemType,
 						vcm.SchemaName,
                         vcm.EntityName,
                         vcm.UseCaseCode
                  FROM elt.vwMetaDataRaw vcm WHERE vcm.UseCaseCode = @use_case_code)
              SELECT vcm.SystemName AS source_system_name, 
+                    vcm.SystemCode AS source_system_code,
                     [elt].[fnCreateQuery](vcm.SystemName, vcm.SystemType, vcm.SchemaName, vcm.EntityName, @process_run_id, r.SourceQuery, r.IncrementColumnName, @process_run_date, r.IncrementRange, CAST(r.LastIncrement AS DATE), CAST(r.LastIncrement AS TIME(3)) ) AS source_entity_query, 
                     vcm.EntityName AS source_entity_name, 
 					r.IncrementColumnName AS source_entity_increment_column,
