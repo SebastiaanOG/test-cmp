@@ -324,6 +324,8 @@ INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [Sink
 GO
 
 /*Insert MetadataTable records for ServiceNow Projects */
+DELETE FROM [elt].[MetadataTables]
+WHERE SystemCode = 'snprojects'
 -- Includes values for columns which are NOT NULL and IncrementColumnName
 INSERT INTO [elt].[MetadataTables] (SystemCode, SystemName, SchemaName, EntityName, CopyToRaw, CopyToStg, IncrementColumnName)
 VALUES 
