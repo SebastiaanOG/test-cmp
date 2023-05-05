@@ -5,7 +5,7 @@
 			"referenceName": "ls_sqldb_mdb",
 			"type": "LinkedServiceReference",
 			"parameters": {
-				"dbname": "mdb"
+				"dbname": "mdb_test"
 			}
 		},
 		"annotations": [],
