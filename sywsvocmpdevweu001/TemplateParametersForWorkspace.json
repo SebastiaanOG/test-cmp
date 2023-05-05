@@ -12,16 +12,38 @@
 			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=sql-vo-dyn-acc-weu-001.database.windows.net;Initial Catalog=Dyn01DataDb01A"
 		},
 		"ls_sqldb_dwh_connectionString": {
-			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=sql-vo-cmp-dev-weu-001.database.windows.net;Initial Catalog=dwh"
+			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=sql-vo-cmp-dev-weu-001.database.windows.net;Initial Catalog=@{linkedService().dbname}"
 		},
 		"ls_sqldb_mdb_connectionString": {
-			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=sql-vo-cmp-dev-weu-001.database.windows.net;Initial Catalog=mdb"
+			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=sql-vo-cmp-dev-weu-001.database.windows.net;Initial Catalog=@{linkedService().dbname}"
 		},
 		"sywsvocmpdevweu001-WorkspaceDefaultSqlServer_connectionString": {
 			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=tcp:sywsvocmpdevweu001.sql.azuresynapse.net,1433;Initial Catalog=@{linkedService().DBName}"
 		},
 		"ls_kv_cmp_properties_typeProperties_baseUrl": {
 			"value": ""
+		},
+		"t_dynamics_daily_07_30_freq": {
+			"value": "Day"
+		},
+		"t_dynamics_daily_07_30_properties_typeProperties_recurrence_triggerSuffix": {
+			"value": 1
+		},
+		"t_dynamics_daily_07_30_properties_typeProperties_recurrence_startTime": {
+			"value": "2023-04-12T11:04:00"
+		},
+		"t_dynamics_daily_07_30_properties_typeProperties_recurrence_timeZone": {
+			"value": "W. Europe Standard Time"
+		},
+		"t_dynamics_daily_07_30_properties_typeProperties_recurrence_schedule": {
+			"value": {
+				"minutes": [
+					30
+				],
+				"hours": [
+					7
+				]
+			}
 		},
 		"t_master_daily_07_freq": {
 			"value": "Day"
@@ -72,28 +94,6 @@
 		},
 		"synapse-ws-sqlOnDemand--sywsvocmpdevweu001_properties_privateLinkResourceId": {
 			"value": "/subscriptions/39f65c21-47e0-4565-88dc-f5ef56774287/resourceGroups/rg-vo-cmp-app-dev-weu-001/providers/Microsoft.Synapse/workspaces/sywsvocmpdevweu001"
-		},
-		"t_dynamics_daily_07_30_freq": {
-			"value": "Day"
-		},
-		"t_dynamics_daily_07_30_properties_typeProperties_recurrence_triggerSuffix": {
-			"value": 1
-		},
-		"t_dynamics_daily_07_30_properties_typeProperties_recurrence_startTime": {
-			"value": "2023-04-12T11:04:00"
-		},
-		"t_dynamics_daily_07_30_properties_typeProperties_recurrence_timeZone": {
-			"value": "W. Europe Standard Time"
-		},
-		"t_dynamics_daily_07_30_properties_typeProperties_recurrence_schedule": {
-			"value": {
-				"minutes": [
-					30
-				],
-				"hours": [
-					7
-				]
-			}
 		}
 	}
 }
