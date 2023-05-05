@@ -1,4 +1,4 @@
-﻿CREATE Procedure [elt].[spInsertStructureJson]
+CREATE Procedure [elt].[spInsertStructureJson]
 (
 @SystemCode	 nvarchar(128)
 ,@SystemName nvarchar(128)
@@ -52,5 +52,10 @@ AS
 								            [name] nvarchar(500) '$.name',
 								            [type] nvarchar(500) '$.type'
 												) AS Js
-
+                                        WHERE 
+                                        -- case statement that does not insert a row when an entity has an empty column name
+                                            CASE
+                                                WHEN [name] = '' THEN 0
+                                                ELSE 1
+                                            END = 1
 							 END

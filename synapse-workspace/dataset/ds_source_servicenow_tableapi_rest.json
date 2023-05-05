@@ -1,8 +1,8 @@
 {
-	"name": "ds_source_servicenow_projectsapi",
+	"name": "ds_source_servicenow_tableapi_rest",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_source_servicenow_projectsapi",
+			"referenceName": "ls_source_servicenow_tableapi_rest",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {

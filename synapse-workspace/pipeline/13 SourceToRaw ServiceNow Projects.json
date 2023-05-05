@@ -39,7 +39,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_source_servicenow_projectsapi",
+						"referenceName": "ds_source_servicenow_tableapi_rest",
 						"type": "DatasetReference",
 						"parameters": {
 							"relative_api_path": {
