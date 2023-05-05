@@ -1,10 +1,10 @@
 {
-	"name": "ls_source_servicenow_projectsapi",
+	"name": "ls_source_servicenow_tableapi_http",
 	"properties": {
 		"annotations": [
 			"DataSource"
 		],
-		"type": "RestService",
+		"type": "HttpServer",
 		"typeProperties": {
 			"url": "https://vanoorddev.service-now.com/api/now/table/",
 			"enableServerCertificateValidation": true,

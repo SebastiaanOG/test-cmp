@@ -122,6 +122,42 @@
 												}
 											}
 										]
+									},
+									{
+										"value": "snprojects",
+										"activities": [
+											{
+												"name": "Execute Pipeline 03 Servicenow Projects",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "03 MDB ServiceNow Projects",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true,
+													"parameters": {
+														"process_run_id": {
+															"value": "@pipeline().parameters.process_run_id",
+															"type": "Expression"
+														},
+														"system_code": {
+															"value": "@item().systemcode",
+															"type": "Expression"
+														},
+														"system_name": {
+															"value": "@item().systemname",
+															"type": "Expression"
+														},
+														"system_type": {
+															"value": "@item().systemtype",
+															"type": "Expression"
+														}
+													}
+												}
+											}
+										]
 									}
 								]
 							}

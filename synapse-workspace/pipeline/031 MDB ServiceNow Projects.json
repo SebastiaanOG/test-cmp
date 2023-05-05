@@ -1,0 +1,252 @@
+{
+	"name": "031 MDB ServiceNow Projects",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set_sys_id_init",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "sys_id",
+					"value": {
+						"value": "@pipeline().parameters.sys_id",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Append_table_names_array",
+				"type": "AppendVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "parent_tables",
+					"value": {
+						"value": "@pipeline().parameters.table_name",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Until_no_parent",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "Set_sys_id_init",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Append_table_names_array",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(variables('sys_id'), 'stop')",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "LU_parent_table",
+							"type": "Lookup",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "JsonSource",
+									"storeSettings": {
+										"type": "HttpReadSettings",
+										"requestMethod": "GET"
+									},
+									"formatSettings": {
+										"type": "JsonReadSettings"
+									}
+								},
+								"dataset": {
+									"referenceName": "ds_source_servicenow_tableapi_http",
+									"type": "DatasetReference",
+									"parameters": {
+										"relative_api_path": "sys_db_object",
+										"filter_on_table": {
+											"value": "@variables('sys_id')",
+											"type": "Expression"
+										},
+										"fields_to_include": "super_class, name",
+										"field_to_filter": "sys_id"
+									}
+								},
+								"firstRowOnly": false
+							}
+						},
+						{
+							"name": "Set_sys_id",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "LU_parent_table",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "sys_id",
+								"value": {
+									"value": "@if(greater(length(string(activity('LU_parent_table').output.value[0].result[0]['super_class'])), 0), activity('LU_parent_table').output.value[0].result[0]['super_class']['value'], 'stop' )",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Append_parent_table_array",
+							"type": "AppendVariable",
+							"dependsOn": [
+								{
+									"activity": "LU_parent_table",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "parent_tables",
+								"value": {
+									"value": "@activity('LU_parent_table').output.value[0].result[0]['name']",
+									"type": "Expression"
+								}
+							}
+						}
+					],
+					"timeout": "0.12:00:00"
+				}
+			},
+			{
+				"name": "Set_final_parent_array",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Until_no_parent",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "final_array",
+					"value": {
+						"value": "@variables('parent_tables')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "sp Insert ParentTable into MetadataTables",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Set_final_parent_array",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[elt].[spSnInsertParentTables]",
+					"storedProcedureParameters": {
+						"base_table": {
+							"value": {
+								"value": "@pipeline().parameters.base_table",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"parent_tables": {
+							"value": {
+								"value": "@string(variables('final_array'))",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"system_code": {
+							"value": {
+								"value": "@pipeline().parameters.system_code",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"system_name": {
+							"value": {
+								"value": "@pipeline().parameters.system_name",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_sqldb_mdb",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"dbname": "mdb"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"sys_id": {
+				"type": "string"
+			},
+			"table_name": {
+				"type": "string"
+			},
+			"base_table": {
+				"type": "string"
+			},
+			"system_code": {
+				"type": "string"
+			},
+			"system_name": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"sys_id": {
+				"type": "String"
+			},
+			"parent_tables": {
+				"type": "Array"
+			},
+			"final_array": {
+				"type": "Array"
+			}
+		},
+		"folder": {
+			"name": "MDB"
+		},
+		"annotations": []
+	}
+}

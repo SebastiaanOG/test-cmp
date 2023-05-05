@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [elt].[spInsertMetadata]
+CREATE PROCEDURE [elt].[spInsertMetadata]
 (       @SystemCode	varchar(100) -- = 'adventureworks'
 ,		@SystemType	varchar(100) -- = (SqlServer, MySQLServer, Json, SalesForce)
 ,		@SystemName sysname -- 'adventureworkslt' (Table_catalog for filling)
@@ -27,9 +27,10 @@ IF @SystemType NOT IN
 			, 'MySQLServer'
 			, 'Json'
 			, 'SalesForce'
-			, 'Oracle')
+			, 'Oracle'
+            , 'Servicenow')
 BEGIN
-	RAISERROR('Correct System type is required, accepted values: (SqlServer, MySQLServer, Json, SalesForce, Oracle)', 16,16)
+	RAISERROR('Correct System type is required, accepted values: (SqlServer, MySQLServer, Json, SalesForce, Oracle, Servicenow)', 16,16)
 END	
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*
@@ -356,6 +357,28 @@ Adding the records of the source system to the [elt].[MetadataStructure] table
 				AND @TableActive = 1
 
 				OR @SystemType = 'Json'
+				AND @TableActive = 0 AND @FirstTime = 1
+
+				
+							BEGIN
+							 
+				EXECUTE [elt].[spInsertStructureJson] @systemcode, @SystemName ,@lSchema, @lTable, @Json
+							
+							END 																		 	
+							ELSE
+							SET @Message = 'This Table is Inactive'		
+
+                            	
+				/* For a Json format use a GetMetadata Acitivity in ADF that looks at the Storage Container Blob with the data. 
+				   Be sure to use the setting 'Fields' : 'Structure'
+				*/
+		
+		----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		
+				IF @SystemType = 'Servicenow'
+				AND @TableActive = 1
+
+				OR @SystemType = 'Servicenow'
 				AND @TableActive = 0 AND @FirstTime = 1
 
 				
