@@ -256,10 +256,7 @@
 												},
 												"linkedServiceName": {
 													"referenceName": "ls_sqldb_mdb",
-													"type": "LinkedServiceReference",
-													"parameters": {
-														"dbname": "mdb"
-													}
+													"type": "LinkedServiceReference"
 												}
 											},
 											{
@@ -309,10 +306,7 @@
 												},
 												"linkedServiceName": {
 													"referenceName": "ls_sqldb_mdb",
-													"type": "LinkedServiceReference",
-													"parameters": {
-														"dbname": "mdb"
-													}
+													"type": "LinkedServiceReference"
 												}
 											}
 										]
