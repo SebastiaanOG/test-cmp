@@ -21,6 +21,10 @@
 						"process_run_date": {
 							"value": "@pipeline().TriggerTime",
 							"type": "Expression"
+						},
+						"mdb_dbname": {
+							"value": "@pipeline().parameters.mdb_dbname",
+							"type": "Expression"
 						}
 					}
 				}
@@ -54,6 +58,10 @@
 						},
 						"use_case_code": {
 							"value": "@pipeline().parameters.use_case_code",
+							"type": "Expression"
+						},
+						"mdb_dbname": {
+							"value": "@pipeline().parameters.mdb_dbname",
 							"type": "Expression"
 						}
 					}
@@ -89,6 +97,14 @@
 						"use_case_code": {
 							"value": "@pipeline().parameters.use_case_code",
 							"type": "Expression"
+						},
+						"mdb_dbname": {
+							"value": "@pipeline().parameters.mdb_dbname",
+							"type": "Expression"
+						},
+						"dwh_dbname": {
+							"value": "@pipeline().parameters.dwh_dbname",
+							"type": "Expression"
 						}
 					}
 				}
@@ -118,6 +134,14 @@
 						},
 						"process_run_date": {
 							"value": "@pipeline().TriggerTime",
+							"type": "Expression"
+						},
+						"mdb_dbname": {
+							"value": "@pipeline().parameters.mdb_dbname",
+							"type": "Expression"
+						},
+						"dwh_dbname": {
+							"value": "@pipeline().parameters.dwh_dbname",
 							"type": "Expression"
 						}
 					}

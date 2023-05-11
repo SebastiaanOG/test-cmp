@@ -91,6 +91,10 @@
 														"system_type": {
 															"value": "@item().systemtype",
 															"type": "Expression"
+														},
+														"mdb_dbname": {
+															"value": "@pipeline().parameters.mdb_dbname",
+															"type": "Expression"
 														}
 													}
 												}
@@ -122,6 +126,10 @@
 														},
 														"system_type": {
 															"value": "@item().systemtype",
+															"type": "Expression"
+														},
+														"mdb_dbname": {
+															"value": "@pipeline().parameters.mdb_dbname",
 															"type": "Expression"
 														}
 													}
@@ -158,6 +166,10 @@
 														},
 														"system_type": {
 															"value": "@item().systemtype",
+															"type": "Expression"
+														},
+														"mdb_dbname": {
+															"value": "@pipeline().parameters.mdb_dbname",
 															"type": "Expression"
 														}
 													}
