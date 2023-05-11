@@ -23,7 +23,13 @@
 					},
 					"dataset": {
 						"referenceName": "ds_sql_mdb_table",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"dbname": {
+								"value": "@pipeline().parameters.mdb_dbname",
+								"type": "Expression"
+							}
+						}
 					},
 					"firstRowOnly": false
 				}
@@ -116,7 +122,13 @@
 							},
 							"linkedServiceName": {
 								"referenceName": "ls_sqldb_mdb",
-								"type": "LinkedServiceReference"
+								"type": "LinkedServiceReference",
+								"parameters": {
+									"dbname": {
+										"value": "@pipeline().parameters.mdb_dbname",
+										"type": "Expression"
+									}
+								}
 							}
 						},
 						{
@@ -209,7 +221,13 @@
 								},
 								"dataset": {
 									"referenceName": "ds_sql_mdb_table",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"dbname": {
+											"value": "@pipeline().parameters.mdb_dbname",
+											"type": "Expression"
+										}
+									}
 								},
 								"firstRowOnly": false
 							}
@@ -318,7 +336,13 @@
 										},
 										"linkedServiceName": {
 											"referenceName": "ls_sqldb_mdb",
-											"type": "LinkedServiceReference"
+											"type": "LinkedServiceReference",
+											"parameters": {
+												"dbname": {
+													"value": "@pipeline().parameters.mdb_dbname",
+													"type": "Expression"
+												}
+											}
 										}
 									}
 								],
@@ -412,7 +436,13 @@
 								},
 								"dataset": {
 									"referenceName": "ds_sql_mdb_table",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"dbname": {
+											"value": "@pipeline().parameters.mdb_dbname",
+											"type": "Expression"
+										}
+									}
 								},
 								"firstRowOnly": false
 							}
@@ -437,6 +467,9 @@
 			"system_type": {
 				"type": "string",
 				"defaultValue": "servicenow"
+			},
+			"mdb_dbname": {
+				"type": "string"
 			}
 		},
 		"folder": {

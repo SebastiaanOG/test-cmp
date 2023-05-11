@@ -127,6 +127,14 @@
 		"parameters": {
 			"use_case_code": {
 				"type": "string"
+			},
+			"mdb_dbname": {
+				"type": "string",
+				"defaultValue": "mdb"
+			},
+			"dwh_dbname": {
+				"type": "string",
+				"defaultValue": "dwh"
 			}
 		},
 		"annotations": []

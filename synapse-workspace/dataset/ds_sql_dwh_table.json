@@ -3,7 +3,13 @@
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_sqldb_dwh",
-			"type": "LinkedServiceReference"
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"dbname": {
+					"value": "@dataset().dbname",
+					"type": "Expression"
+				}
+			}
 		},
 		"parameters": {
 			"table_name": {
@@ -13,6 +19,9 @@
 				"type": "string"
 			},
 			"schema": {
+				"type": "string"
+			},
+			"dbname": {
 				"type": "string"
 			}
 		},
