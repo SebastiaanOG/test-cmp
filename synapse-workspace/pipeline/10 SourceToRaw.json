@@ -46,7 +46,13 @@
 					},
 					"dataset": {
 						"referenceName": "ds_sql_mdb_table",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"dbname": {
+								"value": "@pipeline().parameters.mdb_dbname",
+								"type": "Expression"
+							}
+						}
 					},
 					"firstRowOnly": false
 				}
@@ -72,7 +78,13 @@
 					},
 					"dataset": {
 						"referenceName": "ds_sql_mdb_table",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"dbname": {
+								"value": "@pipeline().parameters.mdb_dbname",
+								"type": "Expression"
+							}
+						}
 					},
 					"firstRowOnly": false
 				}
@@ -256,7 +268,13 @@
 												},
 												"linkedServiceName": {
 													"referenceName": "ls_sqldb_mdb",
-													"type": "LinkedServiceReference"
+													"type": "LinkedServiceReference",
+													"parameters": {
+														"dbname": {
+															"value": "@pipeline().parameters.mdb_dbname",
+															"type": "Expression"
+														}
+													}
 												}
 											},
 											{
@@ -306,7 +324,13 @@
 												},
 												"linkedServiceName": {
 													"referenceName": "ls_sqldb_mdb",
-													"type": "LinkedServiceReference"
+													"type": "LinkedServiceReference",
+													"parameters": {
+														"dbname": {
+															"value": "@pipeline().parameters.mdb_dbname",
+															"type": "Expression"
+														}
+													}
 												}
 											}
 										]
@@ -404,7 +428,13 @@
 												},
 												"linkedServiceName": {
 													"referenceName": "ls_sqldb_mdb",
-													"type": "LinkedServiceReference"
+													"type": "LinkedServiceReference",
+													"parameters": {
+														"dbname": {
+															"value": "@pipeline().parameters.mdb_dbname",
+															"type": "Expression"
+														}
+													}
 												}
 											},
 											{
@@ -454,7 +484,13 @@
 												},
 												"linkedServiceName": {
 													"referenceName": "ls_sqldb_mdb",
-													"type": "LinkedServiceReference"
+													"type": "LinkedServiceReference",
+													"parameters": {
+														"dbname": {
+															"value": "@pipeline().parameters.mdb_dbname",
+															"type": "Expression"
+														}
+													}
 												}
 											}
 										]
@@ -544,7 +580,13 @@
 												},
 												"linkedServiceName": {
 													"referenceName": "ls_sqldb_mdb",
-													"type": "LinkedServiceReference"
+													"type": "LinkedServiceReference",
+													"parameters": {
+														"dbname": {
+															"value": "@pipeline().parameters.mdb_dbname",
+															"type": "Expression"
+														}
+													}
 												}
 											},
 											{
@@ -594,7 +636,13 @@
 												},
 												"linkedServiceName": {
 													"referenceName": "ls_sqldb_mdb",
-													"type": "LinkedServiceReference"
+													"type": "LinkedServiceReference",
+													"parameters": {
+														"dbname": {
+															"value": "@pipeline().parameters.mdb_dbname",
+															"type": "Expression"
+														}
+													}
 												}
 											}
 										]
@@ -615,6 +663,9 @@
 				"type": "string"
 			},
 			"use_case_code": {
+				"type": "string"
+			},
+			"mdb_dbname": {
 				"type": "string"
 			}
 		},
