@@ -6243,15 +6243,6 @@
 												},
 												{
 													"source": {
-														"path": "['npv']"
-													},
-													"sink": {
-														"name": "npv",
-														"type": "string"
-													}
-												},
-												{
-													"source": {
 														"path": "['work_end']"
 													},
 													"sink": {
