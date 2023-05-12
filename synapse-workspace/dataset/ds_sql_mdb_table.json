@@ -5,7 +5,15 @@
 			"referenceName": "ls_sqldb_mdb",
 			"type": "LinkedServiceReference",
 			"parameters": {
-				"dbname": "mdb"
+				"dbname": {
+					"value": "@dataset().dbname",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"dbname": {
+				"type": "string"
 			}
 		},
 		"annotations": [],

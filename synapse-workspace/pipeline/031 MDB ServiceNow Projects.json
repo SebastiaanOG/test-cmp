@@ -211,7 +211,10 @@
 					"referenceName": "ls_sqldb_mdb",
 					"type": "LinkedServiceReference",
 					"parameters": {
-						"dbname": "mdb"
+						"dbname": {
+							"value": "@pipeline().parameters.mdb_dbname",
+							"type": "Expression"
+						}
 					}
 				}
 			}
@@ -230,6 +233,9 @@
 				"type": "string"
 			},
 			"system_name": {
+				"type": "string"
+			},
+			"mdb_dbname": {
 				"type": "string"
 			}
 		},

@@ -23,7 +23,13 @@
 					},
 					"dataset": {
 						"referenceName": "ds_sql_dwh_sp",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"dbname": {
+								"value": "@pipeline().parameters.dwh_dbname",
+								"type": "Expression"
+							}
+						}
 					},
 					"firstRowOnly": false
 				}
@@ -73,6 +79,10 @@
 									"process_run_id": {
 										"value": "@pipeline().parameters.process_run_id",
 										"type": "Expression"
+									},
+									"dwh_dbname": {
+										"value": "@pipeline().parameters.dwh_dbname",
+										"type": "Expression"
 									}
 								}
 							}
@@ -107,7 +117,13 @@
 								},
 								"dataset": {
 									"referenceName": "ds_sql_dwh_sp",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"dbname": {
+											"value": "@pipeline().parameters.dwh_dbname",
+											"type": "Expression"
+										}
+									}
 								},
 								"firstRowOnly": false
 							}
@@ -121,6 +137,12 @@
 				"type": "int"
 			},
 			"process_run_date": {
+				"type": "string"
+			},
+			"mdb_dbname": {
+				"type": "string"
+			},
+			"dwh_dbname": {
 				"type": "string"
 			}
 		},

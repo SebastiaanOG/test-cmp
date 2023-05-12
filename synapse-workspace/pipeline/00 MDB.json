@@ -23,7 +23,13 @@
 					},
 					"dataset": {
 						"referenceName": "ds_sql_mdb_table",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"dbname": {
+								"value": "@pipeline().parameters.mdb_dbname",
+								"type": "Expression"
+							}
+						}
 					},
 					"firstRowOnly": false
 				}
@@ -85,6 +91,10 @@
 														"system_type": {
 															"value": "@item().systemtype",
 															"type": "Expression"
+														},
+														"mdb_dbname": {
+															"value": "@pipeline().parameters.mdb_dbname",
+															"type": "Expression"
 														}
 													}
 												}
@@ -116,6 +126,10 @@
 														},
 														"system_type": {
 															"value": "@item().systemtype",
+															"type": "Expression"
+														},
+														"mdb_dbname": {
+															"value": "@pipeline().parameters.mdb_dbname",
 															"type": "Expression"
 														}
 													}
@@ -153,6 +167,10 @@
 														"system_type": {
 															"value": "@item().systemtype",
 															"type": "Expression"
+														},
+														"mdb_dbname": {
+															"value": "@pipeline().parameters.mdb_dbname",
+															"type": "Expression"
 														}
 													}
 												}
@@ -174,6 +192,9 @@
 			"process_run_date": {
 				"type": "string",
 				"defaultValue": "2023-02-28"
+			},
+			"mdb_dbname": {
+				"type": "string"
 			}
 		},
 		"folder": {

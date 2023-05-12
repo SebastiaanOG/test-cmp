@@ -61,7 +61,13 @@
 								},
 								"dataset": {
 									"referenceName": "ds_sql_dwh_sp",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"dbname": {
+											"value": "@pipeline().parameters.dwh_dbname",
+											"type": "Expression"
+										}
+									}
 								},
 								"firstRowOnly": false
 							}
@@ -76,6 +82,9 @@
 			},
 			"process_run_id": {
 				"type": "int"
+			},
+			"dwh_dbname": {
+				"type": "string"
 			}
 		},
 		"folder": {
