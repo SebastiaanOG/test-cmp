@@ -58,7 +58,7 @@
 				}
 			},
 			{
-				"name": "ForEach - StagingToRaw",
+				"name": "ForEach - RawToStaged",
 				"type": "ForEach",
 				"dependsOn": [
 					{
@@ -78,7 +78,7 @@
 					"batchCount": 50,
 					"activities": [
 						{
-							"name": "Execute Pipeline 21 RawToStaging",
+							"name": "Execute Pipeline 21 RawToStaged",
 							"type": "ExecutePipeline",
 							"dependsOn": [],
 							"userProperties": [],

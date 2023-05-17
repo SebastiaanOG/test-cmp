@@ -1,5 +1,5 @@
 {
-	"name": "30 StagingToProcessed",
+	"name": "30 StagedToProcessed",
 	"properties": {
 		"activities": [
 			{
@@ -67,7 +67,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"pipeline": {
-									"referenceName": "31 StagingToProcessed - Stored Procedures",
+									"referenceName": "31 StagedToProcessed - Stored Procedures",
 									"type": "PipelineReference"
 								},
 								"waitOnCompletion": true,

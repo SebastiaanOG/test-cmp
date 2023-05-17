@@ -123,7 +123,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "30 StagingToProcessed",
+						"referenceName": "30 StagedToProcessed",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,
