@@ -5,7 +5,7 @@
 ,		@lStoSchema [nvarchar](128)
 ,		@lStoTable [nvarchar](128)
 ,		@SCDType [INT]
-,		@lIncrementStaging bit = 0
+,		@lIncrementStaged bit = 0
 )
 as
 begin
@@ -117,7 +117,7 @@ SELECT @Cols = (Select CONCAT(STRING_AGG(
 			AND [elt].[fnCreateTableName](t.SystemName, t.EntityName) = [elt].[fnCreateTableName](@lSourceSchema, @lSourceTable))
 ------------------------------------------------------------------------------------------------------------------------------------------
 /*
-Create Temptable to compare Raw/staging with Storage
+Create Temptable to compare Raw/Staged with Storage
 */
 ------------------------------------------------------------------------------------------------------------------------------------------
 SELECT  @TSQL2 = ''
@@ -309,7 +309,7 @@ SELECT  @TSQLMDDB = ''
 Create Stored Procedure that builds SCD type 2 history in Storage layer
 */
 ------------------------------------------------------------------------------------------------------------------------------------------
- IF @SCDType = 2 AND @lIncrementStaging = 0
+ IF @SCDType = 2 AND @lIncrementStaged = 0
 	BEGIN
 	 
         SELECT  @STPSQL = ''
@@ -478,10 +478,10 @@ Create Stored Procedure that builds SCD type 2 history in Storage layer
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 /*
-Create Stored Procedure that builds SCD type 2 history in Storage layer AND Staging is Incremental
+Create Stored Procedure that builds SCD type 2 history in Storage layer AND Staged is Incremental
 */
 ------------------------------------------------------------------------------------------------------------------------------------------
- IF @SCDType = 2 AND @lIncrementStaging = 1
+ IF @SCDType = 2 AND @lIncrementStaged = 1
 	BEGIN
 	 
         SELECT  @STPSQL = ''
@@ -641,7 +641,7 @@ Create Stored Procedure that builds SCD type 1 in Storage layer
 */
 ------------------------------------------------------------------------------------------------------------------------------------------
 	BEGIN 
-		IF @SCDType = 1 AND @lIncrementStaging = 0
+		IF @SCDType = 1 AND @lIncrementStaged = 0
 			BEGIN 
 			        SELECT  @STPSQL = ''
 				,       @STPSQL = @STPSQL + @lCR +'IF OBJECT_ID('+ '''' +@lStoSchema+ '.Load' + @lStoTable + '''' + ') IS NOT NULL' 
@@ -775,11 +775,11 @@ Create Stored Procedure that builds SCD type 1 in Storage layer
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 /*
-Create Stored Procedure that builds SCD type 1 in Storage layer AND Staging is Incremental
+Create Stored Procedure that builds SCD type 1 in Storage layer AND Staged is Incremental
 */
 ------------------------------------------------------------------------------------------------------------------------------------------
 		BEGIN 
-			IF @SCDType = 1 AND @lIncrementStaging = 1
+			IF @SCDType = 1 AND @lIncrementStaged = 1
 				BEGIN 
 			SELECT  @STPSQL = ''
 			,       @STPSQL = @STPSQL + @lCR +'IF OBJECT_ID('+ '''' +@lStoSchema+ '.Load' + @lStoTable + '''' + ') IS NOT NULL' 

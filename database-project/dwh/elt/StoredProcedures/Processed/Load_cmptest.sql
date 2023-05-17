@@ -3,7 +3,7 @@ CREATE PROCEDURE [elt].[Load_cmptest]
         @ProcessRunID      INT
 ,       @PipelineRunID      uniqueidentifier
 ,       @TaskName           VARCHAR(100)
-,	@Schema varchar(max) = 'curated'
+,	@Schema varchar(max) = 'processed'
 ,	@EntityName varchar(max) = 'cmptest'
 AS
 BEGIN
@@ -17,13 +17,13 @@ DECLARE @InputInsertedRows       INT = 0
 BEGIN TRY  
 	BEGIN TRANSACTION
 
-        TRUNCATE TABLE IF EXISTS [curated].[cmptest]
+        TRUNCATE TABLE IF EXISTS [processed].[cmptest]
 
         IF  NOT EXISTS (SELECT * FROM sys.objects
-        WHERE object_id = OBJECT_ID(N'[curated].[cmptest]') AND type in (N'U'))
+        WHERE object_id = OBJECT_ID(N'[processed].[cmptest]') AND type in (N'U'))
 
         BEGIN
-        CREATE TABLE [curated].[cmptest]
+        CREATE TABLE [processed].[cmptest]
         (
                 [Perioden]nvarchar(50) NULL
         ,       [BenzineEuro95_1]float NULL
@@ -33,7 +33,7 @@ BEGIN TRY
         END
 
         --  insert new records
-        INSERT  INTO [curated].[cmptest]
+        INSERT  INTO [processed].[cmptest]
 (
             [Perioden]
     ,       [BenzineEuro95_1]
@@ -63,7 +63,7 @@ END CATCH
 		@ProcessRunID		AS [ProcessRunID]
 		,'cmp-test' AS [SourceSchema]
 		,'fuel_prices'         AS [SourceTable]
-		,'curated'              AS [SinkSchema]
+		,'processed'              AS [SinkSchema]
 		,'cmptest'      AS [SinkTable]
 		,@TaskName		    AS TaskName
 		,@InputInsertedRows	AS RowsWritten

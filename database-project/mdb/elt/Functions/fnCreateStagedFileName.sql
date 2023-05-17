@@ -1,4 +1,4 @@
-﻿CREATE FUNCTION [elt].[fnCreateStagingFileName](
+﻿CREATE FUNCTION [elt].[fnCreateStagedFileName](
     @entityname VARCHAR(64),
     @schemaname VARCHAR(50),
     @IncrementColumnName NVARCHAR(64),

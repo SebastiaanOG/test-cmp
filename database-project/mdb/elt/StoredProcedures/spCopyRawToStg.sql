@@ -10,8 +10,8 @@ AS
                         vcm.UseCaseCode
                  FROM elt.vwMetaDataRaw vcm WHERE vcm.UseCaseCode = @use_case_code)
              SELECT vcm.SystemName AS source_system_name, 
-                    [elt].[fnCreateStagingFileName](vcm.EntityName, vcm.SchemaName, r.IncrementColumnName, @process_run_date, r.IncrementRange) AS source_entity_file_name, 
-                    [elt].[fnCreateStagingFolderPath](vcm.SystemName, @process_run_date) AS source_entity_folder_path, 
+                    [elt].[fnCreateStagedFileName](vcm.EntityName, vcm.SchemaName, r.IncrementColumnName, @process_run_date, r.IncrementRange) AS source_entity_file_name, 
+                    [elt].[fnCreateStagedFolderPath](vcm.SystemName, @process_run_date) AS source_entity_folder_path, 
                     [elt].[fnCreateEntityStructure](vcm.SystemName, vcm.SchemaName, vcm.EntityName) AS source_entity_structure, 
                     [elt].[fnCreateTableName](vcm.SystemName, vcm.EntityName) AS sink_entity_name, 
 					vcm.SystemName AS system_name,

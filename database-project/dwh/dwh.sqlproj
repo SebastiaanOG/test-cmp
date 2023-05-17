@@ -77,15 +77,15 @@
     <Build Include="audit\StoredProcedures\spStartProcessRun.sql" />
     <Build Include="audit\StoredProcedures\spStartPipelineRun.sql" />
     <Build Include="audit\StoredProcedures\spInsertDataLogStorage.sql" />
-    <Build Include="audit\StoredProcedures\spInsertDataLogStaging.sql" />
+    <Build Include="audit\StoredProcedures\spInsertDataLogStaged.sql" />
     <Build Include="audit\StoredProcedures\spErrorLog.sql" />
     <Build Include="audit\StoredProcedures\spEndProcessRun.sql" />
     <Build Include="audit\StoredProcedures\spEndPipelineRun.sql" />
     <Build Include="Security\elt.sql" />
-    <Build Include="Security\curated.sql" />
+    <Build Include="Security\processed.sql" />
     <Build Include="Security\audit.sql" />
     <Build Include="Security\authorisation.sql" />
-    <None Include="elt\StoredProcedures\Curated\cmptest.sql" />
+    <None Include="elt\StoredProcedures\Processed\cmptest.sql" />
   </ItemGroup>
   <Import Condition="'$(NetCoreBuild)' == 'true'" Project="$(NETCoreTargetsPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
