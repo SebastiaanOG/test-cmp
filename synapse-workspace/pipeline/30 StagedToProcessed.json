@@ -54,7 +54,7 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "Execute Pipeline 31 StagingToStorage",
+							"name": "Execute Pipeline 31 StagedToProcessed",
 							"type": "ExecutePipeline",
 							"dependsOn": [
 								{

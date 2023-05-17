@@ -68,7 +68,7 @@
 				}
 			},
 			{
-				"name": "Execute 20 RawToStaging",
+				"name": "Execute 20 RawToStaged",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
@@ -110,11 +110,11 @@
 				}
 			},
 			{
-				"name": "Execute 30 StagingToDWH",
+				"name": "Execute 30 StagedToProcessed",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "Execute 20 RawToStaging",
+						"activity": "Execute 20 RawToStaged",
 						"dependencyConditions": [
 							"Succeeded"
 						]
