@@ -1,5 +1,5 @@
 {
-	"name": "21 RawToStaging - Copy Data",
+	"name": "21 RawToStaged - Copy Data",
 	"properties": {
 		"activities": [
 			{
@@ -298,7 +298,7 @@
 			}
 		},
 		"folder": {
-			"name": "ELT DWH/20 RawToStaging"
+			"name": "ELT DWH/20 RawToStaged"
 		},
 		"annotations": [],
 		"lastPublishTime": "2020-10-15T16:10:32Z"
