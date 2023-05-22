@@ -271,7 +271,7 @@ INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [Sink
 INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'wiki_text',N'string',N'servicenow',N'nvarchar')
 INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'document_id',N'string',N'servicenow',N'nvarchar')
 INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'order_index',N'int32',N'servicenow',N'int')
-INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'glide_duration',N'datetime',N'servicenow',N'dateimte')
+INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'glide_duration',N'datetime',N'servicenow',N'datetime')
 INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'data_object',N'string',N'servicenow',N'nvarchar')
 INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'integer',N'int32',N'servicenow',N'int')
 INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'phone_number_e164',N'string',N'servicenow',N'nvarchar')

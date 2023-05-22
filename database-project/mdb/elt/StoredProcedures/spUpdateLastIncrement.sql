@@ -27,7 +27,7 @@ BEGIN
                 )
             ELSE CONCAT('PRINT(', '''', 'Geen te updaten increment', '''', ')')
         END
-        --Maybe add another option that makes the LastIncrement column NULL again if there is no source_entity_increment_column.
+        -- Maybe add another option that makes the LastIncrement column NULL again if there is no source_entity_increment_column.
 
 END
 

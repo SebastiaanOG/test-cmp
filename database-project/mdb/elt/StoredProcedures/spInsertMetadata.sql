@@ -388,7 +388,21 @@ Adding the records of the source system to the [elt].[MetadataStructure] table
 							
 							END 																		 	
 							ELSE
-							SET @Message = 'This Table is Inactive'		
+							SET @Message = 'This Table is Inactive';
+
+                -- CTE to remove duplicate 'sys_id' columns produced in the Metadata of 'snprojects' 
+				IF @SystemType = 'Servicenow'
+
+				           BEGIN
+
+                WITH CTE AS (
+                    SELECT [SystemCode], [EntityName], [Name],
+                    ROW_NUMBER() OVER (PARTITION BY [SystemCode], [EntityName], [Name] ORDER BY [Name]) AS rn
+                    FROM [elt].[MetadataStructure]
+                    WHERE [SystemCode] = 'snprojects')
+                    DELETE FROM CTE WHERE rn > 1;	
+
+							END	
 
 		----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	
