@@ -1,9 +1,9 @@
 {
-	"name": "21 RawToStaging - Copy Data",
+	"name": "21 RawToStaged - Copy Data",
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy Data - Blob to SQL Staging",
+				"name": "Copy Data - Blob to SQL Staged",
 				"type": "Copy",
 				"dependsOn": [
 					{
@@ -27,6 +27,9 @@
 						"storeSettings": {
 							"type": "AzureBlobFSReadSettings",
 							"recursive": true
+						},
+						"formatSettings": {
+							"type": "ParquetReadSettings"
 						}
 					},
 					"sink": {
@@ -298,7 +301,7 @@
 			}
 		},
 		"folder": {
-			"name": "ELT DWH/20 RawToStaging"
+			"name": "ELT DWH/20 RawToStaged"
 		},
 		"annotations": [],
 		"lastPublishTime": "2020-10-15T16:10:32Z"

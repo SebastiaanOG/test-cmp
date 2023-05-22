@@ -78,8 +78,8 @@
     <Build Include="elt\Views\vwMetaDataRaw.sql" />
     <Build Include="elt\Functions\fnCreateSQLServerQuery.sql" />
     <Build Include="elt\Functions\fnCreateTableName.sql" />
-    <Build Include="elt\Functions\fnCreateStagingFolderPath.sql" />
-    <Build Include="elt\Functions\fnCreateStagingFileName.sql" />
+    <Build Include="elt\Functions\fnCreateStagedFolderPath.sql" />
+    <Build Include="elt\Functions\fnCreateStagedFileName.sql" />
     <Build Include="elt\Functions\fnCreateQuery.sql" />
     <Build Include="elt\Functions\fnCreatePostgresQuery.sql" />
     <Build Include="elt\Functions\fnCreateOracleQuery.sql" />

@@ -1,5 +1,5 @@
 ﻿CREATE
-FUNCTION [elt].[fnCreateStagingFolderPath] (
+FUNCTION [elt].[fnCreateStagedFolderPath] (
     @systemname VARCHAR(64),
     @partitiondate DATE
 ) RETURNS VARCHAR(128) AS

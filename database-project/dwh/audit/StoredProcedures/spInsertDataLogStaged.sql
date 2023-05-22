@@ -1,4 +1,4 @@
-CREATE PROCEDURE [audit].[spInsertDataLogStaging]
+CREATE PROCEDURE [audit].[spInsertDataLogStaged]
     @pipeline_run_id uniqueidentifier,
     @process_run_id [int],
     @system_name [nvarchar](100),
@@ -14,7 +14,7 @@ BEGIN
         SELECT
             @process_run_id,
             @pipeline_run_id,
-            'Staging',
+            'Staged',
             @system_name,
             @entity_name,
             sys.dm_db_partition_stats.row_count,

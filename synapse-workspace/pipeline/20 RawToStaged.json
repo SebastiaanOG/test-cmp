@@ -1,5 +1,5 @@
 {
-	"name": "20 RawToStaging",
+	"name": "20 RawToStaged",
 	"properties": {
 		"activities": [
 			{
@@ -58,7 +58,7 @@
 				}
 			},
 			{
-				"name": "ForEach - StagingToRaw",
+				"name": "ForEach - RawToStaged",
 				"type": "ForEach",
 				"dependsOn": [
 					{
@@ -78,13 +78,13 @@
 					"batchCount": 50,
 					"activities": [
 						{
-							"name": "Execute Pipeline 21 RawToStaging",
+							"name": "Execute Pipeline 21 RawToStaged",
 							"type": "ExecutePipeline",
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
 								"pipeline": {
-									"referenceName": "21 RawToStaging - Copy Data",
+									"referenceName": "21 RawToStaged - Copy Data",
 									"type": "PipelineReference"
 								},
 								"waitOnCompletion": true,
@@ -162,7 +162,7 @@
 			}
 		},
 		"folder": {
-			"name": "ELT DWH/20 RawToStaging"
+			"name": "ELT DWH/20 RawToStaged"
 		},
 		"annotations": [],
 		"lastPublishTime": "2020-10-16T08:33:32Z"

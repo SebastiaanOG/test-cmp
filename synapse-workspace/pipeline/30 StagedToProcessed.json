@@ -1,5 +1,5 @@
 {
-	"name": "30 StagingToDWH",
+	"name": "30 StagedToProcessed",
 	"properties": {
 		"activities": [
 			{
@@ -54,7 +54,7 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "Execute Pipeline 31 StagingToStorage",
+							"name": "Execute Pipeline 31 StagedToProcessed",
 							"type": "ExecutePipeline",
 							"dependsOn": [
 								{
@@ -67,7 +67,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"pipeline": {
-									"referenceName": "31 StagingToDWH - Stored Procedures",
+									"referenceName": "31 StagedToProcessed - Stored Procedures",
 									"type": "PipelineReference"
 								},
 								"waitOnCompletion": true,
@@ -147,7 +147,7 @@
 			}
 		},
 		"folder": {
-			"name": "ELT DWH/30 StagingToDWH"
+			"name": "ELT DWH/30 StagedToProcessed"
 		},
 		"annotations": [],
 		"lastPublishTime": "2020-10-15T16:10:33Z"

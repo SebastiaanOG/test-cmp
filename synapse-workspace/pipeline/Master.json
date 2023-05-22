@@ -68,7 +68,7 @@
 				}
 			},
 			{
-				"name": "Execute 20 RawToStaging",
+				"name": "Execute 20 RawToStaged",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
@@ -81,7 +81,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "20 RawToStaging",
+						"referenceName": "20 RawToStaged",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,
@@ -110,11 +110,11 @@
 				}
 			},
 			{
-				"name": "Execute 30 StagingToDWH",
+				"name": "Execute 30 StagedToProcessed",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "Execute 20 RawToStaging",
+						"activity": "Execute 20 RawToStaged",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -123,7 +123,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "30 StagingToDWH",
+						"referenceName": "30 StagedToProcessed",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,
