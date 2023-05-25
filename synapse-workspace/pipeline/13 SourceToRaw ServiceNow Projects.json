@@ -80,7 +80,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Copy - Source To Raw JSON",
+						"activity": "Flatten data to temp views",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -96,15 +96,13 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "JsonSource",
-						"storeSettings": {
-							"type": "AzureBlobFSReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat('select * from elt.vw_sn_', pipeline().parameters.source_entity_name)",
+							"type": "Expression"
 						},
-						"formatSettings": {
-							"type": "JsonReadSettings"
-						}
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
 					},
 					"sink": {
 						"type": "ParquetSink",
@@ -124,16 +122,11 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "ds_datalake_json",
+						"referenceName": "ds_sql_mdb_table",
 						"type": "DatasetReference",
 						"parameters": {
-							"Filesystem": "raw",
-							"FolderPath": {
-								"value": "@pipeline().parameters.sink_entity_folder_path",
-								"type": "Expression"
-							},
-							"FileName": {
-								"value": "@replace(pipeline().parameters.sink_entity_file_name, '.parquet', '.json')",
+							"dbname": {
+								"value": "@pipeline().parameters.mdb_dbname",
 								"type": "Expression"
 							}
 						}
@@ -156,6 +149,199 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "Flatten data to temp views",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Parse JSON and replace empty string with NULL",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[elt].[spSnJsonToColumns]",
+					"storedProcedureParameters": {
+						"entity_name": {
+							"value": {
+								"value": "@pipeline().parameters.source_entity_name",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"use_case_code": {
+							"value": {
+								"value": "@pipeline().parameters.use_case_code",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_sqldb_mdb",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"dbname": {
+							"value": "@pipeline().parameters.mdb_dbname",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "Parse JSON and replace empty string with NULL",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "Create and truncate temp tables",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "replaceEmptyStringWithNull",
+						"type": "DataFlowReference",
+						"parameters": {
+							"sink_entity_name": {
+								"value": "'@{pipeline().parameters.source_entity_name}'",
+								"type": "Expression"
+							}
+						},
+						"datasetParameters": {
+							"source": {
+								"Filesystem": "raw",
+								"FolderPath": {
+									"value": "@pipeline().parameters.sink_entity_folder_path",
+									"type": "Expression"
+								},
+								"FileName": {
+									"value": "@replace(pipeline().parameters.sink_entity_file_name, '.parquet', '.json')",
+									"type": "Expression"
+								}
+							}
+						},
+						"linkedServiceParameters": {
+							"sink": {
+								"linkedService": {
+									"dbname": {
+										"value": "@pipeline().parameters.mdb_dbname",
+										"type": "Expression"
+									}
+								}
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "Create and truncate temp tables",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Copy - Source To Raw JSON",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[elt].[spSnCreateTruncateTempTables]",
+					"storedProcedureParameters": {
+						"sink_entity_name": {
+							"value": {
+								"value": "@pipeline().parameters.source_entity_name",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_sqldb_mdb",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"dbname": {
+							"value": "@pipeline().parameters.mdb_dbname",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "Drop temp tables and views",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Copy - Source To Raw Parquet",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[elt].[spSnDropTempTablesAndViews]",
+					"storedProcedureParameters": {
+						"sink_entity_name": {
+							"value": {
+								"value": "@pipeline().parameters.source_entity_name",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_sqldb_mdb",
+					"type": "LinkedServiceReference",
+					"parameters": {
+						"dbname": {
+							"value": "@pipeline().parameters.mdb_dbname",
+							"type": "Expression"
+						}
+					}
+				}
 			}
 		],
 		"parameters": {
@@ -177,6 +363,12 @@
 			"is_incremental": {
 				"type": "string",
 				"defaultValue": "true"
+			},
+			"mdb_dbname": {
+				"type": "string"
+			},
+			"use_case_code": {
+				"type": "string"
 			}
 		},
 		"folder": {

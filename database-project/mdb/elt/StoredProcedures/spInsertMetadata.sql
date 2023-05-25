@@ -375,10 +375,10 @@ Adding the records of the source system to the [elt].[MetadataStructure] table
 		
 		----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		
-				IF @SystemType = 'Servicenow'
+				IF @SystemType = 'servicenow'
 				AND @TableActive = 1
 
-				OR @SystemType = 'Servicenow'
+				OR @SystemType = 'servicenow'
 				AND @TableActive = 0 AND @FirstTime = 1
 
 				
@@ -403,7 +403,7 @@ Adding the records of the source system to the [elt].[MetadataStructure] table
                     DELETE FROM CTE WHERE rn > 1;	
 
 							END	
-
+							
 		----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	
 				

@@ -35,7 +35,7 @@ AS
 														 @lTable AS 'Table',
 														 [name],
 														 [Type],
-														 character_maximum_length = CASE WHEN [type] = 'String' THEN -1 ELSE NULL END,
+														 character_maximum_length = CASE WHEN [type] IN ('String', 'sys_class_name', 'html', 'user_input', 'variables', 'reference', 'journal', 'journal_list', 'journal_input', 'journal', 'glide_list', 'domain_path', 'domain_id', 'decoration', 'guid', 'glide_list', 'composite_field', 'choice') THEN -1 ELSE NULL END,
 														 is_nullable = 1,
 														 ordinal_position = ROW_NUMBER() OVER (ORDER BY (Select NULL)),
 														 numeric_precision = CASE WHEN [type] IN ('decimal') THEN 30 ELSE NULL END,
@@ -58,4 +58,6 @@ AS
                                                 WHEN [name] = '' THEN 0
                                                 ELSE 1
                                             END = 1
+                            
+
 							 END

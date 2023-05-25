@@ -461,16 +461,13 @@
 				"defaultValue": "-1"
 			},
 			"system_code": {
-				"type": "string",
-				"defaultValue": "snprojects"
+				"type": "string"
 			},
 			"system_name": {
-				"type": "string",
-				"defaultValue": "servicenow-projects"
+				"type": "string"
 			},
 			"system_type": {
-				"type": "string",
-				"defaultValue": "servicenow"
+				"type": "string"
 			},
 			"mdb_dbname": {
 				"type": "string"

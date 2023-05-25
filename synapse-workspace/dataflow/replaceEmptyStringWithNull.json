@@ -1,0 +1,77 @@
+{
+	"name": "replaceEmptyStringWithNull",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_datalake_json_utf_8",
+						"type": "DatasetReference"
+					},
+					"name": "source",
+					"description": "Import JSON data from ds_datalake_json_utf_8 (JSON file with UTF-8 encoding)"
+				}
+			],
+			"sinks": [
+				{
+					"linkedService": {
+						"referenceName": "ls_sqldb_mdb",
+						"type": "LinkedServiceReference"
+					},
+					"name": "sink"
+				}
+			],
+			"transformations": [
+				{
+					"name": "flattenJSON",
+					"description": "Flatten JSON data to flatten result array into multiple columns"
+				},
+				{
+					"name": "jsonToColumns"
+				},
+				{
+					"name": "replaceStringToNull"
+				}
+			],
+			"scriptLines": [
+				"parameters{",
+				"     sink_entity_name as string",
+				"}",
+				"source(output(",
+				"          result as ({} as string)[]",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'arrayOfDocuments') ~> source",
+				"jsonToColumns foldDown(unroll(result, result),",
+				"     mapColumn(",
+				"          result",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> flattenJSON",
+				"source derive(each(result, match(1==1), $0 = $0)) ~> jsonToColumns",
+				"flattenJSON derive(each(match(1==1), $$ = replace(toString($$),'\"\"', 'null'))) ~> replaceStringToNull",
+				"replaceStringToNull sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table',",
+				"     store: 'sqlserver',",
+				"     schemaName: 'elt',",
+				"     tableName: (toString($sink_entity_name)),",
+				"     insertable: true,",
+				"     updateable: false,",
+				"     deletable: false,",
+				"     upsertable: false,",
+				"     truncate: true,",
+				"     stagingSchemaName: 'elt',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          result",
+				"     )) ~> sink"
+			]
+		}
+	}
+}

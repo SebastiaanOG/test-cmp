@@ -1,5 +1,5 @@
 {
-	"name": "ds_datalake_json",
+	"name": "ds_datalake_json_utf_8",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_st_datalake",
@@ -34,7 +34,7 @@
 					"type": "Expression"
 				}
 			},
-			"encodingName": "UTF-8 without BOM"
+			"encodingName": "UTF-8"
 		},
 		"schema": {}
 	}

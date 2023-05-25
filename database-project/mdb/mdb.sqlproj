@@ -65,6 +65,10 @@
     <Folder Include="PostDeploy" />
   </ItemGroup>
   <ItemGroup>
+    <Build Include="elt\Functions\fnSnCreateEntityTranslator.sql" />
+    <Build Include="elt\StoredProcedures\spSnCreateTruncateTempTables.sql" />
+    <Build Include="elt\StoredProcedures\spSnDropTempTablesAndViews.sql" />
+    <Build Include="elt\StoredProcedures\spSnJsonToColumns.sql" />
     <Build Include="elt\StoredProcedures\spSnGetParentTables.sql" />
     <Build Include="elt\StoredProcedures\spSnInsertParentTables.sql" />
     <Build Include="elt\Tables\StorageTables.sql" />
