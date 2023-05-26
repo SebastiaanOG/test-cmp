@@ -1,5 +1,5 @@
 {
-	"name": "sywsvocmpdevweu001-WorkspaceDefaultStorage",
+	"name": "WorkspaceDefaultStorage",
 	"type": "Microsoft.Synapse/workspaces/linkedservices",
 	"properties": {
 		"typeProperties": {
