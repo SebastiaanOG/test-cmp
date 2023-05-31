@@ -84,8 +84,12 @@
     <Build Include="Security\elt.sql" />
     <Build Include="Security\processed.sql" />
     <Build Include="Security\audit.sql" />
-    <Build Include="Security\authorisation.sql" />
     <None Include="elt\StoredProcedures\Processed\cmptest.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="PostDeploy\PostDeploymentScript.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </PostDeploy>
   </ItemGroup>
   <Import Condition="'$(NetCoreBuild)' == 'true'" Project="$(NETCoreTargetsPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
