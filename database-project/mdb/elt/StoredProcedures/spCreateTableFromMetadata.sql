@@ -1,4 +1,4 @@
-﻿
+
 CREATE PROCEDURE [elt].[spCreateTableFromMetadata]
      @system_name nvarchar(max)
 	, @entity_name nvarchar(max)
@@ -40,7 +40,7 @@ BEGIN
 											)
 										  , ','
 										  ) WITHIN GROUP (ORDER BY t.[OrdinalPosition] ASC)
-										  , ', [ProcessRunId] INT NOT NULL'
+										  , ', [ProcessRunId] nvarchar(36) NOT NULL'
 										  , ')'
 										  )
 			FROM [elt].[vwMetaDataRaw] t
@@ -114,6 +114,25 @@ BEGIN
 				, @create_statement
 				, ''''
 				, ')'
-				, ' END') AS CreateTableStatement
+				, ' END') AS CreateTableStatement, CONCAT(
+
+                    'IF EXISTS
+                (
+                    SELECT *
+                    FROM INFORMATION_SCHEMA.TABLES
+                    WHERE 1=1
+                    AND TABLE_SCHEMA = '+ ''''+  @system_name  + ''''+ '
+                    AND TABLE_NAME  = '+ ''''+ @entity_name  + '''' + '
+                )
+                BEGIN
+                '
+				,' EXEC('
+				,''''
+				, @drop_statement
+				, ''''
+				, ')'
+				, ' END'
+
+                ) AS DropTableStatement
 
 END

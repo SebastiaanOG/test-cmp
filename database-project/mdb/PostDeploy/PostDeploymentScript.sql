@@ -342,14 +342,14 @@ GO
 DELETE FROM [elt].[MetadataTables]
 WHERE SystemCode = 'snprojects'
 -- Includes values for columns which are NOT NULL and IncrementColumnName
-INSERT INTO [elt].[MetadataTables] (SystemCode, SystemName, SchemaName, EntityName, CopyToRaw, CopyToStg, IncrementColumnName)
+INSERT INTO [elt].[MetadataTables] (SystemCode, SystemName, SchemaName, EntityName, CopyToRaw, CopyToStg, IsActive, IncrementColumnName)
 VALUES 
-('snprojects', 'servicenow-projects', 'api', 'dmn_demand', 1, 0, 'sys_updated_on'),
-('snprojects', 'servicenow-projects', 'api', 'issue', 1, 0, 'sys_updated_on'),
-('snprojects', 'servicenow-projects', 'api', 'pm_portfolio', 1, 0, 'sys_updated_on'),
-('snprojects', 'servicenow-projects', 'api', 'pm_project', 1, 0, 'sys_updated_on'),
-('snprojects', 'servicenow-projects', 'api', 'pm_project_task', 1, 0, 'sys_updated_on'),
-('snprojects', 'servicenow-projects', 'api', 'project_status', 1, 0, 'sys_updated_on'),
-('snprojects', 'servicenow-projects', 'api', 'risk', 1, 0, 'sys_updated_on');
+('snprojects', 'servicenow-projects', 'api', 'dmn_demand', 1, 1, 1, 'sys_updated_on'),
+('snprojects', 'servicenow-projects', 'api', 'issue', 1, 1, 1, 'sys_updated_on'),
+('snprojects', 'servicenow-projects', 'api', 'pm_portfolio', 1, 1, 1, 'sys_updated_on'),
+('snprojects', 'servicenow-projects', 'api', 'pm_project', 1, 1, 1, 'sys_updated_on'),
+('snprojects', 'servicenow-projects', 'api', 'pm_project_task', 1, 1, 1, 'sys_updated_on'),
+('snprojects', 'servicenow-projects', 'api', 'project_status', 1, 1, 1, 'sys_updated_on'),
+('snprojects', 'servicenow-projects', 'api', 'risk', 1, 1, 1, 'sys_updated_on');
 
 GO

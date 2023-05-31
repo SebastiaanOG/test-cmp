@@ -1,31 +1,39 @@
 CREATE PROCEDURE [elt].[spCreateTableFromMetadata]
-    @create_table_script nvarchar(MAX)
+     @create_table_script nvarchar(max),
+     @drop_table_script nvarchar(max)
 AS
 
-
 --Note: this parameter is fed from Synapse
-BEGIN TRY
 
-    BEGIN TRANSACTION
-    EXEC(@create_table_script)
-    COMMIT TRANSACTION
+  
+        
 
-END TRY
 
-BEGIN CATCH
-    DECLARE
-        @ErrorMessage nvarchar(MAX),
-        @ErrorSeverity tinyint,
-        @ErrorState tinyint,
-        @ErrorLine tinyint
+	BEGIN TRY
+		BEGIN TRANSACTION
+	EXEC(@drop_table_script)	
+		COMMIT TRANSACTION
+		BEGIN TRANSACTION
+	EXEC(@create_table_script)	
+		COMMIT TRANSACTION
 
-    SET @ErrorMessage = ERROR_MESSAGE()
-    SET @ErrorSeverity = ERROR_SEVERITY()
-    SET @ErrorState = ERROR_STATE()
-    SET @ErrorLine = ERROR_LINE()
 
-    RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState, @ErrorLine)
+	END TRY
 
-    ROLLBACK TRANSACTION
+	BEGIN CATCH
+		DECLARE
+			@ErrorMessage     NVARCHAR(MAX)
+			, @ErrorSeverity  TINYINT
+			, @ErrorState     TINYINT
+			, @ErrorLine	  TINYINT
 
-END CATCH
+		SET @ErrorMessage  = ERROR_MESSAGE()
+		SET @ErrorSeverity = ERROR_SEVERITY()
+		SET @ErrorState    = ERROR_STATE()
+		SET @ErrorLine	   = ERROR_LINE()
+		
+		RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState, @ErrorLine)
+
+		ROLLBACK TRANSACTION
+
+	END CATCH

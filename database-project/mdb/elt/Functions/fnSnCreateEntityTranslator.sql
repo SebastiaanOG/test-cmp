@@ -12,7 +12,7 @@ BEGIN
                 CONVERT(VARCHAR(MAX), CONCAT('{"source": {"path":"[''',  [Name], ''']"},"sink":{"name":"', [Name],'","type":"', [InterimDataType], '"}}')),
                 ','
             ) WITHIN GROUP (ORDER BY [OrdinalPosition] ASC),
-           ',{"source":"ProcessRunId", "sink":{"name":"ProcessRunId"}}',
+           ',{"source": {"path":"[''ProcessRunId'']"}, "sink":{"name":"ProcessRunId", "type":"string"}}',
             ']',
             ',"collectionReference": "$[''result'']", "mapComplexValuesToString": true}'
         )

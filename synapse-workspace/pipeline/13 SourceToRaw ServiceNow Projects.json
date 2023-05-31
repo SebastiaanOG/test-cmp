@@ -97,6 +97,15 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
+						"additionalColumns": [
+							{
+								"name": "ProcessRunId",
+								"value": {
+									"value": "@pipeline().parameters.process_run_id",
+									"type": "Expression"
+								}
+							}
+						],
 						"sqlReaderQuery": {
 							"value": "@concat('select * from elt.vw_sn_', pipeline().parameters.source_entity_name)",
 							"type": "Expression"
@@ -368,6 +377,9 @@
 				"type": "string"
 			},
 			"use_case_code": {
+				"type": "string"
+			},
+			"process_run_id": {
 				"type": "string"
 			}
 		},

@@ -243,7 +243,14 @@
 					"storedProcedureParameters": {
 						"create_table_script": {
 							"value": {
-								"value": "@activity('LU - Drop and-or Create Table script').output.firstrow.CreateTableStatement",
+								"value": "@activity('LU - Drop and-or Create Table script').output.firstRow.CreateTableStatement",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"drop_table_script": {
+							"value": {
+								"value": "@activity('LU - Drop and-or Create Table script').output.firstRow.DropTableStatement",
 								"type": "Expression"
 							},
 							"type": "String"

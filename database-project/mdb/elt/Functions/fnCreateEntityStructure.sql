@@ -1,4 +1,4 @@
-﻿CREATE
+CREATE
 FUNCTION [elt].[fnCreateEntityStructure] (
     @systemname VARCHAR(64),
     @schemaname VARCHAR(50),
@@ -25,7 +25,7 @@ BEGIN
                 ),
                 ','
             ) WITHIN GROUP (ORDER BY [OrdinalPosition] ASC),
-            ',{"name":"ProcessRunId", "type":"Int32"}',
+            ',{"name":"ProcessRunId", "type":"string"}',
             ']'
         )
     FROM
