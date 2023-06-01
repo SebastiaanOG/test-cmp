@@ -530,6 +530,7 @@
 															"value": "@pipeline().parameters.process_run_date",
 															"type": "Expression"
 														},
+														"is_incremental": "false",
 														"mdb_dbname": {
 															"value": "@pipeline().parameters.mdb_dbname",
 															"type": "Expression"

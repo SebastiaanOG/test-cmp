@@ -371,7 +371,7 @@
 			},
 			"is_incremental": {
 				"type": "string",
-				"defaultValue": "true"
+				"defaultValue": "false"
 			},
 			"mdb_dbname": {
 				"type": "string"
