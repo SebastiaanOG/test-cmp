@@ -97,5 +97,5 @@ jobs:
     - name: Post-run | Enable triggers in workspace
       shell: pwsh
       run: |
-        .\scripts\synapse\modifyTriggers.ps1 -WorkspaceName ${{ env.SYNAPSE_WS_NAME }} -action enable
+        .\scripts\synapse\modifyTriggers.ps1 -WorkspaceName ${{ vars.SYNAPSE_WS_NAME }} -action enable
       if: always()
