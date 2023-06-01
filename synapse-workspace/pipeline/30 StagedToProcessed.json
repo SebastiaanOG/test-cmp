@@ -1,0 +1,156 @@
+{
+	"name": "30 StagedToProcessed",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lookup Levels",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[elt].[spLookupLevels]",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ds_sql_dwh_sp",
+						"type": "DatasetReference",
+						"parameters": {
+							"dbname": {
+								"value": "@pipeline().parameters.dwh_dbname",
+								"type": "Expression"
+							}
+						}
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "ForEach Level",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Lookup Levels",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup Levels').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Execute Pipeline 31 StagedToProcessed",
+							"type": "ExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "Lookup Stored Procedures",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "31 StagedToProcessed - Stored Procedures",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"procedures": {
+										"value": "@activity('Lookup Stored Procedures').output.value",
+										"type": "Expression"
+									},
+									"process_run_id": {
+										"value": "@pipeline().parameters.process_run_id",
+										"type": "Expression"
+									},
+									"dwh_dbname": {
+										"value": "@pipeline().parameters.dwh_dbname",
+										"type": "Expression"
+									}
+								}
+							}
+						},
+						{
+							"name": "Lookup Stored Procedures",
+							"type": "Lookup",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderStoredProcedureName": "[elt].[spLookupStoredProcedures]",
+									"storedProcedureParameters": {
+										"level": {
+											"type": "Int32",
+											"value": {
+												"value": "@{item().Level}",
+												"type": "Expression"
+											}
+										}
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "ds_sql_dwh_sp",
+									"type": "DatasetReference",
+									"parameters": {
+										"dbname": {
+											"value": "@pipeline().parameters.dwh_dbname",
+											"type": "Expression"
+										}
+									}
+								},
+								"firstRowOnly": false
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"process_run_id": {
+				"type": "int"
+			},
+			"process_run_date": {
+				"type": "string"
+			},
+			"mdb_dbname": {
+				"type": "string"
+			},
+			"dwh_dbname": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "ELT DWH/30 StagedToProcessed"
+		},
+		"annotations": [],
+		"lastPublishTime": "2020-10-15T16:10:33Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

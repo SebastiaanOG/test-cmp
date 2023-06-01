@@ -3,13 +3,13 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Execute 00 MDDB",
+				"name": "Execute 00 MDB",
 				"type": "ExecutePipeline",
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "00 MDDB",
+						"referenceName": "00 MDB",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,
@@ -21,16 +21,20 @@
 						"process_run_date": {
 							"value": "@pipeline().TriggerTime",
 							"type": "Expression"
+						},
+						"mdb_dbname": {
+							"value": "@pipeline().parameters.mdb_dbname",
+							"type": "Expression"
 						}
 					}
 				}
 			},
 			{
-				"name": "Execute 10 SourceToStaging",
+				"name": "Execute 10 SourceToRaw",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "Execute 00 MDDB",
+						"activity": "Execute 00 MDB",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -39,7 +43,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "10 SourceToBronze",
+						"referenceName": "10 SourceToRaw",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,
@@ -51,16 +55,24 @@
 						"process_run_date": {
 							"value": "@pipeline().TriggerTime",
 							"type": "Expression"
+						},
+						"use_case_code": {
+							"value": "@pipeline().parameters.use_case_code",
+							"type": "Expression"
+						},
+						"mdb_dbname": {
+							"value": "@pipeline().parameters.mdb_dbname",
+							"type": "Expression"
 						}
 					}
 				}
 			},
 			{
-				"name": "Execute 20 BronzeToStaging",
+				"name": "Execute 20 RawToStaged",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "Execute 10 SourceToStaging",
+						"activity": "Execute 10 SourceToRaw",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -69,7 +81,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "20 BronzeToStaging",
+						"referenceName": "20 RawToStaged",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,
@@ -81,16 +93,28 @@
 						"process_run_date": {
 							"value": "@pipeline().TriggerTime",
 							"type": "Expression"
+						},
+						"use_case_code": {
+							"value": "@pipeline().parameters.use_case_code",
+							"type": "Expression"
+						},
+						"mdb_dbname": {
+							"value": "@pipeline().parameters.mdb_dbname",
+							"type": "Expression"
+						},
+						"dwh_dbname": {
+							"value": "@pipeline().parameters.dwh_dbname",
+							"type": "Expression"
 						}
 					}
 				}
 			},
 			{
-				"name": "Execute 30 StagingToGold",
+				"name": "Execute 30 StagedToProcessed",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "Execute 20 BronzeToStaging",
+						"activity": "Execute 20 RawToStaged",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -99,7 +123,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "30 StagingToGold",
+						"referenceName": "30 StagedToProcessed",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,
@@ -110,12 +134,33 @@
 						},
 						"process_run_date": {
 							"value": "@pipeline().TriggerTime",
+							"type": "Expression"
+						},
+						"mdb_dbname": {
+							"value": "@pipeline().parameters.mdb_dbname",
+							"type": "Expression"
+						},
+						"dwh_dbname": {
+							"value": "@pipeline().parameters.dwh_dbname",
 							"type": "Expression"
 						}
 					}
 				}
 			}
 		],
+		"parameters": {
+			"use_case_code": {
+				"type": "string"
+			},
+			"mdb_dbname": {
+				"type": "string",
+				"defaultValue": "mdb"
+			},
+			"dwh_dbname": {
+				"type": "string",
+				"defaultValue": "dwh"
+			}
+		},
 		"annotations": []
 	}
 }

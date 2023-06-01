@@ -1,0 +1,23 @@
+{
+	"name": "ds_sql_mdb_table",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sqldb_mdb",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"dbname": {
+					"value": "@dataset().dbname",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"dbname": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}

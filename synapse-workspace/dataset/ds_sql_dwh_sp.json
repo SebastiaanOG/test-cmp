@@ -1,0 +1,23 @@
+{
+	"name": "ds_sql_dwh_sp",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_sqldb_dwh",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"dbname": {
+					"value": "@dataset().dbname",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"dbname": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}
