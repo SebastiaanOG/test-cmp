@@ -58,6 +58,12 @@ jobs:
           # Install Az PowerShell module
           pwsh -Command "Install-Module -Name Az -Repository PSGallery -Force"
 
+    - name: Pre-run | Install Node.js on self-hosted runner
+      run: |
+        # Necessary for the deploy task for Synapse workspace
+        curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - &&\
+        sudo apt-get install -y nodejs
+
     - name: Pre-run | Azure login
       uses: Azure/login@v1
       with:
@@ -68,11 +74,6 @@ jobs:
                   "tenantId":"${{ vars.TENANT_ID }}"
                 }'
         enable-AzPSSession: true 
-
-    # - name: Pre-run | Install and cache PowerShell modules
-    #   uses: potatoqualitee/psmodulecache@v5.2
-    #   with:
-    #     modules-to-cache: Az.Synapse, Az.Accounts
 
     - name: Pre-run | Disable triggers in workspace
       shell: pwsh
