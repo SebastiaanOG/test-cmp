@@ -73,7 +73,7 @@ jobs:
         tenantId: ${{ vars.TENANT_ID }}
         DeleteArtifactsNotInTemplate: 'true'
         operation: 'validateDeploy'
-        OverrideArmParameters: './parameters/parametersUAT.yaml'
+        OverrideArmParameters: './parameters/${{ needs.init.outputs.environment }}.yaml'
 
     - name: Post-run | Enable triggers in workspace
       shell: pwsh
