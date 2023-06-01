@@ -6,5 +6,5 @@ ls_source_servicenow_tableapi_rest_properties_typeProperties_url: "https://vanoo
 ls_sqldb_dwh_connectionString: "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=sql-vo-cmp-acc-weu-001.database.windows.net;Initial Catalog=@{linkedService().dbname}"
 ls_sqldb_mdb_connectionString: "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=sql-vo-cmp-acc-weu-001.database.windows.net;Initial Catalog=@{linkedService().dbname}"
 ls_st_datalake_properties_typeProperties_url: "https://stvocmpaccweu002.dfs.core.windows.net/"
-WorkspaceDefaultStorage_properties_typeProperties_url: "https://stvocmpdevweu001.dfs.core.windows.net"
+WorkspaceDefaultStorage_properties_typeProperties_url: "https://stvocmpaccweu001.dfs.core.windows.net"
 WorkspaceDefaultSqlServer_connectionString: "Data Source=tcp:sywsvocmpaccweu001.sql.azuresynapse.net,1433;Initial Catalog=@{linkedService().DBName}"
