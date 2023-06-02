@@ -85,6 +85,10 @@
 			},
 			"dwh_dbname": {
 				"type": "string"
+			},
+			"layer_name": {
+				"type": "string",
+				"defaultValue": "processed"
 			}
 		},
 		"folder": {

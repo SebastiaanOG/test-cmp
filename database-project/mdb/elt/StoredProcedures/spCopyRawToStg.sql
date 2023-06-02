@@ -1,4 +1,4 @@
-CREATE PROCEDURE [elt].[spCopyRawToStg] @process_run_date DATE, @pipeline_run_id uniqueidentifier, @use_case_code varchar(max)
+CREATE PROCEDURE [elt].[spCopyRawToStg] @process_run_date DATE, @pipeline_run_id uniqueidentifier, @use_case_code varchar(max), @layer_name nvarchar(max)
 AS
    BEGIN
         WITH CTE
@@ -6,6 +6,7 @@ AS
                         vcm.SystemName, 
                         vcm.SystemType,
 						vcm.SchemaName,
+                        vcm.SystemCode,
                         vcm.EntityName,
                         vcm.UseCaseCode
                  FROM elt.vwMetaDataRaw vcm WHERE vcm.UseCaseCode = @use_case_code)
@@ -13,7 +14,7 @@ AS
                     [elt].[fnCreateStagedFileName](vcm.EntityName, vcm.SchemaName, r.IncrementColumnName, @process_run_date, r.IncrementRange) AS source_entity_file_name, 
                     [elt].[fnCreateStagedFolderPath](vcm.SystemName, @process_run_date) AS source_entity_folder_path, 
                     [elt].[fnCreateEntityStructure](vcm.SystemName, vcm.SchemaName, vcm.EntityName) AS source_entity_structure, 
-                    [elt].[fnCreateTableName](vcm.SystemName, vcm.EntityName) AS sink_entity_name, 
+                    [elt].[fnCreateTableName](@layer_name, vcm.SystemCode, vcm.EntityName) AS sink_entity_name, 
 					vcm.SystemName AS system_name,
 					vcm.EntityName AS entity_name,
                     [elt].[fnCreateEntityStructure](vcm.SystemName, vcm.SchemaName, vcm.EntityName) AS sink_entity_structure, 
