@@ -60,7 +60,7 @@ jobs:
 
     - name: Pre-run | Install Node.js on self-hosted runner
       run: |
-        # Necessary for the deploy task for Synapse workspace
+        # Older version is necessary for the deploy task to work
         curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash - &&\
         sudo apt-get install -y nodejs
 
