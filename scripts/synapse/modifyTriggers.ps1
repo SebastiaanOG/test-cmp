@@ -23,6 +23,7 @@ if ($action -eq 'disable') {
     $triggers | ForEach-Object { Invoke-WebRequest -Method POST -Uri "https://${WorkspaceName}.dev.azuresynapse.net/triggers/$($_.name)/stop?api-version=2020-12-01" -Headers $authHeader }
 }
 elseif ($action -eq 'enable') {
+    Write-Host "Enable triggers for workspace: $($WorkspaceName)"
     $triggers | ForEach-Object { Invoke-WebRequest -Method POST -Uri "https://${WorkspaceName}.dev.azuresynapse.net/triggers/$($_.name)/start?api-version=2020-12-01" -Headers $authHeader }
 }
 else {
