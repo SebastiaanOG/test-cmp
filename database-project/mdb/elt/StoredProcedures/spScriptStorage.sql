@@ -115,7 +115,9 @@ SELECT @Cols = (Select CONCAT(STRING_AGG(
 										  )
 			FROM [elt].[vwMetaDataRaw] t
 			WHERE 1=1
-			AND t.SystemCode = @system_code AND t.EntityName = @entity_name)
+
+			AND EntityName = @lSourceTable 
+			AND SystemName = @lSourceSchema)
 ------------------------------------------------------------------------------------------------------------------------------------------
 /*
 Create Temptable to compare Raw/Staged with Storage
