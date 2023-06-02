@@ -9,6 +9,7 @@ on:
     paths:
       - synapse-workspace/**
       - .github/workflows/synapseDeploy.yml
+      - scripts/synapse/**
 
 jobs:
   init:
