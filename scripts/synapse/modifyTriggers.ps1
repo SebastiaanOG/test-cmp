@@ -17,7 +17,7 @@ if ($action -eq 'disable') {
 }
 elseif ($action -eq 'enable') {
     Write-Host "Enabling triggers for workspace: $($WorkspaceName)"
-    $triggers | ForEach-Object { Start-AzSynapseTrigger -WorkspaceName $WorkspaceName -Name $_.name -Force }
+    $triggers | ForEach-Object { Start-AzSynapseTrigger -WorkspaceName $WorkspaceName -Name $_.name }
 }
 else {
     Write-Host "Doing nothing, i don't know action: $($action)"
