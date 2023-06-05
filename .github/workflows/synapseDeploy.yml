@@ -92,7 +92,7 @@ jobs:
         subscriptionId: ${{ vars.SUBSCRIPTION_ID }}
         resourceGroup: ${{ vars.RESOURCE_GROUP_SYNAPSE }}
         tenantId: ${{ vars.TENANT_ID }}
-        DeleteArtifactsNotInTemplate: 'true'
+        DeleteArtifactsNotInTemplate: false
         operation: 'validateDeploy'
         OverrideArmParameters: './parameters/${{ needs.init.outputs.environment }}.yaml'
 
