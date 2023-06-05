@@ -6,6 +6,7 @@
 ,		@lStoTable [nvarchar](128)
 ,		@SCDType [INT]
 ,		@lIncrementStaged bit = 0
+,		@layer_name [nvarchar](MAX)
 )
 as
 begin
@@ -114,7 +115,9 @@ SELECT @Cols = (Select CONCAT(STRING_AGG(
 										  )
 			FROM [elt].[vwMetaDataRaw] t
 			WHERE 1=1
-			AND [elt].[fnCreateTableName](t.SystemName, t.EntityName) = [elt].[fnCreateTableName](@lSourceSchema, @lSourceTable))
+
+			AND EntityName = @lSourceTable 
+			AND SystemName = @lSourceSchema)
 ------------------------------------------------------------------------------------------------------------------------------------------
 /*
 Create Temptable to compare Raw/Staged with Storage
@@ -252,7 +255,7 @@ SELECT @INSQL = ''
         ,       @INSQL = @INSQL + @lCR + ',GETDATE()'
         ,       @INSQL = @INSQL + @lCR + ',''99991231'''
         ,       @INSQL = @INSQL + @lCR + ',@ProcessRunID'
-        ,       @INSQL = @INSQL + @lCR + 'From ' + [elt].[fnCreateTableName](@lSourceSchema, @lSourceTable)
+        ,       @INSQL = @INSQL + @lCR + 'From ' + [elt].[fnCreateTableName](@layer_name, @lSourceSchema, @lSourceTable)
         ,       @INSQL = @INSQL + @lCR + ''
 
 ------------------------------------------------------------------------------------------------------------------------------------------

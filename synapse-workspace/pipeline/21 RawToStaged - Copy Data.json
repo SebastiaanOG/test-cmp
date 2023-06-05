@@ -35,7 +35,7 @@
 					"sink": {
 						"type": "AzureSqlSink",
 						"preCopyScript": {
-							"value": "@{concat('TRUNCATE TABLE', ' ', pipeline().parameters.sink_entity_name)}",
+							"value": "@{concat('TRUNCATE TABLE', ' ', concat(pipeline().parameters.layer_name, '.', pipeline().parameters.use_case_code, '_', pipeline().parameters.entity_name))}",
 							"type": "Expression"
 						},
 						"writeBehavior": "insert",
@@ -66,13 +66,16 @@
 						"referenceName": "ds_sql_dwh_table",
 						"type": "DatasetReference",
 						"parameters": {
-							"table_name": "@pipeline().parameters.entity_name",
+							"table_name": {
+								"value": "@concat(pipeline().parameters.use_case_code, '_', pipeline().parameters.entity_name)",
+								"type": "Expression"
+							},
 							"structure": {
 								"value": "@pipeline().parameters.sink_entity_structure",
 								"type": "Expression"
 							},
 							"schema": {
-								"value": "@pipeline().parameters.system_name",
+								"value": "@pipeline().parameters.layer_name",
 								"type": "Expression"
 							},
 							"dbname": {
@@ -100,10 +103,10 @@
 						"type": "AzureSqlSource",
 						"sqlReaderStoredProcedureName": "[elt].[spCreateSchema]",
 						"storedProcedureParameters": {
-							"system_name": {
+							"layer_name": {
 								"type": "String",
 								"value": {
-									"value": "@pipeline().parameters.system_name",
+									"value": "@pipeline().parameters.layer_name",
 									"type": "Expression"
 								}
 							}
@@ -189,17 +192,24 @@
 						"type": "AzureSqlSource",
 						"sqlReaderStoredProcedureName": "[elt].[spCreateTableFromMetadata]",
 						"storedProcedureParameters": {
-							"system_name": {
-								"type": "String",
-								"value": {
-									"value": "@pipeline().parameters.system_name",
-									"type": "Expression"
-								}
-							},
 							"entity_name": {
 								"type": "String",
 								"value": {
 									"value": "@pipeline().parameters.entity_name",
+									"type": "Expression"
+								}
+							},
+							"system_code": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.use_case_code",
+									"type": "Expression"
+								}
+							},
+							"layer_name": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.layer_name",
 									"type": "Expression"
 								}
 							}
@@ -305,6 +315,13 @@
 			},
 			"dwh_dbname": {
 				"type": "string"
+			},
+			"use_case_code": {
+				"type": "string"
+			},
+			"layer_name": {
+				"type": "string",
+				"defaultValue": "staged"
 			}
 		},
 		"folder": {

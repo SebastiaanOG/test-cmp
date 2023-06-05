@@ -176,7 +176,7 @@
 								},
 								"cases": [
 									{
-										"value": "dynamics",
+										"value": "dyn",
 										"activities": [
 											{
 												"name": "Execute Pipeline 11",
@@ -496,7 +496,7 @@
 										]
 									},
 									{
-										"value": "snprojects",
+										"value": "snp",
 										"activities": [
 											{
 												"name": "Execute Pipeline 13",
