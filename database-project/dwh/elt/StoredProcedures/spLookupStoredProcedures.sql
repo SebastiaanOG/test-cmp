@@ -1,18 +1,20 @@
 CREATE PROCEDURE [elt].[spLookupStoredProcedures]
-    @level INT
+    @level INT,
+    @use_case_code nvarchar(MAX)
 AS
 BEGIN
 
     SELECT
-        [Schema], --*1 Project is the schema of the storage layer. *2 Stored procedures should have 'Load_' as a preposition in the name.
-        [EntityName],
+        [Schema],
+        [StoredProcedureName],
         CONCAT(
-            '[', [Schema]/*1*/, '].[Load_'/*2*/, [EntityName], ']'
+            '[', [Schema], '].[', [StoredProcedureName], ']'
         ) AS [Procedure]
-    FROM [elt].[StorageTables]
+    FROM [elt].[ProcessedTables]
     WHERE 1 = 1
-        --AND [TableType] = 'Dim' 
         AND [Level] = @level
         AND [Active] = 1
+        AND [UseCaseCode] = @use_case_code
+
 
 END

@@ -143,6 +143,10 @@
 						"dwh_dbname": {
 							"value": "@pipeline().parameters.dwh_dbname",
 							"type": "Expression"
+						},
+						"use_case_code": {
+							"value": "@pipeline().parameters.use_case_code",
+							"type": "Expression"
 						}
 					}
 				}
