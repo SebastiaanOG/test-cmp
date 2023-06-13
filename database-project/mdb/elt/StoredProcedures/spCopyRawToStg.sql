@@ -2,14 +2,21 @@ CREATE PROCEDURE [elt].[spCopyRawToStg] @process_run_date DATE, @pipeline_run_id
 AS
    BEGIN
         WITH CTE
-             AS (SELECT DISTINCT 
-                        vcm.SystemName, 
-                        vcm.SystemType,
-						vcm.SchemaName,
-                        vcm.SystemCode,
-                        vcm.EntityName,
-                        vcm.UseCaseCode
-                 FROM elt.vwMetaDataRaw vcm WHERE vcm.UseCaseCode = @use_case_code)
+                AS (SELECT DISTINCT
+                    vcm.SystemName,
+                    vcm.SystemCode,
+                    vcm.SystemType,
+                    vcm.SchemaName,
+                    vcm.EntityName,
+                    vcm.UseCaseCode,
+                    ue.Active,
+                    ue.CopyToStg
+                FROM elt.vwMetaDataRaw vcm
+                INNER JOIN elt.UseCaseEntity ue ON vcm.UseCaseCode = ue.UseCaseCode
+                WHERE vcm.UseCaseCode = @use_case_code
+                    AND ue.Active = 1
+                    AND ue.CopyToStg = 1
+                )
              SELECT vcm.SystemName AS source_system_name, 
                     [elt].[fnCreateStagedFileName](vcm.EntityName, vcm.SchemaName, r.IncrementColumnName, @process_run_date, r.IncrementRange) AS source_entity_file_name, 
                     [elt].[fnCreateStagedFolderPath](vcm.SystemName, @process_run_date) AS source_entity_folder_path, 
@@ -36,7 +43,5 @@ AS
 						ON ms.SystemName = vcm.SystemName
 						and ms.SystemCode = r.SystemCode
 						and ms.[Active] =1
-             WHERE r.CopyToStg = 1
-                   AND r.IsActive = 1
             ORDER BY vcm.SystemName ASC;
     END;

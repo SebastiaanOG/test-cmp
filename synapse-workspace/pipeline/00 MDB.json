@@ -190,8 +190,7 @@
 				"defaultValue": -1
 			},
 			"process_run_date": {
-				"type": "string",
-				"defaultValue": "2023-02-28"
+				"type": "string"
 			},
 			"mdb_dbname": {
 				"type": "string"
