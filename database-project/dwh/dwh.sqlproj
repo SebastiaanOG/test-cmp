@@ -63,6 +63,7 @@
     <Folder Include="Security\" />
     <Folder Include="elt\StoredProcedures\" />
     <Folder Include="audit\StoredProcedures\" />
+    <Folder Include="PostDeploy"/>
   </ItemGroup>
   <ItemGroup>
     <Build Include="elt\Tables\ProcessedTables.sql" />
@@ -87,8 +88,12 @@
     <None Include="elt\StoredProcedures\Processed\cmptest.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="PostDeploy\pd_ProcessedTables.sql" />
-    <None Include="PostDeploy\pd_AuthSynapseWS.sql" />
+    <PostDeploy Include="PostDeploy\pd_ProcessedTables.sql">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </PostDeploy>
+    <PostDeploy Include="PostDeploy\pd_AuthSynapseWS.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </PostDeploy>
   </ItemGroup>
   <Import Condition="'$(NetCoreBuild)' == 'true'" Project="$(NETCoreTargetsPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>

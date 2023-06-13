@@ -7,6 +7,7 @@ on:
       - development
       - uat
       - main
+      - feature/post-deployment-scripts
     paths:
       - database-project/**
       - .github/workflows/databaseDeploy.yml
@@ -33,7 +34,7 @@ jobs:
   # A matrix can be used to iterate the actions over several inputs parallelly
     strategy:
       matrix:
-        name: [dwh, mdb]
+        name: [dwh_postdeployment]
        
   # MSBuild for sqldb.sln doesn't work on windows-latest
     runs-on: windows-2019
@@ -62,7 +63,7 @@ jobs:
     environment: "${{needs.init.outputs.environment}}"
     strategy:
       matrix:
-        name: [dwh, mdb]
+        name: [dwh_postdeployment]
 
     steps:
     - name: Download the artifact for ${{ matrix.name }} | Download dacpac files on self-hosted runner
