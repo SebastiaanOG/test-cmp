@@ -69,7 +69,7 @@ jobs:
     - name: Download the artifact for ${{ matrix.name }} | Download dacpac files on self-hosted runner
       uses: actions/download-artifact@v2.0.6
       with:
-        name: ${{ matrix.name }}
+        name: 'dwh'
         
     - name: Download and add sqlpackage on self-hosted runner
       run: |

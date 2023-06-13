@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32126.315
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "dwh_postdeployment", "dwh\dwh.sqlproj", "{034F1013-0142-440E-9A0B-66B7FD9FFBFF}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "dwh", "dwh\dwh.sqlproj", "{034F1013-0142-440E-9A0B-66B7FD9FFBFF}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "mdb", "mdb\mdb.sqlproj", "{A0BB9AE3-30B9-4C8B-94B7-B727DA225647}"
 EndProject
