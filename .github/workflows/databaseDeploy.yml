@@ -54,7 +54,7 @@ jobs:
       uses: actions/upload-artifact@master
       with:
         name: ${{ matrix.name }}
-        path: ${{ github.workspace }}\database-project\${{ matrix.name }}\bin\Release\
+        path: ${{ github.workspace }}\database-project\dwh\bin\Release\
 
   # Release on the development environment
   release:
