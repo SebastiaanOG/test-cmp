@@ -10,9 +10,9 @@ Post-Deployment Script Template
 --------------------------------------------------------------------------------------
 */
 
-:r pd_AuthSynapseWS.sql
+:r .\pd_AuthSynapseWS.sql
 GO
-:r pd_ProcessedTables.sql
+:r .\pd_ProcessedTables.sql
 GO
-:r pd_ProcessedTables_test.sql
+:r .\pd_ProcessedTables_test.sql
 GO

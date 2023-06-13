@@ -10,9 +10,9 @@ Post-Deployment Script Template
 --------------------------------------------------------------------------------------
 */
 
-:r pd_AuthSynapseWS.sql
+:r .\pd_AuthSynapseWS.sql
 GO
-:r pd_InsertSnMetadataTables.sql
+:r .\pd_InsertSnMetadataTables.sql
 GO
-:r pd_TypeMap.sql
+:r .\pd_TypeMap.sql
 GO
