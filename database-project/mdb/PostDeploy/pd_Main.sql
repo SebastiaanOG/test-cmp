@@ -12,5 +12,7 @@ Post-Deployment Script Template
 
 :r pd_AuthSynapseWS.sql
 GO
-:r pd_ProcessedTables.sql
+:r pd_InsertSnMetadataTables.sql
+GO
+:r pd_TypeMap.sql
 GO
