@@ -98,7 +98,7 @@ jobs:
       uses: azure/sql-action@v2.1.1
       with:
         connection-string: 'Server=tcp:${{ vars.SQL_SERVER }}.database.windows.net,1433;Initial Catalog=${{ matrix.name }};Authentication=Active Directory Service Principal;User ID=${{ vars.SP_ID }};Password=${{ secrets.SP_SECRET }};'
-        path: '${{ github.workspace }}/${{ matrix.name }}.dacpac'
+        path: '${{ github.workspace }}/dwh.dacpac'
         action: 'Publish'
 
     - name: Logout from Azure 
