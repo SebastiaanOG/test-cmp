@@ -91,9 +91,8 @@
     <PostDeploy Include="PostDeploy\pd_ProcessedTables.sql">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </PostDeploy>
-    <PostDeploy Include="PostDeploy\pd_AuthSynapseWS.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </PostDeploy>
+    <None Include="PostDeploy\pd_ProcessedTables.sql"/>
+    <None Include="PostDeploy\pd_AuthSynapseWS.sql"/>
   </ItemGroup>
   <Import Condition="'$(NetCoreBuild)' == 'true'" Project="$(NETCoreTargetsPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
