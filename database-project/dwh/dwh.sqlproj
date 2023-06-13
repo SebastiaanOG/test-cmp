@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <Name>dwh</Name>
+    <Name>dwh_postdeployment</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{034f1013-0142-440e-9a0b-66b7fd9ffbff}</ProjectGuid>
@@ -104,11 +104,11 @@
   <ItemGroup>
     <ArtifactReference Condition="'$(NetCoreBuild)' == 'true'" Include="$(NETCoreTargetsPath)\SystemDacpacs\AzureV12\master.dacpac">
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
-      <DatabaseVariableLiteralValue>dwh</DatabaseVariableLiteralValue>
+      <DatabaseVariableLiteralValue>dwh_postdeployment</DatabaseVariableLiteralValue>
     </ArtifactReference>
     <ArtifactReference Condition="'$(NetCoreBuild)' != 'true'" Include="$(DacPacRootPath)\Extensions\Microsoft\SQLDB\Extensions\SqlServer\AzureV12\SqlSchemas\master.dacpac">
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
-      <DatabaseVariableLiteralValue>dwh</DatabaseVariableLiteralValue>
+      <DatabaseVariableLiteralValue>dwh_postdeployment</DatabaseVariableLiteralValue>
     </ArtifactReference>
   </ItemGroup>
 </Project>
