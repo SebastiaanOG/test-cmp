@@ -7,7 +7,6 @@ on:
       - development
       - uat
       - main
-      - feature/post-deployment-scripts
     paths:
       - database-project/**
       - .github/workflows/databaseDeploy.yml
@@ -26,8 +25,6 @@ jobs:
             echo "env=Acceptance" >> $GITHUB_OUTPUT
           elif [[ '${{ github.head_ref || github.ref_name }}' == 'development' ]]; then
             echo "env=Development" >> $GITHUB_OUTPUT
-          elif [[ '${{ github.head_ref || github.ref_name }}' == 'feature/post-deployment-scripts' ]]; then
-            echo "env=Development" >> $GITHUB_OUTPUT  
           else
             echo "env=does_not_support" >> $GITHUB_OUTPUT
           fi
@@ -36,7 +33,7 @@ jobs:
   # A matrix can be used to iterate the actions over several inputs parallelly
     strategy:
       matrix:
-        name: [dwh_postdeployment]
+        name: [dwh, mdb]
        
   # MSBuild for sqldb.sln doesn't work on windows-latest
     runs-on: windows-2019
@@ -56,7 +53,7 @@ jobs:
       uses: actions/upload-artifact@master
       with:
         name: ${{ matrix.name }}
-        path: ${{ github.workspace }}\database-project\dwh\bin\Release\
+        path: ${{ github.workspace }}\database-project\${{ matrix.name }}\bin\Release\
 
   # Release on the development environment
   release:
@@ -65,7 +62,7 @@ jobs:
     environment: "${{needs.init.outputs.environment}}"
     strategy:
       matrix:
-        name: [dwh_postdeployment]
+        name: [dwh, mdb]
 
     steps:
     - name: Download the artifact for ${{ matrix.name }} | Download dacpac files on self-hosted runner
@@ -98,7 +95,7 @@ jobs:
       uses: azure/sql-action@v2.1.1
       with:
         connection-string: 'Server=tcp:${{ vars.SQL_SERVER }}.database.windows.net,1433;Initial Catalog=${{ matrix.name }};Authentication=Active Directory Service Principal;User ID=${{ vars.SP_ID }};Password=${{ secrets.SP_SECRET }};'
-        path: '${{ github.workspace }}/dwh.dacpac'
+        path: '${{ github.workspace }}/${{ matrix.name }}.dacpac'
         action: 'Publish'
 
     - name: Logout from Azure 

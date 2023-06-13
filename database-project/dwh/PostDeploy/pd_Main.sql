@@ -14,5 +14,3 @@ Post-Deployment Script Template
 GO
 :r .\pd_ProcessedTables.sql
 GO
-:r .\pd_ProcessedTables_test.sql
-GO
