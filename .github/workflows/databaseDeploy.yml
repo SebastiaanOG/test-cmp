@@ -26,6 +26,8 @@ jobs:
             echo "env=Acceptance" >> $GITHUB_OUTPUT
           elif [[ '${{ github.head_ref || github.ref_name }}' == 'development' ]]; then
             echo "env=Development" >> $GITHUB_OUTPUT
+          elif [[ '${{ github.head_ref || github.ref_name }}' == 'feature/post-deployment-scripts' ]]; then
+            echo "env=Development" >> $GITHUB_OUTPUT  
           else
             echo "env=does_not_support" >> $GITHUB_OUTPUT
           fi
