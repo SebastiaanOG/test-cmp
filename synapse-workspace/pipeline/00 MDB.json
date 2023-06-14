@@ -80,6 +80,10 @@
 													},
 													"waitOnCompletion": true,
 													"parameters": {
+														"process_run_id": {
+															"value": "@pipeline().parameters.process_run_id",
+															"type": "Expression"
+														},
 														"system_code": {
 															"value": "@item().systemcode",
 															"type": "Expression"
@@ -116,6 +120,10 @@
 													},
 													"waitOnCompletion": true,
 													"parameters": {
+														"process_run_id": {
+															"value": "@pipeline().parameters.process_run_id",
+															"type": "Expression"
+														},
 														"system_code": {
 															"value": "@item().systemcode",
 															"type": "Expression"
