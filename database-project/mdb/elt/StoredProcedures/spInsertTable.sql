@@ -21,10 +21,7 @@ DECLARE @ErrorLine	  TINYINT
 			[SystemName] [nvarchar](64) NOT NULL,
 			[SchemaName] [nvarchar](50) NOT NULL,
 			[EntityName] [nvarchar](64) NOT NULL,
-			[CopyToRaw] [bit] NOT NULL,
-			[CopyToStg] [bit] NOT NULL,
 			[SourceQuery] [nvarchar](max) NULL,
-			[IsActive] [bit] NULL,
 			[LastProcessRun] [datetime] NULL,
 			[IncrementColumnName] [nvarchar](64) NULL,
 			[IncrementRange] [int] NULL,
@@ -36,10 +33,7 @@ DECLARE @ErrorLine	  TINYINT
 				,[SystemName]
 				,[SchemaName]
 				,[EntityName]
-				,[CopyToRaw]
-				,[CopyToStg]
 				,[SourceQuery]
-				,[IsActive]
 				,[LastProcessRun]
 				,[IncrementColumnName]
 				,[IncrementRange]
@@ -52,12 +46,12 @@ DECLARE @ErrorLine	  TINYINT
 		AND [EntityName]   = @lTable	
 
 
-IF EXISTS (SELECT top 1 * from elt.MetadataTables  
+IF EXISTS (SELECT top 1 * from elt.UseCaseEntity  
 				WHERE [SystemCode] = @SystemCode
-				AND [SystemName] = @SystemName
+				AND [UseCaseCode] = @SystemCode
 				AND [SchemaName] = @lSchema
 				AND [EntityName] = @lTable
-				AND IsActive = 1
+				AND Active = 1
 				)
 						
 	BEGIN
@@ -96,10 +90,7 @@ BEGIN TRY
 					 ,[SystemName]
 					 ,[SchemaName]
 					 ,[EntityName]
-					 ,[CopyToRaw]
-					 ,[CopyToStg]
 					 ,[SourceQuery]
-					 ,[IsActive]
 					 ,[LastProcessRun]
 					 ,[IncrementColumnName]
 					 ,[IncrementRange]
@@ -112,10 +103,7 @@ BEGIN TRY
 				,@SystemName
 				,@lSchema
 				,@lTable
-				,[CopyToRaw]
-				,[CopyToStg]
 				,[SourceQuery]
-				,1
 				,[LastProcessRun]
 				,[IncrementColumnName]
 				,[IncrementRange]
@@ -150,10 +138,7 @@ BEGIN TRANSACTION
 							 ,[SystemName]
 							 ,[SchemaName]
 							 ,[EntityName]
-							 ,[CopyToRaw]
-							 ,[CopyToStg]
 							 ,[SourceQuery]
-							 ,[IsActive]
 							 ,[LastProcessRun]
 							 ,[IncrementColumnName]
 							 ,[IncrementRange]
@@ -166,10 +151,7 @@ BEGIN TRANSACTION
 						,@SystemName
 						,@lSchema
 						,@lTable
-						,1
-						,1
 						,null
-						,0
 						,NULL
 						,NULL
 						,NULL
@@ -201,10 +183,7 @@ BEGIN
 							,[SystemName]
 							,[SchemaName]
 							,[EntityName]
-							,[CopyToRaw]
-							,[CopyToStg]
 							,[SourceQuery]
-							,[IsActive]
 							,[LastProcessRun]
 							,[IncrementColumnName]
 							,[IncrementRange]
@@ -217,10 +196,7 @@ BEGIN
 							,@SystemName
 							,@lSchema
 							,@lTable
-							,[CopyToRaw]
-							,[CopyToStg]
 							,[SourceQuery]
-							,0
 							,[LastProcessRun]
 							,[IncrementColumnName]
 							,[IncrementRange]

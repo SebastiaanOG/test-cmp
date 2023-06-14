@@ -1,17 +1,23 @@
 CREATE PROCEDURE [elt].[spCopySrcToRaw] @process_run_date DATE, @process_run_id int, @use_case_code varchar(max)
-
 AS
 
     BEGIN
         WITH CTE
-             AS (SELECT DISTINCT 
-                        vcm.SystemName,
-                        vcm.SystemCode, 
-                        vcm.SystemType,
-						vcm.SchemaName,
-                        vcm.EntityName,
-                        vcm.UseCaseCode
-                 FROM elt.vwMetaDataRaw vcm WHERE vcm.UseCaseCode = @use_case_code)
+                AS (SELECT DISTINCT
+                    vcm.SystemName,
+                    vcm.SystemCode,
+                    vcm.SystemType,
+                    vcm.SchemaName,
+                    vcm.EntityName,
+                    vcm.UseCaseCode,
+                    ue.Active,
+                    ue.CopyToRaw
+                FROM elt.vwMetaDataRaw vcm
+                INNER JOIN elt.UseCaseEntity ue ON vcm.UseCaseCode = ue.UseCaseCode
+                WHERE vcm.UseCaseCode = @use_case_code
+                    AND ue.Active = 1
+                    AND ue.CopyToRaw = 1
+                )
              SELECT vcm.SystemName AS source_system_name, 
                     vcm.SystemCode AS source_system_code,
                     [elt].[fnCreateQuery](vcm.SystemName, vcm.SystemType, vcm.SchemaName, vcm.EntityName, @process_run_id, r.SourceQuery, r.IncrementColumnName, @process_run_date, r.IncrementRange, CAST(r.LastIncrement AS DATE), CAST(r.LastIncrement AS TIME(3)) ) AS source_entity_query, 
@@ -32,8 +38,6 @@ AS
                   INNER JOIN CTE vcm ON vcm.SystemName = r.SystemName
                                         AND vcm.EntityName = r.EntityName
 										AND vcm.SchemaName = r.SchemaName
-             WHERE r.CopyToRaw = 1
-			 AND r.IsActive = 1
 			 --AND vcm.SystemName = @system_name
              ORDER BY vcm.SystemName ASC
     END;

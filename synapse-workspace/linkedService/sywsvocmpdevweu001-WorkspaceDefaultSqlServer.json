@@ -1,5 +1,5 @@
 {
-	"name": "WorkspaceDefaultSqlServer",
+	"name": "sywsvocmpdevweu001-WorkspaceDefaultSqlServer",
 	"type": "Microsoft.Synapse/workspaces/linkedservices",
 	"properties": {
 		"typeProperties": {

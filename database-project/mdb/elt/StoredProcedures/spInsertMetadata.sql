@@ -49,13 +49,13 @@ SET @SystemActive = (SELECT TOP 1 [Active] FROM [elt].[MetadataSystem]
 
 PRINT CHAR(13) + '*** Set SystemActive = ' + trim(str(@SystemActive)) + ' ***' 
 
-IF EXISTS (SELECT TOP 1 [IsActive] FROM [elt].[MetadataTables]
+IF EXISTS (SELECT TOP 1 [Active] FROM [elt].[UseCaseEntity]
 					WHERE 1=1 
 					AND [SystemCode] = @SystemCode
-					AND [SystemName] = @SystemName
+					AND [UseCaseCode] = @SystemCode
 					AND [SchemaName] = @lSchema	
 					AND [EntityName] = @lTable
-					AND [IsActive] = 1
+					AND [Active] = 1
 					)		
 	BEGIN 
 	SET @TableActive = 1
@@ -71,15 +71,14 @@ USING (
     SELECT
         [MetadataTables].[SystemCode],
         [MetadataTables].[EntityName],
-        [MetadataTables].[SchemaName],
-        [MetadataTables].[IsActive]
+        [MetadataTables].[SchemaName]
     FROM [elt].[MetadataTables]
-) AS Source ([SystemCode], [EntityName], [SchemaName], [IsActive])
+) AS Source ([SystemCode], [EntityName], [SchemaName])
 ON
     Target.[EntityName] = Source.[EntityName] AND Target.[UseCaseCode] = Source.[SystemCode]
 WHEN NOT MATCHED BY TARGET THEN
-    INSERT ([UseCaseCode], [SystemCode], [EntityName], [SchemaName], [Active])
-    VALUES (Source.[SystemCode], Source.[SystemCode], Source.[EntityName], Source.[SchemaName], Source.[IsActive]);
+    INSERT ([UseCaseCode], [SystemCode], [EntityName], [SchemaName])
+    VALUES (Source.[SystemCode], Source.[SystemCode], Source.[EntityName], Source.[SchemaName]);
 
 
 /*Inserts distinct metadata tables records into UseCase table */
@@ -87,14 +86,13 @@ MERGE INTO [elt].[UseCase] AS Target
 USING (
     SELECT DISTINCT
         [SystemName],
-        [SystemCode],
-        [IsActive]
+        [SystemCode]
     FROM [elt].[MetadataTables]
-) AS Source ([UseCaseName], [UseCaseCode], [Active])
+) AS Source ([UseCaseName], [UseCaseCode])
 ON Target.[UseCaseCode] = Source.[UseCaseCode]
 WHEN NOT MATCHED BY TARGET THEN
-    INSERT ([UseCaseName], [UseCaseCode], [Active])
-    VALUES (Source.[UseCaseName], Source.[UseCaseCode], Source.[Active]);
+    INSERT ([UseCaseName], [UseCaseCode])
+    VALUES (Source.[UseCaseName], Source.[UseCaseCode]);
 
 	
 IF NOT EXISTS ( SELECT top 1 * from [elt].[MetadataStructure]
@@ -390,7 +388,7 @@ Adding the records of the source system to the [elt].[MetadataStructure] table
 							ELSE
 							SET @Message = 'This Table is Inactive';
 
-                -- CTE to remove duplicate 'sys_id' columns produced in the Metadata of 'snprojects' 
+                -- CTE to remove duplicate 'sys_id' columns produced in the Metadata of 'snp' 
 				IF @SystemType = 'Servicenow'
 
 				           BEGIN
@@ -399,7 +397,7 @@ Adding the records of the source system to the [elt].[MetadataStructure] table
                     SELECT [SystemCode], [EntityName], [Name],
                     ROW_NUMBER() OVER (PARTITION BY [SystemCode], [EntityName], [Name] ORDER BY [Name]) AS rn
                     FROM [elt].[MetadataStructure]
-                    WHERE [SystemCode] = 'snprojects')
+                    WHERE [SystemCode] = 'snp')
                     DELETE FROM CTE WHERE rn > 1;	
 
 							END	
