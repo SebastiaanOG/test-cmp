@@ -21,7 +21,7 @@
 		"type": "RestResource",
 		"typeProperties": {
 			"relativeUrl": {
-				"value": "@if(equals(dataset().incremental, true), concat(dataset().relative_api_path, '?sysparm_limit=1000&sysparm_offset={offset}&sysparm_query=sys_updated_on>', addDays(formatDateTime(dataset().current_date, 'yyyy-MM-dd'), -1), '^sys_updated_on<', dataset().current_date), concat(dataset().relative_api_path, '?sysparm_limit=1000&sysparm_offset={offset}'))",
+				"value": "@if(equals(dataset().incremental, true), concat(dataset().relative_api_path, '?sysparm_limit=500&sysparm_offset={offset}&sysparm_query=sys_updated_on>', addDays(formatDateTime(dataset().current_date, 'yyyy-MM-dd'), -1), '^sys_updated_on<', dataset().current_date), concat(dataset().relative_api_path, '?sysparm_limit=500&sysparm_offset={offset}'))",
 				"type": "Expression"
 			}
 		},

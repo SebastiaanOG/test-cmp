@@ -22,7 +22,7 @@
 						"requestMethod": "GET",
 						"paginationRules": {
 							"EndCondition:$.result": "Empty",
-							"QueryParameters.{offset}": "RANGE:0::1000"
+							"QueryParameters.{offset}": "RANGE:0::500"
 						}
 					},
 					"sink": {

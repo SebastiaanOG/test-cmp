@@ -1,9 +1,9 @@
 {
-	"name": "t_dynamics_daily_07_30",
+	"name": "t_snp_daily_03_00",
 	"properties": {
-		"description": "Triggers Dynamics pipelines everyday at 7.30 am.",
+		"description": "Triggers Servicenow Projects pipelines everyday at 3.00 am.",
 		"annotations": [],
-		"runtimeState": "Stopped",
+		"runtimeState": "Started",
 		"pipelines": [
 			{
 				"pipelineReference": {
@@ -11,7 +11,9 @@
 					"type": "PipelineReference"
 				},
 				"parameters": {
-					"use_case_code": "dynamics"
+					"use_case_code": "snp",
+					"mdb_dbname": "mdb",
+					"dwh_dbname": "dwh"
 				}
 			}
 		],
@@ -24,10 +26,10 @@
 				"timeZone": "W. Europe Standard Time",
 				"schedule": {
 					"minutes": [
-						30
+						0
 					],
 					"hours": [
-						7
+						3
 					]
 				}
 			}
