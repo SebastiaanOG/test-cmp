@@ -16,3 +16,5 @@ GO
 GO
 :r .\pd_TypeMap.sql
 GO
+:r .\pd_MetadataSystem.sql
+GO

@@ -117,11 +117,12 @@
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="PostDeploy\pd_Main.sql">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </PostDeploy>
-    <None Include="PostDeploy\pd_TypeMap.sql"/>
-    <None Include="PostDeploy\pd_AuthSynapseWS.sql"/>
-    <None Include="PostDeploy\pd_InsertSnMetadataTables.sql"/>
+    <None Include="PostDeploy\pd_TypeMap.sql" />
+    <None Include="PostDeploy\pd_AuthSynapseWS.sql" />
+    <None Include="PostDeploy\pd_InsertSnMetadataTables.sql" />
+    <None Include="PostDeploy\pd_MetadataSystem.sql" />
   </ItemGroup>
   <Import Condition="'$(NetCoreBuild)' == 'true'" Project="$(NETCoreTargetsPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
