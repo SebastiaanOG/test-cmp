@@ -36,23 +36,23 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'baseUrl' of 'ls_kv_cmp'"
 		},
-		"t_dynamics_daily_07_00_freq": {
+		"t_dyn_daily_07_00_freq": {
 			"type": "string",
 			"defaultValue": "Day"
 		},
-		"t_dynamics_daily_07_00_properties_typeProperties_recurrence_triggerSuffix": {
+		"t_dyn_daily_07_00_properties_typeProperties_recurrence_triggerSuffix": {
 			"type": "int",
 			"defaultValue": 1
 		},
-		"t_dynamics_daily_07_00_properties_typeProperties_recurrence_startTime": {
+		"t_dyn_daily_07_00_properties_typeProperties_recurrence_startTime": {
 			"type": "string",
 			"defaultValue": "2023-04-12T11:04:00"
 		},
-		"t_dynamics_daily_07_00_properties_typeProperties_recurrence_timeZone": {
+		"t_dyn_daily_07_00_properties_typeProperties_recurrence_timeZone": {
 			"type": "string",
 			"defaultValue": "W. Europe Standard Time"
 		},
-		"t_dynamics_daily_07_00_properties_typeProperties_recurrence_schedule": {
+		"t_dyn_daily_07_00_properties_typeProperties_recurrence_schedule": {
 			"type": "object",
 			"defaultValue": {
 				"minutes": [
@@ -4305,7 +4305,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/t_dynamics_daily_07_00')]",
+			"name": "[concat(parameters('workspaceName'), '/t_dyn_daily_07_00')]",
 			"type": "Microsoft.Synapse/workspaces/triggers",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
@@ -4326,11 +4326,11 @@
 				"type": "ScheduleTrigger",
 				"typeProperties": {
 					"recurrence": {
-						"frequency": "[parameters('t_dynamics_daily_07_00_freq')]",
-						"interval": "[parameters('t_dynamics_daily_07_00_properties_typeProperties_recurrence_triggerSuffix')]",
-						"startTime": "[parameters('t_dynamics_daily_07_00_properties_typeProperties_recurrence_startTime')]",
-						"timeZone": "[parameters('t_dynamics_daily_07_00_properties_typeProperties_recurrence_timeZone')]",
-						"schedule": "[parameters('t_dynamics_daily_07_00_properties_typeProperties_recurrence_schedule')]"
+						"frequency": "[parameters('t_dyn_daily_07_00_freq')]",
+						"interval": "[parameters('t_dyn_daily_07_00_properties_typeProperties_recurrence_triggerSuffix')]",
+						"startTime": "[parameters('t_dyn_daily_07_00_properties_typeProperties_recurrence_startTime')]",
+						"timeZone": "[parameters('t_dyn_daily_07_00_properties_typeProperties_recurrence_timeZone')]",
+						"schedule": "[parameters('t_dyn_daily_07_00_properties_typeProperties_recurrence_schedule')]"
 					}
 				}
 			},
