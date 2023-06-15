@@ -7,7 +7,8 @@
                                        @process_run_date DATE = NULL,
                                        @IncrementRange INT = NULL,
                                        @LastIncrementDate DATE = NULL,
-                                       @LastIncrementTime TIME(3) = NULL
+                                       @LastIncrementTime TIME(3) = NULL,
+                                       @process_run_id	UNIQUEIDENTIFIER
 )
 RETURNS VARCHAR(MAX)
 AS
@@ -34,6 +35,7 @@ BEGIN
                 @system_name,
                 @schema_name,
                 @entity_name,
+                @process_run_id,
                 @select_query,
                 @IncrementColumnName,
                 @process_run_date,
@@ -46,6 +48,7 @@ BEGIN
                 @entity_name,
                 @select_query,
                 @IncrementColumnName,
+                @process_run_id,
                 @process_run_date,
                 @IncrementRange,
                 @LastIncrementDate,
@@ -58,6 +61,7 @@ BEGIN
                 @select_query,
                 @IncrementColumnName,
                 @process_run_date,
+                @process_run_id,
                 @IncrementRange
             )
         WHEN 'db2'
@@ -65,6 +69,7 @@ BEGIN
                 @system_name,
                 @schema_name,
                 @entity_name,
+                @process_run_id,
                 @select_query,
                 @IncrementColumnName,
                 @process_run_date,
@@ -75,6 +80,7 @@ BEGIN
                 @system_name,
                 @schema_name,
                 @entity_name,
+                @process_run_id,
                 @select_query,
                 @IncrementColumnName,
                 @process_run_date,

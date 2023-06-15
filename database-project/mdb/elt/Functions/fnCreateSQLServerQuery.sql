@@ -5,6 +5,7 @@ FUNCTION [elt].[fnCreateSQLServerQuery] (
     @entity_name NVARCHAR(64),
     @select_query VARCHAR(MAX) = NULL,
     @IncrementColumnName NVARCHAR(64) = NULL,
+    @process_run_id UNIQUEIDENTIFIER,
     @process_run_date DATE = NULL,
     @IncrementRange INT = NULL,
     @LastIncrementDate DATE = NULL,
@@ -43,8 +44,8 @@ BEGIN
 
     IF @select_query IS NOT NULL
         BEGIN
-            SET
-                @select_clause = @select_query
+            
+               SET @select_clause = REPLACE(@select_query,'<ProcessRunID>',CAST(@process_run_id as varchar(11))+ ' AS ProcessRunId')
         END
     ELSE
         BEGIN
@@ -61,6 +62,7 @@ BEGIN
                 CHAR(32),
                 ',',
                 '''',
+                 @process_run_id, '''', ' AS ProcessRunId',
                 CHAR(32),
                 'FROM ',
                 '[',
