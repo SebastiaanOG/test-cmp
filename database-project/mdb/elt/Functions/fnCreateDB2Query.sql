@@ -3,7 +3,6 @@
 		@system_name VARCHAR(64), 
 		@schema_name VARCHAR(50),
 		@entity_name VARCHAR(64), 
-		@process_run_id INT,
 		@select_query VARCHAR(MAX) = NULL,
 		@delta_name  VARCHAR(64) = NULL, 
 		@delta_date  DATE        = NULL, 
@@ -20,7 +19,7 @@ BEGIN
 			END
 		ELSE
 			BEGIN
-				SELECT @select_clause = CONCAT('SELECT', CHAR(32), STRING_AGG(CONCAT('"', [Name], '"'), ',') WITHIN GROUP (ORDER BY[OrdinalPosition] ASC) , ',', '''',  @process_run_id, '''', ' AS "ProcessRunId"', ' FROM ', '"', @schema_name, '"."', @entity_name, '"') 
+				SELECT @select_clause = CONCAT('SELECT', CHAR(32), STRING_AGG(CONCAT('"', [Name], '"'), ',') WITHIN GROUP (ORDER BY[OrdinalPosition] ASC) , ',', '''', ' FROM ', '"', @schema_name, '"."', @entity_name, '"') 
 				FROM [elt].vwMetaDataRaw		
 				WHERE SystemName = @system_name
 				  AND EntityName = @entity_name

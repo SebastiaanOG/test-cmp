@@ -1,5 +1,5 @@
 ﻿CREATE PROCEDURE [audit].[spEndProcessRun]
-    @process_run_id int
+    @process_run_id nvarchar(36)
 AS
 BEGIN
     UPDATE [audit].ProcessRun

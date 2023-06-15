@@ -1,7 +1,7 @@
 ﻿CREATE PROCEDURE [audit].[spStartPipelineRun]
     @pipeline_run_id uniqueidentifier,
     @pipeline_name [varchar](64),
-    @process_run_id [int]
+    @process_run_id [nvarchar](36)
 
 AS
 BEGIN

@@ -1,5 +1,5 @@
 ﻿CREATE PROCEDURE [audit].[spInsertDataLogStorage]
-    @process_run_id [int],
+    @process_run_id [nvarchar](36),
     @pipeline_run_id uniqueidentifier,
     @schema nvarchar(100),
     @entity_name [nvarchar](100),
