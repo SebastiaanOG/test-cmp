@@ -44,9 +44,7 @@ BEGIN
     IF @select_query IS NOT NULL
         BEGIN
             SET
-                @select_clause = REPLACE(
-                    @select_query
-                )
+                @select_clause = @select_query
         END
     ELSE
         BEGIN
