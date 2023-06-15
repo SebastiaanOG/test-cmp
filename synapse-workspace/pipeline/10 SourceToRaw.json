@@ -20,10 +20,18 @@
 						"sqlReaderStoredProcedureName": "[elt].[spCopySrcToRaw]",
 						"storedProcedureParameters": {
 							"process_run_date": {
-								"type": "DateTime"
+								"type": "DateTime",
+								"value": {
+									"value": "@pipeline().parameters.process_run_date",
+									"type": "Expression"
+								}
 							},
 							"use_case_code": {
-								"type": "String"
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.use_case_code",
+									"type": "Expression"
+								}
 							}
 						},
 						"queryTimeout": "02:00:00",
