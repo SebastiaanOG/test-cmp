@@ -84,7 +84,7 @@
 				"type": "array"
 			},
 			"process_run_id": {
-				"type": "int"
+				"type": "string"
 			}
 		},
 		"folder": {
