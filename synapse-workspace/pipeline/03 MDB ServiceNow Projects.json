@@ -456,10 +456,6 @@
 			}
 		],
 		"parameters": {
-			"process_run_id": {
-				"type": "string",
-				"defaultValue": "-1"
-			},
 			"system_code": {
 				"type": "string"
 			},
