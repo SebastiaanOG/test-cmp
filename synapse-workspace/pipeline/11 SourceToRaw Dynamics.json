@@ -17,6 +17,15 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
+						"additionalColumns": [
+							{
+								"name": "ProcessRunId",
+								"value": {
+									"value": "@pipeline().parameters.process_run_id",
+									"type": "Expression"
+								}
+							}
+						],
 						"sqlReaderQuery": {
 							"value": "@pipeline().parameters.source_entity_query",
 							"type": "Expression"
