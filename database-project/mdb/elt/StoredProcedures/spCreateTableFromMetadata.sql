@@ -41,7 +41,7 @@ BEGIN
 											)
 										  , ','
 										  ) WITHIN GROUP (ORDER BY t.[OrdinalPosition] ASC)
-										  , ', [ProcessRunId] nvarchar(36) NOT NULL'
+										  , ', [ProcessRunId] UNIQUEIDENTIFIER NOT NULL'
 										  , ')'
 										  )
 			FROM [elt].[vwMetaDataRaw] t
