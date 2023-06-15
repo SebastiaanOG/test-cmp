@@ -42,7 +42,7 @@
 											}
 										},
 										"ProcessRunID": {
-											"type": "String",
+											"type": "Guid",
 											"value": {
 												"value": "@pipeline().parameters.process_run_id",
 												"type": "Expression"
