@@ -32,6 +32,13 @@
 									"value": "@pipeline().parameters.use_case_code",
 									"type": "Expression"
 								}
+							},
+							"process_run_id": {
+								"type": "Guid",
+								"value": {
+									"value": "@pipeline().parameters.process_run_id",
+									"type": "Expression"
+								}
 							}
 						},
 						"queryTimeout": "02:00:00",
