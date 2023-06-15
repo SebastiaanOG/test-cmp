@@ -29,7 +29,7 @@
 							"process_run_id": {
 								"type": "Int32",
 								"value": {
-									"value": "1",
+									"value": "@pipeline().parameters.process_run_id",
 									"type": "Expression"
 								}
 							},
@@ -568,6 +568,11 @@
 			},
 			"mdb_dbname": {
 				"type": "string"
+			}
+		},
+		"variables": {
+			"process_run_id": {
+				"type": "String"
 			}
 		},
 		"folder": {
