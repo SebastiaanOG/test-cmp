@@ -13,7 +13,7 @@ AS
                     ue.Active,
                     ue.CopyToRaw
                 FROM elt.vwMetaDataRaw vcm
-                INNER JOIN elt.UseCaseEntity ue ON vcm.UseCaseCode = ue.UseCaseCode
+                INNER JOIN elt.UseCaseEntity ue ON vcm.UseCaseCode = ue.UseCaseCode AND vcm.EntityName = ue.EntityName
                 WHERE vcm.UseCaseCode = @use_case_code
                     AND ue.Active = 1
                     AND ue.CopyToRaw = 1
