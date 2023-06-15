@@ -27,7 +27,7 @@
 								}
 							},
 							"process_run_id": {
-								"type": "Int32",
+								"type": "String",
 								"value": {
 									"value": "@pipeline().parameters.process_run_id",
 									"type": "Expression"

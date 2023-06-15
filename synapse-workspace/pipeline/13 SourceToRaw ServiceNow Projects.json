@@ -17,6 +17,15 @@
 				"typeProperties": {
 					"source": {
 						"type": "RestSource",
+						"additionalColumns": [
+							{
+								"name": "ProcessRunId",
+								"value": {
+									"value": "@pipeline().parameters.process_run_id",
+									"type": "Expression"
+								}
+							}
+						],
 						"httpRequestTimeout": "00:01:40",
 						"requestInterval": "00.00:00:00.010",
 						"requestMethod": "GET",
