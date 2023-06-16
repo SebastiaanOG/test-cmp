@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Lookup - Get all sources",
+				"name": "Lookup - UseCaseEntity sources",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -17,7 +17,16 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT DISTINCT ms.*\nFROM [elt].[UseCaseEntity] uc\nINNER JOIN elt.metadatasystem ms\nON uc.SystemCode = ms.SystemCode\nAND uc.Active = 1",
+						"sqlReaderStoredProcedureName": "[elt].[spLookupActiveSystems]",
+						"storedProcedureParameters": {
+							"UseCaseCode": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.use_case_code",
+									"type": "Expression"
+								}
+							}
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -39,7 +48,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Lookup - Get all sources",
+						"activity": "Lookup - UseCaseEntity sources",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -48,7 +57,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Lookup - Get all sources').output.value",
+						"value": "@activity('Lookup - UseCaseEntity sources').output",
 						"type": "Expression"
 					},
 					"batchCount": 50,
@@ -193,6 +202,9 @@
 				"type": "string"
 			},
 			"mdb_dbname": {
+				"type": "string"
+			},
+			"use_case_code": {
 				"type": "string"
 			}
 		},
