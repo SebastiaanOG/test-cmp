@@ -23,22 +23,34 @@
 		"ls_kv_cmp_properties_typeProperties_baseUrl": {
 			"value": ""
 		},
-		"t_dynamics_daily_07_30_freq": {
+		"ls_source_servicenow_tableapi_http_properties_typeProperties_url": {
+			"value": "https://vanoorddev.service-now.com/api/now/table/"
+		},
+		"ls_source_servicenow_tableapi_rest_properties_typeProperties_url": {
+			"value": "https://vanoorddev.service-now.com/api/now/table/"
+		},
+		"ls_st_datalake_properties_typeProperties_url": {
+			"value": "https://stvocmpdevweu002.dfs.core.windows.net/"
+		},
+		"sywsvocmpdevweu001-WorkspaceDefaultStorage_properties_typeProperties_url": {
+			"value": "https://stvocmpdevweu001.dfs.core.windows.net"
+		},
+		"t_dyn_daily_07_00_freq": {
 			"value": "Day"
 		},
-		"t_dynamics_daily_07_30_properties_typeProperties_recurrence_triggerSuffix": {
+		"t_dyn_daily_07_00_properties_typeProperties_recurrence_triggerSuffix": {
 			"value": 1
 		},
-		"t_dynamics_daily_07_30_properties_typeProperties_recurrence_startTime": {
+		"t_dyn_daily_07_00_properties_typeProperties_recurrence_startTime": {
 			"value": "2023-04-12T11:04:00"
 		},
-		"t_dynamics_daily_07_30_properties_typeProperties_recurrence_timeZone": {
+		"t_dyn_daily_07_00_properties_typeProperties_recurrence_timeZone": {
 			"value": "W. Europe Standard Time"
 		},
-		"t_dynamics_daily_07_30_properties_typeProperties_recurrence_schedule": {
+		"t_dyn_daily_07_00_properties_typeProperties_recurrence_schedule": {
 			"value": {
 				"minutes": [
-					30
+					0
 				],
 				"hours": [
 					7
@@ -64,6 +76,28 @@
 				],
 				"hours": [
 					7
+				]
+			}
+		},
+		"t_snp_daily_03_00_freq": {
+			"value": "Day"
+		},
+		"t_snp_daily_03_00_properties_typeProperties_recurrence_triggerSuffix": {
+			"value": 1
+		},
+		"t_snp_daily_03_00_properties_typeProperties_recurrence_startTime": {
+			"value": "2023-04-12T11:04:00"
+		},
+		"t_snp_daily_03_00_properties_typeProperties_recurrence_timeZone": {
+			"value": "W. Europe Standard Time"
+		},
+		"t_snp_daily_03_00_properties_typeProperties_recurrence_schedule": {
+			"value": {
+				"minutes": [
+					0
+				],
+				"hours": [
+					3
 				]
 			}
 		},

@@ -36,27 +36,43 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'baseUrl' of 'ls_kv_cmp'"
 		},
-		"t_dynamics_daily_07_30_freq": {
+		"ls_source_servicenow_tableapi_http_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://vanoorddev.service-now.com/api/now/table/"
+		},
+		"ls_source_servicenow_tableapi_rest_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://vanoorddev.service-now.com/api/now/table/"
+		},
+		"ls_st_datalake_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://stvocmpdevweu002.dfs.core.windows.net/"
+		},
+		"sywsvocmpdevweu001-WorkspaceDefaultStorage_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://stvocmpdevweu001.dfs.core.windows.net"
+		},
+		"t_dyn_daily_07_00_freq": {
 			"type": "string",
 			"defaultValue": "Day"
 		},
-		"t_dynamics_daily_07_30_properties_typeProperties_recurrence_triggerSuffix": {
+		"t_dyn_daily_07_00_properties_typeProperties_recurrence_triggerSuffix": {
 			"type": "int",
 			"defaultValue": 1
 		},
-		"t_dynamics_daily_07_30_properties_typeProperties_recurrence_startTime": {
+		"t_dyn_daily_07_00_properties_typeProperties_recurrence_startTime": {
 			"type": "string",
 			"defaultValue": "2023-04-12T11:04:00"
 		},
-		"t_dynamics_daily_07_30_properties_typeProperties_recurrence_timeZone": {
+		"t_dyn_daily_07_00_properties_typeProperties_recurrence_timeZone": {
 			"type": "string",
 			"defaultValue": "W. Europe Standard Time"
 		},
-		"t_dynamics_daily_07_30_properties_typeProperties_recurrence_schedule": {
+		"t_dyn_daily_07_00_properties_typeProperties_recurrence_schedule": {
 			"type": "object",
 			"defaultValue": {
 				"minutes": [
-					30
+					0
 				],
 				"hours": [
 					7
@@ -87,6 +103,33 @@
 				],
 				"hours": [
 					7
+				]
+			}
+		},
+		"t_snp_daily_03_00_freq": {
+			"type": "string",
+			"defaultValue": "Day"
+		},
+		"t_snp_daily_03_00_properties_typeProperties_recurrence_triggerSuffix": {
+			"type": "int",
+			"defaultValue": 1
+		},
+		"t_snp_daily_03_00_properties_typeProperties_recurrence_startTime": {
+			"type": "string",
+			"defaultValue": "2023-04-12T11:04:00"
+		},
+		"t_snp_daily_03_00_properties_typeProperties_recurrence_timeZone": {
+			"type": "string",
+			"defaultValue": "W. Europe Standard Time"
+		},
+		"t_snp_daily_03_00_properties_typeProperties_recurrence_schedule": {
+			"type": "object",
+			"defaultValue": {
+				"minutes": [
+					0
+				],
+				"hours": [
+					3
 				]
 			}
 		},
@@ -200,7 +243,7 @@
 										},
 										"cases": [
 											{
-												"value": "dynamics",
+												"value": "dyn",
 												"activities": [
 													{
 														"name": "Execute Pipeline 01 MDB Dynamics",
@@ -272,7 +315,7 @@
 												]
 											},
 											{
-												"value": "snprojects",
+												"value": "snp",
 												"activities": [
 													{
 														"name": "Execute Pipeline 03 Servicenow Projects",
@@ -328,8 +371,7 @@
 						"defaultValue": -1
 					},
 					"process_run_date": {
-						"type": "string",
-						"defaultValue": "2023-02-28"
+						"type": "string"
 					},
 					"mdb_dbname": {
 						"type": "string"
@@ -763,7 +805,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
-								"sqlReaderQuery": "SELECT * FROM elt.MetadataTables\nWHERE IsActive = 1 AND SystemCode = 'snprojects'",
+								"sqlReaderQuery": "SELECT * FROM elt.UseCaseEntity\nWHERE Active = 1 AND SystemCode = 'snp'",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -1684,7 +1726,7 @@
 										},
 										"cases": [
 											{
-												"value": "dynamics",
+												"value": "dyn",
 												"activities": [
 													{
 														"name": "Execute Pipeline 11",
@@ -2004,7 +2046,7 @@
 												]
 											},
 											{
-												"value": "snprojects",
+												"value": "snp",
 												"activities": [
 													{
 														"name": "Execute Pipeline 13",
@@ -2038,6 +2080,7 @@
 																	"value": "@pipeline().parameters.process_run_date",
 																	"type": "Expression"
 																},
+																"is_incremental": "false",
 																"mdb_dbname": {
 																	"value": "@pipeline().parameters.mdb_dbname",
 																	"type": "Expression"
@@ -2336,7 +2379,7 @@
 								"requestMethod": "GET",
 								"paginationRules": {
 									"EndCondition:$.result": "Empty",
-									"QueryParameters.{offset}": "RANGE:0::1000"
+									"QueryParameters.{offset}": "RANGE:0::500"
 								}
 							},
 							"sink": {
@@ -2691,7 +2734,7 @@
 					},
 					"is_incremental": {
 						"type": "string",
-						"defaultValue": "true"
+						"defaultValue": "false"
 					},
 					"mdb_dbname": {
 						"type": "string"
@@ -2758,6 +2801,13 @@
 										"type": "String",
 										"value": {
 											"value": "@pipeline().parameters.use_case_code",
+											"type": "Expression"
+										}
+									},
+									"layer_name": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().parameters.layer_name",
 											"type": "Expression"
 										}
 									}
@@ -2857,6 +2907,10 @@
 											"dwh_dbname": {
 												"value": "@pipeline().parameters.dwh_dbname",
 												"type": "Expression"
+											},
+											"use_case_code": {
+												"value": "@pipeline().parameters.use_case_code",
+												"type": "Expression"
 											}
 										}
 									}
@@ -2885,6 +2939,10 @@
 					},
 					"dwh_dbname": {
 						"type": "string"
+					},
+					"layer_name": {
+						"type": "string",
+						"defaultValue": "staged"
 					}
 				},
 				"folder": {
@@ -2937,7 +2995,7 @@
 							"sink": {
 								"type": "AzureSqlSink",
 								"preCopyScript": {
-									"value": "@{concat('TRUNCATE TABLE', ' ', pipeline().parameters.sink_entity_name)}",
+									"value": "@{concat('TRUNCATE TABLE', ' ', concat(pipeline().parameters.layer_name, '.', pipeline().parameters.use_case_code, '_', pipeline().parameters.entity_name))}",
 									"type": "Expression"
 								},
 								"writeBehavior": "insert",
@@ -2968,13 +3026,16 @@
 								"referenceName": "ds_sql_dwh_table",
 								"type": "DatasetReference",
 								"parameters": {
-									"table_name": "@pipeline().parameters.entity_name",
+									"table_name": {
+										"value": "@concat(pipeline().parameters.use_case_code, '_', pipeline().parameters.entity_name)",
+										"type": "Expression"
+									},
 									"structure": {
 										"value": "@pipeline().parameters.sink_entity_structure",
 										"type": "Expression"
 									},
 									"schema": {
-										"value": "@pipeline().parameters.system_name",
+										"value": "@pipeline().parameters.layer_name",
 										"type": "Expression"
 									},
 									"dbname": {
@@ -3002,10 +3063,10 @@
 								"type": "AzureSqlSource",
 								"sqlReaderStoredProcedureName": "[elt].[spCreateSchema]",
 								"storedProcedureParameters": {
-									"system_name": {
+									"layer_name": {
 										"type": "String",
 										"value": {
-											"value": "@pipeline().parameters.system_name",
+											"value": "@pipeline().parameters.layer_name",
 											"type": "Expression"
 										}
 									}
@@ -3091,17 +3152,24 @@
 								"type": "AzureSqlSource",
 								"sqlReaderStoredProcedureName": "[elt].[spCreateTableFromMetadata]",
 								"storedProcedureParameters": {
-									"system_name": {
-										"type": "String",
-										"value": {
-											"value": "@pipeline().parameters.system_name",
-											"type": "Expression"
-										}
-									},
 									"entity_name": {
 										"type": "String",
 										"value": {
 											"value": "@pipeline().parameters.entity_name",
+											"type": "Expression"
+										}
+									},
+									"system_code": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().parameters.use_case_code",
+											"type": "Expression"
+										}
+									},
+									"layer_name": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().parameters.layer_name",
 											"type": "Expression"
 										}
 									}
@@ -3211,6 +3279,13 @@
 					},
 					"dwh_dbname": {
 						"type": "string"
+					},
+					"use_case_code": {
+						"type": "string"
+					},
+					"layer_name": {
+						"type": "string",
+						"defaultValue": "staged"
 					}
 				},
 				"folder": {
@@ -3248,6 +3323,15 @@
 							"source": {
 								"type": "AzureSqlSource",
 								"sqlReaderStoredProcedureName": "[elt].[spLookupLevels]",
+								"storedProcedureParameters": {
+									"use_case_code": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().parameters.use_case_code",
+											"type": "Expression"
+										}
+									}
+								},
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -3340,6 +3424,13 @@
 														"value": "@{item().Level}",
 														"type": "Expression"
 													}
+												},
+												"use_case_code": {
+													"type": "String",
+													"value": {
+														"value": "@pipeline().parameters.use_case_code",
+														"type": "Expression"
+													}
 												}
 											},
 											"queryTimeout": "02:00:00",
@@ -3377,6 +3468,13 @@
 						"type": "string"
 					},
 					"dwh_dbname": {
+						"type": "string"
+					},
+					"layer_name": {
+						"type": "string",
+						"defaultValue": "processed"
+					},
+					"use_case_code": {
 						"type": "string"
 					}
 				},
@@ -3484,6 +3582,10 @@
 					},
 					"dwh_dbname": {
 						"type": "string"
+					},
+					"layer_name": {
+						"type": "string",
+						"defaultValue": "processed"
 					}
 				},
 				"folder": {
@@ -3642,6 +3744,10 @@
 								},
 								"dwh_dbname": {
 									"value": "@pipeline().parameters.dwh_dbname",
+									"type": "Expression"
+								},
+								"use_case_code": {
+									"value": "@pipeline().parameters.use_case_code",
 									"type": "Expression"
 								}
 							}
@@ -3947,7 +4053,7 @@
 				"type": "RestResource",
 				"typeProperties": {
 					"relativeUrl": {
-						"value": "@if(equals(dataset().incremental, true), concat(dataset().relative_api_path, '?sysparm_limit=1000&sysparm_offset={offset}&sysparm_query=sys_updated_on>', addDays(formatDateTime(dataset().current_date, 'yyyy-MM-dd'), -1), '^sys_updated_on<', dataset().current_date), concat(dataset().relative_api_path, '?sysparm_limit=1000&sysparm_offset={offset}'))",
+						"value": "@if(equals(dataset().incremental, true), concat(dataset().relative_api_path, '?sysparm_limit=500&sysparm_offset={offset}&sysparm_query=sys_updated_on>', addDays(formatDateTime(dataset().current_date, 'yyyy-MM-dd'), -1), '^sys_updated_on<', dataset().current_date), concat(dataset().relative_api_path, '?sysparm_limit=500&sysparm_offset={offset}'))",
 						"type": "Expression"
 					}
 				},
@@ -4130,7 +4236,7 @@
 				],
 				"type": "HttpServer",
 				"typeProperties": {
-					"url": "https://vanoorddev.service-now.com/api/now/table/",
+					"url": "[parameters('ls_source_servicenow_tableapi_http_properties_typeProperties_url')]",
 					"enableServerCertificateValidation": true,
 					"authenticationType": "Basic",
 					"userName": "vo-compass-itbm-portfolio",
@@ -4163,7 +4269,7 @@
 				],
 				"type": "RestService",
 				"typeProperties": {
-					"url": "https://vanoorddev.service-now.com/api/now/table/",
+					"url": "[parameters('ls_source_servicenow_tableapi_rest_properties_typeProperties_url')]",
 					"enableServerCertificateValidation": true,
 					"authenticationType": "Basic",
 					"userName": "vo-compass-itbm-portfolio",
@@ -4250,7 +4356,7 @@
 				],
 				"type": "AzureBlobFS",
 				"typeProperties": {
-					"url": "https://stvocmpdevweu002.dfs.core.windows.net/"
+					"url": "[parameters('ls_st_datalake_properties_typeProperties_url')]"
 				},
 				"connectVia": {
 					"referenceName": "AutoResolveIntegrationRuntime",
@@ -4293,7 +4399,7 @@
 				"annotations": [],
 				"type": "AzureBlobFS",
 				"typeProperties": {
-					"url": "https://stvocmpdevweu001.dfs.core.windows.net"
+					"url": "[parameters('sywsvocmpdevweu001-WorkspaceDefaultStorage_properties_typeProperties_url')]"
 				},
 				"connectVia": {
 					"referenceName": "AutoResolveIntegrationRuntime",
@@ -4305,11 +4411,11 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/t_dynamics_daily_07_30')]",
+			"name": "[concat(parameters('workspaceName'), '/t_dyn_daily_07_00')]",
 			"type": "Microsoft.Synapse/workspaces/triggers",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {
-				"description": "Triggers Dynamics pipelines everyday at 7.30 am.",
+				"description": "Triggers Dynamics pipelines everyday at 7.00 am.",
 				"annotations": [],
 				"runtimeState": "Stopped",
 				"pipelines": [
@@ -4319,18 +4425,20 @@
 							"type": "PipelineReference"
 						},
 						"parameters": {
-							"use_case_code": "dynamics"
+							"use_case_code": "dyn",
+							"mdb_dbname": "mdb",
+							"dwh_dbname": "dwh"
 						}
 					}
 				],
 				"type": "ScheduleTrigger",
 				"typeProperties": {
 					"recurrence": {
-						"frequency": "[parameters('t_dynamics_daily_07_30_freq')]",
-						"interval": "[parameters('t_dynamics_daily_07_30_properties_typeProperties_recurrence_triggerSuffix')]",
-						"startTime": "[parameters('t_dynamics_daily_07_30_properties_typeProperties_recurrence_startTime')]",
-						"timeZone": "[parameters('t_dynamics_daily_07_30_properties_typeProperties_recurrence_timeZone')]",
-						"schedule": "[parameters('t_dynamics_daily_07_30_properties_typeProperties_recurrence_schedule')]"
+						"frequency": "[parameters('t_dyn_daily_07_00_freq')]",
+						"interval": "[parameters('t_dyn_daily_07_00_properties_typeProperties_recurrence_triggerSuffix')]",
+						"startTime": "[parameters('t_dyn_daily_07_00_properties_typeProperties_recurrence_startTime')]",
+						"timeZone": "[parameters('t_dyn_daily_07_00_properties_typeProperties_recurrence_timeZone')]",
+						"schedule": "[parameters('t_dyn_daily_07_00_properties_typeProperties_recurrence_schedule')]"
 					}
 				}
 			},
@@ -4352,7 +4460,10 @@
 							"referenceName": "Master",
 							"type": "PipelineReference"
 						},
-						"parameters": {}
+						"parameters": {
+							"mdb_dbname": "mdb",
+							"dwh_dbname": "dwh"
+						}
 					}
 				],
 				"type": "ScheduleTrigger",
@@ -4363,6 +4474,42 @@
 						"startTime": "[parameters('t_master_daily_07_properties_typeProperties_recurrence_startTime')]",
 						"timeZone": "[parameters('t_master_daily_07_properties_typeProperties_recurrence_timeZone')]",
 						"schedule": "[parameters('t_master_daily_07_properties_typeProperties_recurrence_schedule')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/pipelines/Master')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/t_snp_daily_03_00')]",
+			"type": "Microsoft.Synapse/workspaces/triggers",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"description": "Triggers Servicenow Projects pipelines everyday at 3.00 am.",
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "Master",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"use_case_code": "snp",
+							"mdb_dbname": "mdb",
+							"dwh_dbname": "dwh"
+						}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "[parameters('t_snp_daily_03_00_freq')]",
+						"interval": "[parameters('t_snp_daily_03_00_properties_typeProperties_recurrence_triggerSuffix')]",
+						"startTime": "[parameters('t_snp_daily_03_00_properties_typeProperties_recurrence_startTime')]",
+						"timeZone": "[parameters('t_snp_daily_03_00_properties_typeProperties_recurrence_timeZone')]",
+						"schedule": "[parameters('t_snp_daily_03_00_properties_typeProperties_recurrence_schedule')]"
 					}
 				}
 			},
