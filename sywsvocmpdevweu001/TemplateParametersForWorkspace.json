@@ -23,19 +23,19 @@
 		"ls_kv_cmp_properties_typeProperties_baseUrl": {
 			"value": ""
 		},
-		"t_dyn_daily_07_00_freq": {
+		"t_dynamics_daily_07_00_freq": {
 			"value": "Day"
 		},
-		"t_dyn_daily_07_00_properties_typeProperties_recurrence_triggerSuffix": {
+		"t_dynamics_daily_07_00_properties_typeProperties_recurrence_triggerSuffix": {
 			"value": 1
 		},
-		"t_dyn_daily_07_00_properties_typeProperties_recurrence_startTime": {
+		"t_dynamics_daily_07_00_properties_typeProperties_recurrence_startTime": {
 			"value": "2023-04-12T11:04:00"
 		},
-		"t_dyn_daily_07_00_properties_typeProperties_recurrence_timeZone": {
+		"t_dynamics_daily_07_00_properties_typeProperties_recurrence_timeZone": {
 			"value": "W. Europe Standard Time"
 		},
-		"t_dyn_daily_07_00_properties_typeProperties_recurrence_schedule": {
+		"t_dynamics_daily_07_00_properties_typeProperties_recurrence_schedule": {
 			"value": {
 				"minutes": [
 					30
