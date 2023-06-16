@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "Select * from elt.metadatasystem\nwhere active =1 ",
+						"sqlReaderQuery": "SELECT DISTINCT ms.*\nFROM [elt].[UseCaseEntity] uc\nINNER JOIN elt.metadatasystem ms\nON uc.SystemCode = ms.SystemCode\nAND uc.Active = 1",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
