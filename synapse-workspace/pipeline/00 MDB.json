@@ -57,7 +57,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Lookup - UseCaseEntity sources').output",
+						"value": "@activity('Lookup - UseCaseEntity sources').output.value",
 						"type": "Expression"
 					},
 					"batchCount": 50,
