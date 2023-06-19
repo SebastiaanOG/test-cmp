@@ -20,16 +20,9 @@
 						"sqlReaderStoredProcedureName": "[elt].[spCopySrcToRaw]",
 						"storedProcedureParameters": {
 							"process_run_date": {
-								"type": "Datetime",
+								"type": "DateTime",
 								"value": {
 									"value": "@pipeline().parameters.process_run_date",
-									"type": "Expression"
-								}
-							},
-							"process_run_id": {
-								"type": "Int32",
-								"value": {
-									"value": "1",
 									"type": "Expression"
 								}
 							},
@@ -37,6 +30,13 @@
 								"type": "String",
 								"value": {
 									"value": "@pipeline().parameters.use_case_code",
+									"type": "Expression"
+								}
+							},
+							"process_run_id": {
+								"type": "Guid",
+								"value": {
+									"value": "@pipeline().parameters.process_run_id",
 									"type": "Expression"
 								}
 							}
@@ -568,6 +568,11 @@
 			},
 			"mdb_dbname": {
 				"type": "string"
+			}
+		},
+		"variables": {
+			"process_run_id": {
+				"type": "String"
 			}
 		},
 		"folder": {

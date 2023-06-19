@@ -2,13 +2,13 @@
                                        @system_type VARCHAR(64),
                                        @schema_name VARCHAR(50),
                                        @entity_name VARCHAR(64),
-                                       @process_run_id INT,
                                        @select_query VARCHAR(MAX) = NULL,
                                        @IncrementColumnName VARCHAR(64) = NULL,
                                        @process_run_date DATE = NULL,
                                        @IncrementRange INT = NULL,
                                        @LastIncrementDate DATE = NULL,
-                                       @LastIncrementTime TIME(3) = NULL
+                                       @LastIncrementTime TIME(3) = NULL,
+                                       @process_run_id	UNIQUEIDENTIFIER
 )
 RETURNS VARCHAR(MAX)
 AS
@@ -20,7 +20,6 @@ AS
 --		@system_type NVARCHAR(64) = 'sqlserver',
 --		@schema_name NVARCHAR(50) = 'SalesLT',
 --        @entity_name NVARCHAR(64) = 'Customer', 
---		@process_run_id INT = -1,
 --		@select_query VARCHAR(MAX) = NULL,
 --        @IncrementColumnName NVARCHAR(64) = 'ModifiedDate',
 --        @process_run_date  DATE = '2020-08-24',
@@ -47,9 +46,9 @@ BEGIN
                 @system_name,
                 @schema_name,
                 @entity_name,
-                @process_run_id,
                 @select_query,
                 @IncrementColumnName,
+                @process_run_id,
                 @process_run_date,
                 @IncrementRange,
                 @LastIncrementDate,
@@ -59,10 +58,10 @@ BEGIN
             THEN [elt].[fnCreateMySQLQuery](
                 @system_name,
                 @entity_name,
-                @process_run_id,
                 @select_query,
                 @IncrementColumnName,
                 @process_run_date,
+                @process_run_id,
                 @IncrementRange
             )
         WHEN 'db2'
