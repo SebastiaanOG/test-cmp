@@ -1,4 +1,4 @@
-﻿CREATE FUNCTION [etl].[fnCreateDB2Query] 
+﻿CREATE FUNCTION [elt].[fnCreateDB2Query] 
 	(
 		@system_name VARCHAR(64), 
 		@schema_name VARCHAR(50),
