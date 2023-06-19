@@ -1,5 +1,5 @@
 ﻿CREATE PROCEDURE [audit].[spEndProcessRun]
-    @process_run_id UNIQUEIDENTIFIER
+    @process_run_id NVARCHAR(36)
 AS
 BEGIN
     UPDATE [audit].ProcessRun
