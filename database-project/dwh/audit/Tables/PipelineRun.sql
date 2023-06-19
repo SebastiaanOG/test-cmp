@@ -4,4 +4,4 @@
     [StartDate] DATETIME2 (7) NOT NULL,
     [EndDate] DATETIME2 (7) NULL,
     [ProcessRunId] INT NOT NULL
-);
+); 
