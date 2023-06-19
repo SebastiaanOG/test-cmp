@@ -2,10 +2,10 @@
 FUNCTION [elt].[fnCreateMySQLQuery] (
     @system_name VARCHAR(64),
     @entity_name VARCHAR(64),
-    @process_run_id INT,
     @select_query VARCHAR(MAX) = NULL,
     @delta_name VARCHAR(64) = NULL,
     @delta_date DATE = NULL,
+    @process_run_id UNIQUEIDENTIFIER,
     @delta_range INT = NULL)
 RETURNS VARCHAR(MAX) AS
 BEGIN
@@ -18,7 +18,7 @@ BEGIN
         END
     ELSE
         BEGIN
-            SELECT @select_clause = CONCAT('SELECT', CHAR(32), STRING_AGG(CONCAT('`', [Name], '`'), ',') WITHIN GROUP (ORDER BY[OrdinalPosition] ASC), ',', '''', @process_run_id, '''', ' AS `ProcessRunId`', ' FROM', CHAR(32), '`', @entity_name, '`')
+            SELECT @select_clause = CONCAT('SELECT', CHAR(32), STRING_AGG(CONCAT('`', [Name], '`'), ',') WITHIN GROUP (ORDER BY[OrdinalPosition] ASC) , ',', '''',  @process_run_id, '''', ' AS `ProcessRunId`', ' FROM', CHAR(32), '`', @entity_name, '`')
             FROM [elt].vwMetaDataRaw
             WHERE SYSTEMNAME = @system_name
                 AND ENTITYNAME = @entity_name

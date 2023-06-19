@@ -42,7 +42,7 @@
 											}
 										},
 										"ProcessRunID": {
-											"type": "Int32",
+											"type": "Guid",
 											"value": {
 												"value": "@pipeline().parameters.process_run_id",
 												"type": "Expression"
@@ -81,7 +81,7 @@
 				"type": "array"
 			},
 			"process_run_id": {
-				"type": "int"
+				"type": "string"
 			},
 			"dwh_dbname": {
 				"type": "string"

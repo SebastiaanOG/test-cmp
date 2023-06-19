@@ -1,9 +1,9 @@
-﻿CREATE FUNCTION [elt].[fnCreateDB2Query] 
+﻿CREATE FUNCTION [etl].[fnCreateDB2Query] 
 	(
 		@system_name VARCHAR(64), 
 		@schema_name VARCHAR(50),
 		@entity_name VARCHAR(64), 
-		@process_run_id INT,
+		@process_run_id UNIQUEIDENTIFIER,
 		@select_query VARCHAR(MAX) = NULL,
 		@delta_name  VARCHAR(64) = NULL, 
 		@delta_date  DATE        = NULL, 
