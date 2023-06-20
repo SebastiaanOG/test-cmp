@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [audit].[ProcessError] (
     [ProcessErrorID] INT IDENTITY (1, 1) NOT NULL,
-    [ProcessRunID] INT NOT NULL,
+    [ProcessRunID] UNIQUEIDENTIFIER NOT NULL,
     [PackageName] VARCHAR (MAX) NULL,
     [Schema] NVARCHAR (100) NULL,
     [EntityName] VARCHAR (MAX) NOT NULL,

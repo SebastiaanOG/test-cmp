@@ -1,6 +1,6 @@
 CREATE PROCEDURE [audit].[spInsertDataLogStaged]
     @pipeline_run_id UNIQUEIDENTIFIER,
-    @process_run_id [nvarchar](36),
+    @process_run_id UNIQUEIDENTIFIER,
     @system_name [nvarchar](100),
     @entity_name [nvarchar](100)
 

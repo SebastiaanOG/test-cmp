@@ -3,5 +3,6 @@
     [Name] VARCHAR (64) NOT NULL,
     [StartDate] DATETIME2 (7) NOT NULL,
     [EndDate] DATETIME2 (7) NULL,
-    [ProcessRunId] INT NOT NULL
+    [ProcessRunId] UNIQUEIDENTIFIER NOT NULL
 ); 
+

@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [audit].[ProcessRun] (
-    [id] INT IDENTITY (1, 1) NOT NULL,
+    [id] UNIQUEIDENTIFIER NOT NULL,
     [TriggerType] VARCHAR (32) NULL,
     [TriggerName] VARCHAR (256) NULL,
     [TriggerId] VARCHAR (50) NULL,
