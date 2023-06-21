@@ -15,7 +15,7 @@ GO
 
 IF @@SERVERNAME = 'sql-vo-cmp-prd-weu-001' AND NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = 'sywsvocmpprdweu001')
 BEGIN
-    EXEC('CREATE USER [sywsvocmpprdweu001] WITH SID = "not_provisioned_yet", TYPE = E;');
+    EXEC('CREATE USER [sywsvocmpprdweu001] WITH SID = 0xB649E55CD9CEBE4A9A679FCDD8625547, TYPE = E;');
     EXEC sys.sp_addrolemember @rolename = N'db_owner', @membername = N'sywsvocmpprdweu001';
 END
 GO
