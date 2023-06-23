@@ -1,0 +1,38 @@
+{
+	"name": "t_dyn_daily_07_00",
+	"properties": {
+		"description": "Triggers Dynamics pipelines everyday at 7.00 am.",
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "Master",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"use_case_code": "dyn",
+					"mdb_dbname": "mdb",
+					"dwh_dbname": "dwh"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2023-04-12T11:04:00",
+				"timeZone": "W. Europe Standard Time",
+				"schedule": {
+					"minutes": [
+						0
+					],
+					"hours": [
+						7
+					]
+				}
+			}
+		}
+	}
+}

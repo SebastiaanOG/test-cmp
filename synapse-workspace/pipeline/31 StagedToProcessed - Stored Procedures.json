@@ -1,0 +1,101 @@
+{
+	"name": "31 StagedToProcessed - Stored Procedures",
+	"properties": {
+		"activities": [
+			{
+				"name": "ForEach Stored Procedure",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@pipeline().parameters.procedures",
+						"type": "Expression"
+					},
+					"batchCount": 50,
+					"activities": [
+						{
+							"name": "Load_Stored Procedure",
+							"type": "Lookup",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderStoredProcedureName": {
+										"value": "@item().Procedure",
+										"type": "Expression"
+									},
+									"storedProcedureParameters": {
+										"PipelineRunID": {
+											"type": "Guid",
+											"value": {
+												"value": "@pipeline().RunId",
+												"type": "Expression"
+											}
+										},
+										"ProcessRunID": {
+											"type": "Guid",
+											"value": {
+												"value": "@pipeline().parameters.process_run_id",
+												"type": "Expression"
+											}
+										},
+										"TaskName": {
+											"type": "String",
+											"value": {
+												"value": "@item().Procedure",
+												"type": "Expression"
+											}
+										}
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "ds_sql_dwh_sp",
+									"type": "DatasetReference",
+									"parameters": {
+										"dbname": {
+											"value": "@pipeline().parameters.dwh_dbname",
+											"type": "Expression"
+										}
+									}
+								},
+								"firstRowOnly": false
+							}
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"procedures": {
+				"type": "array"
+			},
+			"process_run_id": {
+				"type": "string"
+			},
+			"dwh_dbname": {
+				"type": "string"
+			},
+			"layer_name": {
+				"type": "string",
+				"defaultValue": "processed"
+			}
+		},
+		"folder": {
+			"name": "ELT DWH/30 StagedToProcessed"
+		},
+		"annotations": [],
+		"lastPublishTime": "2020-10-15T16:10:32Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

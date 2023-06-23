@@ -1,0 +1,38 @@
+{
+	"name": "t_snp_daily_03_00",
+	"properties": {
+		"description": "Triggers Servicenow Projects pipelines everyday at 3.00 am.",
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "Master",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"use_case_code": "snp",
+					"mdb_dbname": "mdb",
+					"dwh_dbname": "dwh"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2023-04-12T11:04:00",
+				"timeZone": "W. Europe Standard Time",
+				"schedule": {
+					"minutes": [
+						0
+					],
+					"hours": [
+						3
+					]
+				}
+			}
+		}
+	}
+}

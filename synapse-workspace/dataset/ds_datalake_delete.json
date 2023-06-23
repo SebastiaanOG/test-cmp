@@ -1,8 +1,9 @@
 {
 	"name": "ds_datalake_delete",
 	"properties": {
+		"description": "This dataset makes sure that files which exceed a retention period are deleted. ",
 		"linkedServiceName": {
-			"referenceName": "syn-m10mdf-dt-WorkspaceDefaultStorage",
+			"referenceName": "ls_st_datalake",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
@@ -19,7 +20,7 @@
 					"value": "@dataset().folder_path",
 					"type": "Expression"
 				},
-				"fileSystem": "bronze"
+				"fileSystem": "raw"
 			},
 			"compressionCodec": "snappy"
 		},

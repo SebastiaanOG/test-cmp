@@ -1,0 +1,118 @@
+name: Deployment of Synapse workspace
+
+on:
+  push:
+    branches:
+      # Synapse development is directly integrated with git
+      - uat
+      - main
+    paths:
+      - synapse-workspace/**
+      - .github/workflows/synapseDeploy.yml
+      - scripts/synapse/**
+
+jobs:
+# check_branch - branch protection rules for uat and prd | init - passes env variable
+  check_branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: if 'main' branch then only allow 'uat' to merge
+        if: github.base_ref == 'main' && github.head_ref != 'uat'
+        run: |
+          echo "ERROR: You can only merge into main from uat."
+          exit 1
+      - name: if 'uat' branch then only allow 'dev' to merge 
+        if: github.base_ref == 'uat' && github.head_ref != 'dev'
+        run: |
+          echo "ERROR: You can only merge into uat from dev."
+          exit 1
+  
+  init:
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ steps.get_env.outputs.env }}
+    steps:
+      - id: get_env
+        run: |
+          if [[ '${{ github.head_ref || github.ref_name }}' == 'main' ]]; then
+            echo "env=Production" >> $GITHUB_OUTPUT
+          elif [[ '${{ github.head_ref || github.ref_name }}' == 'uat' ]]; then
+            echo "env=Acceptance" >> $GITHUB_OUTPUT
+          elif [[ '${{ github.head_ref || github.ref_name }}' == 'development' ]]; then
+            echo "env=Development" >> $GITHUB_OUTPUT
+          else
+            echo "env=does_not_support" >> $GITHUB_OUTPUT
+          fi
+
+  deployment:
+    runs-on: self-hosted
+    needs: init
+    environment: "${{needs.init.outputs.environment}}"
+    steps:
+    - name: Pre-run | Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Pre-run | Install Azure CLI on self-hosted runner
+      run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
+    - name: Pre-run | Install PowerShell on self-hosted runner
+      run: |
+          # Update the list of packages
+          sudo apt-get update
+          # Install pre-requisite packages.
+          sudo apt-get install -y wget apt-transport-https software-properties-common
+          # Download the Microsoft repository GPG keys
+          wget -q "https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/packages-microsoft-prod.deb"
+          # Register the Microsoft repository GPG keys
+          sudo dpkg -i packages-microsoft-prod.deb
+          # Delete the the Microsoft repository GPG keys file
+          rm packages-microsoft-prod.deb
+          # Update the list of packages after we added packages.microsoft.com
+          sudo apt-get update
+          # Install PowerShell
+          sudo apt-get install -y powershell
+          # Install Az PowerShell module
+          pwsh -Command "Install-Module -Name Az -Repository PSGallery -Force"
+
+    - name: Pre-run | Install Node.js on self-hosted runner
+      run: |
+        # Older version is necessary for the deploy task to work
+        curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash - &&\
+        sudo apt-get install -y nodejs
+
+    - name: Pre-run | Azure login
+      uses: Azure/login@v1
+      with:
+        creds: '{
+                  "clientId":"${{ vars.SP_ID }}",
+                  "clientSecret":"${{ secrets.SP_SECRET }}",
+                  "subscriptionId":"${{ vars.SUBSCRIPTION_ID }}",
+                  "tenantId":"${{ vars.TENANT_ID }}"
+                }'
+        enable-AzPSSession: true 
+
+    - name: Pre-run | Disable triggers in workspace
+      shell: pwsh
+      run: |
+        .\scripts\synapse\modifyTriggers.ps1 -WorkspaceName ${{ vars.SYNAPSE_WS_NAME }} -action disable
+
+    - name: Synapse workspace deployment
+      uses: Azure/Synapse-workspace-deployment@V1.7.0
+      with:
+        TargetWorkspaceName: ${{ vars.SYNAPSE_WS_NAME }}
+        ArtifactsFolder: './synapse-workspace'
+        environment: 'Azure Public'
+        clientId: ${{ vars.SP_ID }}
+        clientSecret:  ${{ secrets.SP_SECRET }}
+        subscriptionId: ${{ vars.SUBSCRIPTION_ID }}
+        resourceGroup: ${{ vars.RESOURCE_GROUP_SYNAPSE }}
+        tenantId: ${{ vars.TENANT_ID }}
+        DeleteArtifactsNotInTemplate: false
+        operation: 'validateDeploy'
+        OverrideArmParameters: './parameters/${{ needs.init.outputs.environment }}.yaml'
+
+    - name: Post-run | Enable triggers in workspace
+      shell: pwsh
+      run: |
+        .\scripts\synapse\modifyTriggers.ps1 -WorkspaceName ${{ vars.SYNAPSE_WS_NAME }} -action enable
+      if: always()
