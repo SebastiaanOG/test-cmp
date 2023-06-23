@@ -1,17 +1,4 @@
--- This file contains SQL statements that will be executed after the build script.
-/*
-Post-Deployment Script Template							
---------------------------------------------------------------------------------------
- This file contains SQL statements that will be appended to the build script.		
- Use SQLCMD syntax to include a file in the post-deployment script.			
- Example:      :r .\myfile.sql								
- Use SQLCMD syntax to reference a variable in the post-deployment script.		
- Example:      :setvar TableName MyTable							
-               SELECT * FROM [$(TableName)]					
---------------------------------------------------------------------------------------
-*/
-
-/* Managed Identity Synapse Workspace */
+﻿/* Managed Identity Synapse Workspace */
 IF @@SERVERNAME = 'sql-vo-cmp-dev-weu-001' AND NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = 'sywsvocmpdevweu001')
 BEGIN
     EXEC('CREATE USER [sywsvocmpdevweu001] WITH SID = 0x9695758E99EDEE4FA3BD86408F5B0053, TYPE = E;');
@@ -32,3 +19,4 @@ BEGIN
     EXEC sys.sp_addrolemember @rolename = N'db_owner', @membername = N'sywsvocmpprdweu001';
 END
 GO
+

@@ -1,36 +1,3 @@
-﻿/*
-Post-Deployment Script Template							
---------------------------------------------------------------------------------------
- This file contains SQL statements that will be appended to the build script.		
- Use SQLCMD syntax to include a file in the post-deployment script.			
- Example:      :r .\myfile.sql								
- Use SQLCMD syntax to reference a variable in the post-deployment script.		
- Example:      :setvar TableName MyTable							
-               SELECT * FROM [$(TableName)]					
---------------------------------------------------------------------------------------
-*/
-
-/* Managed Identity Synapse Workspace */
-IF @@SERVERNAME = 'sql-vo-cmp-dev-weu-001' AND NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = 'sywsvocmpdevweu001')
-BEGIN
-    EXEC('CREATE USER [sywsvocmpdevweu001] WITH SID = 0x9695758E99EDEE4FA3BD86408F5B0053, TYPE = E;');
-    EXEC sys.sp_addrolemember @rolename = N'db_owner', @membername = N'sywsvocmpdevweu001';
-END
-GO
-
-IF @@SERVERNAME = 'sql-vo-cmp-acc-weu-001' AND NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = 'sywsvocmpaccweu001')
-BEGIN
-    EXEC('CREATE USER [sywsvocmpaccweu001] WITH SID = 0x3BB7CCE04F873146828F454996FA8E55, TYPE = E;');
-    EXEC sys.sp_addrolemember @rolename = N'db_owner', @membername = N'sywsvocmpaccweu001';
-END
-GO
-
-IF @@SERVERNAME = 'sql-vo-cmp-prd-weu-001' AND NOT EXISTS (SELECT * FROM sys.database_principals WHERE name = 'sywsvocmpprdweu001')
-BEGIN
-    EXEC('CREATE USER [sywsvocmpprdweu001] WITH SID = "not_provisioned_yet", TYPE = E;');
-    EXEC sys.sp_addrolemember @rolename = N'db_owner', @membername = N'sywsvocmpprdweu001';
-END
-GO
 
 /* Truncate before insert */
 TRUNCATE TABLE [elt].[TypeMap]
@@ -336,20 +303,4 @@ INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [Sink
 INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'currency',N'decimal',N'servicenow',N'decimal')
 INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'price',N'decimal',N'servicenow',N'decimal')
 INSERT [elt].[TypeMap] ([SourceDataType], [InterimDataType], [SystemType], [SinkDataType]) VALUES (N'condition_string',N'string',N'servicenow',N'nvarchar')
-GO
-
-/*Insert MetadataTable records for ServiceNow Projects */
-DELETE FROM [elt].[MetadataTables]
-WHERE SystemCode = 'snp'
--- Includes values for columns which are NOT NULL and IncrementColumnName
-INSERT INTO [elt].[MetadataTables] (SystemCode, SystemName, SchemaName, EntityName, IncrementColumnName)
-VALUES 
-('snp', 'servicenow-projects', 'api', 'dmn_demand', 'sys_updated_on'),
-('snp', 'servicenow-projects', 'api', 'issue', 'sys_updated_on'),
-('snp', 'servicenow-projects', 'api', 'pm_portfolio', 'sys_updated_on'),
-('snp', 'servicenow-projects', 'api', 'pm_project', 'sys_updated_on'),
-('snp', 'servicenow-projects', 'api', 'pm_project_task', 'sys_updated_on'),
-('snp', 'servicenow-projects', 'api', 'project_status', 'sys_updated_on'),
-('snp', 'servicenow-projects', 'api', 'risk', 'sys_updated_on');
-
 GO

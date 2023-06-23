@@ -5,7 +5,14 @@
 			{
 				"name": "Execute 00 MDB",
 				"type": "ExecutePipeline",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Set ProcessRunId",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
@@ -14,16 +21,16 @@
 					},
 					"waitOnCompletion": true,
 					"parameters": {
-						"process_run_id": {
-							"value": "@pipeline().RunId",
-							"type": "Expression"
-						},
 						"process_run_date": {
 							"value": "@pipeline().TriggerTime",
 							"type": "Expression"
 						},
 						"mdb_dbname": {
 							"value": "@pipeline().parameters.mdb_dbname",
+							"type": "Expression"
+						},
+						"use_case_code": {
+							"value": "@pipeline().parameters.use_case_code",
 							"type": "Expression"
 						}
 					}
@@ -49,7 +56,7 @@
 					"waitOnCompletion": true,
 					"parameters": {
 						"process_run_id": {
-							"value": "@pipeline().RunId",
+							"value": "@variables('process_run_id')",
 							"type": "Expression"
 						},
 						"process_run_date": {
@@ -87,7 +94,7 @@
 					"waitOnCompletion": true,
 					"parameters": {
 						"process_run_id": {
-							"value": "@pipeline().RunId",
+							"value": "@variables('process_run_id')",
 							"type": "Expression"
 						},
 						"process_run_date": {
@@ -129,7 +136,7 @@
 					"waitOnCompletion": true,
 					"parameters": {
 						"process_run_id": {
-							"value": "@pipeline().RunId",
+							"value": "@variables('process_run_id')",
 							"type": "Expression"
 						},
 						"process_run_date": {
@@ -150,6 +157,19 @@
 						}
 					}
 				}
+			},
+			{
+				"name": "Set ProcessRunId",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "process_run_id",
+					"value": {
+						"value": "@pipeline().RunId",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
@@ -163,6 +183,11 @@
 			"dwh_dbname": {
 				"type": "string",
 				"defaultValue": "dwh"
+			}
+		},
+		"variables": {
+			"process_run_id": {
+				"type": "String"
 			}
 		},
 		"annotations": []

@@ -8,7 +8,7 @@ CREATE PROCEDURE [audit].[spStartProcessRun]	@pipeline_run_id        UNIQUEIDENT
                                                 @data_factory_name      VARCHAR(256)
 AS
     BEGIN
-        DECLARE @current_process_run_id INT;
+        DECLARE @current_process_run_id nvarchar(36);
         INSERT INTO [audit].ProcessRun
         (TriggerType, 
          TriggerName, 

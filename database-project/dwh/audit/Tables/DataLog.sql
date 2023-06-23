@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [audit].[DataLog] (
-    [ProcessRunId] INT NULL,
+    [ProcessRunId] UNIQUEIDENTIFIER NULL,
     [PipelineRunId] UNIQUEIDENTIFIER NULL,
     [Type] NVARCHAR (100) NULL,
     [Schema] NVARCHAR (100) NULL,

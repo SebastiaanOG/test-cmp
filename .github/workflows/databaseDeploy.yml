@@ -12,6 +12,21 @@ on:
       - .github/workflows/databaseDeploy.yml
 
 jobs:
+# check_branch - branch protection rules for uat and prd | init - passes env variable
+  check_branch:
+      runs-on: ubuntu-latest
+      steps:
+        - name: if 'main' branch then only allow 'uat' to merge
+          if: github.base_ref == 'main' && github.head_ref != 'uat'
+          run: |
+            echo "ERROR: You can only merge into main from uat."
+            exit 1
+        - name: if 'uat' branch then only allow 'dev' to merge 
+          if: github.base_ref == 'uat' && github.head_ref != 'dev'
+          run: |
+             echo "ERROR: You can only merge into uat from dev."
+             exit 1
+
   init:
     runs-on: ubuntu-latest
     outputs:
@@ -55,7 +70,7 @@ jobs:
         name: ${{ matrix.name }}
         path: ${{ github.workspace }}\database-project\${{ matrix.name }}\bin\Release\
 
-  # Release on the development environment
+  # Release on the target environment
   release:
     runs-on: self-hosted
     needs: [init, build]
