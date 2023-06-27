@@ -63,6 +63,9 @@
     <Folder Include="Security\" />
     <Folder Include="elt\StoredProcedures\" />
     <Folder Include="audit\StoredProcedures\" />
+    <Folder Include="processed\" />
+    <Folder Include="processed\Tables\" />
+    <Folder Include="processed\StoredProcedures\" />
     <Folder Include="PostDeploy"/>
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +88,8 @@
     <Build Include="Security\elt.sql" />
     <Build Include="Security\processed.sql" />
     <Build Include="Security\audit.sql" />
+    <Build Include="processed\Tables\dyn_area.sql" />
+    <Build Include="processed\StoredProcedures\sp_load_dyn_area.sql" />
     <None Include="elt\StoredProcedures\Processed\cmptest.sql" />
   </ItemGroup>
   <ItemGroup>
