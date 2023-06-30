@@ -90,7 +90,9 @@
     <Build Include="Security\processed.sql" />
     <Build Include="Security\audit.sql" />
     <Build Include="processed\Tables\dyn_area.sql" />
-    <Build Include="processed\StoredProcedures\sp_load_dyn_area.sql" />
+    <Build Include="processed\StoredProcedures\sp_load_dyn_*.sql">
+      <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
+    </Build>
     <None Include="elt\StoredProcedures\Processed\cmptest.sql" />
   </ItemGroup>
   <ItemGroup>
