@@ -44,8 +44,8 @@ AS
 										                numeric_scale ,
 										                datetime_culture = NULL,
 										                datetime_format = NULL,
-														 isactive = 1,
-										                is_primary_key = 0,
+														isactive = 1,
+										                is_primary_key,
 										                primary_key_ordinal = NULL,
 														IsHistory = 1,
 														LastModifiedDate = getdate()
@@ -58,7 +58,8 @@ AS
 													[numeric_precision] nvarchar(500) '$.NUMERIC_PRECISION',
 													[numeric_scale] nvarchar(500) '$.NUMERIC_SCALE',
 													[IS_NULLABLE] nvarchar(500) '$.IS_NULLABLE',
-													[ORDINAL_POSITION] varchar(500) '$.ORDINAL_POSITION'
+													[ORDINAL_POSITION] varchar(500) '$.ORDINAL_POSITION',
+													[is_primary_key] int '$.IS_PRIMARY_KEY'
 													        ) AS Js
 
 							 END

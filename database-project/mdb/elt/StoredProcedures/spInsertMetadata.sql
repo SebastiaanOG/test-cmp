@@ -399,6 +399,10 @@ Adding the records of the source system to the [elt].[MetadataStructure] table
                     FROM [elt].[MetadataStructure]
                     WHERE [SystemCode] = 'snp')
                     DELETE FROM CTE WHERE rn > 1;	
+				
+			    UPDATE [elt].[MetadataStructure]
+				SET [IsNullable] = 0, [IsPrimaryKey] = 1, [CharacterMaximumLength] = 32
+				WHERE [SystemCode] = 'snp' AND [Name] = 'sys_id';
 
 							END	
 							

@@ -116,7 +116,7 @@
 							}
 						],
 						"sqlReaderQuery": {
-							"value": "@concat('select * from elt.vw_sn_', pipeline().parameters.source_entity_name)",
+							"value": "@concat('SELECT * FROM elt.vw_sn_', pipeline().parameters.source_entity_name, ' WHERE sys_id IS NOT NULL')",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",

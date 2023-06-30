@@ -157,8 +157,7 @@
 		],
 		"parameters": {
 			"process_run_id": {
-				"type": "string",
-				"defaultValue": "-1"
+				"type": "string"
 			},
 			"process_run_date": {
 				"type": "string"

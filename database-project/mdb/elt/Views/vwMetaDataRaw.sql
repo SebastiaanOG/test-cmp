@@ -6,6 +6,7 @@ AS
 			st.[SchemaName],
             st.[EntityName], 
             st.[Name],
+            st.[IsPrimaryKey],
 			st.[SemanticName],
 			st.[DataType],
             st.[CharacterMaximumLength], 
