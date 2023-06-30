@@ -82,6 +82,7 @@
     <Build Include="audit\StoredProcedures\spStartPipelineRun.sql" />
     <Build Include="audit\StoredProcedures\spInsertDataLogStorage.sql" />
     <Build Include="audit\StoredProcedures\spInsertDataLogStaged.sql" />
+    <Build Include="audit\StoredProcedures\spInsertDataLogProcessed.sql" />
     <Build Include="audit\StoredProcedures\spErrorLog.sql" />
     <Build Include="audit\StoredProcedures\spEndProcessRun.sql" />
     <Build Include="audit\StoredProcedures\spEndPipelineRun.sql" />

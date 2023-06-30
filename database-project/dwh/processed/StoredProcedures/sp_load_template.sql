@@ -1,21 +1,18 @@
-CREATE PROCEDURE [elt].[sp_staged_to_processed_template]
+CREATE PROCEDURE [processed].[sp_load_template]
     @process_run_date DATE,
-    @process_run_id UNIQUEIDENTIFIER,
-    @pipeline_run_id UNIQUEIDENTIFIER,
-    @use_case_code VARCHAR(MAX),
-    @layer_name NVARCHAR(MAX)
+    @process_run_id UNIQUEIDENTIFIER
 AS
 BEGIN
     DECLARE
-        @schema VARCHAR(20) = 'processed',
+        @schema NVARCHAR(20) = 'processed',
         -- TODO Replace 'your_table' everywhere with e.g. 'dyn_area'
-        @table VARCHAR(20) = 'your_table',
+        @table NVARCHAR(20) = 'your_table',
 
         @inserted INT = 0,
         @updated INT = 0,
         @deleted INT = 0,
         @error_number INT = 0,
-        @error_message VARCHAR(MAX)
+        @error_message NVARCHAR(4000)
 
     BEGIN TRY
         BEGIN TRANSACTION
@@ -29,9 +26,9 @@ BEGIN
 
         CREATE TABLE #temp_your_table
         (
-            -- TODO Define all fields that are selected from the staging table
-            [AK_area] VARCHAR(MAX),
-            [name] VARCHAR(MAX),
+            -- TODO Define all fields and types that are selected from the staging table
+            [AK_entity] NVARCHAR(36), -- e.g. [AK_area]
+            [my_field] NVARCHAR(100), -- Replace by actual fields
             [Hash] VARBINARY(8000) NOT NULL
         )
 
@@ -40,21 +37,21 @@ BEGIN
         INSERT INTO #temp_your_table
         SELECT
             -- TODO Define all fields that are selected from the staging table
-            [hso_areaid],
-            [hso_name],
+            [entity_key], -- e.g. [hso_areaid]
+            [my_field], -- e.g. [hso_name]
 
             -- TODO Concatenate all fields to compute the hash
             HASHBYTES(
                 'MD5',
-                ISNULL([hso_areaid], '')
-                + ISNULL([hso_name], '')
+                ISNULL([entity_key], '')
+                + ISNULL([my_field], '')
             ) AS [Hash]
-        FROM @schema.@table
+        FROM [staged].[your_table]
 
         IF OBJECT_ID(@schema + '.' + @table) IS NULL
             BEGIN
                 DECLARE
-                    @ThrowMessage VARCHAR(100)
+                    @ThrowMessage NVARCHAR(100)
                     = 'The table ' + @schema + '.' + @table
                     + ' does not exist.';
                 THROW 50000, @ThrowMessage, 1;
@@ -67,7 +64,7 @@ BEGIN
             [ProcessRunID] = @process_run_id,
             [dwh_active] = 0
         FROM #temp_your_table AS [T]
-        LEFT JOIN [processed].[your_table] AS [P] ON [T].[AK_area] = [P].[AK_area]
+        LEFT JOIN [processed].[your_table] AS [P] ON [T].[AK_entity] = [P].[AK_entity]
         WHERE
             [T].[Hash] != [P].[Hash]
             AND [P].[dwh_active] = 1
@@ -80,9 +77,9 @@ BEGIN
             [ProcessRunID] = @process_run_id,
             [dwh_active] = 0
         FROM [processed].[your_table] AS [P]
-        LEFT JOIN #temp_your_table AS [T] ON [T].[AK_area] = [P].[AK_area]
+        LEFT JOIN #temp_your_table AS [T] ON [T].[AK_entity] = [P].[AK_entity]
         WHERE
-            [T].[AK_area] IS NULL
+            [T].[AK_entity] IS NULL
             AND [P].[dwh_active] = 1
         SELECT @deleted = @@ROWCOUNT
 
@@ -93,8 +90,8 @@ BEGIN
             [dwh_valid_to],
             [dwh_active],
             -- TODO Define all fields
-            [AK_area],
-            [name],
+            [AK_entity],
+            [my_field],
             [Hash],
             [ProcessRunID]
         )
@@ -102,14 +99,14 @@ BEGIN
             @process_run_date AS [dwh_valid_from],
             NULL AS [dwh_valid_to],
             1 AS [dwh_active],
-            [T].[AK_area],
+            [T].[AK_entity],
             [T].[name],
             [T].[Hash] AS [Hash],
             @process_run_id AS [ProcessRunID]
         FROM #temp_your_table AS [T]
-        LEFT JOIN [processed].[your_table] AS [P] ON [T].[AK_area] = [P].[AK_area]
+        LEFT JOIN [processed].[your_table] AS [P] ON [T].[AK_entity] = [P].[AK_entity]
         WHERE
-            [P].[AK_area] IS NULL
+            [P].[AK_entity] IS NULL
             OR (
                 [T].[Hash] != [P].[Hash]
                 AND [P].[ProcessRunID] = @process_run_id
@@ -119,9 +116,8 @@ BEGIN
         COMMIT
 
         -- Log process result
-        EXECUTE [audit].[spInsertDataLogStorage]
+        EXECUTE [audit].[spInsertDataLogProcessed]
             @process_run_id = @process_run_id,
-            @pipeline_run_id = @pipeline_run_id,
             @schema = @schema,
             @entity_name = @table,
             @rows_affected_insert = @inserted,
@@ -157,9 +153,6 @@ BEGIN
     SELECT
         @process_run_date AS process_run_date,
         @process_run_id AS process_run_id,
-        @pipeline_run_id AS pipeline_run_id,
-        @use_case_code AS use_case_code,
-        @layer_name AS layer_name,
         @inserted AS inserted,
         @updated AS updated,
         @deleted AS deleted,

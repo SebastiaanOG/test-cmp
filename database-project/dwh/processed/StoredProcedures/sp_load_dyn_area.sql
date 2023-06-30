@@ -1,20 +1,17 @@
 CREATE PROCEDURE [processed].[sp_load_dyn_area]
     @process_run_date DATE,
-    @process_run_id UNIQUEIDENTIFIER,
-    @pipeline_run_id UNIQUEIDENTIFIER,
-    @use_case_code VARCHAR(MAX),
-    @layer_name NVARCHAR(MAX)
+    @process_run_id UNIQUEIDENTIFIER
 AS
 BEGIN
     DECLARE
-        @schema VARCHAR(20) = 'processed',
-        @table VARCHAR(20) = 'dyn_area',
+        @schema NVARCHAR(20) = 'processed',
+        @table NVARCHAR(20) = 'dyn_area',
 
         @inserted INT = 0,
         @updated INT = 0,
         @deleted INT = 0,
         @error_number INT = 0,
-        @error_message VARCHAR(MAX)
+        @error_message NVARCHAR(4000)
 
     BEGIN TRY
         BEGIN TRANSACTION
@@ -27,25 +24,25 @@ BEGIN
 
         CREATE TABLE #temp_dyn_area
         (
-            [AK_area] VARCHAR(MAX),
-            [name] VARCHAR(MAX),
-            [areaabbreviation] VARCHAR(MAX),
-            [businessunitid] VARCHAR(MAX),
-            [businessunitid_value] VARCHAR(MAX),
-            [financialprojectsowner_value] VARCHAR(MAX),
+            [AK_area] NVARCHAR(36),
+            [name] NVARCHAR(100),
+            [areaabbreviation] NVARCHAR(20),
+            [businessunitid] NVARCHAR(36),
+            [businessunitid_value] NVARCHAR(100),
+            [financialprojectsowner_value] NVARCHAR(160),
             [hoursreminderdeputy] INT,
-            [nspowner_value] VARCHAR(MAX),
+            [nspowner_value] NVARCHAR(160),
             [waitinghours] INT,
             [waitinghoursreminderemail] INT,
-            [createdby_value] VARCHAR(MAX),
+            [createdby_value] NVARCHAR(200),
             [createdon] DATETIME2(7),
             [importsequencenumber] INT,
-            [modifiedby_value] VARCHAR(MAX),
+            [modifiedby_value] NVARCHAR(200),
             [modifiedon] DATETIME2(7),
-            [ownerid_value] VARCHAR(MAX),
-            [statecode_value] VARCHAR(MAX),
+            [ownerid_value] NVARCHAR(200),
+            [statecode_value] NVARCHAR(4000),
             [statuscode] INT,
-            [statuscode_value] VARCHAR(MAX),
+            [statuscode_value] NVARCHAR(4000),
             [versionnumber] BIGINT,
             [Hash] VARBINARY(8000) NOT NULL
         )
@@ -82,27 +79,27 @@ BEGIN
                 + ISNULL([hso_businessunitid], '')
                 + ISNULL([_hso_businessunitid_value], '')
                 + ISNULL([_hso_financialprojectsowner_value], '')
-                + ISNULL(CAST([hso_hoursreminderdeputy] AS VARCHAR(10)), '')
+                + ISNULL(CAST([hso_hoursreminderdeputy] AS NVARCHAR(10)), '')
                 + ISNULL([_hso_nspowner_value], '')
-                + ISNULL(CAST([hso_waitinghours] AS VARCHAR(10)), '')
-                + ISNULL(CAST([hso_waitinghoursreminderemail] AS VARCHAR(10)), '')
+                + ISNULL(CAST([hso_waitinghours] AS NVARCHAR(10)), '')
+                + ISNULL(CAST([hso_waitinghoursreminderemail] AS NVARCHAR(10)), '')
                 + ISNULL([_createdby_value], '')
-                + ISNULL(CONVERT(VARCHAR(19), [createdon], 120), '')
-                + ISNULL(CAST([importsequencenumber] AS VARCHAR(10)), '')
+                + ISNULL(CONVERT(NVARCHAR(19), [createdon], 120), '')
+                + ISNULL(CAST([importsequencenumber] AS NVARCHAR(10)), '')
                 + ISNULL([_modifiedby_value], '')
-                + ISNULL(CONVERT(VARCHAR(19), [modifiedon], 120), '')
+                + ISNULL(CONVERT(NVARCHAR(19), [modifiedon], 120), '')
                 + ISNULL([_ownerid_value], '')
                 + ISNULL([_statecode_value], '')
-                + ISNULL(CAST([statuscode] AS VARCHAR(10)), '')
+                + ISNULL(CAST([statuscode] AS NVARCHAR(10)), '')
                 + ISNULL([_statuscode_value], '')
-                + ISNULL(CAST([versionnumber] AS VARCHAR(20)), '')
+                + ISNULL(CAST([versionnumber] AS NVARCHAR(20)), '')
             ) AS [Hash]
         FROM [staged].[dyn_EntityArea]
 
         IF OBJECT_ID(@schema + '.' + @table) IS NULL
             BEGIN
                 DECLARE
-                    @ThrowMessage VARCHAR(100)
+                    @ThrowMessage NVARCHAR(100)
                     = 'The table ' + @schema + '.' + @table
                     + ' does not exist.';
                 THROW 50000, @ThrowMessage, 1;
@@ -202,9 +199,8 @@ BEGIN
         COMMIT
 
         -- Log process result
-        EXECUTE [audit].[spInsertDataLogStorage]
+        EXECUTE [audit].[spInsertDataLogProcessed]
             @process_run_id = @process_run_id,
-            @pipeline_run_id = @pipeline_run_id,
             @schema = @schema,
             @entity_name = @table,
             @rows_affected_insert = @inserted,
@@ -217,10 +213,10 @@ BEGIN
         SET @error_number = ERROR_NUMBER();
         SET @error_message = ERROR_MESSAGE();
 
-        PRINT 'Error number: ' + CAST(@error_number AS VARCHAR(10));
+        PRINT 'Error number: ' + CAST(@error_number AS NVARCHAR(10));
         PRINT 'Error message: ' + @error_message;
         PRINT 'Error procedure: ' + ERROR_PROCEDURE();
-        PRINT 'Error line: ' + CAST(ERROR_LINE() AS VARCHAR(10));
+        PRINT 'Error line: ' + CAST(ERROR_LINE() AS NVARCHAR(10));
 
         IF @@TRANCOUNT > 0
             BEGIN
@@ -240,9 +236,6 @@ BEGIN
     SELECT
         @process_run_date AS process_run_date,
         @process_run_id AS process_run_id,
-        @pipeline_run_id AS pipeline_run_id,
-        @use_case_code AS use_case_code,
-        @layer_name AS layer_name,
         @inserted AS inserted,
         @updated AS updated,
         @deleted AS deleted,

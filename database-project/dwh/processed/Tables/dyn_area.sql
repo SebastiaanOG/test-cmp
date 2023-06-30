@@ -1,30 +1,30 @@
 CREATE TABLE [processed].[dyn_area] (
-   [id] bigint IDENTITY NOT NULL,
-   [dwh_valid_from] date NOT NULL,
-   [dwh_valid_to] date NULL,
-   [dwh_active] bit NOT NULL,
-   [AK_area] nvarchar(36) NULL,
-   [name] nvarchar(100) NULL,
-   [areaabbreviation] nvarchar(20) NULL,
-   [businessunitid] nvarchar(36) NULL,
-   [businessunitid_value] nvarchar(100) NULL,
-   [financialprojectsowner_value] nvarchar(160) NULL,
-   [hoursreminderdeputy] int NULL,
-   [nspowner_value] nvarchar(160) NULL,
-   [waitinghours] int NULL,
-   [waitinghoursreminderemail] int NULL,
-   [createdby_value] nvarchar(200) NULL,
+   [id] BIGINT IDENTITY NOT NULL,
+   [dwh_valid_from] DATE NOT NULL,
+   [dwh_valid_to] DATE NULL,
+   [dwh_active] BIT NOT NULL,
+   [AK_area] NVARCHAR(36) NULL,
+   [name] NVARCHAR(100) NULL,
+   [areaabbreviation] NVARCHAR(20) NULL,
+   [businessunitid] NVARCHAR(36) NULL,
+   [businessunitid_value] NVARCHAR(100) NULL,
+   [financialprojectsowner_value] NVARCHAR(160) NULL,
+   [hoursreminderdeputy] INT NULL,
+   [nspowner_value] NVARCHAR(160) NULL,
+   [waitinghours] INT NULL,
+   [waitinghoursreminderemail] INT NULL,
+   [createdby_value] NVARCHAR(200) NULL,
    [createdon] datetime NULL,
-   [importsequencenumber] int NULL,
-   [modifiedby_value] nvarchar(200) NULL,
+   [importsequencenumber] INT NULL,
+   [modifiedby_value] NVARCHAR(200) NULL,
    [modifiedon] datetime NULL,
-   [ownerid_value] nvarchar(200) NULL,
-   [statecode_value] nvarchar(4000) NULL,
-   [statuscode] int NULL,
-   [statuscode_value] nvarchar(4000) NULL,
-   [versionnumber] bigint NULL,
-   [Hash] varbinary(8000) NOT NULL,
-   [ProcessRunID] uniqueidentifier NOT NULL,
+   [ownerid_value] NVARCHAR(200) NULL,
+   [statecode_value] NVARCHAR(4000) NULL,
+   [statuscode] INT NULL,
+   [statuscode_value] NVARCHAR(4000) NULL,
+   [versionnumber] BIGINT NULL,
+   [Hash] VARBINARY(8000) NOT NULL,
+   [ProcessRunID] UNIQUEIDENTIFIER NOT NULL,
    CONSTRAINT [PK_processed.dyn_area] PRIMARY KEY CLUSTERED ([id] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 100, DATA_COMPRESSION = PAGE)
 );
 GO
@@ -289,43 +289,43 @@ exec sys.sp_addextendedproperty @name=N'Source Field Name', @value=N'_statuscode
 GO
 exec sys.sp_addextendedproperty @name=N'Source Field Name', @value=N'versionnumber', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'versionnumber';
 GO
-exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'nvarchar(36)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'AK_area';
+exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'NVARCHAR(36)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'AK_area';
 GO
-exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'nvarchar(100)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'name';
+exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'NVARCHAR(100)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'name';
 GO
-exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'nvarchar(20)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'areaabbreviation';
+exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'NVARCHAR(20)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'areaabbreviation';
 GO
-exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'nvarchar(36)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'businessunitid';
+exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'NVARCHAR(36)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'businessunitid';
 GO
-exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'nvarchar(100)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'businessunitid_value';
+exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'NVARCHAR(100)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'businessunitid_value';
 GO
-exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'nvarchar(160)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'financialprojectsowner_value';
+exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'NVARCHAR(160)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'financialprojectsowner_value';
 GO
 exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'int', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'hoursreminderdeputy';
 GO
-exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'nvarchar(160)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'nspowner_value';
+exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'NVARCHAR(160)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'nspowner_value';
 GO
 exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'int', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'waitinghours';
 GO
 exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'int', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'waitinghoursreminderemail';
 GO
-exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'nvarchar(200)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'createdby_value';
+exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'NVARCHAR(200)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'createdby_value';
 GO
 exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'datetime', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'createdon';
 GO
 exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'int', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'importsequencenumber';
 GO
-exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'nvarchar(200)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'modifiedby_value';
+exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'NVARCHAR(200)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'modifiedby_value';
 GO
 exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'datetime', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'modifiedon';
 GO
-exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'nvarchar(200)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'ownerid_value';
+exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'NVARCHAR(200)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'ownerid_value';
 GO
-exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'nvarchar(4000)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'statecode_value';
+exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'NVARCHAR(4000)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'statecode_value';
 GO
 exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'int', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'statuscode';
 GO
-exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'nvarchar(4000)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'statuscode_value';
+exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'NVARCHAR(4000)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'statuscode_value';
 GO
 exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'bigint', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_area', @level2type=N'COLUMN', @level2name=N'versionnumber';
 GO
