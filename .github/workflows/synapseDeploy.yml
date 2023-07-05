@@ -3,7 +3,7 @@ name: Deployment of Synapse workspace
 on:
   push:
     branches:
-      # Synapse development is directly integrated with git
+      - development
       - uat
       - main
     paths:
