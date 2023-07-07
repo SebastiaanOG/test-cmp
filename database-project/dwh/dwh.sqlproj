@@ -89,10 +89,125 @@
     <Build Include="Security\elt.sql" />
     <Build Include="Security\processed.sql" />
     <Build Include="Security\audit.sql" />
+
+    <Build Include="processed\Tables\dyn_account.sql" />
+    <Build Include="processed\Tables\dyn_approval.sql" />
     <Build Include="processed\Tables\dyn_area.sql" />
-    <Build Include="processed\StoredProcedures\sp_load_dyn_*.sql">
+    <Build Include="processed\Tables\dyn_bondguarantee.sql" />
+    <Build Include="processed\Tables\dyn_country.sql" />
+    <Build Include="processed\Tables\dyn_deviation.sql" />
+    <Build Include="processed\Tables\dyn_employee.sql" />
+    <Build Include="processed\Tables\dyn_equipment.sql" />
+    <Build Include="processed\Tables\dyn_equipmenttype.sql" />
+    <Build Include="processed\Tables\dyn_externalprojectparticipant.sql" />
+    <Build Include="processed\Tables\dyn_internalproject.sql" />
+    <Build Include="processed\Tables\dyn_nonstandardproject.sql" />
+    <Build Include="processed\Tables\dyn_press.sql" />
+    <Build Include="processed\Tables\dyn_procurement.sql" />
+    <Build Include="processed\Tables\dyn_project.sql" />
+    <Build Include="processed\Tables\dyn_projectfinancial.sql" />
+    <Build Include="processed\Tables\dyn_projectgeneral.sql" />
+    <Build Include="processed\Tables\dyn_projectriskprofile.sql" />
+    <Build Include="processed\Tables\dyn_quantitiesequipment.sql" />
+    <Build Include="processed\Tables\dyn_relatedproject.sql" />
+    <Build Include="processed\Tables\dyn_reportingnote.sql" />
+    <Build Include="processed\Tables\dyn_subarea.sql" />
+    <Build Include="processed\Tables\dyn_tenderteam.sql" />
+    <Build Include="processed\Tables\dyn_tenderteamrole.sql" />
+    <Build Include="processed\Tables\dyn_timeregistration.sql" />
+    <Build Include="processed\Tables\dyn_toptenrisk.sql" />
+    <Build Include="processed\Tables\dyn_vanoordentity.sql" />
+    <Build Include="processed\Tables\dyn_vobusinessunit.sql" />
+    <Build Include="processed\Tables\dyn_workelement.sql" />
+
+    <Build Include="processed\StoredProcedures\sp_load_dyn_account.sql">
       <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
     </Build>
+    <Build Include="processed\StoredProcedures\sp_load_dyn_approval.sql">
+      <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
+    </Build>
+    <Build Include="processed\StoredProcedures\sp_load_dyn_area.sql">
+      <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
+    </Build>
+    <Build Include="processed\StoredProcedures\sp_load_dyn_bondguarantee.sql">
+      <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
+    </Build>
+    <Build Include="processed\StoredProcedures\sp_load_dyn_country.sql">
+      <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
+    </Build>
+    <Build Include="processed\StoredProcedures\sp_load_dyn_deviation.sql">
+      <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
+    </Build>
+    <Build Include="processed\StoredProcedures\sp_load_dyn_employee.sql">
+      <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
+    </Build>
+    <Build Include="processed\StoredProcedures\sp_load_dyn_equipment.sql">
+      <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
+    </Build>
+    <Build Include="processed\StoredProcedures\sp_load_dyn_equipmenttype.sql">
+      <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
+    </Build>
+    <Build Include="processed\StoredProcedures\sp_load_dyn_externalprojectparticipant.sql">
+      <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
+    </Build>
+    <Build Include="processed\StoredProcedures\sp_load_dyn_internalproject.sql">
+      <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
+    </Build>
+    <Build Include="processed\StoredProcedures\sp_load_dyn_nonstandardproject.sql">
+      <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
+    </Build>
+    <Build Include="processed\StoredProcedures\sp_load_dyn_press.sql">
+      <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
+    </Build>
+    <Build Include="processed\StoredProcedures\sp_load_dyn_procurement.sql">
+      <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
+    </Build>
+    <Build Include="processed\StoredProcedures\sp_load_dyn_project.sql">
+      <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
+    </Build>
+    <Build Include="processed\StoredProcedures\sp_load_dyn_projectfinancial.sql">
+      <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
+    </Build>
+    <Build Include="processed\StoredProcedures\sp_load_dyn_projectgeneral.sql">
+      <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
+    </Build>
+    <Build Include="processed\StoredProcedures\sp_load_dyn_projectriskprofile.sql">
+      <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
+    </Build>
+    <Build Include="processed\StoredProcedures\sp_load_dyn_quantitiesequipment.sql">
+      <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
+    </Build>
+    <Build Include="processed\StoredProcedures\sp_load_dyn_relatedproject.sql">
+      <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
+    </Build>
+    <Build Include="processed\StoredProcedures\sp_load_dyn_reportingnote.sql">
+      <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
+    </Build>
+    <Build Include="processed\StoredProcedures\sp_load_dyn_subarea.sql">
+      <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
+    </Build>
+    <Build Include="processed\StoredProcedures\sp_load_dyn_tenderteam.sql">
+      <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
+    </Build>
+    <Build Include="processed\StoredProcedures\sp_load_dyn_tenderteamrole.sql">
+      <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
+    </Build>
+    <Build Include="processed\StoredProcedures\sp_load_dyn_timeregistration.sql">
+      <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
+    </Build>
+    <Build Include="processed\StoredProcedures\sp_load_dyn_toptenrisk.sql">
+      <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
+    </Build>
+    <Build Include="processed\StoredProcedures\sp_load_dyn_vanoordentity.sql">
+      <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
+    </Build>
+    <Build Include="processed\StoredProcedures\sp_load_dyn_vobusinessunit.sql">
+      <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
+    </Build>
+    <Build Include="processed\StoredProcedures\sp_load_dyn_workelement.sql">
+      <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
+    </Build>
+
     <None Include="elt\StoredProcedures\Processed\cmptest.sql" />
   </ItemGroup>
   <ItemGroup>
