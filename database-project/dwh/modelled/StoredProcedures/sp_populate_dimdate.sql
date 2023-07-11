@@ -1,11 +1,4 @@
-/****** Object:  StoredProcedure [dbo].[sp_populate_dimdate]    Script Date: 12-3-2023 22:41:34 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-create procedure [dbo].[sp_populate_dimdate]
+create procedure [modelled].[sp_populate_dimdate]
 --/*****************************************************
 --* Deze procedure fills the dimension DimDate         *
 --*                                                    *
@@ -175,7 +168,7 @@ while @EindYear >= @LoopYear
 				set @IndLeapYear = 0
 				if ((@Year % 4 = 0 and @Year % 100 != 0) or (@Year % 400 = 0)) set @IndLeapYear = 1						
 				INSERT INTO modelled.[DimDate]
-				   ( [pk_Date]
+				   ( [pk_date]
 					,[date]
 					,[year]
 					,[quarter_number]
@@ -246,4 +239,3 @@ while @EindYear >= @LoopYear
 		set @LoopYear = DATEPART(YEAR,@LoopDate)
 	end	
 end
-GO
