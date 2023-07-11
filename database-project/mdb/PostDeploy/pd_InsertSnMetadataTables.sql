@@ -10,6 +10,14 @@ VALUES
 ('snp', 'servicenow-projects', 'api', 'pm_project'),
 ('snp', 'servicenow-projects', 'api', 'pm_project_task'),
 ('snp', 'servicenow-projects', 'api', 'project_status'),
-('snp', 'servicenow-projects', 'api', 'risk');
+('snp', 'servicenow-projects', 'api', 'risk'),
+('snp', 'servicenow-projects', 'api', 'pm_m2m_project_stakeholder'),
+('snp', 'servicenow-projects', 'api', 'cost_plan'),
+('snp', 'servicenow-projects', 'api', 'fiscal_period'),
+('snp', 'servicenow-projects', 'api', 'cost_plan_breakdown'),
+('snp', 'servicenow-projects', 'api', 'sys_user'),
+('snp', 'servicenow-projects', 'api', 'cost_plan_baseline'),
+('snp', 'servicenow-projects', 'api', 'cost_plan_breakdown_baseline'),
+('snp', 'servicenow-projects', 'api', 'dmn_demand_baseline');
 
 GO
