@@ -115,7 +115,7 @@ def generate_create_temp_table_fields(data):
 
         create_temp_table_fields.append(f'            [{column_name}] {data_type}{size_precision}')
 
-    create_temp_table_fields.append('            [Hash] VARBINARY(8000) NOT NULL')
+    create_temp_table_fields.append('            [dwh_hash] VARBINARY(8000) NOT NULL')
     return ',\n'.join(create_temp_table_fields)
 
 
