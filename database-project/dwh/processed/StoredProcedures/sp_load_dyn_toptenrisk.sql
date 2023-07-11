@@ -1,11 +1,13 @@
-CREATE PROCEDURE [processed].[sp_load_dyn_toptenrisk]
+CREATE OR ALTER PROCEDURE [processed].[sp_load_dyn_toptenrisk]
     @process_run_date DATE,
     @process_run_id UNIQUEIDENTIFIER
 AS
 BEGIN
+    -- Abort and rollback for all errors, not only the ones captured by BEGIN TRY
+    SET XACT_ABORT ON;
     DECLARE
         @schema NVARCHAR(20) = 'processed',
-        @table NVARCHAR(20) = 'dyn_toptenrisk',
+        @table NVARCHAR(60) = 'dyn_toptenrisk',
 
         @inserted INT = 0,
         @updated INT = 0,
@@ -24,7 +26,7 @@ BEGIN
 
         CREATE TABLE #temp_dyn_toptenrisk
         (
-            [AK_toptenrisk] NVARCHAR(36),
+            [ak_toptenrisk] NVARCHAR(36),
             [discipline] NVARCHAR(400),
             [area] NVARCHAR(36),
             [area_value] NVARCHAR(100),
@@ -44,7 +46,7 @@ BEGIN
             [statuscode] INT,
             [statuscode_value] NVARCHAR(4000),
             [versionnumber] BIGINT,
-            [Hash] VARBINARY(8000) NOT NULL
+            [dwh_hash] VARBINARY(8000) NOT NULL
         )
 
         -- Insert data from staging table into temp table
@@ -55,8 +57,8 @@ BEGIN
             [hso_discipline],
             [hso_area],
             [_hso_area_value],
-            [hso_cause],
-            [hso_consequence],
+            LEFT([hso_cause], 4000),
+            LEFT([hso_consequence], 4000),
             [hso_mitigationmeasures],
             [hso_projectid],
             [_hso_projectid_value],
@@ -67,9 +69,9 @@ BEGIN
             [_modifiedonbehalfby_value],
             [_ownerid_value],
             [statecode],
-            [_statecode_value],
+            LEFT([_statecode_value], 4000),
             [statuscode],
-            [_statuscode_value],
+            LEFT([_statuscode_value], 4000),
             [versionnumber],
             HASHBYTES(
                 'MD5',
@@ -77,8 +79,8 @@ BEGIN
                 + ISNULL([hso_discipline], '')
                 + ISNULL([hso_area], '')
                 + ISNULL([_hso_area_value], '')
-                + ISNULL([hso_cause], '')
-                + ISNULL([hso_consequence], '')
+                + ISNULL(CAST(LEFT([hso_cause], 4000) AS NVARCHAR(4000)), '')
+                + ISNULL(CAST(LEFT([hso_consequence], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([hso_mitigationmeasures], '')
                 + ISNULL([hso_projectid], '')
                 + ISNULL([_hso_projectid_value], '')
@@ -89,11 +91,11 @@ BEGIN
                 + ISNULL([_modifiedonbehalfby_value], '')
                 + ISNULL([_ownerid_value], '')
                 + ISNULL(CAST([statecode] AS NVARCHAR(20)), '')
-                + ISNULL([_statecode_value], '')
+                + ISNULL(CAST(LEFT([_statecode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([statuscode] AS NVARCHAR(20)), '')
-                + ISNULL([_statuscode_value], '')
+                + ISNULL(CAST(LEFT([_statuscode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([versionnumber] AS NVARCHAR(20)), '')
-            ) AS [Hash]
+            ) AS [dwh_hash]
         FROM [staged].[dyn_EntityTopTenRisk]
 
         IF OBJECT_ID(@schema + '.' + @table) IS NULL
@@ -109,12 +111,12 @@ BEGIN
         UPDATE [processed].[dyn_toptenrisk]
         SET
             [dwh_valid_to] = DATEADD(DAY, -1, @process_run_date),
-            [ProcessRunID] = @process_run_id,
+            [dwh_process_run_id] = @process_run_id,
             [dwh_active] = 0
         FROM #temp_dyn_toptenrisk AS [T]
-        LEFT JOIN [processed].[dyn_toptenrisk] AS [P] ON [T].[AK_toptenrisk] = [P].[AK_toptenrisk]
+        LEFT JOIN [processed].[dyn_toptenrisk] AS [P] ON [T].[ak_toptenrisk] = [P].[ak_toptenrisk]
         WHERE
-            [T].[Hash] != [P].[Hash]
+            [T].[dwh_hash] != [P].[dwh_hash]
             AND [P].[dwh_active] = 1
         SELECT @updated = @@ROWCOUNT
 
@@ -122,12 +124,12 @@ BEGIN
         UPDATE [processed].[dyn_toptenrisk]
         SET
             [dwh_valid_to] = DATEADD(DAY, -1, @process_run_date),
-            [ProcessRunID] = @process_run_id,
+            [dwh_process_run_id] = @process_run_id,
             [dwh_active] = 0
         FROM [processed].[dyn_toptenrisk] AS [P]
-        LEFT JOIN #temp_dyn_toptenrisk AS [T] ON [T].[AK_toptenrisk] = [P].[AK_toptenrisk]
+        LEFT JOIN #temp_dyn_toptenrisk AS [T] ON [T].[ak_toptenrisk] = [P].[ak_toptenrisk]
         WHERE
-            [T].[AK_toptenrisk] IS NULL
+            [T].[ak_toptenrisk] IS NULL
             AND [P].[dwh_active] = 1
         SELECT @deleted = @@ROWCOUNT
 
@@ -137,12 +139,13 @@ BEGIN
             [dwh_valid_from],
             [dwh_valid_to],
             [dwh_active],
-            [AK_toptenrisk],
+            [dwh_process_run_id],
+            [ak_toptenrisk],
             [discipline],
             [area],
             [area_value],
-            [cause],
-            [consequence],
+            LEFT([cause], 4000),
+            LEFT([consequence], 4000),
             [mitigationmeasures],
             [projectid],
             [projectid_value],
@@ -153,18 +156,18 @@ BEGIN
             [modifiedonbehalfby_value],
             [ownerid_value],
             [statecode],
-            [statecode_value],
+            LEFT([statecode_value], 4000),
             [statuscode],
-            [statuscode_value],
+            LEFT([statuscode_value], 4000),
             [versionnumber],
-            [Hash],
-            [ProcessRunID]
+            [dwh_hash]            
         )
         SELECT
             @process_run_date AS [dwh_valid_from],
             NULL AS [dwh_valid_to],
             1 AS [dwh_active],
-            [T].[AK_toptenrisk],
+            @process_run_id AS [dwh_process_run_id],
+            [T].[ak_toptenrisk],
             [T].[discipline],
             [T].[area],
             [T].[area_value],
@@ -184,15 +187,14 @@ BEGIN
             [T].[statuscode],
             [T].[statuscode_value],
             [T].[versionnumber],
-            [T].[Hash],
-            @process_run_id AS [ProcessRunID]
+            [T].[dwh_hash]
         FROM #temp_dyn_toptenrisk AS [T]
-        LEFT JOIN [processed].[dyn_toptenrisk] AS [P] ON [T].[AK_toptenrisk] = [P].[AK_toptenrisk]
+        LEFT JOIN [processed].[dyn_toptenrisk] AS [P] ON [T].[ak_toptenrisk] = [P].[ak_toptenrisk]
         WHERE
-            [P].[AK_toptenrisk] IS NULL
+            [P].[ak_toptenrisk] IS NULL
             OR (
-                [T].[Hash] != [P].[Hash]
-                AND [P].[ProcessRunID] = @process_run_id
+                [T].[dwh_hash] != [P].[dwh_hash]
+                AND [P].[dwh_process_run_id] = @process_run_id
             )
         SELECT @inserted = @@ROWCOUNT
 
@@ -206,8 +208,6 @@ BEGIN
             @rows_affected_insert = @inserted,
             @rows_affected_update = @updated,
             @rows_affected_delete = @deleted
-
-
     END TRY
     BEGIN CATCH
         SET @error_number = ERROR_NUMBER();

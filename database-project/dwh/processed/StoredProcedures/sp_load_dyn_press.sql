@@ -1,11 +1,13 @@
-CREATE PROCEDURE [processed].[sp_load_dyn_press]
+CREATE OR ALTER PROCEDURE [processed].[sp_load_dyn_press]
     @process_run_date DATE,
     @process_run_id UNIQUEIDENTIFIER
 AS
 BEGIN
+    -- Abort and rollback for all errors, not only the ones captured by BEGIN TRY
+    SET XACT_ABORT ON;
     DECLARE
         @schema NVARCHAR(20) = 'processed',
-        @table NVARCHAR(20) = 'dyn_press',
+        @table NVARCHAR(60) = 'dyn_press',
 
         @inserted INT = 0,
         @updated INT = 0,
@@ -24,7 +26,7 @@ BEGIN
 
         CREATE TABLE #temp_dyn_press
         (
-            [AK_press] NVARCHAR(36),
+            [ak_press] NVARCHAR(36),
             [name] NVARCHAR(100),
             [areaid] NVARCHAR(36),
             [areaid_value] NVARCHAR(100),
@@ -46,7 +48,7 @@ BEGIN
             [statuscode_value] NVARCHAR(4000),
             [timezoneruleversionnumber] INT,
             [versionnumber] BIGINT,
-            [Hash] VARBINARY(8000) NOT NULL
+            [dwh_hash] VARBINARY(8000) NOT NULL
         )
 
         -- Insert data from staging table into temp table
@@ -58,7 +60,7 @@ BEGIN
             [hso_areaid],
             [_hso_areaid_value],
             [hso_date],
-            [hso_description],
+            LEFT([hso_description], 4000),
             [hso_projectid],
             [_hso_projectid_value],
             [hso_url],
@@ -70,9 +72,9 @@ BEGIN
             [_modifiedonbehalfby_value],
             [_ownerid_value],
             [statecode],
-            [_statecode_value],
+            LEFT([_statecode_value], 4000),
             [statuscode],
-            [_statuscode_value],
+            LEFT([_statuscode_value], 4000),
             [timezoneruleversionnumber],
             [versionnumber],
             HASHBYTES(
@@ -82,7 +84,7 @@ BEGIN
                 + ISNULL([hso_areaid], '')
                 + ISNULL([_hso_areaid_value], '')
                 + ISNULL(CONVERT(NVARCHAR(19), [hso_date], 120), '')
-                + ISNULL([hso_description], '')
+                + ISNULL(CAST(LEFT([hso_description], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([hso_projectid], '')
                 + ISNULL([_hso_projectid_value], '')
                 + ISNULL([hso_url], '')
@@ -94,12 +96,12 @@ BEGIN
                 + ISNULL([_modifiedonbehalfby_value], '')
                 + ISNULL([_ownerid_value], '')
                 + ISNULL(CAST([statecode] AS NVARCHAR(20)), '')
-                + ISNULL([_statecode_value], '')
+                + ISNULL(CAST(LEFT([_statecode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([statuscode] AS NVARCHAR(20)), '')
-                + ISNULL([_statuscode_value], '')
+                + ISNULL(CAST(LEFT([_statuscode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([timezoneruleversionnumber] AS NVARCHAR(20)), '')
                 + ISNULL(CAST([versionnumber] AS NVARCHAR(20)), '')
-            ) AS [Hash]
+            ) AS [dwh_hash]
         FROM [staged].[dyn_EntityPress]
 
         IF OBJECT_ID(@schema + '.' + @table) IS NULL
@@ -115,12 +117,12 @@ BEGIN
         UPDATE [processed].[dyn_press]
         SET
             [dwh_valid_to] = DATEADD(DAY, -1, @process_run_date),
-            [ProcessRunID] = @process_run_id,
+            [dwh_process_run_id] = @process_run_id,
             [dwh_active] = 0
         FROM #temp_dyn_press AS [T]
-        LEFT JOIN [processed].[dyn_press] AS [P] ON [T].[AK_press] = [P].[AK_press]
+        LEFT JOIN [processed].[dyn_press] AS [P] ON [T].[ak_press] = [P].[ak_press]
         WHERE
-            [T].[Hash] != [P].[Hash]
+            [T].[dwh_hash] != [P].[dwh_hash]
             AND [P].[dwh_active] = 1
         SELECT @updated = @@ROWCOUNT
 
@@ -128,12 +130,12 @@ BEGIN
         UPDATE [processed].[dyn_press]
         SET
             [dwh_valid_to] = DATEADD(DAY, -1, @process_run_date),
-            [ProcessRunID] = @process_run_id,
+            [dwh_process_run_id] = @process_run_id,
             [dwh_active] = 0
         FROM [processed].[dyn_press] AS [P]
-        LEFT JOIN #temp_dyn_press AS [T] ON [T].[AK_press] = [P].[AK_press]
+        LEFT JOIN #temp_dyn_press AS [T] ON [T].[ak_press] = [P].[ak_press]
         WHERE
-            [T].[AK_press] IS NULL
+            [T].[ak_press] IS NULL
             AND [P].[dwh_active] = 1
         SELECT @deleted = @@ROWCOUNT
 
@@ -143,12 +145,13 @@ BEGIN
             [dwh_valid_from],
             [dwh_valid_to],
             [dwh_active],
-            [AK_press],
+            [dwh_process_run_id],
+            [ak_press],
             [name],
             [areaid],
             [areaid_value],
             [date],
-            [description],
+            LEFT([description], 4000),
             [projectid],
             [projectid_value],
             [url],
@@ -160,19 +163,19 @@ BEGIN
             [modifiedonbehalfby_value],
             [ownerid_value],
             [statecode],
-            [statecode_value],
+            LEFT([statecode_value], 4000),
             [statuscode],
-            [statuscode_value],
+            LEFT([statuscode_value], 4000),
             [timezoneruleversionnumber],
             [versionnumber],
-            [Hash],
-            [ProcessRunID]
+            [dwh_hash]            
         )
         SELECT
             @process_run_date AS [dwh_valid_from],
             NULL AS [dwh_valid_to],
             1 AS [dwh_active],
-            [T].[AK_press],
+            @process_run_id AS [dwh_process_run_id],
+            [T].[ak_press],
             [T].[name],
             [T].[areaid],
             [T].[areaid_value],
@@ -194,15 +197,14 @@ BEGIN
             [T].[statuscode_value],
             [T].[timezoneruleversionnumber],
             [T].[versionnumber],
-            [T].[Hash],
-            @process_run_id AS [ProcessRunID]
+            [T].[dwh_hash]
         FROM #temp_dyn_press AS [T]
-        LEFT JOIN [processed].[dyn_press] AS [P] ON [T].[AK_press] = [P].[AK_press]
+        LEFT JOIN [processed].[dyn_press] AS [P] ON [T].[ak_press] = [P].[ak_press]
         WHERE
-            [P].[AK_press] IS NULL
+            [P].[ak_press] IS NULL
             OR (
-                [T].[Hash] != [P].[Hash]
-                AND [P].[ProcessRunID] = @process_run_id
+                [T].[dwh_hash] != [P].[dwh_hash]
+                AND [P].[dwh_process_run_id] = @process_run_id
             )
         SELECT @inserted = @@ROWCOUNT
 
@@ -216,8 +218,6 @@ BEGIN
             @rows_affected_insert = @inserted,
             @rows_affected_update = @updated,
             @rows_affected_delete = @deleted
-
-
     END TRY
     BEGIN CATCH
         SET @error_number = ERROR_NUMBER();

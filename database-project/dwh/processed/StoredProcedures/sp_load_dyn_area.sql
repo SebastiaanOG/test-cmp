@@ -1,11 +1,13 @@
-CREATE PROCEDURE [processed].[sp_load_dyn_area]
+CREATE OR ALTER PROCEDURE [processed].[sp_load_dyn_area]
     @process_run_date DATE,
     @process_run_id UNIQUEIDENTIFIER
 AS
 BEGIN
+    -- Abort and rollback for all errors, not only the ones captured by BEGIN TRY
+    SET XACT_ABORT ON;
     DECLARE
         @schema NVARCHAR(20) = 'processed',
-        @table NVARCHAR(20) = 'dyn_area',
+        @table NVARCHAR(60) = 'dyn_area',
 
         @inserted INT = 0,
         @updated INT = 0,
@@ -24,7 +26,7 @@ BEGIN
 
         CREATE TABLE #temp_dyn_area
         (
-            [AK_area] NVARCHAR(36),
+            [ak_area] NVARCHAR(36),
             [name] NVARCHAR(100),
             [areaabbreviation] NVARCHAR(20),
             [businessunitid] NVARCHAR(36),
@@ -44,7 +46,7 @@ BEGIN
             [statuscode] INT,
             [statuscode_value] NVARCHAR(4000),
             [versionnumber] BIGINT,
-            [Hash] VARBINARY(8000) NOT NULL
+            [dwh_hash] VARBINARY(8000) NOT NULL
         )
 
         -- Insert data from staging table into temp table
@@ -67,9 +69,9 @@ BEGIN
             [_modifiedby_value],
             [modifiedon],
             [_ownerid_value],
-            [_statecode_value],
+            LEFT([_statecode_value], 4000),
             [statuscode],
-            [_statuscode_value],
+            LEFT([_statuscode_value], 4000),
             [versionnumber],
             HASHBYTES(
                 'MD5',
@@ -89,11 +91,11 @@ BEGIN
                 + ISNULL([_modifiedby_value], '')
                 + ISNULL(CONVERT(NVARCHAR(19), [modifiedon], 120), '')
                 + ISNULL([_ownerid_value], '')
-                + ISNULL([_statecode_value], '')
+                + ISNULL(CAST(LEFT([_statecode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([statuscode] AS NVARCHAR(20)), '')
-                + ISNULL([_statuscode_value], '')
+                + ISNULL(CAST(LEFT([_statuscode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([versionnumber] AS NVARCHAR(20)), '')
-            ) AS [Hash]
+            ) AS [dwh_hash]
         FROM [staged].[dyn_EntityArea]
 
         IF OBJECT_ID(@schema + '.' + @table) IS NULL
@@ -109,12 +111,12 @@ BEGIN
         UPDATE [processed].[dyn_area]
         SET
             [dwh_valid_to] = DATEADD(DAY, -1, @process_run_date),
-            [ProcessRunID] = @process_run_id,
+            [dwh_process_run_id] = @process_run_id,
             [dwh_active] = 0
         FROM #temp_dyn_area AS [T]
-        LEFT JOIN [processed].[dyn_area] AS [P] ON [T].[AK_area] = [P].[AK_area]
+        LEFT JOIN [processed].[dyn_area] AS [P] ON [T].[ak_area] = [P].[ak_area]
         WHERE
-            [T].[Hash] != [P].[Hash]
+            [T].[dwh_hash] != [P].[dwh_hash]
             AND [P].[dwh_active] = 1
         SELECT @updated = @@ROWCOUNT
 
@@ -122,12 +124,12 @@ BEGIN
         UPDATE [processed].[dyn_area]
         SET
             [dwh_valid_to] = DATEADD(DAY, -1, @process_run_date),
-            [ProcessRunID] = @process_run_id,
+            [dwh_process_run_id] = @process_run_id,
             [dwh_active] = 0
         FROM [processed].[dyn_area] AS [P]
-        LEFT JOIN #temp_dyn_area AS [T] ON [T].[AK_area] = [P].[AK_area]
+        LEFT JOIN #temp_dyn_area AS [T] ON [T].[ak_area] = [P].[ak_area]
         WHERE
-            [T].[AK_area] IS NULL
+            [T].[ak_area] IS NULL
             AND [P].[dwh_active] = 1
         SELECT @deleted = @@ROWCOUNT
 
@@ -137,7 +139,8 @@ BEGIN
             [dwh_valid_from],
             [dwh_valid_to],
             [dwh_active],
-            [AK_area],
+            [dwh_process_run_id],
+            [ak_area],
             [name],
             [areaabbreviation],
             [businessunitid],
@@ -153,18 +156,18 @@ BEGIN
             [modifiedby_value],
             [modifiedon],
             [ownerid_value],
-            [statecode_value],
+            LEFT([statecode_value], 4000),
             [statuscode],
-            [statuscode_value],
+            LEFT([statuscode_value], 4000),
             [versionnumber],
-            [Hash],
-            [ProcessRunID]
+            [dwh_hash]            
         )
         SELECT
             @process_run_date AS [dwh_valid_from],
             NULL AS [dwh_valid_to],
             1 AS [dwh_active],
-            [T].[AK_area],
+            @process_run_id AS [dwh_process_run_id],
+            [T].[ak_area],
             [T].[name],
             [T].[areaabbreviation],
             [T].[businessunitid],
@@ -184,15 +187,14 @@ BEGIN
             [T].[statuscode],
             [T].[statuscode_value],
             [T].[versionnumber],
-            [T].[Hash],
-            @process_run_id AS [ProcessRunID]
+            [T].[dwh_hash]
         FROM #temp_dyn_area AS [T]
-        LEFT JOIN [processed].[dyn_area] AS [P] ON [T].[AK_area] = [P].[AK_area]
+        LEFT JOIN [processed].[dyn_area] AS [P] ON [T].[ak_area] = [P].[ak_area]
         WHERE
-            [P].[AK_area] IS NULL
+            [P].[ak_area] IS NULL
             OR (
-                [T].[Hash] != [P].[Hash]
-                AND [P].[ProcessRunID] = @process_run_id
+                [T].[dwh_hash] != [P].[dwh_hash]
+                AND [P].[dwh_process_run_id] = @process_run_id
             )
         SELECT @inserted = @@ROWCOUNT
 
@@ -206,8 +208,6 @@ BEGIN
             @rows_affected_insert = @inserted,
             @rows_affected_update = @updated,
             @rows_affected_delete = @deleted
-
-
     END TRY
     BEGIN CATCH
         SET @error_number = ERROR_NUMBER();

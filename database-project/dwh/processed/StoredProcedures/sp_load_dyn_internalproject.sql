@@ -1,11 +1,13 @@
-CREATE PROCEDURE [processed].[sp_load_dyn_internalproject]
+CREATE OR ALTER PROCEDURE [processed].[sp_load_dyn_internalproject]
     @process_run_date DATE,
     @process_run_id UNIQUEIDENTIFIER
 AS
 BEGIN
+    -- Abort and rollback for all errors, not only the ones captured by BEGIN TRY
+    SET XACT_ABORT ON;
     DECLARE
         @schema NVARCHAR(20) = 'processed',
-        @table NVARCHAR(20) = 'dyn_internalproject',
+        @table NVARCHAR(60) = 'dyn_internalproject',
 
         @inserted INT = 0,
         @updated INT = 0,
@@ -24,7 +26,7 @@ BEGIN
 
         CREATE TABLE #temp_dyn_internalproject
         (
-            [AK_internalproject] NVARCHAR(36),
+            [ak_internalproject] NVARCHAR(36),
             [projectnumber] NVARCHAR(100),
             [name] NVARCHAR(200),
             [description] NVARCHAR(4000),
@@ -45,7 +47,7 @@ BEGIN
             [statuscode_value] NVARCHAR(4000),
             [timezoneruleversionnumber] INT,
             [versionnumber] BIGINT,
-            [Hash] VARBINARY(8000) NOT NULL
+            [dwh_hash] VARBINARY(8000) NOT NULL
         )
 
         -- Insert data from staging table into temp table
@@ -55,9 +57,9 @@ BEGIN
             [hso_internalprojectid],
             [hso_projectnumber],
             [hso_name],
-            [hso_description],
+            LEFT([hso_description], 4000),
             [hso_edocs],
-            [_hso_edocs_value],
+            LEFT([_hso_edocs_value], 4000),
             [_hso_internalprojecttypeid_value],
             [hso_startdate],
             [_createdby_value],
@@ -68,9 +70,9 @@ BEGIN
             [_modifiedonbehalfby_value],
             [_ownerid_value],
             [statecode],
-            [_statecode_value],
+            LEFT([_statecode_value], 4000),
             [statuscode],
-            [_statuscode_value],
+            LEFT([_statuscode_value], 4000),
             [timezoneruleversionnumber],
             [versionnumber],
             HASHBYTES(
@@ -78,9 +80,9 @@ BEGIN
                 ISNULL([hso_internalprojectid], '')
                 + ISNULL([hso_projectnumber], '')
                 + ISNULL([hso_name], '')
-                + ISNULL([hso_description], '')
+                + ISNULL(CAST(LEFT([hso_description], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_edocs] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_edocs_value], '')
+                + ISNULL(CAST(LEFT([_hso_edocs_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([_hso_internalprojecttypeid_value], '')
                 + ISNULL(CONVERT(NVARCHAR(19), [hso_startdate], 120), '')
                 + ISNULL([_createdby_value], '')
@@ -91,12 +93,12 @@ BEGIN
                 + ISNULL([_modifiedonbehalfby_value], '')
                 + ISNULL([_ownerid_value], '')
                 + ISNULL(CAST([statecode] AS NVARCHAR(20)), '')
-                + ISNULL([_statecode_value], '')
+                + ISNULL(CAST(LEFT([_statecode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([statuscode] AS NVARCHAR(20)), '')
-                + ISNULL([_statuscode_value], '')
+                + ISNULL(CAST(LEFT([_statuscode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([timezoneruleversionnumber] AS NVARCHAR(20)), '')
                 + ISNULL(CAST([versionnumber] AS NVARCHAR(20)), '')
-            ) AS [Hash]
+            ) AS [dwh_hash]
         FROM [staged].[dyn_EntityInternalProject]
 
         IF OBJECT_ID(@schema + '.' + @table) IS NULL
@@ -112,12 +114,12 @@ BEGIN
         UPDATE [processed].[dyn_internalproject]
         SET
             [dwh_valid_to] = DATEADD(DAY, -1, @process_run_date),
-            [ProcessRunID] = @process_run_id,
+            [dwh_process_run_id] = @process_run_id,
             [dwh_active] = 0
         FROM #temp_dyn_internalproject AS [T]
-        LEFT JOIN [processed].[dyn_internalproject] AS [P] ON [T].[AK_internalproject] = [P].[AK_internalproject]
+        LEFT JOIN [processed].[dyn_internalproject] AS [P] ON [T].[ak_internalproject] = [P].[ak_internalproject]
         WHERE
-            [T].[Hash] != [P].[Hash]
+            [T].[dwh_hash] != [P].[dwh_hash]
             AND [P].[dwh_active] = 1
         SELECT @updated = @@ROWCOUNT
 
@@ -125,12 +127,12 @@ BEGIN
         UPDATE [processed].[dyn_internalproject]
         SET
             [dwh_valid_to] = DATEADD(DAY, -1, @process_run_date),
-            [ProcessRunID] = @process_run_id,
+            [dwh_process_run_id] = @process_run_id,
             [dwh_active] = 0
         FROM [processed].[dyn_internalproject] AS [P]
-        LEFT JOIN #temp_dyn_internalproject AS [T] ON [T].[AK_internalproject] = [P].[AK_internalproject]
+        LEFT JOIN #temp_dyn_internalproject AS [T] ON [T].[ak_internalproject] = [P].[ak_internalproject]
         WHERE
-            [T].[AK_internalproject] IS NULL
+            [T].[ak_internalproject] IS NULL
             AND [P].[dwh_active] = 1
         SELECT @deleted = @@ROWCOUNT
 
@@ -140,12 +142,13 @@ BEGIN
             [dwh_valid_from],
             [dwh_valid_to],
             [dwh_active],
-            [AK_internalproject],
+            [dwh_process_run_id],
+            [ak_internalproject],
             [projectnumber],
             [name],
-            [description],
+            LEFT([description], 4000),
             [edocs],
-            [edocs_value],
+            LEFT([edocs_value], 4000),
             [internalprojecttypeid_value],
             [startdate],
             [createdby_value],
@@ -156,19 +159,19 @@ BEGIN
             [modifiedonbehalfby_value],
             [ownerid_value],
             [statecode],
-            [statecode_value],
+            LEFT([statecode_value], 4000),
             [statuscode],
-            [statuscode_value],
+            LEFT([statuscode_value], 4000),
             [timezoneruleversionnumber],
             [versionnumber],
-            [Hash],
-            [ProcessRunID]
+            [dwh_hash]            
         )
         SELECT
             @process_run_date AS [dwh_valid_from],
             NULL AS [dwh_valid_to],
             1 AS [dwh_active],
-            [T].[AK_internalproject],
+            @process_run_id AS [dwh_process_run_id],
+            [T].[ak_internalproject],
             [T].[projectnumber],
             [T].[name],
             [T].[description],
@@ -189,15 +192,14 @@ BEGIN
             [T].[statuscode_value],
             [T].[timezoneruleversionnumber],
             [T].[versionnumber],
-            [T].[Hash],
-            @process_run_id AS [ProcessRunID]
+            [T].[dwh_hash]
         FROM #temp_dyn_internalproject AS [T]
-        LEFT JOIN [processed].[dyn_internalproject] AS [P] ON [T].[AK_internalproject] = [P].[AK_internalproject]
+        LEFT JOIN [processed].[dyn_internalproject] AS [P] ON [T].[ak_internalproject] = [P].[ak_internalproject]
         WHERE
-            [P].[AK_internalproject] IS NULL
+            [P].[ak_internalproject] IS NULL
             OR (
-                [T].[Hash] != [P].[Hash]
-                AND [P].[ProcessRunID] = @process_run_id
+                [T].[dwh_hash] != [P].[dwh_hash]
+                AND [P].[dwh_process_run_id] = @process_run_id
             )
         SELECT @inserted = @@ROWCOUNT
 
@@ -211,8 +213,6 @@ BEGIN
             @rows_affected_insert = @inserted,
             @rows_affected_update = @updated,
             @rows_affected_delete = @deleted
-
-
     END TRY
     BEGIN CATCH
         SET @error_number = ERROR_NUMBER();

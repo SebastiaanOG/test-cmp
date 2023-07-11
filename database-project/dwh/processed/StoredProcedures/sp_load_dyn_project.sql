@@ -1,11 +1,13 @@
-CREATE PROCEDURE [processed].[sp_load_dyn_project]
+CREATE OR ALTER PROCEDURE [processed].[sp_load_dyn_project]
     @process_run_date DATE,
     @process_run_id UNIQUEIDENTIFIER
 AS
 BEGIN
+    -- Abort and rollback for all errors, not only the ones captured by BEGIN TRY
+    SET XACT_ABORT ON;
     DECLARE
         @schema NVARCHAR(20) = 'processed',
-        @table NVARCHAR(20) = 'dyn_project',
+        @table NVARCHAR(60) = 'dyn_project',
 
         @inserted INT = 0,
         @updated INT = 0,
@@ -24,7 +26,7 @@ BEGIN
 
         CREATE TABLE #temp_dyn_project
         (
-            [AK_project] NVARCHAR(36),
+            [ak_project] NVARCHAR(36),
             [projectnumber] NVARCHAR(100),
             [name] NVARCHAR(200),
             [acceptableqhsestandards] INT,
@@ -302,9 +304,7 @@ BEGIN
             [statecode_value] NVARCHAR(4000),
             [statuscode] INT,
             [statuscode_value] NVARCHAR(4000),
-            [timezoneruleversionnumber] INT,
-            [versionnumber] BIGINT,
-            [Hash] VARBINARY(8000) NOT NULL
+            [dwh_hash] VARBINARY(8000) NOT NULL
         )
 
         -- Insert data from staging table into temp table
@@ -315,219 +315,219 @@ BEGIN
             [hso_projectnumber],
             [hso_name],
             [hso_acceptableqhsestandards],
-            [_hso_acceptableqhsestandards_value],
+            LEFT([_hso_acceptableqhsestandards_value], 4000),
             [hso_accountid],
             [_hso_accountid_value],
             [hso_activetimeregistrationid],
             [_hso_activetimeregistrationid_value],
             [hso_additionalreason],
-            [_hso_additionalreason_value],
+            LEFT([_hso_additionalreason_value], 4000),
             [hso_advancepaymentpercentage],
             [hso_alignswithcorporatestrategyactions1],
-            [_hso_alignswithcorporatestrategyactions1_value],
+            LEFT([_hso_alignswithcorporatestrategyactions1_value], 4000),
             [hso_alignswithcorporatestrategyactions2],
-            [_hso_alignswithcorporatestrategyactions2_value],
+            LEFT([_hso_alignswithcorporatestrategyactions2_value], 4000),
             [hso_alternativetobeoffered],
-            [_hso_alternativetobeoffered_value],
+            LEFT([_hso_alternativetobeoffered_value], 4000),
             [hso_anonymizedata],
-            [_hso_anonymizedata_value],
-            [hso_approvalinitiatorremarks],
+            LEFT([_hso_anonymizedata_value], 4000),
+            LEFT([hso_approvalinitiatorremarks], 4000),
             [hso_approvalstatus],
-            [_hso_approvalstatus_value],
+            LEFT([_hso_approvalstatus_value], 4000),
             [hso_approvalworkflowinprogress],
-            [_hso_approvalworkflowinprogress_value],
+            LEFT([_hso_approvalworkflowinprogress_value], 4000),
             [hso_areaid],
             [_hso_areaid_value],
-            [hso_availabilitycompetences],
+            LEFT([hso_availabilitycompetences], 4000),
             [hso_awarddateexpected],
             [_hso_awardnumberid_value],
             [hso_awardsummaryimport],
-            [_hso_awardsummaryimport_value],
+            LEFT([_hso_awardsummaryimport_value], 4000),
             [hso_awardsummaryinstanceurl],
             [hso_awardsummarynumber],
             [hso_awardsummaryprojectsnapshoturl],
             [hso_awardsummaryreportlink],
             [hso_awardsummaryrevision],
-            [_hso_awardsummaryrevision_value],
+            LEFT([_hso_awardsummaryrevision_value], 4000),
             [hso_baseportinformation],
             [hso_bidvaliditydays],
             [hso_bingmapzoomlevel],
             [hso_cable],
             [hso_calculatedriskprofile],
-            [_hso_calculatedriskprofile_value],
+            LEFT([_hso_calculatedriskprofile_value], 4000),
             [hso_car],
-            [_hso_car_value],
+            LEFT([_hso_car_value], 4000),
             [hso_carbonfootprintestimated],
             [hso_chanceofgoingahead],
-            [_hso_chanceofgoingahead_value],
+            LEFT([_hso_chanceofgoingahead_value], 4000),
             [hso_chanceofwinningcommercialposition],
-            [_hso_chanceofwinningcommercialposition_value],
+            LEFT([_hso_chanceofwinningcommercialposition_value], 4000),
             [hso_changedawarddate],
             [hso_changedtenderdate],
-            [hso_changestosolution],
-            [hso_changestosolutionchosen],
+            LEFT([hso_changestosolution], 4000),
+            LEFT([hso_changestosolutionchosen], 4000),
             [_hso_commercialresponsibleid_value],
             [hso_contractconditions],
-            [_hso_contractconditions_value],
+            LEFT([_hso_contractconditions_value], 4000),
             [hso_countryid],
             [_hso_countryid_value],
             [hso_createawardsummarynumber],
-            [_hso_createawardsummarynumber_value],
+            LEFT([_hso_createawardsummarynumber_value], 4000),
             [hso_createnewprojectnumer],
-            [_hso_createnewprojectnumer_value],
+            LEFT([_hso_createnewprojectnumer_value], 4000),
             [hso_creditinsurance],
-            [_hso_creditinsurance_value],
+            LEFT([_hso_creditinsurance_value], 4000),
             [hso_creditinsurance_yn],
-            [_hso_creditinsurance_yn_value],
+            LEFT([_hso_creditinsurance_yn_value], 4000),
             [hso_currencyrisk],
-            [_hso_currencyrisk_value],
+            LEFT([_hso_currencyrisk_value], 4000),
             [hso_currencyrisk_yn],
-            [_hso_currencyrisk_yn_value],
+            LEFT([_hso_currencyrisk_yn_value], 4000),
             [hso_defectsliabilityperioddays],
-            [hso_definerequiredtenderteamcompetences],
+            LEFT([hso_definerequiredtenderteamcompetences], 4000),
             [hso_deploymentownequipment],
-            [_hso_deploymentownequipment_value],
+            LEFT([_hso_deploymentownequipment_value], 4000),
             [hso_designinsurance],
-            [_hso_designinsurance_value],
+            LEFT([_hso_designinsurance_value], 4000),
             [hso_designresponsibilityyn],
-            [_hso_designresponsibilityyn_value],
+            LEFT([_hso_designresponsibilityyn_value], 4000),
             [hso_dredgingcategory],
-            [_hso_dredgingcategory_value],
+            LEFT([_hso_dredgingcategory_value], 4000),
             [hso_durationofcontract],
             [hso_edocs],
-            [_hso_edocs_value],
+            LEFT([_hso_edocs_value], 4000),
             [hso_eepriority],
-            [_hso_eepriority_value],
+            LEFT([_hso_eepriority_value], 4000),
             [hso_emviscore],
-            [_hso_emviscore_value],
+            LEFT([_hso_emviscore_value], 4000),
             [hso_endreportrequired],
-            [_hso_endreportrequired_value],
+            LEFT([_hso_endreportrequired_value], 4000),
             [hso_expectedstartofwork],
             [hso_exposedconditions],
-            [hso_externalinputrequirements],
+            LEFT([hso_externalinputrequirements], 4000),
             [hso_fasttrack],
-            [_hso_fasttrack_value],
+            LEFT([_hso_fasttrack_value], 4000),
             [hso_finalcompletion],
-            [_hso_finalcompletion_value],
+            LEFT([_hso_finalcompletion_value], 4000),
             [hso_finalcompletionamounteuro],
             [hso_finalcompletionlimpercent],
             [hso_finalcompletionperiod],
-            [_hso_finalcompletionperiod_value],
+            LEFT([_hso_finalcompletionperiod_value], 4000),
             [hso_formofcontract],
-            [_hso_formofcontract_value],
+            LEFT([_hso_formofcontract_value], 4000),
             [hso_foundation],
             [hso_frommobdemob],
             [hso_fuel_yn],
-            [_hso_fuel_yn_value],
+            LEFT([_hso_fuel_yn_value], 4000),
             [hso_fullclientprojectname],
             [hso_functionalapplicationbypass],
-            [_hso_functionalapplicationbypass_value],
+            LEFT([_hso_functionalapplicationbypass_value], 4000),
             [hso_geophysicalinfo],
             [hso_geotechnicalinfo],
             [hso_intermediatecompletionamounteuro],
             [hso_intermediatecompletionlimpercent],
             [hso_intermediatecompletionperiod],
-            [_hso_intermediatecompletionperiod_value],
+            LEFT([_hso_intermediatecompletionperiod_value], 4000),
             [hso_intermediatecompletions],
-            [_hso_intermediatecompletions_value],
+            LEFT([_hso_intermediatecompletions_value], 4000),
             [hso_investmentrequired],
-            [_hso_investmentrequired_value],
+            LEFT([_hso_investmentrequired_value], 4000),
             [_hso_latestapprovedawardsummary_value],
             [hso_latitude],
             [hso_latitudedegrees],
             [hso_latitudedms],
             [hso_latitudeminutes],
             [hso_latitudenorthsouth],
-            [_hso_latitudenorthsouth_value],
+            LEFT([_hso_latitudenorthsouth_value], 4000),
             [hso_latitudeseconds],
             [hso_lcdreview],
-            [_hso_lcdreview_value],
+            LEFT([_hso_lcdreview_value], 4000),
             [hso_letterofcredit],
-            [_hso_letterofcredit_value],
+            LEFT([_hso_letterofcredit_value], 4000),
             [hso_letterofcredit_yn],
-            [_hso_letterofcredit_yn_value],
+            LEFT([_hso_letterofcredit_yn_value], 4000),
             [hso_location],
             [hso_longitude],
             [hso_longitudedegrees],
             [hso_longitudedms],
             [hso_longitudeeastwest],
-            [_hso_longitudeeastwest_value],
+            LEFT([_hso_longitudeeastwest_value], 4000),
             [hso_longitudeminutes],
             [hso_longitudeseconds],
             [hso_longleaditemssecured],
-            [_hso_longleaditemssecured_value],
+            LEFT([_hso_longleaditemssecured_value], 4000),
             [_hso_mainprojectid_value],
             [hso_maintenanceperiod],
             [hso_maintenanceperioddays],
             [hso_marketdrivers],
-            [_hso_marketdrivers_value],
+            LEFT([_hso_marketdrivers_value], 4000),
             [hso_materials_yn],
-            [_hso_materials_yn_value],
+            LEFT([_hso_materials_yn_value], 4000),
             [hso_maxliability],
             [hso_nonbindingindication],
-            [hso_nonbindingindication_value],
+            LEFT([hso_nonbindingindication_value], 4000),
             [hso_noneurocomponentpercent],
             [hso_ohvs],
             [hso_onhold],
-            [_hso_onhold_value],
+            LEFT([_hso_onhold_value], 4000),
             [hso_onholdreason],
-            [_hso_onholdreason_value],
+            LEFT([_hso_onholdreason_value], 4000),
             [hso_onshore],
             [hso_overallriskprofileafter],
-            [_hso_overallriskprofileafter_value],
+            LEFT([_hso_overallriskprofileafter_value], 4000),
             [hso_overallriskprofilebefore],
-            [_hso_overallriskprofilebefore_value],
+            LEFT([_hso_overallriskprofilebefore_value], 4000),
             [hso_parentcompanyguarantee],
-            [_hso_parentcompanyguarantee_value],
+            LEFT([_hso_parentcompanyguarantee_value], 4000),
             [hso_paymentguarantees_creditinsurance],
-            [_hso_paymentguarantees_creditinsurance_value],
+            LEFT([_hso_paymentguarantees_creditinsurance_value], 4000),
             [hso_paymentperioddays],
             [hso_paymentrisk],
-            [_hso_paymentrisk_value],
+            LEFT([_hso_paymentrisk_value], 4000),
             [hso_paymentrisk_yn],
-            [_hso_paymentrisk_yn_value],
+            LEFT([_hso_paymentrisk_yn_value], 4000),
             [hso_positivecashflow],
-            [_hso_positivecashflow_value],
+            LEFT([_hso_positivecashflow_value], 4000),
             [hso_pq],
-            [_hso_pq_value],
+            LEFT([_hso_pq_value], 4000),
             [hso_pqdate],
-            [hso_pqremarks],
+            LEFT([hso_pqremarks], 4000),
             [hso_pricevariationsfuel],
-            [_hso_pricevariationsfuel_value],
+            LEFT([_hso_pricevariationsfuel_value], 4000),
             [hso_pricevariationsmaterials],
-            [_hso_pricevariationsmaterials_value],
+            LEFT([_hso_pricevariationsmaterials_value], 4000),
             [hso_pricevariationswages],
-            [_hso_pricevariationswages_value],
+            LEFT([_hso_pricevariationswages_value], 4000),
             [hso_processnostepfield],
-            [_hso_processnostepfield_value],
+            LEFT([_hso_processnostepfield_value], 4000),
             [hso_productgroupsnl],
-            [_hso_productgroupsnl_value],
-            [hso_projectdescription],
+            LEFT([_hso_productgroupsnl_value], 4000),
+            LEFT([hso_projectdescription], 4000),
             [hso_projectfinancial],
             [_hso_projectfinancial_value],
             [hso_projectfinancialdatalasttransferdate],
             [hso_projectgeneral],
             [_hso_projectgeneral_value],
             [hso_projectphase],
-            [_hso_projectphase_value],
+            LEFT([_hso_projectphase_value], 4000),
             [hso_projectpreparationmeeting],
             [hso_projectstatusid],
-            [hso_reasonexplanation],
-            [hso_reasonexplanationchosen],
-            [hso_reasonofchangeaward],
+            LEFT([hso_reasonexplanation], 4000),
+            LEFT([hso_reasonexplanationchosen], 4000),
+            LEFT([hso_reasonofchangeaward], 4000),
             [hso_reclamationlevel],
-            [hso_requiredcriticalcompetences],
+            LEFT([hso_requiredcriticalcompetences], 4000),
             [hso_resourceavailability],
-            [_hso_resourceavailability_value],
+            LEFT([_hso_resourceavailability_value], 4000),
             [hso_retentionpercentage],
             [hso_sailingdistancetodisposalarea],
-            [hso_scopeofworkvanoord],
+            LEFT([hso_scopeofworkvanoord], 4000),
             [hso_soildata],
             [hso_stagegate],
-            [_hso_stagegate_value],
+            LEFT([_hso_stagegate_value], 4000),
             [hso_stagegatecopy],
             [hso_stagegatesnapshot],
-            [_hso_stagegatesnapshot_value],
+            LEFT([_hso_stagegatesnapshot_value], 4000),
             [hso_startoftender],
             [hso_statushistoryregisterdate],
             [_hso_statushistoryregisterdate_date_value],
@@ -535,15 +535,15 @@ BEGIN
             [hso_subareaid],
             [_hso_subareaid_value],
             [hso_substatusreason],
-            [_hso_substatusreason_value],
+            LEFT([_hso_substatusreason_value], 4000),
             [hso_technicallyfeasible],
-            [_hso_technicallyfeasible_value],
+            LEFT([_hso_technicallyfeasible_value], 4000),
             [hso_tenderdate],
             [hso_tenderenddate],
             [hso_tendersubmissiondateactual],
             [hso_tendersubmissionplace],
             [hso_tendertype],
-            [_hso_tendertype_value],
+            LEFT([_hso_tendertype_value], 4000),
             [hso_tendervalidity],
             [_hso_tmp_approvalinitiator_value],
             [hso_tmp_projectguid],
@@ -554,29 +554,29 @@ BEGIN
             [_hso_totalftedays_date_value],
             [_hso_totalftedays_state_value],
             [hso_typeofcontract],
-            [_hso_typeofcontract_value],
+            LEFT([_hso_typeofcontract_value], 4000),
             [hso_typeofwork],
-            [_hso_typeofwork_value],
+            LEFT([_hso_typeofwork_value], 4000),
             [hso_typetender],
-            [_hso_typetender_value],
+            LEFT([_hso_typetender_value], 4000),
             [hso_userdefinedriskprofile],
-            [_hso_userdefinedriskprofile_value],
+            LEFT([_hso_userdefinedriskprofile_value], 4000),
             [hso_vanoordentityid],
             [_hso_vanoordentityid_value],
             [hso_vanoordsubmittingactingas],
-            [_hso_vanoordsubmittingactingas_value],
+            LEFT([_hso_vanoordsubmittingactingas_value], 4000),
             [hso_versionnumber],
             [hso_vobusinessunitid],
             [_hso_vobusinessunitid_value],
             [hso_voprojectriskcategory],
-            [_hso_voprojectriskcategory_value],
+            LEFT([_hso_voprojectriskcategory_value], 4000),
             [hso_voshareineurocopy],
             [hso_vosharepercentcopy],
             [hso_wages_yn],
-            [_hso_wages_yn_value],
+            LEFT([_hso_wages_yn_value], 4000),
             [hso_waterdepthssite],
             [hso_windturbineinformation],
-            [hso_winstrategy],
+            LEFT([hso_winstrategy], 4000),
             [_createdby_value],
             [createdon],
             [_createdonbehalfby_value],
@@ -586,230 +586,228 @@ BEGIN
             [_modifiedonbehalfby_value],
             [_ownerid_value],
             [statecode],
-            [_statecode_value],
+            LEFT([_statecode_value], 4000),
             [statuscode],
-            [_statuscode_value],
-            [timezoneruleversionnumber],
-            [versionnumber],
+            LEFT([_statuscode_value], 4000),
             HASHBYTES(
                 'MD5',
                 ISNULL([hso_projectid], '')
                 + ISNULL([hso_projectnumber], '')
                 + ISNULL([hso_name], '')
                 + ISNULL(CAST([hso_acceptableqhsestandards] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_acceptableqhsestandards_value], '')
+                + ISNULL(CAST(LEFT([_hso_acceptableqhsestandards_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([hso_accountid], '')
                 + ISNULL([_hso_accountid_value], '')
                 + ISNULL([hso_activetimeregistrationid], '')
                 + ISNULL([_hso_activetimeregistrationid_value], '')
                 + ISNULL(CAST([hso_additionalreason] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_additionalreason_value], '')
+                + ISNULL(CAST(LEFT([_hso_additionalreason_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_advancepaymentpercentage] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_alignswithcorporatestrategyactions1] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_alignswithcorporatestrategyactions1_value], '')
+                + ISNULL(CAST(LEFT([_hso_alignswithcorporatestrategyactions1_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_alignswithcorporatestrategyactions2] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_alignswithcorporatestrategyactions2_value], '')
+                + ISNULL(CAST(LEFT([_hso_alignswithcorporatestrategyactions2_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_alternativetobeoffered] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_alternativetobeoffered_value], '')
+                + ISNULL(CAST(LEFT([_hso_alternativetobeoffered_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_anonymizedata] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_anonymizedata_value], '')
-                + ISNULL([hso_approvalinitiatorremarks], '')
+                + ISNULL(CAST(LEFT([_hso_anonymizedata_value], 4000) AS NVARCHAR(4000)), '')
+                + ISNULL(CAST(LEFT([hso_approvalinitiatorremarks], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_approvalstatus] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_approvalstatus_value], '')
+                + ISNULL(CAST(LEFT([_hso_approvalstatus_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_approvalworkflowinprogress] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_approvalworkflowinprogress_value], '')
+                + ISNULL(CAST(LEFT([_hso_approvalworkflowinprogress_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([hso_areaid], '')
                 + ISNULL([_hso_areaid_value], '')
-                + ISNULL([hso_availabilitycompetences], '')
+                + ISNULL(CAST(LEFT([hso_availabilitycompetences], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CONVERT(NVARCHAR(19), [hso_awarddateexpected], 120), '')
                 + ISNULL([_hso_awardnumberid_value], '')
                 + ISNULL(CAST([hso_awardsummaryimport] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_awardsummaryimport_value], '')
+                + ISNULL(CAST(LEFT([_hso_awardsummaryimport_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([hso_awardsummaryinstanceurl], '')
                 + ISNULL([hso_awardsummarynumber], '')
                 + ISNULL([hso_awardsummaryprojectsnapshoturl], '')
                 + ISNULL([hso_awardsummaryreportlink], '')
                 + ISNULL(CAST([hso_awardsummaryrevision] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_awardsummaryrevision_value], '')
+                + ISNULL(CAST(LEFT([_hso_awardsummaryrevision_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([hso_baseportinformation], '')
                 + ISNULL(CAST([hso_bidvaliditydays] AS NVARCHAR(20)), '')
                 + ISNULL(CAST([hso_bingmapzoomlevel] AS NVARCHAR(20)), '')
                 + ISNULL([hso_cable], '')
                 + ISNULL(CAST([hso_calculatedriskprofile] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_calculatedriskprofile_value], '')
+                + ISNULL(CAST(LEFT([_hso_calculatedriskprofile_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_car] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_car_value], '')
+                + ISNULL(CAST(LEFT([_hso_car_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_carbonfootprintestimated] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_chanceofgoingahead] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_chanceofgoingahead_value], '')
+                + ISNULL(CAST(LEFT([_hso_chanceofgoingahead_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_chanceofwinningcommercialposition] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_chanceofwinningcommercialposition_value], '')
+                + ISNULL(CAST(LEFT([_hso_chanceofwinningcommercialposition_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CONVERT(NVARCHAR(19), [hso_changedawarddate], 120), '')
                 + ISNULL(CONVERT(NVARCHAR(19), [hso_changedtenderdate], 120), '')
-                + ISNULL([hso_changestosolution], '')
-                + ISNULL([hso_changestosolutionchosen], '')
+                + ISNULL(CAST(LEFT([hso_changestosolution], 4000) AS NVARCHAR(4000)), '')
+                + ISNULL(CAST(LEFT([hso_changestosolutionchosen], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([_hso_commercialresponsibleid_value], '')
                 + ISNULL(CAST([hso_contractconditions] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_contractconditions_value], '')
+                + ISNULL(CAST(LEFT([_hso_contractconditions_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([hso_countryid], '')
                 + ISNULL([_hso_countryid_value], '')
                 + ISNULL(CAST([hso_createawardsummarynumber] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_createawardsummarynumber_value], '')
+                + ISNULL(CAST(LEFT([_hso_createawardsummarynumber_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_createnewprojectnumer] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_createnewprojectnumer_value], '')
+                + ISNULL(CAST(LEFT([_hso_createnewprojectnumer_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_creditinsurance] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_creditinsurance_value], '')
+                + ISNULL(CAST(LEFT([_hso_creditinsurance_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_creditinsurance_yn] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_creditinsurance_yn_value], '')
+                + ISNULL(CAST(LEFT([_hso_creditinsurance_yn_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_currencyrisk] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_currencyrisk_value], '')
+                + ISNULL(CAST(LEFT([_hso_currencyrisk_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_currencyrisk_yn] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_currencyrisk_yn_value], '')
+                + ISNULL(CAST(LEFT([_hso_currencyrisk_yn_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_defectsliabilityperioddays] AS NVARCHAR(50)), '')
-                + ISNULL([hso_definerequiredtenderteamcompetences], '')
+                + ISNULL(CAST(LEFT([hso_definerequiredtenderteamcompetences], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_deploymentownequipment] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_deploymentownequipment_value], '')
+                + ISNULL(CAST(LEFT([_hso_deploymentownequipment_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_designinsurance] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_designinsurance_value], '')
+                + ISNULL(CAST(LEFT([_hso_designinsurance_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_designresponsibilityyn] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_designresponsibilityyn_value], '')
+                + ISNULL(CAST(LEFT([_hso_designresponsibilityyn_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_dredgingcategory] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_dredgingcategory_value], '')
+                + ISNULL(CAST(LEFT([_hso_dredgingcategory_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_durationofcontract] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_edocs] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_edocs_value], '')
+                + ISNULL(CAST(LEFT([_hso_edocs_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_eepriority] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_eepriority_value], '')
+                + ISNULL(CAST(LEFT([_hso_eepriority_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_emviscore] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_emviscore_value], '')
+                + ISNULL(CAST(LEFT([_hso_emviscore_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_endreportrequired] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_endreportrequired_value], '')
+                + ISNULL(CAST(LEFT([_hso_endreportrequired_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CONVERT(NVARCHAR(19), [hso_expectedstartofwork], 120), '')
                 + ISNULL([hso_exposedconditions], '')
-                + ISNULL([hso_externalinputrequirements], '')
+                + ISNULL(CAST(LEFT([hso_externalinputrequirements], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_fasttrack] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_fasttrack_value], '')
+                + ISNULL(CAST(LEFT([_hso_fasttrack_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_finalcompletion] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_finalcompletion_value], '')
+                + ISNULL(CAST(LEFT([_hso_finalcompletion_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([hso_finalcompletionamounteuro], '')
                 + ISNULL([hso_finalcompletionlimpercent], '')
                 + ISNULL(CAST([hso_finalcompletionperiod] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_finalcompletionperiod_value], '')
+                + ISNULL(CAST(LEFT([_hso_finalcompletionperiod_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_formofcontract] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_formofcontract_value], '')
+                + ISNULL(CAST(LEFT([_hso_formofcontract_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([hso_foundation], '')
                 + ISNULL([hso_frommobdemob], '')
                 + ISNULL(CAST([hso_fuel_yn] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_fuel_yn_value], '')
+                + ISNULL(CAST(LEFT([_hso_fuel_yn_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([hso_fullclientprojectname], '')
                 + ISNULL(CAST([hso_functionalapplicationbypass] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_functionalapplicationbypass_value], '')
+                + ISNULL(CAST(LEFT([_hso_functionalapplicationbypass_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([hso_geophysicalinfo], '')
                 + ISNULL([hso_geotechnicalinfo], '')
                 + ISNULL([hso_intermediatecompletionamounteuro], '')
                 + ISNULL([hso_intermediatecompletionlimpercent], '')
                 + ISNULL(CAST([hso_intermediatecompletionperiod] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_intermediatecompletionperiod_value], '')
+                + ISNULL(CAST(LEFT([_hso_intermediatecompletionperiod_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_intermediatecompletions] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_intermediatecompletions_value], '')
+                + ISNULL(CAST(LEFT([_hso_intermediatecompletions_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_investmentrequired] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_investmentrequired_value], '')
+                + ISNULL(CAST(LEFT([_hso_investmentrequired_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([_hso_latestapprovedawardsummary_value], '')
                 + ISNULL(CAST([hso_latitude] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_latitudedegrees] AS NVARCHAR(50)), '')
                 + ISNULL([hso_latitudedms], '')
                 + ISNULL(CAST([hso_latitudeminutes] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_latitudenorthsouth] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_latitudenorthsouth_value], '')
+                + ISNULL(CAST(LEFT([_hso_latitudenorthsouth_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_latitudeseconds] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_lcdreview] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_lcdreview_value], '')
+                + ISNULL(CAST(LEFT([_hso_lcdreview_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_letterofcredit] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_letterofcredit_value], '')
+                + ISNULL(CAST(LEFT([_hso_letterofcredit_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_letterofcredit_yn] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_letterofcredit_yn_value], '')
+                + ISNULL(CAST(LEFT([_hso_letterofcredit_yn_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([hso_location], '')
                 + ISNULL(CAST([hso_longitude] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_longitudedegrees] AS NVARCHAR(50)), '')
                 + ISNULL([hso_longitudedms], '')
                 + ISNULL(CAST([hso_longitudeeastwest] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_longitudeeastwest_value], '')
+                + ISNULL(CAST(LEFT([_hso_longitudeeastwest_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_longitudeminutes] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_longitudeseconds] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_longleaditemssecured] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_longleaditemssecured_value], '')
+                + ISNULL(CAST(LEFT([_hso_longleaditemssecured_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([_hso_mainprojectid_value], '')
                 + ISNULL(CAST([hso_maintenanceperiod] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_maintenanceperioddays] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_marketdrivers] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_marketdrivers_value], '')
+                + ISNULL(CAST(LEFT([_hso_marketdrivers_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_materials_yn] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_materials_yn_value], '')
+                + ISNULL(CAST(LEFT([_hso_materials_yn_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([hso_maxliability], '')
                 + ISNULL(CAST([hso_nonbindingindication] AS NVARCHAR(20)), '')
-                + ISNULL([hso_nonbindingindication_value], '')
+                + ISNULL(CAST(LEFT([hso_nonbindingindication_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_noneurocomponentpercent] AS NVARCHAR(50)), '')
                 + ISNULL([hso_ohvs], '')
                 + ISNULL(CAST([hso_onhold] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_onhold_value], '')
+                + ISNULL(CAST(LEFT([_hso_onhold_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_onholdreason] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_onholdreason_value], '')
+                + ISNULL(CAST(LEFT([_hso_onholdreason_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([hso_onshore], '')
                 + ISNULL(CAST([hso_overallriskprofileafter] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_overallriskprofileafter_value], '')
+                + ISNULL(CAST(LEFT([_hso_overallriskprofileafter_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_overallriskprofilebefore] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_overallriskprofilebefore_value], '')
+                + ISNULL(CAST(LEFT([_hso_overallriskprofilebefore_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_parentcompanyguarantee] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_parentcompanyguarantee_value], '')
+                + ISNULL(CAST(LEFT([_hso_parentcompanyguarantee_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_paymentguarantees_creditinsurance] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_paymentguarantees_creditinsurance_value], '')
+                + ISNULL(CAST(LEFT([_hso_paymentguarantees_creditinsurance_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_paymentperioddays] AS NVARCHAR(20)), '')
                 + ISNULL(CAST([hso_paymentrisk] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_paymentrisk_value], '')
+                + ISNULL(CAST(LEFT([_hso_paymentrisk_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_paymentrisk_yn] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_paymentrisk_yn_value], '')
+                + ISNULL(CAST(LEFT([_hso_paymentrisk_yn_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_positivecashflow] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_positivecashflow_value], '')
+                + ISNULL(CAST(LEFT([_hso_positivecashflow_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_pq] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_pq_value], '')
+                + ISNULL(CAST(LEFT([_hso_pq_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CONVERT(NVARCHAR(19), [hso_pqdate], 120), '')
-                + ISNULL([hso_pqremarks], '')
+                + ISNULL(CAST(LEFT([hso_pqremarks], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_pricevariationsfuel] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_pricevariationsfuel_value], '')
+                + ISNULL(CAST(LEFT([_hso_pricevariationsfuel_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_pricevariationsmaterials] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_pricevariationsmaterials_value], '')
+                + ISNULL(CAST(LEFT([_hso_pricevariationsmaterials_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_pricevariationswages] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_pricevariationswages_value], '')
+                + ISNULL(CAST(LEFT([_hso_pricevariationswages_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_processnostepfield] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_processnostepfield_value], '')
+                + ISNULL(CAST(LEFT([_hso_processnostepfield_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_productgroupsnl] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_productgroupsnl_value], '')
-                + ISNULL([hso_projectdescription], '')
+                + ISNULL(CAST(LEFT([_hso_productgroupsnl_value], 4000) AS NVARCHAR(4000)), '')
+                + ISNULL(CAST(LEFT([hso_projectdescription], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([hso_projectfinancial], '')
                 + ISNULL([_hso_projectfinancial_value], '')
                 + ISNULL(CONVERT(NVARCHAR(19), [hso_projectfinancialdatalasttransferdate], 120), '')
                 + ISNULL([hso_projectgeneral], '')
                 + ISNULL([_hso_projectgeneral_value], '')
                 + ISNULL(CAST([hso_projectphase] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_projectphase_value], '')
+                + ISNULL(CAST(LEFT([_hso_projectphase_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CONVERT(NVARCHAR(19), [hso_projectpreparationmeeting], 120), '')
                 + ISNULL([hso_projectstatusid], '')
-                + ISNULL([hso_reasonexplanation], '')
-                + ISNULL([hso_reasonexplanationchosen], '')
-                + ISNULL([hso_reasonofchangeaward], '')
+                + ISNULL(CAST(LEFT([hso_reasonexplanation], 4000) AS NVARCHAR(4000)), '')
+                + ISNULL(CAST(LEFT([hso_reasonexplanationchosen], 4000) AS NVARCHAR(4000)), '')
+                + ISNULL(CAST(LEFT([hso_reasonofchangeaward], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([hso_reclamationlevel], '')
-                + ISNULL([hso_requiredcriticalcompetences], '')
+                + ISNULL(CAST(LEFT([hso_requiredcriticalcompetences], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_resourceavailability] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_resourceavailability_value], '')
+                + ISNULL(CAST(LEFT([_hso_resourceavailability_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_retentionpercentage] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_sailingdistancetodisposalarea] AS NVARCHAR(50)), '')
-                + ISNULL([hso_scopeofworkvanoord], '')
+                + ISNULL(CAST(LEFT([hso_scopeofworkvanoord], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([hso_soildata], '')
                 + ISNULL(CAST([hso_stagegate] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_stagegate_value], '')
+                + ISNULL(CAST(LEFT([_hso_stagegate_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([hso_stagegatecopy], '')
                 + ISNULL(CAST([hso_stagegatesnapshot] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_stagegatesnapshot_value], '')
+                + ISNULL(CAST(LEFT([_hso_stagegatesnapshot_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CONVERT(NVARCHAR(19), [hso_startoftender], 120), '')
                 + ISNULL(CONVERT(NVARCHAR(19), [hso_statushistoryregisterdate], 120), '')
                 + ISNULL(CONVERT(NVARCHAR(19), [_hso_statushistoryregisterdate_date_value], 120), '')
@@ -817,15 +815,15 @@ BEGIN
                 + ISNULL([hso_subareaid], '')
                 + ISNULL([_hso_subareaid_value], '')
                 + ISNULL(CAST([hso_substatusreason] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_substatusreason_value], '')
+                + ISNULL(CAST(LEFT([_hso_substatusreason_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_technicallyfeasible] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_technicallyfeasible_value], '')
+                + ISNULL(CAST(LEFT([_hso_technicallyfeasible_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CONVERT(NVARCHAR(19), [hso_tenderdate], 120), '')
                 + ISNULL(CONVERT(NVARCHAR(19), [hso_tenderenddate], 120), '')
                 + ISNULL(CONVERT(NVARCHAR(19), [hso_tendersubmissiondateactual], 120), '')
                 + ISNULL([hso_tendersubmissionplace], '')
                 + ISNULL(CAST([hso_tendertype] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_tendertype_value], '')
+                + ISNULL(CAST(LEFT([_hso_tendertype_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_tendervalidity] AS NVARCHAR(20)), '')
                 + ISNULL([_hso_tmp_approvalinitiator_value], '')
                 + ISNULL([hso_tmp_projectguid], '')
@@ -836,29 +834,29 @@ BEGIN
                 + ISNULL(CONVERT(NVARCHAR(19), [_hso_totalftedays_date_value], 120), '')
                 + ISNULL(CAST([_hso_totalftedays_state_value] AS NVARCHAR(20)), '')
                 + ISNULL(CAST([hso_typeofcontract] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_typeofcontract_value], '')
+                + ISNULL(CAST(LEFT([_hso_typeofcontract_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_typeofwork] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_typeofwork_value], '')
+                + ISNULL(CAST(LEFT([_hso_typeofwork_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_typetender] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_typetender_value], '')
+                + ISNULL(CAST(LEFT([_hso_typetender_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_userdefinedriskprofile] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_userdefinedriskprofile_value], '')
+                + ISNULL(CAST(LEFT([_hso_userdefinedriskprofile_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([hso_vanoordentityid], '')
                 + ISNULL([_hso_vanoordentityid_value], '')
                 + ISNULL(CAST([hso_vanoordsubmittingactingas] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_vanoordsubmittingactingas_value], '')
+                + ISNULL(CAST(LEFT([_hso_vanoordsubmittingactingas_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_versionnumber] AS NVARCHAR(20)), '')
                 + ISNULL([hso_vobusinessunitid], '')
                 + ISNULL([_hso_vobusinessunitid_value], '')
                 + ISNULL(CAST([hso_voprojectriskcategory] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_voprojectriskcategory_value], '')
+                + ISNULL(CAST(LEFT([_hso_voprojectriskcategory_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_voshareineurocopy] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_vosharepercentcopy] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_wages_yn] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_wages_yn_value], '')
+                + ISNULL(CAST(LEFT([_hso_wages_yn_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([hso_waterdepthssite], '')
                 + ISNULL([hso_windturbineinformation], '')
-                + ISNULL([hso_winstrategy], '')
+                + ISNULL(CAST(LEFT([hso_winstrategy], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([_createdby_value], '')
                 + ISNULL(CONVERT(NVARCHAR(19), [createdon], 120), '')
                 + ISNULL([_createdonbehalfby_value], '')
@@ -868,12 +866,10 @@ BEGIN
                 + ISNULL([_modifiedonbehalfby_value], '')
                 + ISNULL([_ownerid_value], '')
                 + ISNULL(CAST([statecode] AS NVARCHAR(20)), '')
-                + ISNULL([_statecode_value], '')
+                + ISNULL(CAST(LEFT([_statecode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([statuscode] AS NVARCHAR(20)), '')
-                + ISNULL([_statuscode_value], '')
-                + ISNULL(CAST([timezoneruleversionnumber] AS NVARCHAR(20)), '')
-                + ISNULL(CAST([versionnumber] AS NVARCHAR(20)), '')
-            ) AS [Hash]
+                + ISNULL(CAST(LEFT([_statuscode_value], 4000) AS NVARCHAR(4000)), '')
+            ) AS [dwh_hash]
         FROM [staged].[dyn_EntityProject]
 
         IF OBJECT_ID(@schema + '.' + @table) IS NULL
@@ -889,12 +885,12 @@ BEGIN
         UPDATE [processed].[dyn_project]
         SET
             [dwh_valid_to] = DATEADD(DAY, -1, @process_run_date),
-            [ProcessRunID] = @process_run_id,
+            [dwh_process_run_id] = @process_run_id,
             [dwh_active] = 0
         FROM #temp_dyn_project AS [T]
-        LEFT JOIN [processed].[dyn_project] AS [P] ON [T].[AK_project] = [P].[AK_project]
+        LEFT JOIN [processed].[dyn_project] AS [P] ON [T].[ak_project] = [P].[ak_project]
         WHERE
-            [T].[Hash] != [P].[Hash]
+            [T].[dwh_hash] != [P].[dwh_hash]
             AND [P].[dwh_active] = 1
         SELECT @updated = @@ROWCOUNT
 
@@ -902,12 +898,12 @@ BEGIN
         UPDATE [processed].[dyn_project]
         SET
             [dwh_valid_to] = DATEADD(DAY, -1, @process_run_date),
-            [ProcessRunID] = @process_run_id,
+            [dwh_process_run_id] = @process_run_id,
             [dwh_active] = 0
         FROM [processed].[dyn_project] AS [P]
-        LEFT JOIN #temp_dyn_project AS [T] ON [T].[AK_project] = [P].[AK_project]
+        LEFT JOIN #temp_dyn_project AS [T] ON [T].[ak_project] = [P].[ak_project]
         WHERE
-            [T].[AK_project] IS NULL
+            [T].[ak_project] IS NULL
             AND [P].[dwh_active] = 1
         SELECT @deleted = @@ROWCOUNT
 
@@ -917,223 +913,224 @@ BEGIN
             [dwh_valid_from],
             [dwh_valid_to],
             [dwh_active],
-            [AK_project],
+            [dwh_process_run_id],
+            [ak_project],
             [projectnumber],
             [name],
             [acceptableqhsestandards],
-            [acceptableqhsestandards_value],
+            LEFT([acceptableqhsestandards_value], 4000),
             [accountid],
             [accountid_value],
             [activetimeregistrationid],
             [activetimeregistrationid_value],
             [additionalreason],
-            [additionalreason_value],
+            LEFT([additionalreason_value], 4000),
             [advancepaymentpercentage],
             [alignswithcorporatestrategyactions1],
-            [alignswithcorporatestrategyactions1_value],
+            LEFT([alignswithcorporatestrategyactions1_value], 4000),
             [alignswithcorporatestrategyactions2],
-            [alignswithcorporatestrategyactions2_value],
+            LEFT([alignswithcorporatestrategyactions2_value], 4000),
             [alternativetobeoffered],
-            [alternativetobeoffered_value],
+            LEFT([alternativetobeoffered_value], 4000),
             [anonymizedata],
-            [anonymizedata_value],
-            [approvalinitiatorremarks],
+            LEFT([anonymizedata_value], 4000),
+            LEFT([approvalinitiatorremarks], 4000),
             [approvalstatus],
-            [approvalstatus_value],
+            LEFT([approvalstatus_value], 4000),
             [approvalworkflowinprogress],
-            [approvalworkflowinprogress_value],
+            LEFT([approvalworkflowinprogress_value], 4000),
             [areaid],
             [areaid_value],
-            [availabilitycompetences],
+            LEFT([availabilitycompetences], 4000),
             [awarddateexpected],
             [awardnumberid_value],
             [awardsummaryimport],
-            [awardsummaryimport_value],
+            LEFT([awardsummaryimport_value], 4000),
             [awardsummaryinstanceurl],
             [awardsummarynumber],
             [awardsummaryprojectsnapshoturl],
             [awardsummaryreportlink],
             [awardsummaryrevision],
-            [awardsummaryrevision_value],
+            LEFT([awardsummaryrevision_value], 4000),
             [baseportinformation],
             [bidvaliditydays],
             [bingmapzoomlevel],
             [cable],
             [calculatedriskprofile],
-            [calculatedriskprofile_value],
+            LEFT([calculatedriskprofile_value], 4000),
             [car],
-            [car_value],
+            LEFT([car_value], 4000),
             [carbonfootprintestimated],
             [chanceofgoingahead],
-            [chanceofgoingahead_value],
+            LEFT([chanceofgoingahead_value], 4000),
             [chanceofwinningcommercialposition],
-            [chanceofwinningcommercialposition_value],
+            LEFT([chanceofwinningcommercialposition_value], 4000),
             [changedawarddate],
             [changedtenderdate],
-            [changestosolution],
-            [changestosolutionchosen],
+            LEFT([changestosolution], 4000),
+            LEFT([changestosolutionchosen], 4000),
             [commercialresponsibleid_value],
             [contractconditions],
-            [contractconditions_value],
+            LEFT([contractconditions_value], 4000),
             [countryid],
             [countryid_value],
             [createawardsummarynumber],
-            [createawardsummarynumber_value],
+            LEFT([createawardsummarynumber_value], 4000),
             [createnewprojectnumer],
-            [createnewprojectnumer_value],
+            LEFT([createnewprojectnumer_value], 4000),
             [creditinsurance],
-            [creditinsurance_value],
+            LEFT([creditinsurance_value], 4000),
             [creditinsurance_yn],
-            [creditinsurance_yn_value],
+            LEFT([creditinsurance_yn_value], 4000),
             [currencyrisk],
-            [currencyrisk_value],
+            LEFT([currencyrisk_value], 4000),
             [currencyrisk_yn],
-            [currencyrisk_yn_value],
+            LEFT([currencyrisk_yn_value], 4000),
             [defectsliabilityperioddays],
-            [definerequiredtenderteamcompetences],
+            LEFT([definerequiredtenderteamcompetences], 4000),
             [deploymentownequipment],
-            [deploymentownequipment_value],
+            LEFT([deploymentownequipment_value], 4000),
             [designinsurance],
-            [designinsurance_value],
+            LEFT([designinsurance_value], 4000),
             [designresponsibilityyn],
-            [designresponsibilityyn_value],
+            LEFT([designresponsibilityyn_value], 4000),
             [dredgingcategory],
-            [dredgingcategory_value],
+            LEFT([dredgingcategory_value], 4000),
             [durationofcontract],
             [edocs],
-            [edocs_value],
+            LEFT([edocs_value], 4000),
             [eepriority],
-            [eepriority_value],
+            LEFT([eepriority_value], 4000),
             [emviscore],
-            [emviscore_value],
+            LEFT([emviscore_value], 4000),
             [endreportrequired],
-            [endreportrequired_value],
+            LEFT([endreportrequired_value], 4000),
             [expectedstartofwork],
             [exposedconditions],
-            [externalinputrequirements],
+            LEFT([externalinputrequirements], 4000),
             [fasttrack],
-            [fasttrack_value],
+            LEFT([fasttrack_value], 4000),
             [finalcompletion],
-            [finalcompletion_value],
+            LEFT([finalcompletion_value], 4000),
             [finalcompletionamounteuro],
             [finalcompletionlimpercent],
             [finalcompletionperiod],
-            [finalcompletionperiod_value],
+            LEFT([finalcompletionperiod_value], 4000),
             [formofcontract],
-            [formofcontract_value],
+            LEFT([formofcontract_value], 4000),
             [foundation],
             [frommobdemob],
             [fuel_yn],
-            [fuel_yn_value],
+            LEFT([fuel_yn_value], 4000),
             [fullclientprojectname],
             [functionalapplicationbypass],
-            [functionalapplicationbypass_value],
+            LEFT([functionalapplicationbypass_value], 4000),
             [geophysicalinfo],
             [geotechnicalinfo],
             [intermediatecompletionamounteuro],
             [intermediatecompletionlimpercent],
             [intermediatecompletionperiod],
-            [intermediatecompletionperiod_value],
+            LEFT([intermediatecompletionperiod_value], 4000),
             [intermediatecompletions],
-            [intermediatecompletions_value],
+            LEFT([intermediatecompletions_value], 4000),
             [investmentrequired],
-            [investmentrequired_value],
+            LEFT([investmentrequired_value], 4000),
             [latestapprovedawardsummary_value],
             [latitude],
             [latitudedegrees],
             [latitudedms],
             [latitudeminutes],
             [atitudenorthsouth],
-            [latitudenorthsouth_value],
+            LEFT([latitudenorthsouth_value], 4000),
             [latitudeseconds],
             [lcdreview],
-            [lcdreview_value],
+            LEFT([lcdreview_value], 4000),
             [letterofcredit],
-            [letterofcredit_value],
+            LEFT([letterofcredit_value], 4000),
             [letterofcredit_yn],
-            [letterofcredit_yn_value],
+            LEFT([letterofcredit_yn_value], 4000),
             [location],
             [longitude],
             [longitudedegrees],
             [longitudedms],
             [longitudeeastwest],
-            [longitudeeastwest_value],
+            LEFT([longitudeeastwest_value], 4000),
             [longitudeminutes],
             [longitudeseconds],
             [longleaditemssecured],
-            [longleaditemssecured_value],
+            LEFT([longleaditemssecured_value], 4000),
             [mainprojectid_value],
             [maintenanceperiod],
             [maintenanceperioddays],
             [marketdrivers],
-            [marketdrivers_value],
+            LEFT([marketdrivers_value], 4000),
             [materials_yn],
-            [materials_yn_value],
+            LEFT([materials_yn_value], 4000),
             [maxliability],
             [nonbindingindication],
-            [nonbindingindication_value],
+            LEFT([nonbindingindication_value], 4000),
             [noneurocomponentpercent],
             [ohvs],
             [onhold],
-            [onhold_value],
+            LEFT([onhold_value], 4000),
             [onholdreason],
-            [onholdreason_value],
+            LEFT([onholdreason_value], 4000),
             [onshore],
             [overallriskprofileafter],
-            [overallriskprofileafter_value],
+            LEFT([overallriskprofileafter_value], 4000),
             [overallriskprofilebefore],
-            [overallriskprofilebefore_value],
+            LEFT([overallriskprofilebefore_value], 4000),
             [parentcompanyguarantee],
-            [parentcompanyguarantee_value],
+            LEFT([parentcompanyguarantee_value], 4000),
             [paymentguarantees_creditinsurance],
-            [paymentguarantees_creditinsurance_value],
+            LEFT([paymentguarantees_creditinsurance_value], 4000),
             [paymentperioddays],
             [paymentrisk],
-            [paymentrisk_value],
+            LEFT([paymentrisk_value], 4000),
             [paymentrisk_yn],
-            [paymentrisk_yn_value],
+            LEFT([paymentrisk_yn_value], 4000),
             [positivecashflow],
-            [positivecashflow_value],
+            LEFT([positivecashflow_value], 4000),
             [pq],
-            [pq_value],
+            LEFT([pq_value], 4000),
             [pqdate],
-            [pqremarks],
+            LEFT([pqremarks], 4000),
             [pricevariationsfuel],
-            [pricevariationsfuel_value],
+            LEFT([pricevariationsfuel_value], 4000),
             [pricevariationsmaterials],
-            [pricevariationsmaterials_value],
+            LEFT([pricevariationsmaterials_value], 4000),
             [pricevariationswages],
-            [pricevariationswages_value],
+            LEFT([pricevariationswages_value], 4000),
             [processnostepfield],
-            [processnostepfield_value],
+            LEFT([processnostepfield_value], 4000),
             [productgroupsnl],
-            [productgroupsnl_value],
-            [projectdescription],
+            LEFT([productgroupsnl_value], 4000),
+            LEFT([projectdescription], 4000),
             [projectfinancial],
             [projectfinancial_value],
             [projectfinancialdatalasttransferdate],
             [projectgeneral],
             [projectgeneral_value],
             [projectphase],
-            [projectphase_value],
+            LEFT([projectphase_value], 4000),
             [projectpreparationmeeting],
             [projectstatusid],
-            [reasonexplanation],
-            [reasonexplanationchosen],
-            [reasonofchangeaward],
+            LEFT([reasonexplanation], 4000),
+            LEFT([reasonexplanationchosen], 4000),
+            LEFT([reasonofchangeaward], 4000),
             [reclamationlevel],
-            [requiredcriticalcompetences],
+            LEFT([requiredcriticalcompetences], 4000),
             [resourceavailability],
-            [resourceavailability_value],
+            LEFT([resourceavailability_value], 4000),
             [retentionpercentage],
             [sailingdistancetodisposalarea],
-            [scopeofworkvanoord],
+            LEFT([scopeofworkvanoord], 4000),
             [soildata],
             [stagegate],
-            [stagegate_value],
+            LEFT([stagegate_value], 4000),
             [stagegatecopy],
             [stagegatesnapshot],
-            [stagegatesnapshot_value],
+            LEFT([stagegatesnapshot_value], 4000),
             [startoftender],
             [statushistoryregisterdate],
             [statushistoryregisterdate_date_value],
@@ -1141,15 +1138,15 @@ BEGIN
             [subareaid],
             [subareaid_value],
             [substatusreason],
-            [substatusreason_value],
+            LEFT([substatusreason_value], 4000),
             [technicallyfeasible],
-            [technicallyfeasible_value],
+            LEFT([technicallyfeasible_value], 4000),
             [tenderdate],
             [tenderenddate],
             [tendersubmissiondateactual],
             [tendersubmissionplace],
             [tendertype],
-            [tendertype_value],
+            LEFT([tendertype_value], 4000),
             [tendervalidity],
             [tmp_approvalinitiator_value],
             [tmp_projectguid],
@@ -1160,29 +1157,29 @@ BEGIN
             [totalftedays_date_value],
             [totalftedays_state_value],
             [typeofcontract],
-            [typeofcontract_value],
+            LEFT([typeofcontract_value], 4000),
             [typeofwork],
-            [typeofwork_value],
+            LEFT([typeofwork_value], 4000),
             [typetender],
-            [typetender_value],
+            LEFT([typetender_value], 4000),
             [userdefinedriskprofile],
-            [userdefinedriskprofile_value],
+            LEFT([userdefinedriskprofile_value], 4000),
             [vanoordentityid],
             [vanoordentityid_value],
             [vanoordsubmittingactingas],
-            [vanoordsubmittingactingas_value],
+            LEFT([vanoordsubmittingactingas_value], 4000),
             [project_versionnumber],
             [vobusinessunitid],
             [vobusinessunitid_value],
             [voprojectriskcategory],
-            [voprojectriskcategory_value],
+            LEFT([voprojectriskcategory_value], 4000),
             [voshareineurocopy],
             [vosharepercentcopy],
             [wages_yn],
-            [wages_yn_value],
+            LEFT([wages_yn_value], 4000),
             [waterdepthssite],
             [windturbineinformation],
-            [winstrategy],
+            LEFT([winstrategy], 4000),
             [createdby_value],
             [createdon],
             [createdonbehalfby_value],
@@ -1192,19 +1189,17 @@ BEGIN
             [modifiedonbehalfby_value],
             [ownerid_value],
             [statecode],
-            [statecode_value],
+            LEFT([statecode_value], 4000),
             [statuscode],
-            [statuscode_value],
-            [timezoneruleversionnumber],
-            [versionnumber],
-            [Hash],
-            [ProcessRunID]
+            LEFT([statuscode_value], 4000),
+            [dwh_hash]            
         )
         SELECT
             @process_run_date AS [dwh_valid_from],
             NULL AS [dwh_valid_to],
             1 AS [dwh_active],
-            [T].[AK_project],
+            @process_run_id AS [dwh_process_run_id],
+            [T].[ak_project],
             [T].[projectnumber],
             [T].[name],
             [T].[acceptableqhsestandards],
@@ -1482,17 +1477,14 @@ BEGIN
             [T].[statecode_value],
             [T].[statuscode],
             [T].[statuscode_value],
-            [T].[timezoneruleversionnumber],
-            [T].[versionnumber],
-            [T].[Hash],
-            @process_run_id AS [ProcessRunID]
+            [T].[dwh_hash]
         FROM #temp_dyn_project AS [T]
-        LEFT JOIN [processed].[dyn_project] AS [P] ON [T].[AK_project] = [P].[AK_project]
+        LEFT JOIN [processed].[dyn_project] AS [P] ON [T].[ak_project] = [P].[ak_project]
         WHERE
-            [P].[AK_project] IS NULL
+            [P].[ak_project] IS NULL
             OR (
-                [T].[Hash] != [P].[Hash]
-                AND [P].[ProcessRunID] = @process_run_id
+                [T].[dwh_hash] != [P].[dwh_hash]
+                AND [P].[dwh_process_run_id] = @process_run_id
             )
         SELECT @inserted = @@ROWCOUNT
 
@@ -1506,8 +1498,6 @@ BEGIN
             @rows_affected_insert = @inserted,
             @rows_affected_update = @updated,
             @rows_affected_delete = @deleted
-
-
     END TRY
     BEGIN CATCH
         SET @error_number = ERROR_NUMBER();
