@@ -1,11 +1,13 @@
-CREATE PROCEDURE [${schema}].[sp_load_${table}]
+CREATE OR ALTER PROCEDURE [${schema}].[sp_load_${table}]
     @process_run_date DATE,
     @process_run_id UNIQUEIDENTIFIER
 AS
 BEGIN
+    -- Abort and rollback for all errors, not only the ones captured by BEGIN TRY
+    SET XACT_ABORT ON;
     DECLARE
         @schema NVARCHAR(20) = '${schema}',
-        @table NVARCHAR(20) = '${table}',
+        @table NVARCHAR(60) = '${table}',
 
         @inserted INT = 0,
         @updated INT = 0,
@@ -35,7 +37,7 @@ ${insert_into_temp_table_fields},
             HASHBYTES(
                 'MD5',
 ${hashbytes_fields}
-            ) AS [Hash]
+            ) AS [dwh_hash]
         FROM [${source_schema}].[${source_table}]
 
         IF OBJECT_ID(@schema + '.' + @table) IS NULL
@@ -51,12 +53,12 @@ ${hashbytes_fields}
         UPDATE [${schema}].[${table}]
         SET
             [dwh_valid_to] = DATEADD(DAY, -1, @process_run_date),
-            [ProcessRunID] = @process_run_id,
+            [dwh_process_run_id] = @process_run_id,
             [dwh_active] = 0
         FROM ${temp_table} AS [T]
         LEFT JOIN [${schema}].[${table}] AS [P] ON [T].[${application_key}] = [P].[${application_key}]
         WHERE
-            [T].[Hash] != [P].[Hash]
+            [T].[dwh_hash] != [P].[dwh_hash]
             AND [P].[dwh_active] = 1
         SELECT @updated = @@ROWCOUNT
 
@@ -64,7 +66,7 @@ ${hashbytes_fields}
         UPDATE [${schema}].[${table}]
         SET
             [dwh_valid_to] = DATEADD(DAY, -1, @process_run_date),
-            [ProcessRunID] = @process_run_id,
+            [dwh_process_run_id] = @process_run_id,
             [dwh_active] = 0
         FROM [${schema}].[${table}] AS [P]
         LEFT JOIN ${temp_table} AS [T] ON [T].[${application_key}] = [P].[${application_key}]
@@ -79,24 +81,24 @@ ${hashbytes_fields}
             [dwh_valid_from],
             [dwh_valid_to],
             [dwh_active],
+            [dwh_process_run_id],
 ${insert_into_table_fields},
-            [Hash],
-            [ProcessRunID]
+            [dwh_hash]            
         )
         SELECT
             @process_run_date AS [dwh_valid_from],
             NULL AS [dwh_valid_to],
             1 AS [dwh_active],
+            @process_run_id AS [dwh_process_run_id],
 ${insert_into_select_table_fields},
-            [T].[Hash],
-            @process_run_id AS [ProcessRunID]
+            [T].[dwh_hash]
         FROM ${temp_table} AS [T]
         LEFT JOIN [${schema}].[${table}] AS [P] ON [T].[${application_key}] = [P].[${application_key}]
         WHERE
             [P].[${application_key}] IS NULL
             OR (
-                [T].[Hash] != [P].[Hash]
-                AND [P].[ProcessRunID] = @process_run_id
+                [T].[dwh_hash] != [P].[dwh_hash]
+                AND [P].[dwh_process_run_id] = @process_run_id
             )
         SELECT @inserted = @@ROWCOUNT
 
@@ -110,8 +112,6 @@ ${insert_into_select_table_fields},
             @rows_affected_insert = @inserted,
             @rows_affected_update = @updated,
             @rows_affected_delete = @deleted
-
-
     END TRY
     BEGIN CATCH
         SET @error_number = ERROR_NUMBER();

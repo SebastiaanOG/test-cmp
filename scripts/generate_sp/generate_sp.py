@@ -127,7 +127,11 @@ def generate_insert_into_temp_table_fields(table, data):
             continue
 
         column_name = row['Source Field Name']
-        insert_into_temp_table_fields.append(f'            [{column_name}]')
+
+        if (row['Datatype'].upper() in ['TEXT', 'NTEXT']) or (row['Datatype'].upper() in ['VARCHAR', 'NVARCHAR'] and row['Size'] == 4000):
+            insert_into_temp_table_fields.append(f'            LEFT([{column_name}], 4000)')
+        else:
+            insert_into_temp_table_fields.append(f'            [{column_name}]')
 
     return ',\n'.join(insert_into_temp_table_fields)
 
@@ -150,8 +154,8 @@ def generate_hashbytes_fields(data):
             cast = f'CAST([{column_name}] AS NVARCHAR(20))'
         elif datatype in ['DECIMAL', 'FLOAT', 'NUMERIC']:
             cast = f'CAST([{column_name}] AS NVARCHAR(50))'
-        elif datatype == 'NTEXT':
-            cast = f'CAST([{column_name}] AS NVARCHAR(4000))'
+        elif (datatype in ['TEXT', 'NTEXT']) or (datatype in ['VARCHAR', 'NVARCHAR'] and row['Size'] == 4000):
+            cast = f'CAST(LEFT([{column_name}], 4000) AS NVARCHAR(4000))'
         elif datatype != 'NVARCHAR':
             raise Exception(f"Unknown datatype for column ({column_name}): {datatype}")
 
@@ -171,7 +175,11 @@ def generate_insert_into_table_fields(data):
             continue
 
         column_name = row['Column Name']
-        insert_into_table_fields.append(f'            [{column_name}]')
+
+        if (row['Datatype'].upper() in ['TEXT', 'NTEXT']) or (row['Datatype'].upper() in ['VARCHAR', 'NVARCHAR'] and row['Size'] == 4000):
+            insert_into_table_fields.append(f'            LEFT([{column_name}], 4000)')
+        else:
+            insert_into_table_fields.append(f'            [{column_name}]')
 
     return ',\n'.join(insert_into_table_fields)
 
@@ -193,7 +201,6 @@ def save_to_file(result, table, output_dir):
     path = Path(output_dir, f'sp_load_{table}.sql')
     with open(path, 'w') as file:
         file.write(result)
-
 
 if __name__ == '__main__':
     if len(sys.argv) != 3:
