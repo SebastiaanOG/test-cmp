@@ -22,9 +22,9 @@ jobs:
             echo "ERROR: You can only merge into main from uat."
             exit 1
         - name: if 'uat' branch then only allow 'dev' to merge 
-          if: github.base_ref == 'uat' && github.head_ref != 'dev'
+          if: github.base_ref == 'uat' && github.head_ref != 'development'
           run: |
-             echo "ERROR: You can only merge into uat from dev."
+             echo "ERROR: You can only merge into uat from development."
              exit 1
 
   init:
