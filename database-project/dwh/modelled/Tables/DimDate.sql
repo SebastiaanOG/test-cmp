@@ -1,6 +1,6 @@
+/* Create table modelled.DimDate */
 CREATE TABLE modelled.DimDate (
-   [pk_date]  int   NOT NULL
-,  [date]  date   NOT NULL
+   [pk_date]  date   NOT NULL
 ,  [year]  int   NOT NULL
 ,  [quarter_number]  tinyint   NOT NULL
 ,  [quarter_name]  nvarchar(15)   NOT NULL
@@ -19,17 +19,17 @@ CREATE TABLE modelled.DimDate (
 ,  [day_numer_in_week_sunday]  tinyint   NOT NULL
 ,  [weekday_in_month]  nvarchar(5)   NOT NULL
 ,  [weekday_in_year]  nvarchar(5)   NOT NULL
-,  [indicator_first_day_of_the_month]  bit   NOT NULL
-,  [indicator_last_day_of_the_month]  bit   NOT NULL
-,  [indicator_weekendday]  bit   NOT NULL
-,  [indicator_weekday]  bit   NOT NULL
-,  [indicator_dutch_holiday]  bit   NOT NULL
+,  [indicator_first_day_of_the_month]  nvarchar(3)   NOT NULL
+,  [indicator_last_day_of_the_month]  nvarchar(3)   NOT NULL
+,  [indicator_weekendday]  nvarchar(3)   NOT NULL
+,  [indicator_weekday]  nvarchar(3)   NOT NULL
+,  [indicator_dutch_holiday]  nvarchar(3)   NOT NULL
 ,  [holiday_name]  nvarchar(50)   NULL
 ,  [year_and_quarter]  nvarchar(10)   NOT NULL
 ,  [year_and_month]  int   NOT NULL
 ,  [year_and_week]  int   NOT NULL
 ,  [year_and_week_sunday]  int   NOT NULL
-,  [indicator_leap year]  bit   NOT NULL
+,  [indicator_leap year]  nvarchar(3)   NOT NULL
 , CONSTRAINT [PK_modelled.DimDate] PRIMARY KEY CLUSTERED ([pk_date] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 100, DATA_COMPRESSION = PAGE) )
 GO
 
@@ -45,9 +45,7 @@ exec sys.sp_addextendedproperty @name=N'Database Schema', @value=N'modelled', @l
 GO
 GO
 
-exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'Primary key dimension = ISO-date', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'pk_date'; 
-GO
-exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'date', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'date'; 
+exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'Primary key dimension = date', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'pk_date'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'year', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'year'; 
 GO
@@ -107,9 +105,7 @@ exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'year and week Su
 GO
 exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'indicator leap year', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'indicator_leap year'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Description', @value=N'Primary key dimension = ISO-date', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'pk_date'; 
-GO
-exec sys.sp_addextendedproperty @name=N'Description', @value=N'date', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'date'; 
+exec sys.sp_addextendedproperty @name=N'Description', @value=N'Primary key dimension = date', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'pk_date'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'year', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'year'; 
 GO
@@ -169,9 +165,7 @@ exec sys.sp_addextendedproperty @name=N'Description', @value=N'202001, 202052 (w
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'indicator leap year', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'indicator_leap year'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'20230528', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'pk_date'; 
-GO
-exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'28-09-2023', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'date'; 
+exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'28-09-2023', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'pk_date'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'2023', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'year'; 
 GO
@@ -209,15 +203,15 @@ exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'2', @level0typ
 GO
 exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'2', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'weekday_in_year'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'1', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'indicator_first_day_of_the_month'; 
+exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'yes/no', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'indicator_first_day_of_the_month'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'0', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'indicator_last_day_of_the_month'; 
+exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'yes/no', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'indicator_last_day_of_the_month'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'1', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'indicator_weekendday'; 
+exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'yes/no', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'indicator_weekendday'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'1', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'indicator_weekday'; 
+exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'yes/no', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'indicator_weekday'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'1', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'indicator_dutch_holiday'; 
+exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'yes/no', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'indicator_dutch_holiday'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'202303', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'year_and_quarter'; 
 GO
@@ -227,11 +221,9 @@ exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'202335', @leve
 GO
 exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'202335', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'year_and_week_sunday'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'1', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'indicator_leap year'; 
+exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'yes/no', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'indicator_leap year'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'pk_date'; 
-GO
-exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'date'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'year'; 
 GO
@@ -278,6 +270,8 @@ GO
 exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'indicator_weekday'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'indicator_dutch_holiday'; 
+GO
+exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'holiday_name'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'year_and_quarter'; 
 GO

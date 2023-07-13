@@ -221,6 +221,7 @@
     </PostDeploy>
     <None Include="PostDeploy\pd_ProcessedTables.sql" />
     <None Include="PostDeploy\pd_AuthSynapseWS.sql" />
+    <None Include="PostDeploy\pd_ExecuteStoreProcedures.sql" />
   </ItemGroup>
   <Import Condition="'$(NetCoreBuild)' == 'true'" Project="$(NETCoreTargetsPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
