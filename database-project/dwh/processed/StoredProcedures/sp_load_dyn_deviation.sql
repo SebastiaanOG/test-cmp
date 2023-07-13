@@ -1,4 +1,4 @@
-CREATE OR ALTER PROCEDURE [processed].[sp_load_dyn_deviation]
+CREATE PROCEDURE [processed].[sp_load_dyn_deviation]
     @process_run_date DATE,
     @process_run_id UNIQUEIDENTIFIER
 AS
@@ -156,19 +156,19 @@ BEGIN
             [dwh_active],
             [dwh_process_run_id],
             [ak_deviation],
-            LEFT([name], 4000),
+            [name],
             [area],
             [area_value],
             [effect],
-            LEFT([effect_value], 4000),
-            LEFT([expectedimpact], 4000),
+            [effect_value],
+            [expectedimpact],
             [projectid],
             [projectid_value],
-            LEFT([reason], 4000),
-            LEFT([remark], 4000),
-            LEFT([solutionoffered], 4000),
+            [reason],
+            [remark],
+            [solutionoffered],
             [typeofdevation],
-            LEFT([typeofdevation_value], 4000),
+            [typeofdevation_value],
             [createdby_value],
             [createdon],
             [modifiedby_value],
@@ -176,9 +176,9 @@ BEGIN
             [modifiedonbehalfby_value],
             [ownerid_value],
             [statecode],
-            LEFT([statecode_value], 4000),
+            [statecode_value],
             [statuscode],
-            LEFT([statuscode_value], 4000),
+            [statuscode_value],
             [versionnumber],
             [dwh_hash]            
         )

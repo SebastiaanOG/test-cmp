@@ -176,10 +176,8 @@ def generate_insert_into_table_fields(data):
 
         column_name = row['Column Name']
 
-        if (row['Datatype'].upper() in ['TEXT', 'NTEXT']) or (row['Datatype'].upper() in ['VARCHAR', 'NVARCHAR'] and row['Size'] == 4000):
-            insert_into_table_fields.append(f'            LEFT([{column_name}], 4000)')
-        else:
-            insert_into_table_fields.append(f'            [{column_name}]')
+       
+        insert_into_table_fields.append(f'            [{column_name}]')
 
     return ',\n'.join(insert_into_table_fields)
 

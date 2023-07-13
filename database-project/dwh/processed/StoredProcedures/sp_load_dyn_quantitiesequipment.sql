@@ -1,4 +1,4 @@
-CREATE OR ALTER PROCEDURE [processed].[sp_load_dyn_quantitiesequipment]
+CREATE PROCEDURE [processed].[sp_load_dyn_quantitiesequipment]
     @process_run_date DATE,
     @process_run_id UNIQUEIDENTIFIER
 AS
@@ -236,12 +236,12 @@ BEGIN
             [equipmentid],
             [equipmentid_value],
             [equipmentother],
-            LEFT([equipmentother_value], 4000),
+            [equipmentother_value],
             [equipmentremarks],
             [equipmenttypeid],
             [equipmenttypeid_value],
             [fasttrack],
-            LEFT([fasttrack_value], 4000),
+            [fasttrack_value],
             [groupid_value],
             [maxdepth],
             [mindepth],
@@ -251,11 +251,11 @@ BEGIN
             [numberofequipment],
             [projectid],
             [projectid_value],
-            LEFT([provoremarks], 4000),
+            [provoremarks],
             [quantityvo],
             [scopeid_value],
             [soiltype],
-            LEFT([soiltype_value], 4000),
+            [soiltype_value],
             [unitid_value],
             [vobusinessunitid],
             [vobusinessunitid_value],
@@ -271,9 +271,9 @@ BEGIN
             [modifiedonbehalfby_value],
             [ownerid_value],
             [statecode],
-            LEFT([statecode_value], 4000),
+            [statecode_value],
             [statuscode],
-            LEFT([statuscode_value], 4000),
+            [statuscode_value],
             [timezoneruleversionnumber],
             [versionnumber],
             [dwh_hash]            

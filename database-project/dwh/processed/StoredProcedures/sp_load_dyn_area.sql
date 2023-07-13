@@ -1,4 +1,4 @@
-CREATE OR ALTER PROCEDURE [processed].[sp_load_dyn_area]
+CREATE PROCEDURE [processed].[sp_load_dyn_area]
     @process_run_date DATE,
     @process_run_id UNIQUEIDENTIFIER
 AS
@@ -156,9 +156,9 @@ BEGIN
             [modifiedby_value],
             [modifiedon],
             [ownerid_value],
-            LEFT([statecode_value], 4000),
+            [statecode_value],
             [statuscode],
-            LEFT([statuscode_value], 4000),
+            [statuscode_value],
             [versionnumber],
             [dwh_hash]            
         )

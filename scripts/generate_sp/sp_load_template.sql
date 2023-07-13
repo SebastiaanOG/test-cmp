@@ -1,4 +1,4 @@
-CREATE OR ALTER PROCEDURE [${schema}].[sp_load_${table}]
+CREATE PROCEDURE [${schema}].[sp_load_${table}]
     @process_run_date DATE,
     @process_run_id UNIQUEIDENTIFIER
 AS

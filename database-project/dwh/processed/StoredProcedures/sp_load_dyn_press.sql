@@ -1,4 +1,4 @@
-CREATE OR ALTER PROCEDURE [processed].[sp_load_dyn_press]
+CREATE PROCEDURE [processed].[sp_load_dyn_press]
     @process_run_date DATE,
     @process_run_id UNIQUEIDENTIFIER
 AS
@@ -151,7 +151,7 @@ BEGIN
             [areaid],
             [areaid_value],
             [date],
-            LEFT([description], 4000),
+            [description],
             [projectid],
             [projectid_value],
             [url],
@@ -163,9 +163,9 @@ BEGIN
             [modifiedonbehalfby_value],
             [ownerid_value],
             [statecode],
-            LEFT([statecode_value], 4000),
+            [statecode_value],
             [statuscode],
-            LEFT([statuscode_value], 4000),
+            [statuscode_value],
             [timezoneruleversionnumber],
             [versionnumber],
             [dwh_hash]            

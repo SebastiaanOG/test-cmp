@@ -1,4 +1,4 @@
-CREATE OR ALTER PROCEDURE [processed].[sp_load_dyn_reportingnote]
+CREATE PROCEDURE [processed].[sp_load_dyn_reportingnote]
     @process_run_date DATE,
     @process_run_id UNIQUEIDENTIFIER
 AS
@@ -140,7 +140,7 @@ BEGIN
             [ak_reportingnote],
             [areaid],
             [areaid_value],
-            LEFT([note], 4000),
+            [note],
             [regardingnonstandardproject],
             [regardingnonstandardproject_value],
             [regardingproject],
@@ -152,9 +152,9 @@ BEGIN
             [modifiedonbehalfby_value],
             [ownerid_value],
             [statecode],
-            LEFT([statecode_value], 4000),
+            [statecode_value],
             [statuscode],
-            LEFT([statuscode_value], 4000),
+            [statuscode_value],
             [versionnumber],
             [dwh_hash]            
         )

@@ -1,4 +1,4 @@
-CREATE OR ALTER PROCEDURE [processed].[sp_load_dyn_internalproject]
+CREATE PROCEDURE [processed].[sp_load_dyn_internalproject]
     @process_run_date DATE,
     @process_run_id UNIQUEIDENTIFIER
 AS
@@ -146,9 +146,9 @@ BEGIN
             [ak_internalproject],
             [projectnumber],
             [name],
-            LEFT([description], 4000),
+            [description],
             [edocs],
-            LEFT([edocs_value], 4000),
+            [edocs_value],
             [internalprojecttypeid_value],
             [startdate],
             [createdby_value],
@@ -159,9 +159,9 @@ BEGIN
             [modifiedonbehalfby_value],
             [ownerid_value],
             [statecode],
-            LEFT([statecode_value], 4000),
+            [statecode_value],
             [statuscode],
-            LEFT([statuscode_value], 4000),
+            [statuscode_value],
             [timezoneruleversionnumber],
             [versionnumber],
             [dwh_hash]            

@@ -1,4 +1,4 @@
-CREATE OR ALTER PROCEDURE [processed].[sp_load_dyn_externalprojectparticipant]
+CREATE PROCEDURE [processed].[sp_load_dyn_externalprojectparticipant]
     @process_run_date DATE,
     @process_run_id UNIQUEIDENTIFIER
 AS
@@ -195,18 +195,18 @@ BEGIN
             [contactid_value],
             [jointventureshare],
             [jointventuresponsor],
-            LEFT([jointventuresponsor_value], 4000),
+            [jointventuresponsor_value],
             [nonstandardprojectid],
             [nonstandardprojectid_value],
             [projectid],
             [projectid_value],
             [remarkinvolvedparty],
             [role],
-            LEFT([role_value], 4000),
-            LEFT([subcontractorscope], 4000),
-            LEFT([supplierscope], 4000),
+            [role_value],
+            [subcontractorscope],
+            [supplierscope],
             [typeofjointventure],
-            LEFT([typeofjointventure_value], 4000),
+            [typeofjointventure_value],
             [createdby_value],
             [createdon],
             [createdonbehalfby_value],
@@ -216,9 +216,9 @@ BEGIN
             [modifiedonbehalfby_value],
             [ownerid_value],
             [statecode],
-            LEFT([statecode_value], 4000),
+            [statecode_value],
             [statuscode],
-            LEFT([statuscode_value], 4000),
+            [statuscode_value],
             [versionnumber],
             [dwh_hash]            
         )

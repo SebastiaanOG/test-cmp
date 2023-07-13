@@ -1,4 +1,4 @@
-CREATE OR ALTER PROCEDURE [processed].[sp_load_dyn_tenderteam]
+CREATE PROCEDURE [processed].[sp_load_dyn_tenderteam]
     @process_run_date DATE,
     @process_run_id UNIQUEIDENTIFIER
 AS
@@ -187,7 +187,7 @@ BEGIN
             [employeeid],
             [employeeid_value],
             [employeeundetermined],
-            LEFT([employeeundetermined_value], 4000),
+            [employeeundetermined_value],
             [ftedays],
             [ftepercent],
             [projectid],
@@ -195,7 +195,7 @@ BEGIN
             [remarks],
             [roleseniorityid_value],
             [seniority],
-            LEFT([seniority_value], 4000),
+            [seniority_value],
             [tenderteamroleid],
             [tenderteamroleid_value],
             [workingdays],
@@ -208,9 +208,9 @@ BEGIN
             [modifiedonbehalfby_value],
             [ownerid_value],
             [statecode],
-            LEFT([statecode_value], 4000),
+            [statecode_value],
             [statuscode],
-            LEFT([statuscode_value], 4000),
+            [statuscode_value],
             [versionnumber],
             [dwh_hash]            
         )

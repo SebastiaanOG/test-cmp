@@ -1,4 +1,4 @@
-CREATE OR ALTER PROCEDURE [processed].[sp_load_dyn_relatedproject]
+CREATE PROCEDURE [processed].[sp_load_dyn_relatedproject]
     @process_run_date DATE,
     @process_run_id UNIQUEIDENTIFIER
 AS
@@ -147,7 +147,7 @@ BEGIN
             [projecttoid],
             [projecttoid_value],
             [systemcreated],
-            LEFT([systemcreated_value], 4000),
+            [systemcreated_value],
             [createdby_value],
             [createdon],
             [createdonbehalfby_value],
@@ -156,9 +156,9 @@ BEGIN
             [modifiedonbehalfby_value],
             [ownerid_value],
             [statecode],
-            LEFT([statecode_value], 4000),
+            [statecode_value],
             [statuscode],
-            LEFT([statuscode_value], 4000),
+            [statuscode_value],
             [versionnumber],
             [dwh_hash]            
         )

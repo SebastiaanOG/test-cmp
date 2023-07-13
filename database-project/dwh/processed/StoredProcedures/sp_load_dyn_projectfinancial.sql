@@ -1,4 +1,4 @@
-CREATE OR ALTER PROCEDURE [processed].[sp_load_dyn_projectfinancial]
+CREATE PROCEDURE [processed].[sp_load_dyn_projectfinancial]
     @process_run_date DATE,
     @process_run_id UNIQUEIDENTIFIER
 AS
@@ -340,14 +340,14 @@ BEGIN
             [purchasepercent],
             [remainingcostseuro],
             [remainingcostspercent],
-            LEFT([remarksroughestimate], 4000),
+            [remarksroughestimate],
             [riskeuro],
             [riskpercent],
             [sitesupervisioncostseuro],
             [sitesupervisioncostspercent],
             [specificinvestmenteuro],
             [specificinvestmentpercent],
-            LEFT([tenderbudgetremarks], 4000),
+            [tenderbudgetremarks],
             [totalcontractvalueeuro],
             [totalcontractvaluetender_currency],
             [totalcontractvaluetender_currency_base],
@@ -372,9 +372,9 @@ BEGIN
             [modifiedon],
             [ownerid_value],
             [statecode],
-            LEFT([statecode_value], 4000),
+            [statecode_value],
             [statuscode],
-            LEFT([statuscode_value], 4000),
+            [statuscode_value],
             [versionnumber],
             [dwh_hash]            
         )
