@@ -3,7 +3,7 @@
 ,  [dwh_valid_from]  date   NOT NULL
 ,  [dwh_valid_to]  date   NULL
 ,  [dwh_active]  bit   NOT NULL
-,  [dwh_proces_run_id]  uniqueidentifier   NULL
+,  [dwh_process_run_id]  uniqueidentifier   NULL
 ,  [dwh_hash]  varbinary(8000)   NULL
 ,  [ak_bondguarantee]  nvarchar(36)   NULL
 ,  [name]  nvarchar(450)   NULL
@@ -59,7 +59,7 @@ exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'Valid_to', @leve
 GO
 exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'indicator active', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_bondguarantee', @level2type=N'COLUMN', @level2name=N'dwh_active'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'dwh_proces_run_id', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_bondguarantee', @level2type=N'COLUMN', @level2name=N'dwh_proces_run_id'; 
+exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'dwh_process_run_id', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_bondguarantee', @level2type=N'COLUMN', @level2name=N'dwh_process_run_id'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'dwh_hash', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_bondguarantee', @level2type=N'COLUMN', @level2name=N'dwh_hash'; 
 GO
@@ -67,7 +67,7 @@ exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'Application ID',
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'Primary key', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_bondguarantee', @level2type=N'COLUMN', @level2name=N'id'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Description', @value=N'proces run id of the synapse pipeline', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_bondguarantee', @level2type=N'COLUMN', @level2name=N'dwh_proces_run_id'; 
+exec sys.sp_addextendedproperty @name=N'Description', @value=N'proces run id of the synapse pipeline', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_bondguarantee', @level2type=N'COLUMN', @level2name=N'dwh_process_run_id'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'hash of the columns that will be compared with the staged layer', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_bondguarantee', @level2type=N'COLUMN', @level2name=N'dwh_hash'; 
 GO
@@ -123,7 +123,7 @@ exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'2023-04-25', @
 GO
 exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'1', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_bondguarantee', @level2type=N'COLUMN', @level2name=N'dwh_active'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'FFF57AF8-D10A-EA11-A811-000D3A2C5614', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_bondguarantee', @level2type=N'COLUMN', @level2name=N'dwh_proces_run_id'; 
+exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'FFF57AF8-D10A-EA11-A811-000D3A2C5614', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_bondguarantee', @level2type=N'COLUMN', @level2name=N'dwh_process_run_id'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'0xBF35F538E0E96618230E2FEA1CC000EA', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_bondguarantee', @level2type=N'COLUMN', @level2name=N'dwh_hash'; 
 GO
@@ -191,7 +191,7 @@ exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL'
 GO
 exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_bondguarantee', @level2type=N'COLUMN', @level2name=N'dwh_active'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived from synapse pipeline', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_bondguarantee', @level2type=N'COLUMN', @level2name=N'dwh_proces_run_id'; 
+exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived from synapse pipeline', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_bondguarantee', @level2type=N'COLUMN', @level2name=N'dwh_process_run_id'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_bondguarantee', @level2type=N'COLUMN', @level2name=N'dwh_hash'; 
 GO
