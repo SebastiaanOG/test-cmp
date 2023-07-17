@@ -1,7 +1,7 @@
 ﻿CREATE TABLE processed.dyn_subarea (
    [id]  bigint IDENTITY  NOT NULL
 ,  [dwh_valid_from]  date   NOT NULL
-,  [dwh_valid_to]  date   NOT NULL
+,  [dwh_valid_to]  date   NULL
 ,  [dwh_active]  bit   NOT NULL
 ,  [dwh_process_run_id]  uniqueidentifier   NULL
 ,  [dwh_hash]  varbinary(8000)   NULL
