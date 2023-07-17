@@ -3,9 +3,11 @@ CREATE PROCEDURE [processed].[sp_load_dyn_vanoordentity]
     @process_run_id UNIQUEIDENTIFIER
 AS
 BEGIN
+    -- Abort and rollback for all errors, not only the ones captured by BEGIN TRY
+    SET XACT_ABORT ON;
     DECLARE
         @schema NVARCHAR(20) = 'processed',
-        @table NVARCHAR(20) = 'dyn_vanoordentity',
+        @table NVARCHAR(60) = 'dyn_vanoordentity',
 
         @inserted INT = 0,
         @updated INT = 0,
@@ -24,7 +26,7 @@ BEGIN
 
         CREATE TABLE #temp_dyn_vanoordentity
         (
-            [AK_vanoordentity] NVARCHAR(36),
+            [ak_vanoordentity] NVARCHAR(36),
             [name] NVARCHAR(100),
             [country] NVARCHAR(36),
             [country_value] NVARCHAR(100),
@@ -42,7 +44,7 @@ BEGIN
             [statuscode] INT,
             [statuscode_value] NVARCHAR(4000),
             [versionnumber] BIGINT,
-            [Hash] VARBINARY(8000) NOT NULL
+            [dwh_hash] VARBINARY(8000) NOT NULL
         )
 
         -- Insert data from staging table into temp table
@@ -54,7 +56,7 @@ BEGIN
             [hso_country],
             [_hso_country_value],
             [hso_status],
-            [_hso_status_value],
+            LEFT([_hso_status_value], 4000),
             [_createdby_value],
             [createdon],
             [importsequencenumber],
@@ -63,9 +65,9 @@ BEGIN
             [_modifiedonbehalfby_value],
             [_ownerid_value],
             [statecode],
-            [_statecode_value],
+            LEFT([_statecode_value], 4000),
             [statuscode],
-            [_statuscode_value],
+            LEFT([_statuscode_value], 4000),
             [versionnumber],
             HASHBYTES(
                 'MD5',
@@ -74,7 +76,7 @@ BEGIN
                 + ISNULL([hso_country], '')
                 + ISNULL([_hso_country_value], '')
                 + ISNULL(CAST([hso_status] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_status_value], '')
+                + ISNULL(CAST(LEFT([_hso_status_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([_createdby_value], '')
                 + ISNULL(CONVERT(NVARCHAR(19), [createdon], 120), '')
                 + ISNULL(CAST([importsequencenumber] AS NVARCHAR(20)), '')
@@ -83,11 +85,11 @@ BEGIN
                 + ISNULL([_modifiedonbehalfby_value], '')
                 + ISNULL([_ownerid_value], '')
                 + ISNULL(CAST([statecode] AS NVARCHAR(20)), '')
-                + ISNULL([_statecode_value], '')
+                + ISNULL(CAST(LEFT([_statecode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([statuscode] AS NVARCHAR(20)), '')
-                + ISNULL([_statuscode_value], '')
+                + ISNULL(CAST(LEFT([_statuscode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([versionnumber] AS NVARCHAR(20)), '')
-            ) AS [Hash]
+            ) AS [dwh_hash]
         FROM [staged].[dyn_EntityVanOordEntity]
 
         IF OBJECT_ID(@schema + '.' + @table) IS NULL
@@ -103,12 +105,12 @@ BEGIN
         UPDATE [processed].[dyn_vanoordentity]
         SET
             [dwh_valid_to] = DATEADD(DAY, -1, @process_run_date),
-            [ProcessRunID] = @process_run_id,
+            [dwh_process_run_id] = @process_run_id,
             [dwh_active] = 0
         FROM #temp_dyn_vanoordentity AS [T]
-        LEFT JOIN [processed].[dyn_vanoordentity] AS [P] ON [T].[AK_vanoordentity] = [P].[AK_vanoordentity]
+        LEFT JOIN [processed].[dyn_vanoordentity] AS [P] ON [T].[ak_vanoordentity] = [P].[ak_vanoordentity]
         WHERE
-            [T].[Hash] != [P].[Hash]
+            [T].[dwh_hash] != [P].[dwh_hash]
             AND [P].[dwh_active] = 1
         SELECT @updated = @@ROWCOUNT
 
@@ -116,12 +118,12 @@ BEGIN
         UPDATE [processed].[dyn_vanoordentity]
         SET
             [dwh_valid_to] = DATEADD(DAY, -1, @process_run_date),
-            [ProcessRunID] = @process_run_id,
+            [dwh_process_run_id] = @process_run_id,
             [dwh_active] = 0
         FROM [processed].[dyn_vanoordentity] AS [P]
-        LEFT JOIN #temp_dyn_vanoordentity AS [T] ON [T].[AK_vanoordentity] = [P].[AK_vanoordentity]
+        LEFT JOIN #temp_dyn_vanoordentity AS [T] ON [T].[ak_vanoordentity] = [P].[ak_vanoordentity]
         WHERE
-            [T].[AK_vanoordentity] IS NULL
+            [T].[ak_vanoordentity] IS NULL
             AND [P].[dwh_active] = 1
         SELECT @deleted = @@ROWCOUNT
 
@@ -131,7 +133,8 @@ BEGIN
             [dwh_valid_from],
             [dwh_valid_to],
             [dwh_active],
-            [AK_vanoordentity],
+            [dwh_process_run_id],
+            [ak_vanoordentity],
             [name],
             [country],
             [country_value],
@@ -149,14 +152,14 @@ BEGIN
             [statuscode],
             [statuscode_value],
             [versionnumber],
-            [Hash],
-            [ProcessRunID]
+            [dwh_hash]            
         )
         SELECT
             @process_run_date AS [dwh_valid_from],
             NULL AS [dwh_valid_to],
             1 AS [dwh_active],
-            [T].[AK_vanoordentity],
+            @process_run_id AS [dwh_process_run_id],
+            [T].[ak_vanoordentity],
             [T].[name],
             [T].[country],
             [T].[country_value],
@@ -174,15 +177,14 @@ BEGIN
             [T].[statuscode],
             [T].[statuscode_value],
             [T].[versionnumber],
-            [T].[Hash],
-            @process_run_id AS [ProcessRunID]
+            [T].[dwh_hash]
         FROM #temp_dyn_vanoordentity AS [T]
-        LEFT JOIN [processed].[dyn_vanoordentity] AS [P] ON [T].[AK_vanoordentity] = [P].[AK_vanoordentity]
+        LEFT JOIN [processed].[dyn_vanoordentity] AS [P] ON [T].[ak_vanoordentity] = [P].[ak_vanoordentity]
         WHERE
-            [P].[AK_vanoordentity] IS NULL
+            [P].[ak_vanoordentity] IS NULL
             OR (
-                [T].[Hash] != [P].[Hash]
-                AND [P].[ProcessRunID] = @process_run_id
+                [T].[dwh_hash] != [P].[dwh_hash]
+                AND [P].[dwh_process_run_id] = @process_run_id
             )
         SELECT @inserted = @@ROWCOUNT
 
@@ -196,8 +198,6 @@ BEGIN
             @rows_affected_insert = @inserted,
             @rows_affected_update = @updated,
             @rows_affected_delete = @deleted
-
-
     END TRY
     BEGIN CATCH
         SET @error_number = ERROR_NUMBER();

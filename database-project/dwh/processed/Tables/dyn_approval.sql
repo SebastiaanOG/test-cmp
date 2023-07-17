@@ -1,9 +1,11 @@
-CREATE TABLE processed.dyn_approval (
+﻿CREATE TABLE processed.dyn_approval (
    [id]  bigint IDENTITY  NOT NULL
 ,  [dwh_valid_from]  date   NOT NULL
 ,  [dwh_valid_to]  date   NULL
 ,  [dwh_active]  bit   NOT NULL
-,  [AK_approval]  nvarchar(36)   NULL
+,  [dwh_process_run_id]  uniqueidentifier   NULL
+,  [dwh_hash]  varbinary(8000)   NULL
+,  [ak_approval]  nvarchar(36)   NULL
 ,  [name]  nvarchar(250)   NULL
 ,  [approvalinitiatorid_value]  nvarchar(200)   NULL
 ,  [approvalinitiatorremarks]  nvarchar(4000)   NULL
@@ -53,11 +55,8 @@ CREATE TABLE processed.dyn_approval (
 ,  [statuscode]  int   NULL
 ,  [statuscode_value]  nvarchar(4000)   NULL
 ,  [timezoneruleversionnumber]  int   NULL
-,  [versionnumber] BIGINT NULL,
-    [Hash] VARBINARY(8000) NOT NULL,
-    [ProcessRunID] UNIQUEIDENTIFIER NOT NULL
-, CONSTRAINT [PK_processed.dyn_approval] PRIMARY KEY CLUSTERED ([id] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 100, DATA_COMPRESSION = PAGE)
-);
+,  [versionnumber]  bigint   NULL
+, CONSTRAINT [PK_processed.dyn_approval] PRIMARY KEY CLUSTERED ([id] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 100, DATA_COMPRESSION = PAGE))
 GO
 
 GO
@@ -70,6 +69,8 @@ exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'approval', @leve
 GO
 exec sys.sp_addextendedproperty @name=N'Database Schema', @value=N'processed', @level0type=N'SCHEMA', @level0name=processed, @level1type=N'TABLE', @level1name=dyn_approval
 GO
+exec sys.sp_addextendedproperty @name=N'Generate Script?', @value=N'N', @level0type=N'SCHEMA', @level0name=processed, @level1type=N'TABLE', @level1name=dyn_approval
+GO
 GO
 
 exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'Primary key', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'id'; 
@@ -80,7 +81,11 @@ exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'Valid_to', @leve
 GO
 exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'indicator active', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'dwh_active'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'Application ID', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'AK_approval'; 
+exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'dwh_process_run_id', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'dwh_process_run_id'; 
+GO
+exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'dwh_hash', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'dwh_hash'; 
+GO
+exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'Application ID', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'ak_approval'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'GUID not used', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'nonstandardprojectsnapshot'; 
 GO
@@ -92,7 +97,11 @@ exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'GUID not used', 
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'Primary key', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'id'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Description', @value=N'Application id, unique identifier source', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'AK_approval'; 
+exec sys.sp_addextendedproperty @name=N'Description', @value=N'proces run id of the synapse pipeline', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'dwh_process_run_id'; 
+GO
+exec sys.sp_addextendedproperty @name=N'Description', @value=N'hash of the columns that will be compared with the staged layer', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'dwh_hash'; 
+GO
+exec sys.sp_addextendedproperty @name=N'Description', @value=N'Application id, unique identifier source', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'ak_approval'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'Describe if the upcoming Award Summary concerns a revision of an existing Award Summary.', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'awardsummaryrevision'; 
 GO
@@ -138,7 +147,11 @@ exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'2023-04-25', @
 GO
 exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'1', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'dwh_active'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'FFFDC223-8CEB-EA11-A817-000D3A2C5ED7', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'AK_approval'; 
+exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'FFF57AF8-D10A-EA11-A811-000D3A2C5614', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'dwh_process_run_id'; 
+GO
+exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'0xBF35F538E0E96618230E2FEA1CC000EA', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'dwh_hash'; 
+GO
+exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'FFFDC223-8CEB-EA11-A817-000D3A2C5ED7', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'ak_approval'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'363258 - 1 - Area Go / No Go ', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'name'; 
 GO
@@ -248,7 +261,11 @@ exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL'
 GO
 exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'dwh_active'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Source System', @value=N'DWH', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'AK_approval'; 
+exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived from synapse pipeline', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'dwh_process_run_id'; 
+GO
+exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'dwh_hash'; 
+GO
+exec sys.sp_addextendedproperty @name=N'Source System', @value=N'DWH', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'ak_approval'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Source System', @value=N'DWH', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'name'; 
 GO
@@ -350,7 +367,7 @@ exec sys.sp_addextendedproperty @name=N'Source System', @value=N'DWH', @level0ty
 GO
 exec sys.sp_addextendedproperty @name=N'Source System', @value=N'DWH', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'versionnumber'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Source Schema', @value=N'staging', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'AK_approval'; 
+exec sys.sp_addextendedproperty @name=N'Source Schema', @value=N'staging', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'ak_approval'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Source Schema', @value=N'staging', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'name'; 
 GO
@@ -452,7 +469,7 @@ exec sys.sp_addextendedproperty @name=N'Source Schema', @value=N'staging', @leve
 GO
 exec sys.sp_addextendedproperty @name=N'Source Schema', @value=N'staging', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'versionnumber'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Source Table', @value=N'EntityApproval', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'AK_approval'; 
+exec sys.sp_addextendedproperty @name=N'Source Table', @value=N'EntityApproval', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'ak_approval'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Source Table', @value=N'EntityApproval', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'name'; 
 GO
@@ -554,7 +571,7 @@ exec sys.sp_addextendedproperty @name=N'Source Table', @value=N'EntityApproval',
 GO
 exec sys.sp_addextendedproperty @name=N'Source Table', @value=N'EntityApproval', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'versionnumber'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Source Field Name', @value=N'hso_approvalid', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'AK_approval'; 
+exec sys.sp_addextendedproperty @name=N'Source Field Name', @value=N'hso_approvalid', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'ak_approval'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Source Field Name', @value=N'hso_name', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'name'; 
 GO
@@ -656,7 +673,7 @@ exec sys.sp_addextendedproperty @name=N'Source Field Name', @value=N'timezonerul
 GO
 exec sys.sp_addextendedproperty @name=N'Source Field Name', @value=N'versionnumber', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'versionnumber'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'nvarchar(36)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'AK_approval'; 
+exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'nvarchar(36)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'ak_approval'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'nvarchar(250)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'name'; 
 GO
@@ -758,7 +775,7 @@ exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'int', @level0
 GO
 exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'bigint', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'versionnumber'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Extraction/Transformation Rules', @value=N'uniqueidentifier in dynamics replica', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'AK_approval'; 
+exec sys.sp_addextendedproperty @name=N'Extraction/Transformation Rules', @value=N'uniqueidentifier in dynamics replica', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'ak_approval'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Extraction/Transformation Rules', @value=N'uniqueidentifier in dynamics replica', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_approval', @level2type=N'COLUMN', @level2name=N'areaid'; 
 GO

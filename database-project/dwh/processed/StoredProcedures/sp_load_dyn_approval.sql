@@ -3,9 +3,11 @@ CREATE PROCEDURE [processed].[sp_load_dyn_approval]
     @process_run_id UNIQUEIDENTIFIER
 AS
 BEGIN
+    -- Abort and rollback for all errors, not only the ones captured by BEGIN TRY
+    SET XACT_ABORT ON;
     DECLARE
         @schema NVARCHAR(20) = 'processed',
-        @table NVARCHAR(20) = 'dyn_approval',
+        @table NVARCHAR(60) = 'dyn_approval',
 
         @inserted INT = 0,
         @updated INT = 0,
@@ -24,7 +26,7 @@ BEGIN
 
         CREATE TABLE #temp_dyn_approval
         (
-            [AK_approval] NVARCHAR(36),
+            [ak_approval] NVARCHAR(36),
             [name] NVARCHAR(250),
             [approvalinitiatorid_value] NVARCHAR(200),
             [approvalinitiatorremarks] NVARCHAR(4000),
@@ -75,7 +77,7 @@ BEGIN
             [statuscode_value] NVARCHAR(4000),
             [timezoneruleversionnumber] INT,
             [versionnumber] BIGINT,
-            [Hash] VARBINARY(8000) NOT NULL
+            [dwh_hash] VARBINARY(8000) NOT NULL
         )
 
         -- Insert data from staging table into temp table
@@ -85,20 +87,20 @@ BEGIN
             [hso_approvalid],
             [hso_name],
             [_hso_approvalinitiatorid_value],
-            [hso_approvalinitiatorremarks],
+            LEFT([hso_approvalinitiatorremarks], 4000),
             [hso_approvedon],
             [hso_areaid],
             [_hso_areaid_value],
             [hso_assignmentdatetodeputy],
             [hso_assignmenttodeputy],
             [hso_awardsummaryrevision],
-            [_hso_awardsummaryrevision_value],
+            LEFT([_hso_awardsummaryrevision_value], 4000),
             [hso_emailremindercalculated],
             [hso_emailreminderdate],
             [hso_emailreminderdeputycalculated],
             [hso_emailreminderdeputydate],
             [hso_fasttrack],
-            [_hso_fasttrack_value],
+            LEFT([_hso_fasttrack_value], 4000),
             [_hso_latestapprovedawardsummary_value],
             [hso_nonstandardprojectid],
             [_hso_nonstandardprojectid_value],
@@ -113,13 +115,13 @@ BEGIN
             [hso_projectsnapshotid],
             [_hso_projectsnapshotid_value],
             [hso_projectversion],
-            [hso_remarks],
+            LEFT([hso_remarks], 4000),
             [hso_stagegate],
-            [_hso_stagegate_value],
+            LEFT([_hso_stagegate_value], 4000),
             [hso_subareaproductgroupid],
             [_hso_subareaproductgroupid_value],
             [hso_type],
-            [_hso_type_value],
+            LEFT([_hso_type_value], 4000),
             [_createdby_value],
             [createdon],
             [importsequencenumber],
@@ -128,9 +130,9 @@ BEGIN
             [_modifiedonbehalfby_value],
             [_ownerid_value],
             [statecode],
-            [_statecode_value],
+            LEFT([_statecode_value], 4000),
             [statuscode],
-            [_statuscode_value],
+            LEFT([_statuscode_value], 4000),
             [timezoneruleversionnumber],
             [versionnumber],
             HASHBYTES(
@@ -138,20 +140,20 @@ BEGIN
                 ISNULL([hso_approvalid], '')
                 + ISNULL([hso_name], '')
                 + ISNULL([_hso_approvalinitiatorid_value], '')
-                + ISNULL([hso_approvalinitiatorremarks], '')
+                + ISNULL(CAST(LEFT([hso_approvalinitiatorremarks], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CONVERT(NVARCHAR(19), [hso_approvedon], 120), '')
                 + ISNULL([hso_areaid], '')
                 + ISNULL([_hso_areaid_value], '')
                 + ISNULL(CONVERT(NVARCHAR(19), [hso_assignmentdatetodeputy], 120), '')
                 + ISNULL(CONVERT(NVARCHAR(19), [hso_assignmenttodeputy], 120), '')
                 + ISNULL(CAST([hso_awardsummaryrevision] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_awardsummaryrevision_value], '')
+                + ISNULL(CAST(LEFT([_hso_awardsummaryrevision_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CONVERT(NVARCHAR(19), [hso_emailremindercalculated], 120), '')
                 + ISNULL(CONVERT(NVARCHAR(19), [hso_emailreminderdate], 120), '')
                 + ISNULL(CONVERT(NVARCHAR(19), [hso_emailreminderdeputycalculated], 120), '')
                 + ISNULL(CONVERT(NVARCHAR(19), [hso_emailreminderdeputydate], 120), '')
                 + ISNULL(CAST([hso_fasttrack] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_fasttrack_value], '')
+                + ISNULL(CAST(LEFT([_hso_fasttrack_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([_hso_latestapprovedawardsummary_value], '')
                 + ISNULL([hso_nonstandardprojectid], '')
                 + ISNULL([_hso_nonstandardprojectid_value], '')
@@ -166,13 +168,13 @@ BEGIN
                 + ISNULL([hso_projectsnapshotid], '')
                 + ISNULL([_hso_projectsnapshotid_value], '')
                 + ISNULL([hso_projectversion], '')
-                + ISNULL([hso_remarks], '')
+                + ISNULL(CAST(LEFT([hso_remarks], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_stagegate] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_stagegate_value], '')
+                + ISNULL(CAST(LEFT([_hso_stagegate_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([hso_subareaproductgroupid], '')
                 + ISNULL([_hso_subareaproductgroupid_value], '')
                 + ISNULL(CAST([hso_type] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_type_value], '')
+                + ISNULL(CAST(LEFT([_hso_type_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([_createdby_value], '')
                 + ISNULL(CONVERT(NVARCHAR(19), [createdon], 120), '')
                 + ISNULL(CAST([importsequencenumber] AS NVARCHAR(20)), '')
@@ -181,12 +183,12 @@ BEGIN
                 + ISNULL([_modifiedonbehalfby_value], '')
                 + ISNULL([_ownerid_value], '')
                 + ISNULL(CAST([statecode] AS NVARCHAR(20)), '')
-                + ISNULL([_statecode_value], '')
+                + ISNULL(CAST(LEFT([_statecode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([statuscode] AS NVARCHAR(20)), '')
-                + ISNULL([_statuscode_value], '')
+                + ISNULL(CAST(LEFT([_statuscode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([timezoneruleversionnumber] AS NVARCHAR(20)), '')
                 + ISNULL(CAST([versionnumber] AS NVARCHAR(20)), '')
-            ) AS [Hash]
+            ) AS [dwh_hash]
         FROM [staged].[dyn_EntityApproval]
 
         IF OBJECT_ID(@schema + '.' + @table) IS NULL
@@ -202,12 +204,12 @@ BEGIN
         UPDATE [processed].[dyn_approval]
         SET
             [dwh_valid_to] = DATEADD(DAY, -1, @process_run_date),
-            [ProcessRunID] = @process_run_id,
+            [dwh_process_run_id] = @process_run_id,
             [dwh_active] = 0
         FROM #temp_dyn_approval AS [T]
-        LEFT JOIN [processed].[dyn_approval] AS [P] ON [T].[AK_approval] = [P].[AK_approval]
+        LEFT JOIN [processed].[dyn_approval] AS [P] ON [T].[ak_approval] = [P].[ak_approval]
         WHERE
-            [T].[Hash] != [P].[Hash]
+            [T].[dwh_hash] != [P].[dwh_hash]
             AND [P].[dwh_active] = 1
         SELECT @updated = @@ROWCOUNT
 
@@ -215,12 +217,12 @@ BEGIN
         UPDATE [processed].[dyn_approval]
         SET
             [dwh_valid_to] = DATEADD(DAY, -1, @process_run_date),
-            [ProcessRunID] = @process_run_id,
+            [dwh_process_run_id] = @process_run_id,
             [dwh_active] = 0
         FROM [processed].[dyn_approval] AS [P]
-        LEFT JOIN #temp_dyn_approval AS [T] ON [T].[AK_approval] = [P].[AK_approval]
+        LEFT JOIN #temp_dyn_approval AS [T] ON [T].[ak_approval] = [P].[ak_approval]
         WHERE
-            [T].[AK_approval] IS NULL
+            [T].[ak_approval] IS NULL
             AND [P].[dwh_active] = 1
         SELECT @deleted = @@ROWCOUNT
 
@@ -230,7 +232,8 @@ BEGIN
             [dwh_valid_from],
             [dwh_valid_to],
             [dwh_active],
-            [AK_approval],
+            [dwh_process_run_id],
+            [ak_approval],
             [name],
             [approvalinitiatorid_value],
             [approvalinitiatorremarks],
@@ -281,14 +284,14 @@ BEGIN
             [statuscode_value],
             [timezoneruleversionnumber],
             [versionnumber],
-            [Hash],
-            [ProcessRunID]
+            [dwh_hash]            
         )
         SELECT
             @process_run_date AS [dwh_valid_from],
             NULL AS [dwh_valid_to],
             1 AS [dwh_active],
-            [T].[AK_approval],
+            @process_run_id AS [dwh_process_run_id],
+            [T].[ak_approval],
             [T].[name],
             [T].[approvalinitiatorid_value],
             [T].[approvalinitiatorremarks],
@@ -339,15 +342,14 @@ BEGIN
             [T].[statuscode_value],
             [T].[timezoneruleversionnumber],
             [T].[versionnumber],
-            [T].[Hash],
-            @process_run_id AS [ProcessRunID]
+            [T].[dwh_hash]
         FROM #temp_dyn_approval AS [T]
-        LEFT JOIN [processed].[dyn_approval] AS [P] ON [T].[AK_approval] = [P].[AK_approval]
+        LEFT JOIN [processed].[dyn_approval] AS [P] ON [T].[ak_approval] = [P].[ak_approval]
         WHERE
-            [P].[AK_approval] IS NULL
+            [P].[ak_approval] IS NULL
             OR (
-                [T].[Hash] != [P].[Hash]
-                AND [P].[ProcessRunID] = @process_run_id
+                [T].[dwh_hash] != [P].[dwh_hash]
+                AND [P].[dwh_process_run_id] = @process_run_id
             )
         SELECT @inserted = @@ROWCOUNT
 
@@ -361,8 +363,6 @@ BEGIN
             @rows_affected_insert = @inserted,
             @rows_affected_update = @updated,
             @rows_affected_delete = @deleted
-
-
     END TRY
     BEGIN CATCH
         SET @error_number = ERROR_NUMBER();

@@ -3,9 +3,11 @@ CREATE PROCEDURE [processed].[sp_load_dyn_timeregistration]
     @process_run_id UNIQUEIDENTIFIER
 AS
 BEGIN
+    -- Abort and rollback for all errors, not only the ones captured by BEGIN TRY
+    SET XACT_ABORT ON;
     DECLARE
         @schema NVARCHAR(20) = 'processed',
-        @table NVARCHAR(20) = 'dyn_timeregistration',
+        @table NVARCHAR(60) = 'dyn_timeregistration',
 
         @inserted INT = 0,
         @updated INT = 0,
@@ -24,7 +26,7 @@ BEGIN
 
         CREATE TABLE #temp_dyn_timeregistration
         (
-            [AK_timeregistration] NVARCHAR(36),
+            [ak_timeregistration] NVARCHAR(36),
             [name] NVARCHAR(100),
             [endtime] DATETIME2(7),
             [entity] NVARCHAR(100),
@@ -50,7 +52,7 @@ BEGIN
             [statuscode_value] NVARCHAR(4000),
             [timezoneruleversionnumber] INT,
             [versionnumber] BIGINT,
-            [Hash] VARBINARY(8000) NOT NULL
+            [dwh_hash] VARBINARY(8000) NOT NULL
         )
 
         -- Insert data from staging table into temp table
@@ -78,9 +80,9 @@ BEGIN
             [_modifiedonbehalfby_value],
             [_ownerid_value],
             [statecode],
-            [_statecode_value],
+            LEFT([_statecode_value], 4000),
             [statuscode],
-            [_statuscode_value],
+            LEFT([_statuscode_value], 4000),
             [timezoneruleversionnumber],
             [versionnumber],
             HASHBYTES(
@@ -106,12 +108,12 @@ BEGIN
                 + ISNULL([_modifiedonbehalfby_value], '')
                 + ISNULL([_ownerid_value], '')
                 + ISNULL(CAST([statecode] AS NVARCHAR(20)), '')
-                + ISNULL([_statecode_value], '')
+                + ISNULL(CAST(LEFT([_statecode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([statuscode] AS NVARCHAR(20)), '')
-                + ISNULL([_statuscode_value], '')
+                + ISNULL(CAST(LEFT([_statuscode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([timezoneruleversionnumber] AS NVARCHAR(20)), '')
                 + ISNULL(CAST([versionnumber] AS NVARCHAR(20)), '')
-            ) AS [Hash]
+            ) AS [dwh_hash]
         FROM [staged].[dyn_EntityTimeRegistration]
 
         IF OBJECT_ID(@schema + '.' + @table) IS NULL
@@ -127,12 +129,12 @@ BEGIN
         UPDATE [processed].[dyn_timeregistration]
         SET
             [dwh_valid_to] = DATEADD(DAY, -1, @process_run_date),
-            [ProcessRunID] = @process_run_id,
+            [dwh_process_run_id] = @process_run_id,
             [dwh_active] = 0
         FROM #temp_dyn_timeregistration AS [T]
-        LEFT JOIN [processed].[dyn_timeregistration] AS [P] ON [T].[AK_timeregistration] = [P].[AK_timeregistration]
+        LEFT JOIN [processed].[dyn_timeregistration] AS [P] ON [T].[ak_timeregistration] = [P].[ak_timeregistration]
         WHERE
-            [T].[Hash] != [P].[Hash]
+            [T].[dwh_hash] != [P].[dwh_hash]
             AND [P].[dwh_active] = 1
         SELECT @updated = @@ROWCOUNT
 
@@ -140,12 +142,12 @@ BEGIN
         UPDATE [processed].[dyn_timeregistration]
         SET
             [dwh_valid_to] = DATEADD(DAY, -1, @process_run_date),
-            [ProcessRunID] = @process_run_id,
+            [dwh_process_run_id] = @process_run_id,
             [dwh_active] = 0
         FROM [processed].[dyn_timeregistration] AS [P]
-        LEFT JOIN #temp_dyn_timeregistration AS [T] ON [T].[AK_timeregistration] = [P].[AK_timeregistration]
+        LEFT JOIN #temp_dyn_timeregistration AS [T] ON [T].[ak_timeregistration] = [P].[ak_timeregistration]
         WHERE
-            [T].[AK_timeregistration] IS NULL
+            [T].[ak_timeregistration] IS NULL
             AND [P].[dwh_active] = 1
         SELECT @deleted = @@ROWCOUNT
 
@@ -155,7 +157,8 @@ BEGIN
             [dwh_valid_from],
             [dwh_valid_to],
             [dwh_active],
-            [AK_timeregistration],
+            [dwh_process_run_id],
+            [ak_timeregistration],
             [name],
             [endtime],
             [entity],
@@ -181,14 +184,14 @@ BEGIN
             [statuscode_value],
             [timezoneruleversionnumber],
             [versionnumber],
-            [Hash],
-            [ProcessRunID]
+            [dwh_hash]            
         )
         SELECT
             @process_run_date AS [dwh_valid_from],
             NULL AS [dwh_valid_to],
             1 AS [dwh_active],
-            [T].[AK_timeregistration],
+            @process_run_id AS [dwh_process_run_id],
+            [T].[ak_timeregistration],
             [T].[name],
             [T].[endtime],
             [T].[entity],
@@ -214,15 +217,14 @@ BEGIN
             [T].[statuscode_value],
             [T].[timezoneruleversionnumber],
             [T].[versionnumber],
-            [T].[Hash],
-            @process_run_id AS [ProcessRunID]
+            [T].[dwh_hash]
         FROM #temp_dyn_timeregistration AS [T]
-        LEFT JOIN [processed].[dyn_timeregistration] AS [P] ON [T].[AK_timeregistration] = [P].[AK_timeregistration]
+        LEFT JOIN [processed].[dyn_timeregistration] AS [P] ON [T].[ak_timeregistration] = [P].[ak_timeregistration]
         WHERE
-            [P].[AK_timeregistration] IS NULL
+            [P].[ak_timeregistration] IS NULL
             OR (
-                [T].[Hash] != [P].[Hash]
-                AND [P].[ProcessRunID] = @process_run_id
+                [T].[dwh_hash] != [P].[dwh_hash]
+                AND [P].[dwh_process_run_id] = @process_run_id
             )
         SELECT @inserted = @@ROWCOUNT
 
@@ -236,8 +238,6 @@ BEGIN
             @rows_affected_insert = @inserted,
             @rows_affected_update = @updated,
             @rows_affected_delete = @deleted
-
-
     END TRY
     BEGIN CATCH
         SET @error_number = ERROR_NUMBER();

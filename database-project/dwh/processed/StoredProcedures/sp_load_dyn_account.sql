@@ -3,9 +3,11 @@ CREATE PROCEDURE [processed].[sp_load_dyn_account]
     @process_run_id UNIQUEIDENTIFIER
 AS
 BEGIN
+    -- Abort and rollback for all errors, not only the ones captured by BEGIN TRY
+    SET XACT_ABORT ON;
     DECLARE
         @schema NVARCHAR(20) = 'processed',
-        @table NVARCHAR(20) = 'dyn_account',
+        @table NVARCHAR(60) = 'dyn_account',
 
         @inserted INT = 0,
         @updated INT = 0,
@@ -24,7 +26,7 @@ BEGIN
 
         CREATE TABLE #temp_dyn_account
         (
-            [AK_account] NVARCHAR(36),
+            [ak_account] NVARCHAR(36),
             [name] NVARCHAR(160),
             [country] NVARCHAR(36),
             [country_value] NVARCHAR(100),
@@ -118,7 +120,7 @@ BEGIN
             [statuscode] INT,
             [statuscode_value] NVARCHAR(4000),
             [versionnumber] BIGINT,
-            [Hash] VARBINARY(8000) NOT NULL
+            [dwh_hash] VARBINARY(8000) NOT NULL
         )
 
         -- Insert data from staging table into temp table
@@ -130,12 +132,12 @@ BEGIN
             [hso_country],
             [_hso_country_value],
             [accountclassificationcode],
-            [_accountclassificationcode_value],
+            LEFT([_accountclassificationcode_value], 4000),
             [accountnumber],
             [accountratingcode],
-            [_accountratingcode_value],
+            LEFT([_accountratingcode_value], 4000),
             [address1_city],
-            [address1_composite],
+            LEFT([address1_composite], 4000),
             [address1_country],
             [address1_line1],
             [address1_line2],
@@ -143,42 +145,42 @@ BEGIN
             [address1_postalcode],
             [address1_stateorprovince],
             [address2_addresstypecode],
-            [_address2_addresstypecode_value],
+            LEFT([_address2_addresstypecode_value], 4000),
             [address2_freighttermscode],
-            [_address2_freighttermscode_value],
+            LEFT([_address2_freighttermscode_value], 4000),
             [address2_shippingmethodcode],
-            [_address2_shippingmethodcode_value],
+            LEFT([_address2_shippingmethodcode_value], 4000),
             [businesstypecode],
-            [_businesstypecode_value],
+            LEFT([_businesstypecode_value], 4000),
             [creditonhold],
-            [_creditonhold_value],
+            LEFT([_creditonhold_value], 4000),
             [customersizecode],
-            [_customersizecode_value],
-            [description],
+            LEFT([_customersizecode_value], 4000),
+            LEFT([description], 4000),
             [donotbulkemail],
-            [_donotbulkemail_value],
+            LEFT([_donotbulkemail_value], 4000),
             [donotbulkpostalmail],
-            [_donotbulkpostalmail_value],
+            LEFT([_donotbulkpostalmail_value], 4000),
             [donotemail],
-            [_donotemail_value],
+            LEFT([_donotemail_value], 4000),
             [donotfax],
-            [_donotfax_value],
+            LEFT([_donotfax_value], 4000),
             [donotphone],
-            [_donotphone_value],
+            LEFT([_donotphone_value], 4000),
             [donotpostalmail],
-            [_donotpostalmail_value],
+            LEFT([_donotpostalmail_value], 4000),
             [donotsendmm],
             [emailaddress1],
             [exchangerate],
             [fax],
             [followemail],
-            [_followemail_value],
+            LEFT([_followemail_value], 4000),
             [industrycode],
-            [_industrycode_value],
+            LEFT([_industrycode_value], 4000),
             [marketingonly],
-            [_marketingonly_value],
+            LEFT([_marketingonly_value], 4000),
             [merged],
-            [_merged_value],
+            LEFT([_merged_value], 4000),
             [numberofemployees],
             [opendeals],
             [_opendeals_date_value],
@@ -188,22 +190,22 @@ BEGIN
             [_openrevenue_state_value],
             [openrevenue_base],
             [ownershipcode],
-            [_ownershipcode_value],
+            LEFT([_ownershipcode_value], 4000),
             [parentaccountid],
             [_parentaccountid_value],
             [participatesinworkflow],
-            [_participatesinworkflow_value],
+            LEFT([_participatesinworkflow_value], 4000),
             [preferredcontactmethodcode],
-            [_preferredcontactmethodcode_value],
+            LEFT([_preferredcontactmethodcode_value], 4000),
             [_primarycontactid_value],
             [revenue],
             [revenue_base],
             [shippingmethodcode],
-            [_shippingmethodcode_value],
+            LEFT([_shippingmethodcode_value], 4000),
             [sic],
             [telephone1],
             [territorycode],
-            [_territorycode_value],
+            LEFT([_territorycode_value], 4000),
             [tickersymbol],
             [_transactioncurrencyid_value],
             [websiteurl],
@@ -215,9 +217,9 @@ BEGIN
             [_modifiedonbehalfby_value],
             [_ownerid_value],
             [statecode],
-            [_statecode_value],
+            LEFT([_statecode_value], 4000),
             [statuscode],
-            [_statuscode_value],
+            LEFT([_statuscode_value], 4000),
             [versionnumber],
             HASHBYTES(
                 'MD5',
@@ -226,12 +228,12 @@ BEGIN
                 + ISNULL([hso_country], '')
                 + ISNULL([_hso_country_value], '')
                 + ISNULL(CAST([accountclassificationcode] AS NVARCHAR(20)), '')
-                + ISNULL([_accountclassificationcode_value], '')
+                + ISNULL(CAST(LEFT([_accountclassificationcode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([accountnumber], '')
                 + ISNULL(CAST([accountratingcode] AS NVARCHAR(20)), '')
-                + ISNULL([_accountratingcode_value], '')
+                + ISNULL(CAST(LEFT([_accountratingcode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([address1_city], '')
-                + ISNULL([address1_composite], '')
+                + ISNULL(CAST(LEFT([address1_composite], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([address1_country], '')
                 + ISNULL([address1_line1], '')
                 + ISNULL([address1_line2], '')
@@ -239,42 +241,42 @@ BEGIN
                 + ISNULL([address1_postalcode], '')
                 + ISNULL([address1_stateorprovince], '')
                 + ISNULL(CAST([address2_addresstypecode] AS NVARCHAR(20)), '')
-                + ISNULL([_address2_addresstypecode_value], '')
+                + ISNULL(CAST(LEFT([_address2_addresstypecode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([address2_freighttermscode] AS NVARCHAR(20)), '')
-                + ISNULL([_address2_freighttermscode_value], '')
+                + ISNULL(CAST(LEFT([_address2_freighttermscode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([address2_shippingmethodcode] AS NVARCHAR(20)), '')
-                + ISNULL([_address2_shippingmethodcode_value], '')
+                + ISNULL(CAST(LEFT([_address2_shippingmethodcode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([businesstypecode] AS NVARCHAR(20)), '')
-                + ISNULL([_businesstypecode_value], '')
+                + ISNULL(CAST(LEFT([_businesstypecode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([creditonhold] AS NVARCHAR(20)), '')
-                + ISNULL([_creditonhold_value], '')
+                + ISNULL(CAST(LEFT([_creditonhold_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([customersizecode] AS NVARCHAR(20)), '')
-                + ISNULL([_customersizecode_value], '')
-                + ISNULL([description], '')
+                + ISNULL(CAST(LEFT([_customersizecode_value], 4000) AS NVARCHAR(4000)), '')
+                + ISNULL(CAST(LEFT([description], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([donotbulkemail] AS NVARCHAR(20)), '')
-                + ISNULL([_donotbulkemail_value], '')
+                + ISNULL(CAST(LEFT([_donotbulkemail_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([donotbulkpostalmail] AS NVARCHAR(20)), '')
-                + ISNULL([_donotbulkpostalmail_value], '')
+                + ISNULL(CAST(LEFT([_donotbulkpostalmail_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([donotemail] AS NVARCHAR(20)), '')
-                + ISNULL([_donotemail_value], '')
+                + ISNULL(CAST(LEFT([_donotemail_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([donotfax] AS NVARCHAR(20)), '')
-                + ISNULL([_donotfax_value], '')
+                + ISNULL(CAST(LEFT([_donotfax_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([donotphone] AS NVARCHAR(20)), '')
-                + ISNULL([_donotphone_value], '')
+                + ISNULL(CAST(LEFT([_donotphone_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([donotpostalmail] AS NVARCHAR(20)), '')
-                + ISNULL([_donotpostalmail_value], '')
+                + ISNULL(CAST(LEFT([_donotpostalmail_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([donotsendmm] AS NVARCHAR(20)), '')
                 + ISNULL([emailaddress1], '')
                 + ISNULL(CAST([exchangerate] AS NVARCHAR(50)), '')
                 + ISNULL([fax], '')
                 + ISNULL(CAST([followemail] AS NVARCHAR(20)), '')
-                + ISNULL([_followemail_value], '')
+                + ISNULL(CAST(LEFT([_followemail_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([industrycode] AS NVARCHAR(20)), '')
-                + ISNULL([_industrycode_value], '')
+                + ISNULL(CAST(LEFT([_industrycode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([marketingonly] AS NVARCHAR(20)), '')
-                + ISNULL([_marketingonly_value], '')
+                + ISNULL(CAST(LEFT([_marketingonly_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([merged] AS NVARCHAR(20)), '')
-                + ISNULL([_merged_value], '')
+                + ISNULL(CAST(LEFT([_merged_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([numberofemployees] AS NVARCHAR(20)), '')
                 + ISNULL(CAST([opendeals] AS NVARCHAR(20)), '')
                 + ISNULL(CONVERT(NVARCHAR(19), [_opendeals_date_value], 120), '')
@@ -284,22 +286,22 @@ BEGIN
                 + ISNULL(CAST([_openrevenue_state_value] AS NVARCHAR(20)), '')
                 + ISNULL(CAST([openrevenue_base] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([ownershipcode] AS NVARCHAR(20)), '')
-                + ISNULL([_ownershipcode_value], '')
+                + ISNULL(CAST(LEFT([_ownershipcode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([parentaccountid], '')
                 + ISNULL([_parentaccountid_value], '')
                 + ISNULL(CAST([participatesinworkflow] AS NVARCHAR(20)), '')
-                + ISNULL([_participatesinworkflow_value], '')
+                + ISNULL(CAST(LEFT([_participatesinworkflow_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([preferredcontactmethodcode] AS NVARCHAR(20)), '')
-                + ISNULL([_preferredcontactmethodcode_value], '')
+                + ISNULL(CAST(LEFT([_preferredcontactmethodcode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([_primarycontactid_value], '')
                 + ISNULL(CAST([revenue] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([revenue_base] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([shippingmethodcode] AS NVARCHAR(20)), '')
-                + ISNULL([_shippingmethodcode_value], '')
+                + ISNULL(CAST(LEFT([_shippingmethodcode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([sic], '')
                 + ISNULL([telephone1], '')
                 + ISNULL(CAST([territorycode] AS NVARCHAR(20)), '')
-                + ISNULL([_territorycode_value], '')
+                + ISNULL(CAST(LEFT([_territorycode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([tickersymbol], '')
                 + ISNULL([_transactioncurrencyid_value], '')
                 + ISNULL([websiteurl], '')
@@ -311,11 +313,11 @@ BEGIN
                 + ISNULL([_modifiedonbehalfby_value], '')
                 + ISNULL([_ownerid_value], '')
                 + ISNULL(CAST([statecode] AS NVARCHAR(20)), '')
-                + ISNULL([_statecode_value], '')
+                + ISNULL(CAST(LEFT([_statecode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([statuscode] AS NVARCHAR(20)), '')
-                + ISNULL([_statuscode_value], '')
+                + ISNULL(CAST(LEFT([_statuscode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([versionnumber] AS NVARCHAR(20)), '')
-            ) AS [Hash]
+            ) AS [dwh_hash]
         FROM [staged].[dyn_EntityAccount]
 
         IF OBJECT_ID(@schema + '.' + @table) IS NULL
@@ -331,12 +333,12 @@ BEGIN
         UPDATE [processed].[dyn_account]
         SET
             [dwh_valid_to] = DATEADD(DAY, -1, @process_run_date),
-            [ProcessRunID] = @process_run_id,
+            [dwh_process_run_id] = @process_run_id,
             [dwh_active] = 0
         FROM #temp_dyn_account AS [T]
-        LEFT JOIN [processed].[dyn_account] AS [P] ON [T].[AK_account] = [P].[AK_account]
+        LEFT JOIN [processed].[dyn_account] AS [P] ON [T].[ak_account] = [P].[ak_account]
         WHERE
-            [T].[Hash] != [P].[Hash]
+            [T].[dwh_hash] != [P].[dwh_hash]
             AND [P].[dwh_active] = 1
         SELECT @updated = @@ROWCOUNT
 
@@ -344,12 +346,12 @@ BEGIN
         UPDATE [processed].[dyn_account]
         SET
             [dwh_valid_to] = DATEADD(DAY, -1, @process_run_date),
-            [ProcessRunID] = @process_run_id,
+            [dwh_process_run_id] = @process_run_id,
             [dwh_active] = 0
         FROM [processed].[dyn_account] AS [P]
-        LEFT JOIN #temp_dyn_account AS [T] ON [T].[AK_account] = [P].[AK_account]
+        LEFT JOIN #temp_dyn_account AS [T] ON [T].[ak_account] = [P].[ak_account]
         WHERE
-            [T].[AK_account] IS NULL
+            [T].[ak_account] IS NULL
             AND [P].[dwh_active] = 1
         SELECT @deleted = @@ROWCOUNT
 
@@ -359,7 +361,8 @@ BEGIN
             [dwh_valid_from],
             [dwh_valid_to],
             [dwh_active],
-            [AK_account],
+            [dwh_process_run_id],
+            [ak_account],
             [name],
             [country],
             [country_value],
@@ -453,14 +456,14 @@ BEGIN
             [statuscode],
             [statuscode_value],
             [versionnumber],
-            [Hash],
-            [ProcessRunID]
+            [dwh_hash]            
         )
         SELECT
             @process_run_date AS [dwh_valid_from],
             NULL AS [dwh_valid_to],
             1 AS [dwh_active],
-            [T].[AK_account],
+            @process_run_id AS [dwh_process_run_id],
+            [T].[ak_account],
             [T].[name],
             [T].[country],
             [T].[country_value],
@@ -554,15 +557,14 @@ BEGIN
             [T].[statuscode],
             [T].[statuscode_value],
             [T].[versionnumber],
-            [T].[Hash],
-            @process_run_id AS [ProcessRunID]
+            [T].[dwh_hash]
         FROM #temp_dyn_account AS [T]
-        LEFT JOIN [processed].[dyn_account] AS [P] ON [T].[AK_account] = [P].[AK_account]
+        LEFT JOIN [processed].[dyn_account] AS [P] ON [T].[ak_account] = [P].[ak_account]
         WHERE
-            [P].[AK_account] IS NULL
+            [P].[ak_account] IS NULL
             OR (
-                [T].[Hash] != [P].[Hash]
-                AND [P].[ProcessRunID] = @process_run_id
+                [T].[dwh_hash] != [P].[dwh_hash]
+                AND [P].[dwh_process_run_id] = @process_run_id
             )
         SELECT @inserted = @@ROWCOUNT
 
@@ -576,8 +578,6 @@ BEGIN
             @rows_affected_insert = @inserted,
             @rows_affected_update = @updated,
             @rows_affected_delete = @deleted
-
-
     END TRY
     BEGIN CATCH
         SET @error_number = ERROR_NUMBER();

@@ -3,9 +3,11 @@ CREATE PROCEDURE [processed].[sp_load_dyn_projectfinancial]
     @process_run_id UNIQUEIDENTIFIER
 AS
 BEGIN
+    -- Abort and rollback for all errors, not only the ones captured by BEGIN TRY
+    SET XACT_ABORT ON;
     DECLARE
         @schema NVARCHAR(20) = 'processed',
-        @table NVARCHAR(20) = 'dyn_projectfinancial',
+        @table NVARCHAR(60) = 'dyn_projectfinancial',
 
         @inserted INT = 0,
         @updated INT = 0,
@@ -24,7 +26,7 @@ BEGIN
 
         CREATE TABLE #temp_dyn_projectfinancial
         (
-            [AK_projectfinancial] NVARCHAR(36),
+            [ak_projectfinancial] NVARCHAR(36),
             [name] NVARCHAR(100),
             [exchangerate1] DECIMAL(18, 3),
             [additionalcoststenderbudget] DECIMAL(18, 0),
@@ -98,7 +100,7 @@ BEGIN
             [statuscode] INT,
             [statuscode_value] NVARCHAR(4000),
             [versionnumber] BIGINT,
-            [Hash] VARBINARY(8000) NOT NULL
+            [dwh_hash] VARBINARY(8000) NOT NULL
         )
 
         -- Insert data from staging table into temp table
@@ -143,14 +145,14 @@ BEGIN
             [hso_purchasepercent],
             [hso_remainingcostseuro],
             [hso_remainingcostspercent],
-            [hso_remarksroughestimate],
+            LEFT([hso_remarksroughestimate], 4000),
             [hso_riskeuro],
             [hso_riskpercent],
             [hso_sitesupervisioncostseuro],
             [hso_sitesupervisioncostspercent],
             [hso_specificinvestmenteuro],
             [hso_specificinvestmentpercent],
-            [hso_tenderbudgetremarks],
+            LEFT([hso_tenderbudgetremarks], 4000),
             [hso_totalcontractvalueeuro],
             [hso_totalcontractvaluetender_currency],
             [hso_totalcontractvaluetender_currency_base],
@@ -175,9 +177,9 @@ BEGIN
             [modifiedon],
             [_ownerid_value],
             [statecode],
-            [_statecode_value],
+            LEFT([_statecode_value], 4000),
             [statuscode],
-            [_statuscode_value],
+            LEFT([_statuscode_value], 4000),
             [versionnumber],
             HASHBYTES(
                 'MD5',
@@ -219,14 +221,14 @@ BEGIN
                 + ISNULL(CAST([hso_purchasepercent] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_remainingcostseuro] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_remainingcostspercent] AS NVARCHAR(50)), '')
-                + ISNULL([hso_remarksroughestimate], '')
+                + ISNULL(CAST(LEFT([hso_remarksroughestimate], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_riskeuro] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_riskpercent] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_sitesupervisioncostseuro] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_sitesupervisioncostspercent] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_specificinvestmenteuro] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_specificinvestmentpercent] AS NVARCHAR(50)), '')
-                + ISNULL([hso_tenderbudgetremarks], '')
+                + ISNULL(CAST(LEFT([hso_tenderbudgetremarks], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_totalcontractvalueeuro] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_totalcontractvaluetender_currency] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_totalcontractvaluetender_currency_base] AS NVARCHAR(50)), '')
@@ -251,11 +253,11 @@ BEGIN
                 + ISNULL(CONVERT(NVARCHAR(19), [modifiedon], 120), '')
                 + ISNULL([_ownerid_value], '')
                 + ISNULL(CAST([statecode] AS NVARCHAR(20)), '')
-                + ISNULL([_statecode_value], '')
+                + ISNULL(CAST(LEFT([_statecode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([statuscode] AS NVARCHAR(20)), '')
-                + ISNULL([_statuscode_value], '')
+                + ISNULL(CAST(LEFT([_statuscode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([versionnumber] AS NVARCHAR(20)), '')
-            ) AS [Hash]
+            ) AS [dwh_hash]
         FROM [staged].[dyn_EntityProjectFinancial]
 
         IF OBJECT_ID(@schema + '.' + @table) IS NULL
@@ -271,12 +273,12 @@ BEGIN
         UPDATE [processed].[dyn_projectfinancial]
         SET
             [dwh_valid_to] = DATEADD(DAY, -1, @process_run_date),
-            [ProcessRunID] = @process_run_id,
+            [dwh_process_run_id] = @process_run_id,
             [dwh_active] = 0
         FROM #temp_dyn_projectfinancial AS [T]
-        LEFT JOIN [processed].[dyn_projectfinancial] AS [P] ON [T].[AK_projectfinancial] = [P].[AK_projectfinancial]
+        LEFT JOIN [processed].[dyn_projectfinancial] AS [P] ON [T].[ak_projectfinancial] = [P].[ak_projectfinancial]
         WHERE
-            [T].[Hash] != [P].[Hash]
+            [T].[dwh_hash] != [P].[dwh_hash]
             AND [P].[dwh_active] = 1
         SELECT @updated = @@ROWCOUNT
 
@@ -284,12 +286,12 @@ BEGIN
         UPDATE [processed].[dyn_projectfinancial]
         SET
             [dwh_valid_to] = DATEADD(DAY, -1, @process_run_date),
-            [ProcessRunID] = @process_run_id,
+            [dwh_process_run_id] = @process_run_id,
             [dwh_active] = 0
         FROM [processed].[dyn_projectfinancial] AS [P]
-        LEFT JOIN #temp_dyn_projectfinancial AS [T] ON [T].[AK_projectfinancial] = [P].[AK_projectfinancial]
+        LEFT JOIN #temp_dyn_projectfinancial AS [T] ON [T].[ak_projectfinancial] = [P].[ak_projectfinancial]
         WHERE
-            [T].[AK_projectfinancial] IS NULL
+            [T].[ak_projectfinancial] IS NULL
             AND [P].[dwh_active] = 1
         SELECT @deleted = @@ROWCOUNT
 
@@ -299,7 +301,8 @@ BEGIN
             [dwh_valid_from],
             [dwh_valid_to],
             [dwh_active],
-            [AK_projectfinancial],
+            [dwh_process_run_id],
+            [ak_projectfinancial],
             [name],
             [exchangerate1],
             [additionalcoststenderbudget],
@@ -373,14 +376,14 @@ BEGIN
             [statuscode],
             [statuscode_value],
             [versionnumber],
-            [Hash],
-            [ProcessRunID]
+            [dwh_hash]            
         )
         SELECT
             @process_run_date AS [dwh_valid_from],
             NULL AS [dwh_valid_to],
             1 AS [dwh_active],
-            [T].[AK_projectfinancial],
+            @process_run_id AS [dwh_process_run_id],
+            [T].[ak_projectfinancial],
             [T].[name],
             [T].[exchangerate1],
             [T].[additionalcoststenderbudget],
@@ -454,15 +457,14 @@ BEGIN
             [T].[statuscode],
             [T].[statuscode_value],
             [T].[versionnumber],
-            [T].[Hash],
-            @process_run_id AS [ProcessRunID]
+            [T].[dwh_hash]
         FROM #temp_dyn_projectfinancial AS [T]
-        LEFT JOIN [processed].[dyn_projectfinancial] AS [P] ON [T].[AK_projectfinancial] = [P].[AK_projectfinancial]
+        LEFT JOIN [processed].[dyn_projectfinancial] AS [P] ON [T].[ak_projectfinancial] = [P].[ak_projectfinancial]
         WHERE
-            [P].[AK_projectfinancial] IS NULL
+            [P].[ak_projectfinancial] IS NULL
             OR (
-                [T].[Hash] != [P].[Hash]
-                AND [P].[ProcessRunID] = @process_run_id
+                [T].[dwh_hash] != [P].[dwh_hash]
+                AND [P].[dwh_process_run_id] = @process_run_id
             )
         SELECT @inserted = @@ROWCOUNT
 
@@ -476,8 +478,6 @@ BEGIN
             @rows_affected_insert = @inserted,
             @rows_affected_update = @updated,
             @rows_affected_delete = @deleted
-
-
     END TRY
     BEGIN CATCH
         SET @error_number = ERROR_NUMBER();
