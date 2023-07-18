@@ -180,7 +180,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Lookup - UseCaseEntity sources",
+						"name": "Lookup - Systems",
 						"type": "Lookup",
 						"dependsOn": [],
 						"policy": {
@@ -195,15 +195,6 @@
 							"source": {
 								"type": "AzureSqlSource",
 								"sqlReaderStoredProcedureName": "[elt].[spLookupActiveSystems]",
-								"storedProcedureParameters": {
-									"UseCaseCode": {
-										"type": "String",
-										"value": {
-											"value": "@pipeline().parameters.use_case_code",
-											"type": "Expression"
-										}
-									}
-								},
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -225,7 +216,7 @@
 						"type": "ForEach",
 						"dependsOn": [
 							{
-								"activity": "Lookup - UseCaseEntity sources",
+								"activity": "Lookup - Systems",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -234,7 +225,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"items": {
-								"value": "@activity('Lookup - UseCaseEntity sources').output.value",
+								"value": "@activity('Lookup - Systems').output.value",
 								"type": "Expression"
 							},
 							"batchCount": 50,
@@ -375,9 +366,6 @@
 						"type": "string"
 					},
 					"mdb_dbname": {
-						"type": "string"
-					},
-					"use_case_code": {
 						"type": "string"
 					}
 				},
@@ -801,7 +789,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
-								"sqlReaderQuery": "SELECT * FROM elt.UseCaseEntity\nWHERE Active = 1 AND SystemCode = 'snp'",
+								"sqlReaderQuery": "SELECT * FROM elt.MetadataTables\nWHERE IsActive = 1 AND SystemCode = 'snp'",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -1281,8 +1269,6 @@
 						"type": "SetVariable",
 						"dependsOn": [],
 						"policy": {
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
 							"secureOutput": false,
 							"secureInput": false
 						},
@@ -1383,8 +1369,6 @@
 										}
 									],
 									"policy": {
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
 										"secureOutput": false,
 										"secureInput": false
 									},
@@ -1433,8 +1417,6 @@
 							}
 						],
 						"policy": {
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
 							"secureOutput": false,
 							"secureInput": false
 						},
@@ -1586,17 +1568,17 @@
 											"type": "Expression"
 										}
 									},
-									"use_case_code": {
-										"type": "String",
-										"value": {
-											"value": "@pipeline().parameters.use_case_code",
-											"type": "Expression"
-										}
-									},
 									"process_run_id": {
 										"type": "Guid",
 										"value": {
 											"value": "@pipeline().parameters.process_run_id",
+											"type": "Expression"
+										}
+									},
+									"system_code": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().parameters.system_code",
 											"type": "Expression"
 										}
 									}
@@ -2095,12 +2077,12 @@
 																	"value": "@pipeline().parameters.mdb_dbname",
 																	"type": "Expression"
 																},
-																"use_case_code": {
-																	"value": "@pipeline().parameters.use_case_code",
-																	"type": "Expression"
-																},
 																"process_run_id": {
 																	"value": "@pipeline().parameters.process_run_id",
+																	"type": "Expression"
+																},
+																"system_code": {
+																	"value": "@pipeline().parameters.system_code",
 																	"type": "Expression"
 																}
 															}
@@ -2126,10 +2108,10 @@
 					"process_run_date": {
 						"type": "string"
 					},
-					"use_case_code": {
+					"mdb_dbname": {
 						"type": "string"
 					},
-					"mdb_dbname": {
+					"system_code": {
 						"type": "string"
 					}
 				},
@@ -2568,9 +2550,9 @@
 									},
 									"type": "String"
 								},
-								"use_case_code": {
+								"system_code": {
 									"value": {
-										"value": "@pipeline().parameters.use_case_code",
+										"value": "@pipeline().parameters.system_code",
 										"type": "Expression"
 									},
 									"type": "String"
@@ -2762,10 +2744,10 @@
 					"mdb_dbname": {
 						"type": "string"
 					},
-					"use_case_code": {
+					"process_run_id": {
 						"type": "string"
 					},
-					"process_run_id": {
+					"system_code": {
 						"type": "string"
 					}
 				},
@@ -2820,17 +2802,17 @@
 											"type": "Expression"
 										}
 									},
-									"use_case_code": {
-										"type": "String",
-										"value": {
-											"value": "@pipeline().parameters.use_case_code",
-											"type": "Expression"
-										}
-									},
 									"layer_name": {
 										"type": "String",
 										"value": {
 											"value": "@pipeline().parameters.layer_name",
+											"type": "Expression"
+										}
+									},
+									"system_code": {
+										"type": "String",
+										"value": {
+											"value": "@pipeline().parameters.system_code",
 											"type": "Expression"
 										}
 									}
@@ -2931,8 +2913,8 @@
 												"value": "@pipeline().parameters.dwh_dbname",
 												"type": "Expression"
 											},
-											"use_case_code": {
-												"value": "@pipeline().parameters.use_case_code",
+											"system_code": {
+												"value": "@pipeline().parameters.system_code",
 												"type": "Expression"
 											}
 										}
@@ -2953,9 +2935,6 @@
 					"process_run_date": {
 						"type": "string"
 					},
-					"use_case_code": {
-						"type": "string"
-					},
 					"mdb_dbname": {
 						"type": "string"
 					},
@@ -2965,6 +2944,9 @@
 					"layer_name": {
 						"type": "string",
 						"defaultValue": "staged"
+					},
+					"system_code": {
+						"type": "string"
 					}
 				},
 				"folder": {
@@ -3017,7 +2999,7 @@
 							"sink": {
 								"type": "AzureSqlSink",
 								"preCopyScript": {
-									"value": "@{concat('TRUNCATE TABLE', ' ', concat(pipeline().parameters.layer_name, '.', pipeline().parameters.use_case_code, '_', pipeline().parameters.entity_name))}",
+									"value": "@{concat('TRUNCATE TABLE', ' ', concat(pipeline().parameters.layer_name, '.', pipeline().parameters.system_code, '_', pipeline().parameters.entity_name))}",
 									"type": "Expression"
 								},
 								"writeBehavior": "insert",
@@ -3049,7 +3031,7 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"table_name": {
-										"value": "@concat(pipeline().parameters.use_case_code, '_', pipeline().parameters.entity_name)",
+										"value": "@concat(pipeline().parameters.system_code, '_', pipeline().parameters.entity_name)",
 										"type": "Expression"
 									},
 									"structure": {
@@ -3184,7 +3166,7 @@
 									"system_code": {
 										"type": "String",
 										"value": {
-											"value": "@pipeline().parameters.use_case_code",
+											"value": "@pipeline().parameters.system_code",
 											"type": "Expression"
 										}
 									},
@@ -3302,12 +3284,12 @@
 					"dwh_dbname": {
 						"type": "string"
 					},
-					"use_case_code": {
-						"type": "string"
-					},
 					"layer_name": {
 						"type": "string",
 						"defaultValue": "staged"
+					},
+					"system_code": {
+						"type": "string"
 					}
 				},
 				"folder": {
@@ -3349,7 +3331,7 @@
 									"use_case_code": {
 										"type": "String",
 										"value": {
-											"value": "@pipeline().parameters.use_case_code",
+											"value": "@pipeline().parameters.system_code",
 											"type": "Expression"
 										}
 									}
@@ -3450,7 +3432,7 @@
 												"use_case_code": {
 													"type": "String",
 													"value": {
-														"value": "@pipeline().parameters.use_case_code",
+														"value": "@pipeline().parameters.system_code",
 														"type": "Expression"
 													}
 												}
@@ -3496,7 +3478,7 @@
 						"type": "string",
 						"defaultValue": "processed"
 					},
-					"use_case_code": {
+					"system_code": {
 						"type": "string"
 					}
 				},
@@ -3652,10 +3634,6 @@
 								"mdb_dbname": {
 									"value": "@pipeline().parameters.mdb_dbname",
 									"type": "Expression"
-								},
-								"use_case_code": {
-									"value": "@pipeline().parameters.use_case_code",
-									"type": "Expression"
 								}
 							}
 						}
@@ -3687,12 +3665,12 @@
 									"value": "@pipeline().TriggerTime",
 									"type": "Expression"
 								},
-								"use_case_code": {
-									"value": "@pipeline().parameters.use_case_code",
-									"type": "Expression"
-								},
 								"mdb_dbname": {
 									"value": "@pipeline().parameters.mdb_dbname",
+									"type": "Expression"
+								},
+								"system_code": {
+									"value": "@pipeline().parameters.system_code",
 									"type": "Expression"
 								}
 							}
@@ -3725,16 +3703,16 @@
 									"value": "@pipeline().TriggerTime",
 									"type": "Expression"
 								},
-								"use_case_code": {
-									"value": "@pipeline().parameters.use_case_code",
-									"type": "Expression"
-								},
 								"mdb_dbname": {
 									"value": "@pipeline().parameters.mdb_dbname",
 									"type": "Expression"
 								},
 								"dwh_dbname": {
 									"value": "@pipeline().parameters.dwh_dbname",
+									"type": "Expression"
+								},
+								"system_code": {
+									"value": "@pipeline().parameters.system_code",
 									"type": "Expression"
 								}
 							}
@@ -3775,8 +3753,8 @@
 									"value": "@pipeline().parameters.dwh_dbname",
 									"type": "Expression"
 								},
-								"use_case_code": {
-									"value": "@pipeline().parameters.use_case_code",
+								"system_code": {
+									"value": "@pipeline().parameters.system_code",
 									"type": "Expression"
 								}
 							}
@@ -3787,8 +3765,6 @@
 						"type": "SetVariable",
 						"dependsOn": [],
 						"policy": {
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
 							"secureOutput": false,
 							"secureInput": false
 						},
@@ -3807,9 +3783,6 @@
 					"cancelAfter": {}
 				},
 				"parameters": {
-					"use_case_code": {
-						"type": "string"
-					},
 					"mdb_dbname": {
 						"type": "string",
 						"defaultValue": "mdb"
@@ -3817,6 +3790,9 @@
 					"dwh_dbname": {
 						"type": "string",
 						"defaultValue": "dwh"
+					},
+					"system_code": {
+						"type": "string"
 					}
 				},
 				"variables": {
@@ -4478,9 +4454,9 @@
 							"type": "PipelineReference"
 						},
 						"parameters": {
-							"use_case_code": "dyn",
 							"mdb_dbname": "mdb",
-							"dwh_dbname": "dwh"
+							"dwh_dbname": "dwh",
+							"system_code": "dyn"
 						}
 					}
 				],
@@ -4549,9 +4525,9 @@
 							"type": "PipelineReference"
 						},
 						"parameters": {
-							"use_case_code": "snp",
 							"mdb_dbname": "mdb",
-							"dwh_dbname": "dwh"
+							"dwh_dbname": "dwh",
+							"system_code": "snp"
 						}
 					}
 				],
