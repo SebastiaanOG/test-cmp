@@ -1,4 +1,4 @@
-CREATE  PROCEDURE [elt].[spSnJsonToColumns] @entity_name varchar(255), @use_case_code varchar(255)
+CREATE  PROCEDURE [elt].[spSnJsonToColumns] @entity_name varchar(255), @system_code varchar(255)
 AS
 BEGIN
 DECLARE @result VARCHAR(MAX);
@@ -24,7 +24,7 @@ FROM elt.MetadataStructure s
 LEFT JOIN elt.MetadataSystem st ON st.SystemCode = s.SystemCode
 INNER JOIN elt.TypeMap t ON st.SystemType = t.SystemType AND t.SourceDataType = s.DataType
 WHERE s.EntityName = @entity_name
-    AND s.SystemCode = @use_case_code
+    AND s.SystemCode = @system_code
     AND s.IsActive = 1
 
   EXEC(@result)  

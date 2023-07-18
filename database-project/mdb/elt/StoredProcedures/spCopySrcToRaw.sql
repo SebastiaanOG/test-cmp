@@ -1,22 +1,15 @@
-CREATE PROCEDURE [elt].[spCopySrcToRaw] @process_run_date DATE, @use_case_code varchar(max), @process_run_id UNIQUEIDENTIFIER
+CREATE PROCEDURE [elt].[spCopySrcToRaw] @process_run_date DATE,  @process_run_id UNIQUEIDENTIFIER, @system_code NVARCHAR(MAX)
 AS
 
     BEGIN
         WITH CTE
-                AS (SELECT DISTINCT
-                    vcm.SystemName,
-                    vcm.SystemCode,
-                    vcm.SystemType,
-                    vcm.SchemaName,
-                    vcm.EntityName,
-                    vcm.UseCaseCode,
-                    ue.Active,
-                    ue.CopyToRaw
-                FROM elt.vwMetaDataRaw vcm
-                INNER JOIN elt.UseCaseEntity ue ON vcm.UseCaseCode = ue.UseCaseCode AND vcm.EntityName = ue.EntityName
-                WHERE vcm.UseCaseCode = @use_case_code
-                    AND ue.Active = 1
-                    AND ue.CopyToRaw = 1
+                AS (SELECT DISTINCT 
+                        vcm.SystemName,
+						vcm.SystemCode, 
+                        vcm.SystemType,
+						vcm.SchemaName,
+                        vcm.EntityName
+                 FROM elt.vwMetaDataRaw vcm where vcm.SystemCode = @system_code
                 )
              SELECT vcm.SystemName AS source_system_name, 
                     vcm.SystemCode AS source_system_code,
@@ -32,12 +25,17 @@ AS
                             [elt].[fnSnCreateEntityTranslator](vcm.SystemName, vcm.SchemaName, vcm.EntityName)
                         ELSE
                             [elt].[fnCreateEntityTranslator](vcm.SystemName, vcm.SchemaName, vcm.EntityName)
-                        END  AS source_sink_mapping,
-                    vcm.UseCaseCode AS use_case_code
+                        END  AS source_sink_mapping
              FROM elt.[MetadataTables] r
                   INNER JOIN CTE vcm ON vcm.SystemName = r.SystemName
                                         AND vcm.EntityName = r.EntityName
 										AND vcm.SchemaName = r.SchemaName
+                 INNER JOIN [elt].[MetadataSystem] AS ms
+						ON ms.SystemName = vcm.SystemName
+						and ms.SystemCode = r.SystemCode
+						and ms.[Active] =1
+            WHERE r.CopyToRaw = 1
+			 AND r.IsActive = 1
 			 --AND vcm.SystemName = @system_name
              ORDER BY vcm.SystemName ASC
     END;

@@ -197,9 +197,9 @@
 							},
 							"type": "String"
 						},
-						"use_case_code": {
+						"system_code": {
 							"value": {
-								"value": "@pipeline().parameters.use_case_code",
+								"value": "@pipeline().parameters.system_code",
 								"type": "Expression"
 							},
 							"type": "String"
@@ -385,10 +385,10 @@
 			"mdb_dbname": {
 				"type": "string"
 			},
-			"use_case_code": {
+			"process_run_id": {
 				"type": "string"
 			},
-			"process_run_id": {
+			"system_code": {
 				"type": "string"
 			}
 		},

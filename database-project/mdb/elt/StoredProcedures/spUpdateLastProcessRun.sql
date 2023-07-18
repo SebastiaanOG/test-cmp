@@ -1,24 +1,24 @@
-﻿CREATE PROCEDURE [elt].[spUpdateLastProcessRun]
-    @source_system_name nvarchar(100),
-    @source_entity_name nvarchar(100),
-    @process_run_date datetime
+CREATE Procedure [elt].[spUpdateLastProcessRun] 
+	@source_system_name nvarchar(100),
+	@source_entity_name nvarchar(100),
+	@process_run_date DATETIME
 AS
 
-BEGIN
+BEGIN 
 
-    DECLARE @query_statement nvarchar(MAX);
+	DECLARE @query_statement nvarchar(max);
 
-    SELECT @query_statement =
-        CONCAT('UPDATE elt.MetadataTables SET LastProcessRun = ',
-            '''', @process_run_date, '''',
-            ' WHERE SystemName = ',
-            '''', @source_system_name, '''',
-            ' AND EntityName = ',
-            '''', @source_entity_name, ''''
-        )
-
+SELECT @query_statement = 
+		 CONCAT('UPDATE elt.MetadataTables SET LastProcessRun = '
+					, '''', @process_run_date, ''''
+					, ' WHERE SystemName = '
+					, '''', @source_system_name, ''''
+					, ' AND EntityName = '
+					, '''', @source_entity_name, ''''
+					)
+		
 END
 
 BEGIN
-    EXEC(@query_statement)
+	EXEC(@query_statement)
 END;

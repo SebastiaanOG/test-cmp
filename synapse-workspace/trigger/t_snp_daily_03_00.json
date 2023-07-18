@@ -11,9 +11,9 @@
 					"type": "PipelineReference"
 				},
 				"parameters": {
-					"use_case_code": "snp",
 					"mdb_dbname": "mdb",
-					"dwh_dbname": "dwh"
+					"dwh_dbname": "dwh",
+					"system_code": "snp"
 				}
 			}
 		],
