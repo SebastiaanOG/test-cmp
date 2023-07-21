@@ -1,11 +1,11 @@
-CREATE OR ALTER PROCEDURE [modelled].[sp_load_DimSubArea]           -- CHANGE INTO DIMENSION NAME
+CREATE OR ALTER PROCEDURE [modelled].[sp_load_DimArea]           -- CHANGE INTO DIMENSION NAME
     @process_run_date DATE,
     @process_run_id UNIQUEIDENTIFIER
 AS
     BEGIN
         DECLARE
             @schema NVARCHAR(20) = 'modelled',
-            @table NVARCHAR(20) = 'DimSubArea',            -- CHANGE INTO DIMENSION NAME
+            @table NVARCHAR(20) = 'DimArea',            -- CHANGE INTO DIMENSION NAME
 
             @inserted INT = 0,
             @updated INT = 0,
@@ -16,8 +16,8 @@ AS
         DECLARE @merge_results TABLE
         (
             action_type VARCHAR(50),
-            inserted_ak_subarea VARCHAR(50) NULL,
-            deleted_ak_subarea VARCHAR(50) NULL
+            inserted_ak_area VARCHAR(50) NULL,
+            deleted_ak_area VARCHAR(50) NULL
         );
 
         BEGIN TRY
@@ -25,7 +25,7 @@ AS
         ---- Query the dataset to fill #temp_DimSource: Source is processed layer data.
         ---- In a full delta, only select dwh_active = 1.
 
-        DROP TABLE IF EXISTS #subarea_active
+        DROP TABLE IF EXISTS #area_active
 
         SELECT
              [dwh_valid_from]
@@ -33,14 +33,40 @@ AS
             ,[dwh_active]
             ,[dwh_process_run_id]
             ,HASHBYTES(
-                'MD5', [name]
-            )                           AS [dwh_hash]
-            ,[ak_subarea]
-            ,[name]                     AS [subarea_name]
+                'MD5', 
+                CONCAT(
+                    [name]
+                    ,areaabbreviation
+                    ,businessunitid_value
+                    ,ownerid_value
+                )
+            )                               AS [dwh_hash]
+            ,ak_area
+            ,[name]                         AS [area_name]
+            ,CASE
+                WHEN [name] = 'Asia Australia' THEN 'Middle East, West Asia Australia'
+                WHEN [name] = 'Dravosa' THEN 'Subsidiaries'
+                WHEN [name] = 'Middle East, West Asia' THEN 'Middle East, West Asia Australia'
+                WHEN [name] = 'Netherlands' THEN 'Europe'
+                WHEN [name] = 'WICKS' THEN 'Subsidiaries'
+            ELSE [name]
+            END                             AS [area_groupname]
+            ,[areaabbreviation]              AS [area_abbrevation]
+            ,[businessunitid_value]         AS [area_businessunit]
+            ,[ownerid_value]                AS [area_owner]
+
+
+            ,CASE
+                WHEN [name] IN ('Subsidiaries','WICKS','Dravosa') THEN [name] 
+                ELSE 'Van Oord' 
+            END                             AS [company]
+                    
         
-        INTO #subarea_active
-        FROM [processed].[dyn_subarea]
+        INTO #area_active
+        FROM [processed].[dyn_area]
         WHERE dwh_active = 1
+
+        -- SELECT * FROM #area_active
 
         --- Check if the dimension exists ---
         IF OBJECT_ID(@schema + '.' + @table) IS NULL
@@ -53,41 +79,51 @@ AS
         END
 
         -- Synchronize the target table with refreshed data from source table
-        MERGE modelled.DimSubArea AS DESTINATION
-        USING #subarea_active AS SOURCE
-        ON (DESTINATION.ak_subarea = SOURCE.ak_subarea) 
-        -- When records are matched, update the records if there is any change, keep valid_from
+        MERGE modelled.DimArea AS DESTINATION
+        USING #area_active AS SOURCE
+        ON (DESTINATION.ak_area = SOURCE.ak_area) 
+        -- When records are matched, update the records if there is any change
         WHEN MATCHED AND DESTINATION.dwh_hash <> SOURCE.dwh_hash
         THEN UPDATE SET 
-             DESTINATION.[dwh_process_run_id] = @process_run_id
+             DESTINATION.[dwh_valid_from] = @process_run_date
+            ,DESTINATION.[dwh_valid_to] = NULL
+            ,DESTINATION.[dwh_active] = 1
+            ,DESTINATION.[dwh_process_run_id] = @process_run_id
             ,DESTINATION.[dwh_hash] = SOURCE.dwh_hash
-            ,DESTINATION.[subarea_name] = SOURCE.[subarea_name]
+            ,DESTINATION.ak_area = SOURCE.ak_area
+            ,DESTINATION.area_name = SOURCE.area_name
+            ,DESTINATION.area_groupname = SOURCE.area_groupname
+            ,DESTINATION.area_abbrevation = SOURCE.area_abbrevation
+            ,DESTINATION.area_businessunit = SOURCE.area_businessunit
+            ,DESTINATION.area_owner = SOURCE.area_owner
+            ,DESTINATION.company = SOURCE.company
         -- When no records are matched, insert the incoming records from source table to target table
         WHEN NOT MATCHED BY TARGET 
         THEN INSERT 
-            (dwh_valid_from, dwh_valid_to, dwh_active, dwh_process_run_id, dwh_hash, ak_subarea, subarea_name) 
+            (dwh_valid_from, dwh_valid_to, dwh_active, dwh_process_run_id, dwh_hash, ak_area, area_name, area_groupname, area_abbrevation, area_businessunit, area_owner, company) 
         VALUES 
-            (@process_run_date, NULL, 1, @process_run_id, SOURCE.dwh_hash, SOURCE.ak_subarea, SOURCE.subarea_name)
+            (@process_run_date, NULL, 1, @process_run_id, SOURCE.dwh_hash, SOURCE.ak_area, SOURCE.area_name, SOURCE.area_groupname, SOURCE.area_abbrevation, SOURCE.area_businessunit, SOURCE.area_owner, SOURCE.company)
 
         -- When there is a row that exists in target and same record does not exist in source then delete this record target
-        WHEN NOT MATCHED BY SOURCE AND DESTINATION.pk_subarea > 0 AND DESTINATION.dwh_active = 1
+        WHEN NOT MATCHED BY SOURCE AND DESTINATION.pk_area > 0 AND DESTINATION.dwh_active = 1
          THEN UPDATE SET 
-             DESTINATION.[dwh_valid_to] = DATEADD(day, -1 , @process_run_date)
+             DESTINATION.[dwh_valid_to] = @process_run_date
             ,DESTINATION.[dwh_active] = 0
 
+        -- THEN DELETE 
         -- $action specifies a column of type nvarchar(10) in the OUTPUT clause that returns 
         -- one of three values for each row: 'INSERT', 'UPDATE', or 'DELETE' according to the action that was performed on that row
         OUTPUT 
             $action, 
-            INSERTED.ak_subarea,
-            DELETED.ak_subarea
+            INSERTED.ak_area,
+            DELETED.ak_area
         INTO @merge_results;
-       
+
         COMMIT
 		
-		SELECT @deleted = COUNT(deleted_ak_subarea) FROM @merge_results WHERE action_type = 'DELETE'
-        SELECT @inserted = COUNT(inserted_ak_subarea) FROM @merge_results WHERE action_type = 'INSERT'
-        SELECT @updated = COUNT(inserted_ak_subarea) FROM @merge_results WHERE action_type = 'UPDATE'
+		SELECT @deleted = COUNT(deleted_ak_area) FROM @merge_results WHERE action_type = 'DELETE'
+        SELECT @inserted = COUNT(inserted_ak_area) FROM @merge_results WHERE action_type = 'INSERT'
+        SELECT @updated = COUNT(inserted_ak_area) FROM @merge_results WHERE action_type = 'UPDATE'
 
         -- Log process result
         EXECUTE [audit].[spInsertDataLogProcessed]
