@@ -207,8 +207,8 @@ exec sys.sp_addextendedproperty @name=N'ETL Rules', @value=N'Zie Comments', @lev
 GO
 exec sys.sp_addextendedproperty @name=N'ETL Rules', @value=N'IF(origional areaname in (''Subsidiaries'',''WICKS'',''Dravosa'' then areaname else ''Van Oord'' AS Company', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimArea', @level2type=N'COLUMN', @level2name=N'company'; 
 GO
+SET IDENTITY_INSERT modelled.DimArea ON;  
 GO
-
 INSERT INTO [modelled].[DimArea]
  (    [pk_area]
       ,[dwh_valid_from] 

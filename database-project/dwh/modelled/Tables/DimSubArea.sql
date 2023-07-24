@@ -9,23 +9,6 @@
 ,  [subarea_name]  nvarchar(100)   NULL
 , CONSTRAINT [PK_modelled.DimSubArea] PRIMARY KEY CLUSTERED ([pk_subarea] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 100, DATA_COMPRESSION = PAGE))
 GO
-SET IDENTITY_INSERT modelled.DimSubArea ON;  
-GO
-INSERT INTO [modelled].[DimSubArea]
- (    [pk_subarea]
-      ,[dwh_valid_from]
-      ,[dwh_valid_to]
-      ,[dwh_active]
-      ,[dwh_process_run_id]
-      ,[dwh_hash]
-      ,[ak_subarea]
-      ,[subarea_name])
-
-VALUES 
-   (-1, '1900-01-01', NULL, 1, NULL, NULL, -1, 'Unknown'),
-   (-2, '1900-01-01', NULL, 1, NULL, NULL, -2, 'Empty')
-GO
-
 exec sys.sp_addextendedproperty @name=N'Table Name', @value=N'DimSubArea', @level0type=N'SCHEMA', @level0name=modelled, @level1type=N'TABLE', @level1name=DimSubArea
 GO
 exec sys.sp_addextendedproperty @name=N'Table Type', @value=N'Dimension', @level0type=N'SCHEMA', @level0name=modelled, @level1type=N'TABLE', @level1name=DimSubArea
@@ -114,4 +97,19 @@ exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'nvarchar(36)'
 GO
 exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'nvarchar(100)', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimSubArea', @level2type=N'COLUMN', @level2name=N'subarea_name'; 
 GO
+SET IDENTITY_INSERT modelled.DimSubArea ON;  
+GO
+INSERT INTO [modelled].[DimSubArea]
+ (    [pk_subarea]
+      ,[dwh_valid_from]
+      ,[dwh_valid_to]
+      ,[dwh_active]
+      ,[dwh_process_run_id]
+      ,[dwh_hash]
+      ,[ak_subarea]
+      ,[subarea_name])
+
+VALUES 
+   (-1, '1900-01-01', NULL, 1, NULL, NULL, -1, 'Unknown'),
+   (-2, '1900-01-01', NULL, 1, NULL, NULL, -2, 'Empty')
 GO

@@ -55,6 +55,7 @@
   <Import Condition="'$(NetCoreBuild)' != 'true' AND '$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <Import Condition="'$(NetCoreBuild)' != 'true' AND '$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
+    <Folder Include="processed\modelled" />
     <Folder Include="Properties" />
     <Folder Include="elt\" />
     <Folder Include="elt\Tables\" />
@@ -66,7 +67,7 @@
     <Folder Include="processed\" />
     <Folder Include="processed\Tables\" />
     <Folder Include="processed\StoredProcedures\" />
-    <Folder Include="PostDeploy"/>
+    <Folder Include="PostDeploy" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="elt\Tables\ProcessedTables.sql" />
@@ -86,10 +87,15 @@
     <Build Include="audit\StoredProcedures\spErrorLog.sql" />
     <Build Include="audit\StoredProcedures\spEndProcessRun.sql" />
     <Build Include="audit\StoredProcedures\spEndPipelineRun.sql" />
+    <Build Include="modelled\StoredProcedures\sp_load_DimArea.sql" />
+    <Build Include="modelled\StoredProcedures\sp_load_DimSubArea.sql" />
+    <Build Include="modelled\StoredProcedures\sp_load_DimTenderType.sql" />
+    <Build Include="modelled\Tables\DimArea.sql" />
+    <Build Include="modelled\Tables\DimSubArea.sql" />
+    <Build Include="modelled\Tables\DimTendertype.sql" />
     <Build Include="Security\elt.sql" />
     <Build Include="Security\processed.sql" />
     <Build Include="Security\audit.sql" />
-
     <Build Include="processed\Tables\dyn_account.sql" />
     <Build Include="processed\Tables\dyn_approval.sql" />
     <Build Include="processed\Tables\dyn_area.sql" />
@@ -119,7 +125,6 @@
     <Build Include="processed\Tables\dyn_vanoordentity.sql" />
     <Build Include="processed\Tables\dyn_vobusinessunit.sql" />
     <Build Include="processed\Tables\dyn_workelement.sql" />
-
     <Build Include="processed\StoredProcedures\sp_load_dyn_account.sql">
       <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
     </Build>
@@ -207,15 +212,14 @@
     <Build Include="processed\StoredProcedures\sp_load_dyn_workelement.sql">
       <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
     </Build>
-
     <None Include="elt\StoredProcedures\Processed\cmptest.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="PostDeploy\pd_Main.sql">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </PostDeploy>
-    <None Include="PostDeploy\pd_ProcessedTables.sql"/>
-    <None Include="PostDeploy\pd_AuthSynapseWS.sql"/>
+    <None Include="PostDeploy\pd_ProcessedTables.sql" />
+    <None Include="PostDeploy\pd_AuthSynapseWS.sql" />
   </ItemGroup>
   <Import Condition="'$(NetCoreBuild)' == 'true'" Project="$(NETCoreTargetsPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
