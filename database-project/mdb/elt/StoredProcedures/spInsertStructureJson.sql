@@ -7,7 +7,13 @@ CREATE Procedure [elt].[spInsertStructureJson]
 ,@JSON		 nvarchar(max)
 )
 AS
-										BEGIN
+										    BEGIN
+
+DECLARE @special_data_types NVARCHAR(max) -- special data types retrived from api/json source like ServiceNow (snp)
+SET @special_data_types = JSON_ARRAY('String','sys_class_name','html','user_input','variables','reference','journal','journal_list','journal_input' 
+							    ,'journal','glide_list','domain_path','domain_id','decoration','guid','glide_list','composite_field','choice'
+                                ,'schedule_date_time','user_image','email','ph_number','mobile_phone','user_image','user_roles','multi_two_lines'
+                                ,'password');
 								
 											INSERT INTO [elt].[MetadataStructure]
 														([SystemCode]
@@ -35,7 +41,7 @@ AS
 														 @lTable AS 'Table',
 														 [name],
 														 [Type],
-														 character_maximum_length = CASE WHEN [type] IN ('String', 'sys_class_name', 'html', 'user_input', 'variables', 'reference', 'journal', 'journal_list', 'journal_input', 'journal', 'glide_list', 'domain_path', 'domain_id', 'decoration', 'guid', 'glide_list', 'composite_field', 'choice') THEN -1 ELSE NULL END,
+														 character_maximum_length = CASE WHEN [type] IN (SELECT value FROM openjson(@special_data_types)) THEN -1 ELSE NULL END,
 														 is_nullable = 1,
 														 ordinal_position = ROW_NUMBER() OVER (ORDER BY (Select NULL)),
 														 numeric_precision = CASE WHEN [type] IN ('decimal') THEN 30 ELSE NULL END,

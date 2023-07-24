@@ -28,10 +28,6 @@
 						"mdb_dbname": {
 							"value": "@pipeline().parameters.mdb_dbname",
 							"type": "Expression"
-						},
-						"use_case_code": {
-							"value": "@pipeline().parameters.use_case_code",
-							"type": "Expression"
 						}
 					}
 				}
@@ -63,12 +59,12 @@
 							"value": "@pipeline().TriggerTime",
 							"type": "Expression"
 						},
-						"use_case_code": {
-							"value": "@pipeline().parameters.use_case_code",
-							"type": "Expression"
-						},
 						"mdb_dbname": {
 							"value": "@pipeline().parameters.mdb_dbname",
+							"type": "Expression"
+						},
+						"system_code": {
+							"value": "@pipeline().parameters.system_code",
 							"type": "Expression"
 						}
 					}
@@ -101,16 +97,16 @@
 							"value": "@pipeline().TriggerTime",
 							"type": "Expression"
 						},
-						"use_case_code": {
-							"value": "@pipeline().parameters.use_case_code",
-							"type": "Expression"
-						},
 						"mdb_dbname": {
 							"value": "@pipeline().parameters.mdb_dbname",
 							"type": "Expression"
 						},
 						"dwh_dbname": {
 							"value": "@pipeline().parameters.dwh_dbname",
+							"type": "Expression"
+						},
+						"system_code": {
+							"value": "@pipeline().parameters.system_code",
 							"type": "Expression"
 						}
 					}
@@ -151,8 +147,8 @@
 							"value": "@pipeline().parameters.dwh_dbname",
 							"type": "Expression"
 						},
-						"use_case_code": {
-							"value": "@pipeline().parameters.use_case_code",
+						"system_code": {
+							"value": "@pipeline().parameters.system_code",
 							"type": "Expression"
 						}
 					}
@@ -162,6 +158,10 @@
 				"name": "Set ProcessRunId",
 				"type": "SetVariable",
 				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "process_run_id",
@@ -173,9 +173,6 @@
 			}
 		],
 		"parameters": {
-			"use_case_code": {
-				"type": "string"
-			},
 			"mdb_dbname": {
 				"type": "string",
 				"defaultValue": "mdb"
@@ -183,6 +180,9 @@
 			"dwh_dbname": {
 				"type": "string",
 				"defaultValue": "dwh"
+			},
+			"system_code": {
+				"type": "string"
 			}
 		},
 		"variables": {

@@ -1,9 +1,11 @@
-CREATE TABLE processed.dyn_nonstandardproject (
+﻿CREATE TABLE processed.dyn_nonstandardproject (
    [id]  bigint IDENTITY  NOT NULL
 ,  [dwh_valid_from]  date   NOT NULL
 ,  [dwh_valid_to]  date   NULL
 ,  [dwh_active]  bit   NOT NULL
-,  [AK_nonstandardproject]  nvarchar(36)   NULL
+,  [dwh_process_run_id]  uniqueidentifier   NULL
+,  [dwh_hash]  varbinary(8000)   NULL
+,  [ak_nonstandardproject]  nvarchar(36)   NULL
 ,  [projectnumber]  nvarchar(100)   NULL
 ,  [name]  nvarchar(200)   NULL
 ,  [exchangerate1]  decimal(18,10)   NULL
@@ -189,11 +191,8 @@ CREATE TABLE processed.dyn_nonstandardproject (
 ,  [statuscode]  int   NULL
 ,  [statuscode_value]  nvarchar(4000)   NULL
 ,  [timezoneruleversionnumber]  int   NULL
-,  [versionnumber] BIGINT NULL,
-    [Hash] VARBINARY(8000) NOT NULL,
-    [ProcessRunID] UNIQUEIDENTIFIER NOT NULL
-, CONSTRAINT [PK_processed.dyn_nonstandardproject] PRIMARY KEY CLUSTERED ([id] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 100, DATA_COMPRESSION = PAGE)
-);
+,  [versionnumber]  bigint   NULL
+, CONSTRAINT [PK_processed.dyn_nonstandardproject] PRIMARY KEY CLUSTERED ([id] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 100, DATA_COMPRESSION = PAGE))
 GO
 
 GO
@@ -206,6 +205,8 @@ exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'nonstandardproje
 GO
 exec sys.sp_addextendedproperty @name=N'Database Schema', @value=N'processed', @level0type=N'SCHEMA', @level0name=processed, @level1type=N'TABLE', @level1name=dyn_nonstandardproject
 GO
+exec sys.sp_addextendedproperty @name=N'Generate Script?', @value=N'N', @level0type=N'SCHEMA', @level0name=processed, @level1type=N'TABLE', @level1name=dyn_nonstandardproject
+GO
 GO
 
 exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'Primary key', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'id'; 
@@ -216,13 +217,21 @@ exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'Valid_to', @leve
 GO
 exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'indicator active', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'dwh_active'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'Application ID', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'AK_nonstandardproject'; 
+exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'dwh_process_run_id', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'dwh_process_run_id'; 
+GO
+exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'dwh_hash', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'dwh_hash'; 
+GO
+exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'Application ID', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'ak_nonstandardproject'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'GUID not used', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'mainnonstandardprojectid'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'Primary key', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'id'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Description', @value=N'Application id, unique identifier source', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'AK_nonstandardproject'; 
+exec sys.sp_addextendedproperty @name=N'Description', @value=N'proces run id of the synapse pipeline', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'dwh_process_run_id'; 
+GO
+exec sys.sp_addextendedproperty @name=N'Description', @value=N'hash of the columns that will be compared with the staged layer', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'dwh_hash'; 
+GO
+exec sys.sp_addextendedproperty @name=N'Description', @value=N'Application id, unique identifier source', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'ak_nonstandardproject'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'Exchange rate for the currency associated with the entity with respect to the base currency.', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'exchangerate1'; 
 GO
@@ -238,7 +247,8 @@ exec sys.sp_addextendedproperty @name=N'Description', @value=N'(Expected) contra
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'Unique Award Summary Number', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'awardsummarynumber'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Description', @value=N'If available, insert the budget the Employer has allocated for this project; expressed in Euro. If the price is not known, enter the value of -1 to express the value of Unknown', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'budgetexpectedpricelevelclienteuro';
+exec sys.sp_addextendedproperty @name=N'Description', @value=N'"If available, insert the budget the Employer has allocated for this project; expressed in Euro.
+If the price is not known, enter the value of -1 to express the value of Unknown"', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'budgetexpectedpricelevelclienteuro'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'Automated calculation: the sum of the "D&I" and "profit/loss" values inserted; expressed in Euro', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'cashflowarpleuro'; 
 GO
@@ -256,7 +266,8 @@ exec sys.sp_addextendedproperty @name=N'Description', @value=N'State if VO has d
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'Duration of contract covering preparation, execution and close out', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'durationofcontract'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Description', @value=N'Insert your educated guess on what the price of the competition would be; expressed in Euro. If the price is not known, enter the value of -1 to express the value of Unknown.', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'expectedpricelevelcompetitioneuro';
+exec sys.sp_addextendedproperty @name=N'Description', @value=N'"Insert your ""educated guess"" on what the price of the competition would be; expressed in Euro.
+If the price is not known, enter the value of -1 to express the value of Unknown."', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'expectedpricelevelcompetitioneuro'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'(Expected) start of work for VO''s scope of work (preparation, execution)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'expectedstartofwork'; 
 GO
@@ -452,7 +463,11 @@ exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'2023-04-25', @
 GO
 exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'1', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'dwh_active'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'FFF6A5DD-5D9A-4EE8-A7DF-3ABE71AA1410', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'AK_nonstandardproject'; 
+exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'FFF57AF8-D10A-EA11-A811-000D3A2C5614', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'dwh_process_run_id'; 
+GO
+exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'0xBF35F538E0E96618230E2FEA1CC000EA', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'dwh_hash'; 
+GO
+exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'FFF6A5DD-5D9A-4EE8-A7DF-3ABE71AA1410', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'ak_nonstandardproject'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'MCK2023 - 9  ', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'projectnumber'; 
 GO
@@ -834,7 +849,11 @@ exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL'
 GO
 exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'dwh_active'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Source System', @value=N'DWH', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'AK_nonstandardproject'; 
+exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived from synapse pipeline', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'dwh_process_run_id'; 
+GO
+exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'dwh_hash'; 
+GO
+exec sys.sp_addextendedproperty @name=N'Source System', @value=N'DWH', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'ak_nonstandardproject'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Source System', @value=N'DWH', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'projectnumber'; 
 GO
@@ -1208,7 +1227,7 @@ exec sys.sp_addextendedproperty @name=N'Source System', @value=N'DWH', @level0ty
 GO
 exec sys.sp_addextendedproperty @name=N'Source System', @value=N'DWH', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'versionnumber'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Source Schema', @value=N'staging', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'AK_nonstandardproject'; 
+exec sys.sp_addextendedproperty @name=N'Source Schema', @value=N'staging', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'ak_nonstandardproject'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Source Schema', @value=N'staging', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'projectnumber'; 
 GO
@@ -1582,7 +1601,7 @@ exec sys.sp_addextendedproperty @name=N'Source Schema', @value=N'staging', @leve
 GO
 exec sys.sp_addextendedproperty @name=N'Source Schema', @value=N'staging', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'versionnumber'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Source Table', @value=N'EntityNonStandardProject', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'AK_nonstandardproject'; 
+exec sys.sp_addextendedproperty @name=N'Source Table', @value=N'EntityNonStandardProject', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'ak_nonstandardproject'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Source Table', @value=N'EntityNonStandardProject', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'projectnumber'; 
 GO
@@ -1956,7 +1975,7 @@ exec sys.sp_addextendedproperty @name=N'Source Table', @value=N'EntityNonStandar
 GO
 exec sys.sp_addextendedproperty @name=N'Source Table', @value=N'EntityNonStandardProject', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'versionnumber'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Source Field Name', @value=N'hso_nonstandardprojectid', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'AK_nonstandardproject'; 
+exec sys.sp_addextendedproperty @name=N'Source Field Name', @value=N'hso_nonstandardprojectid', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'ak_nonstandardproject'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Source Field Name', @value=N'hso_projectnumber', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'projectnumber'; 
 GO
@@ -2330,7 +2349,7 @@ exec sys.sp_addextendedproperty @name=N'Source Field Name', @value=N'timezonerul
 GO
 exec sys.sp_addextendedproperty @name=N'Source Field Name', @value=N'versionnumber', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'versionnumber'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'nvarchar(36)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'AK_nonstandardproject'; 
+exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'nvarchar(36)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'ak_nonstandardproject'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'nvarchar(100)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'projectnumber'; 
 GO
@@ -2704,7 +2723,7 @@ exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'int', @level0
 GO
 exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'bigint', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'versionnumber'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Extraction/Transformation Rules', @value=N'uniqueidentifier in dynamics replica', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'AK_nonstandardproject'; 
+exec sys.sp_addextendedproperty @name=N'Extraction/Transformation Rules', @value=N'uniqueidentifier in dynamics replica', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'ak_nonstandardproject'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Extraction/Transformation Rules', @value=N'numeric in dynamics replica', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_nonstandardproject', @level2type=N'COLUMN', @level2name=N'exchangerate1'; 
 GO

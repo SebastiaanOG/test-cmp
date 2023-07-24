@@ -3,9 +3,11 @@ CREATE PROCEDURE [processed].[sp_load_dyn_projectgeneral]
     @process_run_id UNIQUEIDENTIFIER
 AS
 BEGIN
+    -- Abort and rollback for all errors, not only the ones captured by BEGIN TRY
+    SET XACT_ABORT ON;
     DECLARE
         @schema NVARCHAR(20) = 'processed',
-        @table NVARCHAR(20) = 'dyn_projectgeneral',
+        @table NVARCHAR(60) = 'dyn_projectgeneral',
 
         @inserted INT = 0,
         @updated INT = 0,
@@ -24,7 +26,7 @@ BEGIN
 
         CREATE TABLE #temp_dyn_projectgeneral
         (
-            [AK_projectgeneral] NVARCHAR(36),
+            [ak_projectgeneral] NVARCHAR(36),
             [projectnumber] NVARCHAR(100),
             [name] NVARCHAR(200),
             [area2ndid] NVARCHAR(36),
@@ -82,7 +84,7 @@ BEGIN
             [statuscode_value] NVARCHAR(4000),
             [timezoneruleversionnumber] INT,
             [versionnumber] BIGINT,
-            [Hash] VARBINARY(8000) NOT NULL
+            [dwh_hash] VARBINARY(8000) NOT NULL
         )
 
         -- Insert data from staging table into temp table
@@ -109,24 +111,24 @@ BEGIN
             [hso_latitudedms],
             [hso_latitudeminutes],
             [hso_latitudenorthsouth],
-            [_hso_latitudenorthsouth_value],
+            LEFT([_hso_latitudenorthsouth_value], 4000),
             [hso_latitudeseconds],
             [hso_location],
             [hso_longitude],
             [hso_longitudedegrees],
             [hso_longitudedms],
             [hso_longitudeeastwest],
-            [_hso_longitudeeastwest_value],
+            LEFT([_hso_longitudeeastwest_value], 4000),
             [hso_longitudeminutes],
             [hso_longitudeseconds],
             [hso_nonstandardproject],
             [_hso_nonstandardproject_value],
             [hso_pq],
-            [_hso_pq_value],
+            LEFT([_hso_pq_value], 4000),
             [hso_project],
             [_hso_project_value],
             [hso_projectawarded],
-            [_hso_projectawarded_value],
+            LEFT([_hso_projectawarded_value], 4000),
             [hso_startoftender],
             [hso_subarea2ndid],
             [_hso_subarea2ndid_value],
@@ -142,9 +144,9 @@ BEGIN
             [modifiedon],
             [_ownerid_value],
             [statecode],
-            [_statecode_value],
+            LEFT([_statecode_value], 4000),
             [statuscode],
-            [_statuscode_value],
+            LEFT([_statuscode_value], 4000),
             [timezoneruleversionnumber],
             [versionnumber],
             HASHBYTES(
@@ -169,24 +171,24 @@ BEGIN
                 + ISNULL([hso_latitudedms], '')
                 + ISNULL(CAST([hso_latitudeminutes] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_latitudenorthsouth] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_latitudenorthsouth_value], '')
+                + ISNULL(CAST(LEFT([_hso_latitudenorthsouth_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_latitudeseconds] AS NVARCHAR(50)), '')
                 + ISNULL([hso_location], '')
                 + ISNULL(CAST([hso_longitude] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_longitudedegrees] AS NVARCHAR(50)), '')
                 + ISNULL([hso_longitudedms], '')
                 + ISNULL(CAST([hso_longitudeeastwest] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_longitudeeastwest_value], '')
+                + ISNULL(CAST(LEFT([_hso_longitudeeastwest_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_longitudeminutes] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_longitudeseconds] AS NVARCHAR(50)), '')
                 + ISNULL([hso_nonstandardproject], '')
                 + ISNULL([_hso_nonstandardproject_value], '')
                 + ISNULL(CAST([hso_pq] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_pq_value], '')
+                + ISNULL(CAST(LEFT([_hso_pq_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([hso_project], '')
                 + ISNULL([_hso_project_value], '')
                 + ISNULL(CAST([hso_projectawarded] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_projectawarded_value], '')
+                + ISNULL(CAST(LEFT([_hso_projectawarded_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CONVERT(NVARCHAR(19), [hso_startoftender], 120), '')
                 + ISNULL([hso_subarea2ndid], '')
                 + ISNULL([_hso_subarea2ndid_value], '')
@@ -202,12 +204,12 @@ BEGIN
                 + ISNULL(CONVERT(NVARCHAR(19), [modifiedon], 120), '')
                 + ISNULL([_ownerid_value], '')
                 + ISNULL(CAST([statecode] AS NVARCHAR(20)), '')
-                + ISNULL([_statecode_value], '')
+                + ISNULL(CAST(LEFT([_statecode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([statuscode] AS NVARCHAR(20)), '')
-                + ISNULL([_statuscode_value], '')
+                + ISNULL(CAST(LEFT([_statuscode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([timezoneruleversionnumber] AS NVARCHAR(20)), '')
                 + ISNULL(CAST([versionnumber] AS NVARCHAR(20)), '')
-            ) AS [Hash]
+            ) AS [dwh_hash]
         FROM [staged].[dyn_EntityProjectGeneral]
 
         IF OBJECT_ID(@schema + '.' + @table) IS NULL
@@ -223,12 +225,12 @@ BEGIN
         UPDATE [processed].[dyn_projectgeneral]
         SET
             [dwh_valid_to] = DATEADD(DAY, -1, @process_run_date),
-            [ProcessRunID] = @process_run_id,
+            [dwh_process_run_id] = @process_run_id,
             [dwh_active] = 0
         FROM #temp_dyn_projectgeneral AS [T]
-        LEFT JOIN [processed].[dyn_projectgeneral] AS [P] ON [T].[AK_projectgeneral] = [P].[AK_projectgeneral]
+        LEFT JOIN [processed].[dyn_projectgeneral] AS [P] ON [T].[ak_projectgeneral] = [P].[ak_projectgeneral]
         WHERE
-            [T].[Hash] != [P].[Hash]
+            [T].[dwh_hash] != [P].[dwh_hash]
             AND [P].[dwh_active] = 1
         SELECT @updated = @@ROWCOUNT
 
@@ -236,12 +238,12 @@ BEGIN
         UPDATE [processed].[dyn_projectgeneral]
         SET
             [dwh_valid_to] = DATEADD(DAY, -1, @process_run_date),
-            [ProcessRunID] = @process_run_id,
+            [dwh_process_run_id] = @process_run_id,
             [dwh_active] = 0
         FROM [processed].[dyn_projectgeneral] AS [P]
-        LEFT JOIN #temp_dyn_projectgeneral AS [T] ON [T].[AK_projectgeneral] = [P].[AK_projectgeneral]
+        LEFT JOIN #temp_dyn_projectgeneral AS [T] ON [T].[ak_projectgeneral] = [P].[ak_projectgeneral]
         WHERE
-            [T].[AK_projectgeneral] IS NULL
+            [T].[ak_projectgeneral] IS NULL
             AND [P].[dwh_active] = 1
         SELECT @deleted = @@ROWCOUNT
 
@@ -251,7 +253,8 @@ BEGIN
             [dwh_valid_from],
             [dwh_valid_to],
             [dwh_active],
-            [AK_projectgeneral],
+            [dwh_process_run_id],
+            [ak_projectgeneral],
             [projectnumber],
             [name],
             [area2ndid],
@@ -309,14 +312,14 @@ BEGIN
             [statuscode_value],
             [timezoneruleversionnumber],
             [versionnumber],
-            [Hash],
-            [ProcessRunID]
+            [dwh_hash]            
         )
         SELECT
             @process_run_date AS [dwh_valid_from],
             NULL AS [dwh_valid_to],
             1 AS [dwh_active],
-            [T].[AK_projectgeneral],
+            @process_run_id AS [dwh_process_run_id],
+            [T].[ak_projectgeneral],
             [T].[projectnumber],
             [T].[name],
             [T].[area2ndid],
@@ -374,15 +377,14 @@ BEGIN
             [T].[statuscode_value],
             [T].[timezoneruleversionnumber],
             [T].[versionnumber],
-            [T].[Hash],
-            @process_run_id AS [ProcessRunID]
+            [T].[dwh_hash]
         FROM #temp_dyn_projectgeneral AS [T]
-        LEFT JOIN [processed].[dyn_projectgeneral] AS [P] ON [T].[AK_projectgeneral] = [P].[AK_projectgeneral]
+        LEFT JOIN [processed].[dyn_projectgeneral] AS [P] ON [T].[ak_projectgeneral] = [P].[ak_projectgeneral]
         WHERE
-            [P].[AK_projectgeneral] IS NULL
+            [P].[ak_projectgeneral] IS NULL
             OR (
-                [T].[Hash] != [P].[Hash]
-                AND [P].[ProcessRunID] = @process_run_id
+                [T].[dwh_hash] != [P].[dwh_hash]
+                AND [P].[dwh_process_run_id] = @process_run_id
             )
         SELECT @inserted = @@ROWCOUNT
 
@@ -396,8 +398,6 @@ BEGIN
             @rows_affected_insert = @inserted,
             @rows_affected_update = @updated,
             @rows_affected_delete = @deleted
-
-
     END TRY
     BEGIN CATCH
         SET @error_number = ERROR_NUMBER();

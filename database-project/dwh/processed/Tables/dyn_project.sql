@@ -1,292 +1,293 @@
-CREATE TABLE [processed].[dyn_project] (
-    [id] BIGINT IDENTITY NOT NULL,
-    [dwh_valid_from] DATE NOT NULL,
-    [dwh_valid_to] DATE NULL,
-    [dwh_active] BIT NOT NULL,
-    [AK_project] NVARCHAR(36) NULL,
-    [projectnumber] NVARCHAR(100) NULL,
-    [name] NVARCHAR(200) NULL,
-    [acceptableqhsestandards] INT NULL,
-    [acceptableqhsestandards_value] NVARCHAR(4000) NULL,
-    [accountid] NVARCHAR(36) NULL,
-    [accountid_value] NVARCHAR(160) NULL,
-    [activetimeregistrationid] NVARCHAR(36) NULL,
-    [activetimeregistrationid_value] NVARCHAR(100) NULL,
-    [additionalreason] INT NULL,
-    [additionalreason_value] NVARCHAR(4000) NULL,
-    [advancepaymentpercentage] DECIMAL(18,2) NULL,
-    [alignswithcorporatestrategyactions1] INT NULL,
-    [alignswithcorporatestrategyactions1_value] NVARCHAR(4000) NULL,
-    [alignswithcorporatestrategyactions2] INT NULL,
-    [alignswithcorporatestrategyactions2_value] NVARCHAR(4000) NULL,
-    [alternativetobeoffered] INT NULL,
-    [alternativetobeoffered_value] NVARCHAR(4000) NULL,
-    [anonymizedata] INT NULL,
-    [anonymizedata_value] NVARCHAR(4000) NULL,
-    [approvalinitiatorremarks] NVARCHAR(4000) NULL,
-    [approvalstatus] INT NULL,
-    [approvalstatus_value] NVARCHAR(4000) NULL,
-    [approvalworkflowinprogress] INT NULL,
-    [approvalworkflowinprogress_value] NVARCHAR(4000) NULL,
-    [areaid] NVARCHAR(36) NULL,
-    [areaid_value] NVARCHAR(100) NULL,
-    [availabilitycompetences] NVARCHAR(4000) NULL,
-    [awarddateexpected] DATE NULL,
-    [awardnumberid_value] NVARCHAR(100) NULL,
-    [awardsummaryimport] INT NULL,
-    [awardsummaryimport_value] NVARCHAR(4000) NULL,
-    [awardsummaryinstanceurl] NVARCHAR(100) NULL,
-    [awardsummarynumber] NVARCHAR(100) NULL,
-    [awardsummaryprojectsnapshoturl] NVARCHAR(100) NULL,
-    [awardsummaryreportlink] NVARCHAR(500) NULL,
-    [awardsummaryrevision] INT NULL,
-    [awardsummaryrevision_value] NVARCHAR(4000) NULL,
-    [baseportinformation] NVARCHAR(100) NULL,
-    [bidvaliditydays] INT NULL,
-    [bingmapzoomlevel] INT NULL,
-    [cable] NVARCHAR(100) NULL,
-    [calculatedriskprofile] INT NULL,
-    [calculatedriskprofile_value] NVARCHAR(4000) NULL,
-    [car] INT NULL,
-    [car_value] NVARCHAR(4000) NULL,
-    [carbonfootprintestimated] DECIMAL(18,2) NULL,
-    [chanceofgoingahead] INT NULL,
-    [chanceofgoingahead_value] NVARCHAR(4000) NULL,
-    [chanceofwinningcommercialposition] INT NULL,
-    [chanceofwinningcommercialposition_value] NVARCHAR(4000) NULL,
-    [changedawarddate] DATE NULL,
-    [changedtenderdate] DATE NULL,
-    [changestosolution] NVARCHAR(4000) NULL,
-    [changestosolutionchosen] NVARCHAR(4000) NULL,
-    [commercialresponsibleid_value] NVARCHAR(200) NULL,
-    [contractconditions] INT NULL,
-    [contractconditions_value] NVARCHAR(4000) NULL,
-    [countryid] NVARCHAR(36) NULL,
-    [countryid_value] NVARCHAR(100) NULL,
-    [createawardsummarynumber] INT NULL,
-    [createawardsummarynumber_value] NVARCHAR(4000) NULL,
-    [createnewprojectnumer] INT NULL,
-    [createnewprojectnumer_value] NVARCHAR(4000) NULL,
-    [creditinsurance] INT NULL,
-    [creditinsurance_value] NVARCHAR(4000) NULL,
-    [creditinsurance_yn] INT NULL,
-    [creditinsurance_yn_value] NVARCHAR(4000) NULL,
-    [currencyrisk] INT NULL,
-    [currencyrisk_value] NVARCHAR(4000) NULL,
-    [currencyrisk_yn] INT NULL,
-    [currencyrisk_yn_value] NVARCHAR(4000) NULL,
-    [defectsliabilityperioddays] DECIMAL(18,0) NULL,
-    [definerequiredtenderteamcompetences] NVARCHAR(4000) NULL,
-    [deploymentownequipment] INT NULL,
-    [deploymentownequipment_value] NVARCHAR(4000) NULL,
-    [designinsurance] INT NULL,
-    [designinsurance_value] NVARCHAR(4000) NULL,
-    [designresponsibilityyn] INT NULL,
-    [designresponsibilityyn_value] NVARCHAR(4000) NULL,
-    [dredgingcategory] INT NULL,
-    [dredgingcategory_value] NVARCHAR(4000) NULL,
-    [durationofcontract] DECIMAL(18,1) NULL,
-    [edocs] INT NULL,
-    [edocs_value] NVARCHAR(4000) NULL,
-    [eepriority] INT NULL,
-    [eepriority_value] NVARCHAR(4000) NULL,
-    [emviscore] INT NULL,
-    [emviscore_value] NVARCHAR(4000) NULL,
-    [endreportrequired] INT NULL,
-    [endreportrequired_value] NVARCHAR(4000) NULL,
-    [expectedstartofwork] DATE NULL,
-    [exposedconditions] NVARCHAR(100) NULL,
-    [externalinputrequirements] NVARCHAR(4000) NULL,
-    [fasttrack] INT NULL,
-    [fasttrack_value] NVARCHAR(4000) NULL,
-    [finalcompletion] INT NULL,
-    [finalcompletion_value] NVARCHAR(4000) NULL,
-    [finalcompletionamounteuro] NVARCHAR(100) NULL,
-    [finalcompletionlimpercent] NVARCHAR(100) NULL,
-    [finalcompletionperiod] INT NULL,
-    [finalcompletionperiod_value] NVARCHAR(4000) NULL,
-    [formofcontract] INT NULL,
-    [formofcontract_value] NVARCHAR(4000) NULL,
-    [foundation] NVARCHAR(100) NULL,
-    [frommobdemob] NVARCHAR(500) NULL,
-    [fuel_yn] INT NULL,
-    [fuel_yn_value] NVARCHAR(4000) NULL,
-    [fullclientprojectname] NVARCHAR(200) NULL,
-    [functionalapplicationbypass] INT NULL,
-    [functionalapplicationbypass_value] NVARCHAR(4000) NULL,
-    [geophysicalinfo] NVARCHAR(100) NULL,
-    [geotechnicalinfo] NVARCHAR(100) NULL,
-    [intermediatecompletionamounteuro] NVARCHAR(100) NULL,
-    [intermediatecompletionlimpercent] NVARCHAR(100) NULL,
-    [intermediatecompletionperiod] INT NULL,
-    [intermediatecompletionperiod_value] NVARCHAR(4000) NULL,
-    [intermediatecompletions] INT NULL,
-    [intermediatecompletions_value] NVARCHAR(4000) NULL,
-    [investmentrequired] INT NULL,
-    [investmentrequired_value] NVARCHAR(4000) NULL,
-    [latestapprovedawardsummary_value] NVARCHAR(200) NULL,
-    [latitude] FLOAT NULL,
-    [latitudedegrees] DECIMAL(18,0) NULL,
-    [latitudedms] NVARCHAR(20) NULL,
-    [latitudeminutes] DECIMAL(18,0) NULL,
-    [atitudenorthsouth] INT NULL,
-    [latitudenorthsouth_value] NVARCHAR(4000) NULL,
-    [latitudeseconds] DECIMAL(18,0) NULL,
-    [lcdreview] INT NULL,
-    [lcdreview_value] NVARCHAR(4000) NULL,
-    [letterofcredit] INT NULL,
-    [letterofcredit_value] NVARCHAR(4000) NULL,
-    [letterofcredit_yn] INT NULL,
-    [letterofcredit_yn_value] NVARCHAR(4000) NULL,
-    [location] NVARCHAR(100) NULL,
-    [longitude] FLOAT NULL,
-    [longitudedegrees] DECIMAL(18,0) NULL,
-    [longitudedms] NVARCHAR(20) NULL,
-    [longitudeeastwest] INT NULL,
-    [longitudeeastwest_value] NVARCHAR(4000) NULL,
-    [longitudeminutes] DECIMAL(18,0) NULL,
-    [longitudeseconds] DECIMAL(18,0) NULL,
-    [longleaditemssecured] INT NULL,
-    [longleaditemssecured_value] NVARCHAR(4000) NULL,
-    [mainprojectid_value] NVARCHAR(200) NULL,
-    [maintenanceperiod] DECIMAL(18,1) NULL,
-    [maintenanceperioddays] DECIMAL(18,0) NULL,
-    [marketdrivers] INT NULL,
-    [marketdrivers_value] NVARCHAR(4000) NULL,
-    [materials_yn] INT NULL,
-    [materials_yn_value] NVARCHAR(4000) NULL,
-    [maxliability] NVARCHAR(250) NULL,
-    [nonbindingindication] INT NULL,
-    [nonbindingindication_value] NVARCHAR(4000) NULL,
-    [noneurocomponentpercent] DECIMAL(18,2) NULL,
-    [ohvs] NVARCHAR(100) NULL,
-    [onhold] INT NULL,
-    [onhold_value] NVARCHAR(4000) NULL,
-    [onholdreason] INT NULL,
-    [onholdreason_value] NVARCHAR(4000) NULL,
-    [onshore] NVARCHAR(100) NULL,
-    [overallriskprofileafter] INT NULL,
-    [overallriskprofileafter_value] NVARCHAR(4000) NULL,
-    [overallriskprofilebefore] INT NULL,
-    [overallriskprofilebefore_value] NVARCHAR(4000) NULL,
-    [parentcompanyguarantee] INT NULL,
-    [parentcompanyguarantee_value] NVARCHAR(4000) NULL,
-    [paymentguarantees_creditinsurance] INT NULL,
-    [paymentguarantees_creditinsurance_value] NVARCHAR(4000) NULL,
-    [paymentperioddays] INT NULL,
-    [paymentrisk] INT NULL,
-    [paymentrisk_value] NVARCHAR(4000) NULL,
-    [paymentrisk_yn] INT NULL,
-    [paymentrisk_yn_value] NVARCHAR(4000) NULL,
-    [positivecashflow] INT NULL,
-    [positivecashflow_value] NVARCHAR(4000) NULL,
-    [pq] INT NULL,
-    [pq_value] NVARCHAR(4000) NULL,
-    [pqdate] DATE NULL,
-    [pqremarks] NVARCHAR(4000) NULL,
-    [pricevariationsfuel] INT NULL,
-    [pricevariationsfuel_value] NVARCHAR(4000) NULL,
-    [pricevariationsmaterials] INT NULL,
-    [pricevariationsmaterials_value] NVARCHAR(4000) NULL,
-    [pricevariationswages] INT NULL,
-    [pricevariationswages_value] NVARCHAR(4000) NULL,
-    [processnostepfield] INT NULL,
-    [processnostepfield_value] NVARCHAR(4000) NULL,
-    [productgroupsnl] INT NULL,
-    [productgroupsnl_value] NVARCHAR(4000) NULL,
-    [projectdescription] NVARCHAR(4000) NULL,
-    [projectfinancial] NVARCHAR(36) NULL,
-    [projectfinancial_value] NVARCHAR(100) NULL,
-    [projectfinancialdatalasttransferdate] datetime NULL,
-    [projectgeneral] NVARCHAR(36) NULL,
-    [projectgeneral_value] NVARCHAR(200) NULL,
-    [projectphase] INT NULL,
-    [projectphase_value] NVARCHAR(4000) NULL,
-    [projectpreparationmeeting] DATE NULL,
-    [projectstatusid] NVARCHAR(100) NULL,
-    [reasonexplanation] NVARCHAR(4000) NULL,
-    [reasonexplanationchosen] NVARCHAR(4000) NULL,
-    [reasonofchangeaward] NVARCHAR(4000) NULL,
-    [reclamationlevel] NVARCHAR(100) NULL,
-    [requiredcriticalcompetences] NVARCHAR(4000) NULL,
-    [resourceavailability] INT NULL,
-    [resourceavailability_value] NVARCHAR(4000) NULL,
-    [retentionpercentage] DECIMAL(18,2) NULL,
-    [sailingdistancetodisposalarea] DECIMAL(18,1) NULL,
-    [scopeofworkvanoord] NVARCHAR(4000) NULL,
-    [soildata] NVARCHAR(100) NULL,
-    [stagegate] INT NULL,
-    [stagegate_value] NVARCHAR(4000) NULL,
-    [stagegatecopy] NVARCHAR(100) NULL,
-    [stagegatesnapshot] INT NULL,
-    [stagegatesnapshot_value] NVARCHAR(4000) NULL,
-    [startoftender] DATE NULL,
-    [statushistoryregisterdate] DATE NULL,
-    [statushistoryregisterdate_date_value] DATE NULL,
-    [statushistoryregisterdate_state_value] INT NULL,
-    [subareaid] NVARCHAR(36) NULL,
-    [subareaid_value] NVARCHAR(100) NULL,
-    [substatusreason] INT NULL,
-    [substatusreason_value] NVARCHAR(4000) NULL,
-    [technicallyfeasible] INT NULL,
-    [technicallyfeasible_value] NVARCHAR(4000) NULL,
-    [tenderdate] DATE NULL,
-    [tenderenddate] DATE NULL,
-    [tendersubmissiondateactual] datetime NULL,
-    [tendersubmissionplace] NVARCHAR(100) NULL,
-    [tendertype] INT NULL,
-    [tendertype_value] NVARCHAR(4000) NULL,
-    [tendervalidity] INT NULL,
-    [tmp_approvalinitiator_value] NVARCHAR(200) NULL,
-    [tmp_projectguid] NVARCHAR(100) NULL,
-    [tmpproject_value] NVARCHAR(200) NULL,
-    [tomobdemob] NVARCHAR(500) NULL,
-    [totalcontractvalueeurocopy] DECIMAL(18,0) NULL,
-    [totalftedays] DECIMAL(18,2) NULL,
-    [totalftedays_date_value] datetime NULL,
-    [totalftedays_state_value] INT NULL,
-    [typeofcontract] INT NULL,
-    [typeofcontract_value] NVARCHAR(4000) NULL,
-    [typeofwork] INT NULL,
-    [typeofwork_value] NVARCHAR(4000) NULL,
-    [typetender] INT NULL,
-    [typetender_value] NVARCHAR(4000) NULL,
-    [userdefinedriskprofile] INT NULL,
-    [userdefinedriskprofile_value] NVARCHAR(4000) NULL,
-    [vanoordentityid] NVARCHAR(36) NULL,
-    [vanoordentityid_value] NVARCHAR(100) NULL,
-    [vanoordsubmittingactingas] INT NULL,
-    [vanoordsubmittingactingas_value] NVARCHAR(4000) NULL,
-    [project_versionnumber] INT NULL,
-    [vobusinessunitid] NVARCHAR(36) NULL,
-    [vobusinessunitid_value] NVARCHAR(100) NULL,
-    [voprojectriskcategory] INT NULL,
-    [voprojectriskcategory_value] NVARCHAR(4000) NULL,
-    [voshareineurocopy] DECIMAL(18,0) NULL,
-    [vosharepercentcopy] DECIMAL(18,2) NULL,
-    [wages_yn] INT NULL,
-    [wages_yn_value] NVARCHAR(4000) NULL,
-    [waterdepthssite] NVARCHAR(100) NULL,
-    [windturbineinformation] NVARCHAR(100) NULL,
-    [winstrategy] NVARCHAR(4000) NULL,
-    [createdby_value] NVARCHAR(200) NULL,
-    [createdon] datetime NULL,
-    [createdonbehalfby_value] NVARCHAR(200) NULL,
-    [importsequencenumber] INT NULL,
-    [modifiedby_value] NVARCHAR(200) NULL,
-    [modifiedon] datetime NULL,
-    [modifiedonbehalfby_value] NVARCHAR(200) NULL,
-    [ownerid_value] NVARCHAR(200) NULL,
-    [statecode] INT NULL,
-    [statecode_value] NVARCHAR(4000) NULL,
-    [statuscode] INT NULL,
-    [statuscode_value] NVARCHAR(4000) NULL,
-    [timezoneruleversionnumber] INT NULL,
-    [versionnumber] BIGINT NULL,
-    [Hash] VARBINARY(8000) NOT NULL,
-    [ProcessRunID] UNIQUEIDENTIFIER NOT NULL,
-    CONSTRAINT [PK_processed.dyn_project] PRIMARY KEY CLUSTERED ([id] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 100, DATA_COMPRESSION = PAGE)
-);
+﻿CREATE TABLE processed.dyn_project (
+   [id]  bigint IDENTITY  NOT NULL
+,  [dwh_valid_from]  date   NOT NULL
+,  [dwh_valid_to]  date   NULL
+,  [dwh_active]  bit   NOT NULL
+,  [dwh_process_run_id]  uniqueidentifier   NULL
+,  [dwh_hash]  varbinary(8000)   NULL
+,  [ak_project]  nvarchar(36)   NULL
+,  [projectnumber]  nvarchar(100)   NULL
+,  [name]  nvarchar(200)   NULL
+,  [acceptableqhsestandards]  int   NULL
+,  [acceptableqhsestandards_value]  nvarchar(4000)   NULL
+,  [accountid]  nvarchar(36)   NULL
+,  [accountid_value]  nvarchar(160)   NULL
+,  [activetimeregistrationid]  nvarchar(36)   NULL
+,  [activetimeregistrationid_value]  nvarchar(100)   NULL
+,  [additionalreason]  int   NULL
+,  [additionalreason_value]  nvarchar(4000)   NULL
+,  [advancepaymentpercentage]  decimal(18,2)   NULL
+,  [alignswithcorporatestrategyactions1]  int   NULL
+,  [alignswithcorporatestrategyactions1_value]  nvarchar(4000)   NULL
+,  [alignswithcorporatestrategyactions2]  int   NULL
+,  [alignswithcorporatestrategyactions2_value]  nvarchar(4000)   NULL
+,  [alternativetobeoffered]  int   NULL
+,  [alternativetobeoffered_value]  nvarchar(4000)   NULL
+,  [anonymizedata]  int   NULL
+,  [anonymizedata_value]  nvarchar(4000)   NULL
+,  [approvalinitiatorremarks]  nvarchar(4000)   NULL
+,  [approvalstatus]  int   NULL
+,  [approvalstatus_value]  nvarchar(4000)   NULL
+,  [approvalworkflowinprogress]  int   NULL
+,  [approvalworkflowinprogress_value]  nvarchar(4000)   NULL
+,  [areaid]  nvarchar(36)   NULL
+,  [areaid_value]  nvarchar(100)   NULL
+,  [availabilitycompetences]  nvarchar(4000)   NULL
+,  [awarddateexpected]  date   NULL
+,  [awardnumberid_value]  nvarchar(100)   NULL
+,  [awardsummaryimport]  int   NULL
+,  [awardsummaryimport_value]  nvarchar(4000)   NULL
+,  [awardsummaryinstanceurl]  nvarchar(100)   NULL
+,  [awardsummarynumber]  nvarchar(100)   NULL
+,  [awardsummaryprojectsnapshoturl]  nvarchar(100)   NULL
+,  [awardsummaryreportlink]  nvarchar(500)   NULL
+,  [awardsummaryrevision]  int   NULL
+,  [awardsummaryrevision_value]  nvarchar(4000)   NULL
+,  [baseportinformation]  nvarchar(100)   NULL
+,  [bidvaliditydays]  int   NULL
+,  [bingmapzoomlevel]  int   NULL
+,  [cable]  nvarchar(100)   NULL
+,  [calculatedriskprofile]  int   NULL
+,  [calculatedriskprofile_value]  nvarchar(4000)   NULL
+,  [car]  int   NULL
+,  [car_value]  nvarchar(4000)   NULL
+,  [carbonfootprintestimated]  decimal(18,2)   NULL
+,  [chanceofgoingahead]  int   NULL
+,  [chanceofgoingahead_value]  nvarchar(4000)   NULL
+,  [chanceofwinningcommercialposition]  int   NULL
+,  [chanceofwinningcommercialposition_value]  nvarchar(4000)   NULL
+,  [changedawarddate]  date   NULL
+,  [changedtenderdate]  date   NULL
+,  [changestosolution]  nvarchar(4000)   NULL
+,  [changestosolutionchosen]  nvarchar(4000)   NULL
+,  [commercialresponsibleid_value]  nvarchar(200)   NULL
+,  [contractconditions]  int   NULL
+,  [contractconditions_value]  nvarchar(4000)   NULL
+,  [countryid]  nvarchar(36)   NULL
+,  [countryid_value]  nvarchar(100)   NULL
+,  [createawardsummarynumber]  int   NULL
+,  [createawardsummarynumber_value]  nvarchar(4000)   NULL
+,  [createnewprojectnumer]  int   NULL
+,  [createnewprojectnumer_value]  nvarchar(4000)   NULL
+,  [creditinsurance]  int   NULL
+,  [creditinsurance_value]  nvarchar(4000)   NULL
+,  [creditinsurance_yn]  int   NULL
+,  [creditinsurance_yn_value]  nvarchar(4000)   NULL
+,  [currencyrisk]  int   NULL
+,  [currencyrisk_value]  nvarchar(4000)   NULL
+,  [currencyrisk_yn]  int   NULL
+,  [currencyrisk_yn_value]  nvarchar(4000)   NULL
+,  [defectsliabilityperioddays]  decimal(18,0)   NULL
+,  [definerequiredtenderteamcompetences]  nvarchar(4000)   NULL
+,  [deploymentownequipment]  int   NULL
+,  [deploymentownequipment_value]  nvarchar(4000)   NULL
+,  [designinsurance]  int   NULL
+,  [designinsurance_value]  nvarchar(4000)   NULL
+,  [designresponsibilityyn]  int   NULL
+,  [designresponsibilityyn_value]  nvarchar(4000)   NULL
+,  [dredgingcategory]  int   NULL
+,  [dredgingcategory_value]  nvarchar(4000)   NULL
+,  [durationofcontract]  decimal(18,1)   NULL
+,  [edocs]  int   NULL
+,  [edocs_value]  nvarchar(4000)   NULL
+,  [eepriority]  int   NULL
+,  [eepriority_value]  nvarchar(4000)   NULL
+,  [emviscore]  int   NULL
+,  [emviscore_value]  nvarchar(4000)   NULL
+,  [endreportrequired]  int   NULL
+,  [endreportrequired_value]  nvarchar(4000)   NULL
+,  [expectedstartofwork]  date   NULL
+,  [exposedconditions]  nvarchar(100)   NULL
+,  [externalinputrequirements]  nvarchar(4000)   NULL
+,  [fasttrack]  int   NULL
+,  [fasttrack_value]  nvarchar(4000)   NULL
+,  [finalcompletion]  int   NULL
+,  [finalcompletion_value]  nvarchar(4000)   NULL
+,  [finalcompletionamounteuro]  nvarchar(100)   NULL
+,  [finalcompletionlimpercent]  nvarchar(100)   NULL
+,  [finalcompletionperiod]  int   NULL
+,  [finalcompletionperiod_value]  nvarchar(4000)   NULL
+,  [formofcontract]  int   NULL
+,  [formofcontract_value]  nvarchar(4000)   NULL
+,  [foundation]  nvarchar(100)   NULL
+,  [frommobdemob]  nvarchar(500)   NULL
+,  [fuel_yn]  int   NULL
+,  [fuel_yn_value]  nvarchar(4000)   NULL
+,  [fullclientprojectname]  nvarchar(200)   NULL
+,  [functionalapplicationbypass]  int   NULL
+,  [functionalapplicationbypass_value]  nvarchar(4000)   NULL
+,  [geophysicalinfo]  nvarchar(100)   NULL
+,  [geotechnicalinfo]  nvarchar(100)   NULL
+,  [intermediatecompletionamounteuro]  nvarchar(100)   NULL
+,  [intermediatecompletionlimpercent]  nvarchar(100)   NULL
+,  [intermediatecompletionperiod]  int   NULL
+,  [intermediatecompletionperiod_value]  nvarchar(4000)   NULL
+,  [intermediatecompletions]  int   NULL
+,  [intermediatecompletions_value]  nvarchar(4000)   NULL
+,  [investmentrequired]  int   NULL
+,  [investmentrequired_value]  nvarchar(4000)   NULL
+,  [latestapprovedawardsummary_value]  nvarchar(200)   NULL
+,  [latitude]  float   NULL
+,  [latitudedegrees]  decimal(18,0)   NULL
+,  [latitudedms]  nvarchar(20)   NULL
+,  [latitudeminutes]  decimal(18,0)   NULL
+,  [atitudenorthsouth]  int   NULL
+,  [latitudenorthsouth_value]  nvarchar(4000)   NULL
+,  [latitudeseconds]  decimal(18,0)   NULL
+,  [lcdreview]  int   NULL
+,  [lcdreview_value]  nvarchar(4000)   NULL
+,  [letterofcredit]  int   NULL
+,  [letterofcredit_value]  nvarchar(4000)   NULL
+,  [letterofcredit_yn]  int   NULL
+,  [letterofcredit_yn_value]  nvarchar(4000)   NULL
+,  [location]  nvarchar(100)   NULL
+,  [longitude]  float   NULL
+,  [longitudedegrees]  decimal(18,0)   NULL
+,  [longitudedms]  nvarchar(20)   NULL
+,  [longitudeeastwest]  int   NULL
+,  [longitudeeastwest_value]  nvarchar(4000)   NULL
+,  [longitudeminutes]  decimal(18,0)   NULL
+,  [longitudeseconds]  decimal(18,0)   NULL
+,  [longleaditemssecured]  int   NULL
+,  [longleaditemssecured_value]  nvarchar(4000)   NULL
+,  [mainprojectid_value]  nvarchar(200)   NULL
+,  [maintenanceperiod]  decimal(18,1)   NULL
+,  [maintenanceperioddays]  decimal(18,0)   NULL
+,  [marketdrivers]  int   NULL
+,  [marketdrivers_value]  nvarchar(4000)   NULL
+,  [materials_yn]  int   NULL
+,  [materials_yn_value]  nvarchar(4000)   NULL
+,  [maxliability]  nvarchar(250)   NULL
+,  [nonbindingindication]  int   NULL
+,  [nonbindingindication_value]  nvarchar(4000)   NULL
+,  [noneurocomponentpercent]  decimal(18,2)   NULL
+,  [ohvs]  nvarchar(100)   NULL
+,  [onhold]  int   NULL
+,  [onhold_value]  nvarchar(4000)   NULL
+,  [onholdreason]  int   NULL
+,  [onholdreason_value]  nvarchar(4000)   NULL
+,  [onshore]  nvarchar(100)   NULL
+,  [overallriskprofileafter]  int   NULL
+,  [overallriskprofileafter_value]  nvarchar(4000)   NULL
+,  [overallriskprofilebefore]  int   NULL
+,  [overallriskprofilebefore_value]  nvarchar(4000)   NULL
+,  [parentcompanyguarantee]  int   NULL
+,  [parentcompanyguarantee_value]  nvarchar(4000)   NULL
+,  [paymentguarantees_creditinsurance]  int   NULL
+,  [paymentguarantees_creditinsurance_value]  nvarchar(4000)   NULL
+,  [paymentperioddays]  int   NULL
+,  [paymentrisk]  int   NULL
+,  [paymentrisk_value]  nvarchar(4000)   NULL
+,  [paymentrisk_yn]  int   NULL
+,  [paymentrisk_yn_value]  nvarchar(4000)   NULL
+,  [positivecashflow]  int   NULL
+,  [positivecashflow_value]  nvarchar(4000)   NULL
+,  [pq]  int   NULL
+,  [pq_value]  nvarchar(4000)   NULL
+,  [pqdate]  date   NULL
+,  [pqremarks]  nvarchar(4000)   NULL
+,  [pricevariationsfuel]  int   NULL
+,  [pricevariationsfuel_value]  nvarchar(4000)   NULL
+,  [pricevariationsmaterials]  int   NULL
+,  [pricevariationsmaterials_value]  nvarchar(4000)   NULL
+,  [pricevariationswages]  int   NULL
+,  [pricevariationswages_value]  nvarchar(4000)   NULL
+,  [processnostepfield]  int   NULL
+,  [processnostepfield_value]  nvarchar(4000)   NULL
+,  [productgroupsnl]  int   NULL
+,  [productgroupsnl_value]  nvarchar(4000)   NULL
+,  [projectdescription]  nvarchar(4000)   NULL
+,  [projectfinancial]  nvarchar(36)   NULL
+,  [projectfinancial_value]  nvarchar(100)   NULL
+,  [projectfinancialdatalasttransferdate]  datetime   NULL
+,  [projectgeneral]  nvarchar(36)   NULL
+,  [projectgeneral_value]  nvarchar(200)   NULL
+,  [projectphase]  int   NULL
+,  [projectphase_value]  nvarchar(4000)   NULL
+,  [projectpreparationmeeting]  date   NULL
+,  [projectstatusid]  nvarchar(100)   NULL
+,  [reasonexplanation]  nvarchar(4000)   NULL
+,  [reasonexplanationchosen]  nvarchar(4000)   NULL
+,  [reasonofchangeaward]  nvarchar(4000)   NULL
+,  [reclamationlevel]  nvarchar(100)   NULL
+,  [requiredcriticalcompetences]  nvarchar(4000)   NULL
+,  [resourceavailability]  int   NULL
+,  [resourceavailability_value]  nvarchar(4000)   NULL
+,  [retentionpercentage]  decimal(18,2)   NULL
+,  [sailingdistancetodisposalarea]  decimal(18,1)   NULL
+,  [scopeofworkvanoord]  nvarchar(4000)   NULL
+,  [soildata]  nvarchar(100)   NULL
+,  [stagegate]  int   NULL
+,  [stagegate_value]  nvarchar(4000)   NULL
+,  [stagegatecopy]  nvarchar(100)   NULL
+,  [stagegatesnapshot]  int   NULL
+,  [stagegatesnapshot_value]  nvarchar(4000)   NULL
+,  [startoftender]  date   NULL
+,  [statushistoryregisterdate]  date   NULL
+,  [statushistoryregisterdate_date_value]  date   NULL
+,  [statushistoryregisterdate_state_value]  int   NULL
+,  [subareaid]  nvarchar(36)   NULL
+,  [subareaid_value]  nvarchar(100)   NULL
+,  [substatusreason]  int   NULL
+,  [substatusreason_value]  nvarchar(4000)   NULL
+,  [technicallyfeasible]  int   NULL
+,  [technicallyfeasible_value]  nvarchar(4000)   NULL
+,  [tenderdate]  date   NULL
+,  [tenderenddate]  date   NULL
+,  [tendersubmissiondateactual]  datetime   NULL
+,  [tendersubmissionplace]  nvarchar(100)   NULL
+,  [tendertype]  int   NULL
+,  [tendertype_value]  nvarchar(4000)   NULL
+,  [tendervalidity]  int   NULL
+,  [tmp_approvalinitiator_value]  nvarchar(200)   NULL
+,  [tmp_projectguid]  nvarchar(100)   NULL
+,  [tmpproject_value]  nvarchar(200)   NULL
+,  [tomobdemob]  nvarchar(500)   NULL
+,  [totalcontractvalueeurocopy]  decimal(18,0)   NULL
+,  [totalftedays]  decimal(18,2)   NULL
+,  [totalftedays_date_value]  datetime   NULL
+,  [totalftedays_state_value]  int   NULL
+,  [typeofcontract]  int   NULL
+,  [typeofcontract_value]  nvarchar(4000)   NULL
+,  [typeofwork]  int   NULL
+,  [typeofwork_value]  nvarchar(4000)   NULL
+,  [typetender]  int   NULL
+,  [typetender_value]  nvarchar(4000)   NULL
+,  [userdefinedriskprofile]  int   NULL
+,  [userdefinedriskprofile_value]  nvarchar(4000)   NULL
+,  [vanoordentityid]  nvarchar(36)   NULL
+,  [vanoordentityid_value]  nvarchar(100)   NULL
+,  [vanoordsubmittingactingas]  int   NULL
+,  [vanoordsubmittingactingas_value]  nvarchar(4000)   NULL
+,  [project_versionnumber]  int   NULL
+,  [vobusinessunitid]  nvarchar(36)   NULL
+,  [vobusinessunitid_value]  nvarchar(100)   NULL
+,  [voprojectriskcategory]  int   NULL
+,  [voprojectriskcategory_value]  nvarchar(4000)   NULL
+,  [voshareineurocopy]  decimal(18,0)   NULL
+,  [vosharepercentcopy]  decimal(18,2)   NULL
+,  [wages_yn]  int   NULL
+,  [wages_yn_value]  nvarchar(4000)   NULL
+,  [waterdepthssite]  nvarchar(100)   NULL
+,  [windturbineinformation]  nvarchar(100)   NULL
+,  [winstrategy]  nvarchar(4000)   NULL
+,  [createdby_value]  nvarchar(200)   NULL
+,  [createdon]  datetime   NULL
+,  [createdonbehalfby_value]  nvarchar(200)   NULL
+,  [importsequencenumber]  int   NULL
+,  [modifiedby_value]  nvarchar(200)   NULL
+,  [modifiedon]  datetime   NULL
+,  [modifiedonbehalfby_value]  nvarchar(200)   NULL
+,  [ownerid_value]  nvarchar(200)   NULL
+,  [statecode]  int   NULL
+,  [statecode_value]  nvarchar(4000)   NULL
+,  [statuscode]  int   NULL
+,  [statuscode_value]  nvarchar(4000)   NULL
+,  [timezoneruleversionnumber]  int   NULL
+,  [versionnumber]  bigint   NULL
+, CONSTRAINT [PK_processed.dyn_project] PRIMARY KEY CLUSTERED ([id] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 100, DATA_COMPRESSION = PAGE))
+GO
+
 GO
 
 exec sys.sp_addextendedproperty @name=N'Table Name', @value=N'dyn_project', @level0type=N'SCHEMA', @level0name=processed, @level1type=N'TABLE', @level1name=dyn_project
@@ -296,6 +297,8 @@ GO
 exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'project', @level0type=N'SCHEMA', @level0name=processed, @level1type=N'TABLE', @level1name=dyn_project
 GO
 exec sys.sp_addextendedproperty @name=N'Database Schema', @value=N'processed', @level0type=N'SCHEMA', @level0name=processed, @level1type=N'TABLE', @level1name=dyn_project
+GO
+exec sys.sp_addextendedproperty @name=N'Generate Script?', @value=N'N', @level0type=N'SCHEMA', @level0name=processed, @level1type=N'TABLE', @level1name=dyn_project
 GO
 GO
 
@@ -307,11 +310,19 @@ exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'Valid_to', @leve
 GO
 exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'indicator active', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'dwh_active'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'Application ID', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'AK_project'; 
+exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'dwh_process_run_id', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'dwh_process_run_id'; 
+GO
+exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'dwh_hash', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'dwh_hash'; 
+GO
+exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'Application ID', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'ak_project'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'Primary key', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'id'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Description', @value=N'Application id, unique identifier source', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'AK_project'; 
+exec sys.sp_addextendedproperty @name=N'Description', @value=N'proces run id of the synapse pipeline', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'dwh_process_run_id'; 
+GO
+exec sys.sp_addextendedproperty @name=N'Description', @value=N'hash of the columns that will be compared with the staged layer', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'dwh_hash'; 
+GO
+exec sys.sp_addextendedproperty @name=N'Description', @value=N'Application id, unique identifier source', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'ak_project'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'As applicable, select "yes" or "no" (do we execute the project in accordance with - for Van Oord - acceptable QHSE standards)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'acceptableqhsestandards'; 
 GO
@@ -331,7 +342,7 @@ exec sys.sp_addextendedproperty @name=N'Description', @value=N'Division of the v
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'State if the required Competences are expected to be available', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'availabilitycompetences'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Description', @value=N'(Expected) contract award DATE from Client / Main contractor', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'awarddateexpected'; 
+exec sys.sp_addextendedproperty @name=N'Description', @value=N'(Expected) contract award date from Client / Main contractor', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'awarddateexpected'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'Field to be able to query on the imported Award Summaries from 2015, 2016 and 2017.', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'awardsummaryimport'; 
 GO
@@ -355,7 +366,7 @@ exec sys.sp_addextendedproperty @name=N'Description', @value=N'Expected chance t
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'Indicate the chance of winnning this tender', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'chanceofwinningcommercialposition'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Description', @value=N'The Changed Award DATE field can only be adjusted by Functional Application Managers. Purpose of this field is to capture the original Award DATE and the Changed Award Date.', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'changedawarddate'; 
+exec sys.sp_addextendedproperty @name=N'Description', @value=N'The Changed Award Date field can only be adjusted by Functional Application Managers. Purpose of this field is to capture the original Award Date and the Changed Award Date.', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'changedawarddate'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'The Changed Tender Submission field can only be adjusted by Functional Application Managers. Purpose of this field is to capture the original Tender Submission and the Changed Tender Submission.', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'changedtenderdate'; 
 GO
@@ -415,7 +426,7 @@ exec sys.sp_addextendedproperty @name=N'Description', @value=N'State if geophysi
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'State if geotechnical survey information is available and/ or received from Client', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'geotechnicalinfo'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Description', @value=N'Amount of penalties (LD''s) when Intermediate Completion DATE is not met, expressed in euro''s', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'intermediatecompletionamounteuro'; 
+exec sys.sp_addextendedproperty @name=N'Description', @value=N'Amount of penalties (LD''s) when Intermediate Completion date is not met, expressed in euro''s', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'intermediatecompletionamounteuro'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'The maximum percentage of the total Contract Sum that is used to cap the total LD''s', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'intermediatecompletionlimpercent'; 
 GO
@@ -441,7 +452,7 @@ exec sys.sp_addextendedproperty @name=N'Description', @value=N'Longitude in minu
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'Longitude in seconds', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'longitudeseconds'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Description', @value=N'As applicable, select "yes" or "no" (have long lead items been secured as part of Negotiations with suppliers / vendors during tender preparation)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'longleaditemssecured'; 
+exec sys.sp_addextendedproperty @name=N'Description', @value=N'As applicable, select "yes" or "no" (have long lead items been secured as part of  negotiations with suppliers / vendors during tender preparation)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'longleaditemssecured'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'Enter the maintenance period (in weeks)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'maintenanceperiod'; 
 GO
@@ -467,7 +478,7 @@ exec sys.sp_addextendedproperty @name=N'Description', @value=N'As applicable, se
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'Indicate if a Pre Qualifiation process is applicable', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'pq'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Description', @value=N'Specify DATE for PQ submission', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'pq_value'; 
+exec sys.sp_addextendedproperty @name=N'Description', @value=N'Specify date for PQ submission', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'pq_value'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'Provide remarks if applicable', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'pqremarks'; 
 GO
@@ -477,7 +488,7 @@ exec sys.sp_addextendedproperty @name=N'Description', @value=N'Provide a brief d
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'List of Workflow Acquisition / Tendering or Realisation', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'projectphase'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Description', @value=N'Specify DATE for Project Preparation Meeting', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'projectpreparationmeeting'; 
+exec sys.sp_addextendedproperty @name=N'Description', @value=N'Specify date for Project Preparation Meeting', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'projectpreparationmeeting'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'This field is used to migrate Provo-data. This field contains a unique Provo-ID per stage that will be used as a reference for child records.', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'projectstatusid'; 
 GO
@@ -595,7 +606,11 @@ exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'2023-04-25', @
 GO
 exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'1', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'dwh_active'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'FFFD461A-DD78-E511-8122-C4346BAC7E10', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'AK_project'; 
+exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'FFF57AF8-D10A-EA11-A811-000D3A2C5614', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'dwh_process_run_id'; 
+GO
+exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'0xBF35F538E0E96618230E2FEA1CC000EA', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'dwh_hash'; 
+GO
+exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'FFFD461A-DD78-E511-8122-C4346BAC7E10', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'ak_project'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'W0497', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'projectnumber'; 
 GO
@@ -1163,7 +1178,11 @@ exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL'
 GO
 exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'dwh_active'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Source System', @value=N'DWH', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'AK_project'; 
+exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived from synapse pipeline', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'dwh_process_run_id'; 
+GO
+exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'dwh_hash'; 
+GO
+exec sys.sp_addextendedproperty @name=N'Source System', @value=N'DWH', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'ak_project'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Source System', @value=N'DWH', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'projectnumber'; 
 GO
@@ -1723,7 +1742,7 @@ exec sys.sp_addextendedproperty @name=N'Source System', @value=N'DWH', @level0ty
 GO
 exec sys.sp_addextendedproperty @name=N'Source System', @value=N'DWH', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'versionnumber'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Source Schema', @value=N'staging', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'AK_project'; 
+exec sys.sp_addextendedproperty @name=N'Source Schema', @value=N'staging', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'ak_project'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Source Schema', @value=N'staging', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'projectnumber'; 
 GO
@@ -2283,7 +2302,7 @@ exec sys.sp_addextendedproperty @name=N'Source Schema', @value=N'staging', @leve
 GO
 exec sys.sp_addextendedproperty @name=N'Source Schema', @value=N'staging', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'versionnumber'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Source Table', @value=N'EntityProject', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'AK_project'; 
+exec sys.sp_addextendedproperty @name=N'Source Table', @value=N'EntityProject', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'ak_project'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Source Table', @value=N'EntityProject', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'projectnumber'; 
 GO
@@ -2843,7 +2862,7 @@ exec sys.sp_addextendedproperty @name=N'Source Table', @value=N'EntityProject', 
 GO
 exec sys.sp_addextendedproperty @name=N'Source Table', @value=N'EntityProject', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'versionnumber'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Source Field Name', @value=N'hso_projectid', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'AK_project'; 
+exec sys.sp_addextendedproperty @name=N'Source Field Name', @value=N'hso_projectid', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'ak_project'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Source Field Name', @value=N'hso_projectnumber', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'projectnumber'; 
 GO
@@ -3403,7 +3422,7 @@ exec sys.sp_addextendedproperty @name=N'Source Field Name', @value=N'timezonerul
 GO
 exec sys.sp_addextendedproperty @name=N'Source Field Name', @value=N'versionnumber', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'versionnumber'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'nvarchar(36)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'AK_project'; 
+exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'nvarchar(36)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'ak_project'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'nvarchar(100)', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'projectnumber'; 
 GO
@@ -3963,7 +3982,7 @@ exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'int', @level0
 GO
 exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'bigint', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'versionnumber'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Extraction/Transformation Rules', @value=N'uniqueidentifier in dynamics replica', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'AK_project'; 
+exec sys.sp_addextendedproperty @name=N'Extraction/Transformation Rules', @value=N'uniqueidentifier in dynamics replica', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'ak_project'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Extraction/Transformation Rules', @value=N'uniqueidentifier in dynamics replica', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'accountid'; 
 GO
@@ -4030,4 +4049,5 @@ GO
 exec sys.sp_addextendedproperty @name=N'Comments', @value=N'refers to EntityVanOordEntity', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'vanoordentityid'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Comments', @value=N'refers to EntityVOBusinessUnit', @level0type=N'SCHEMA', @level0name=N'processed', @level1type=N'TABLE', @level1name=N'dyn_project', @level2type=N'COLUMN', @level2name=N'vobusinessunitid'; 
+GO
 GO

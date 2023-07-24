@@ -3,9 +3,11 @@ CREATE PROCEDURE [processed].[sp_load_dyn_nonstandardproject]
     @process_run_id UNIQUEIDENTIFIER
 AS
 BEGIN
+    -- Abort and rollback for all errors, not only the ones captured by BEGIN TRY
+    SET XACT_ABORT ON;
     DECLARE
         @schema NVARCHAR(20) = 'processed',
-        @table NVARCHAR(20) = 'dyn_nonstandardproject',
+        @table NVARCHAR(60) = 'dyn_nonstandardproject',
 
         @inserted INT = 0,
         @updated INT = 0,
@@ -24,7 +26,7 @@ BEGIN
 
         CREATE TABLE #temp_dyn_nonstandardproject
         (
-            [AK_nonstandardproject] NVARCHAR(36),
+            [ak_nonstandardproject] NVARCHAR(36),
             [projectnumber] NVARCHAR(100),
             [name] NVARCHAR(200),
             [exchangerate1] DECIMAL(18, 10),
@@ -211,7 +213,7 @@ BEGIN
             [statuscode_value] NVARCHAR(4000),
             [timezoneruleversionnumber] INT,
             [versionnumber] BIGINT,
-            [Hash] VARBINARY(8000) NOT NULL
+            [dwh_hash] VARBINARY(8000) NOT NULL
         )
 
         -- Insert data from staging table into temp table
@@ -225,20 +227,20 @@ BEGIN
             [hso_activetimeregistrationid],
             [_hso_activetimeregistrationid_value],
             [hso_additionalreason],
-            [_hso_additionalreason_value],
+            LEFT([_hso_additionalreason_value], 4000),
             [hso_alternatekeyperiod],
             [hso_alternatekeystatus],
             [hso_alternatekeytendertype],
             [hso_alternatekeyyear],
             [hso_anonymizedata],
-            [_hso_anonymizedata_value],
-            [hso_approvalinitiatorremarks],
+            LEFT([_hso_anonymizedata_value], 4000),
+            LEFT([hso_approvalinitiatorremarks], 4000),
             [hso_approvalstatus],
-            [_hso_approvalstatus_value],
+            LEFT([_hso_approvalstatus_value], 4000),
             [hso_approvalstatussg2c],
-            [_hso_approvalstatussg2c_value],
+            LEFT([_hso_approvalstatussg2c_value], 4000),
             [hso_approvalworkflowinprogress],
-            [_hso_approvalworkflowinprogress_value],
+            LEFT([_hso_approvalworkflowinprogress_value], 4000),
             [hso_areaid],
             [_hso_areaid_value],
             [hso_awarddateexpected],
@@ -253,21 +255,21 @@ BEGIN
             [hso_cashflowarplpercent],
             [_hso_commercialresponsibleid_value],
             [hso_contractconditions],
-            [_hso_contractconditions_value],
+            LEFT([_hso_contractconditions_value], 4000),
             [hso_countryid],
             [_hso_countryid_value],
             [hso_depreciationinvestmenteuro],
             [hso_depreciationinvestmentpercent],
             [hso_designresponsibilityyn],
-            [_hso_designresponsibilityyn_value],
+            LEFT([_hso_designresponsibilityyn_value], 4000),
             [hso_durationofcontract],
             [hso_exchangerate],
             [hso_expectedpricelevelcompetitioneuro],
             [hso_expectedstartofwork],
             [hso_formofcontract],
-            [_hso_formofcontract_value],
+            LEFT([_hso_formofcontract_value], 4000),
             [hso_formoftender],
-            [_hso_formoftender_value],
+            LEFT([_hso_formoftender_value], 4000),
             [hso_frommobdemob],
             [hso_fullclientprojectname],
             [hso_inflationeuro],
@@ -277,7 +279,7 @@ BEGIN
             [hso_latitudedms],
             [hso_latitudeminutes],
             [hso_latitudenorthsouth],
-            [_hso_latitudenorthsouth_value],
+            LEFT([_hso_latitudenorthsouth_value], 4000),
             [hso_latitudeseconds],
             [hso_localtaxeseuro],
             [hso_localtaxespercent],
@@ -286,83 +288,83 @@ BEGIN
             [hso_longitudedegrees],
             [hso_longitudedms],
             [hso_longitudeeastwest],
-            [_hso_longitudeeastwest_value],
+            LEFT([_hso_longitudeeastwest_value], 4000),
             [hso_longitudeminutes],
             [hso_longitudeseconds],
             [_hso_mackleyautonumber_value],
             [hso_mackleystatus],
-            [_hso_mackleystatus_value],
+            LEFT([_hso_mackleystatus_value], 4000),
             [hso_mainequipmentareuro],
             [hso_mainequipmentarpercent],
             [hso_mainnonstandardprojectid],
             [_hso_mainnonstandardprojectid_value],
             [hso_marketdrivers],
-            [_hso_marketdrivers_value],
+            LEFT([_hso_marketdrivers_value], 4000),
             [hso_maxfinancingeur],
             [hso_maxfinancingpercent],
             [hso_mobdemobeuro],
             [hso_mobdemobpercent],
             [hso_negotiatecomplete],
-            [_hso_negotiatecomplete_value],
+            LEFT([_hso_negotiatecomplete_value], 4000),
             [_hso_nonstandardid_value],
             [hso_nonstandardprojectsnapshot],
-            [_hso_nonstandardprojectsnapshot_value],
+            LEFT([_hso_nonstandardprojectsnapshot_value], 4000),
             [hso_onhold],
-            [_hso_onhold_value],
+            LEFT([_hso_onhold_value], 4000),
             [hso_onholdreason],
-            [_hso_onholdreason_value],
+            LEFT([_hso_onholdreason_value], 4000),
             [hso_overheadexpenseseuro],
             [hso_overheadexpensespercent],
             [hso_period],
-            [_hso_period_value],
+            LEFT([_hso_period_value], 4000),
             [hso_pq],
-            [_hso_pq_value],
-            [hso_pqremarks],
+            LEFT([_hso_pq_value], 4000),
+            LEFT([hso_pqremarks], 4000),
             [hso_preparecomplete],
-            [_hso_preparecomplete_value],
+            LEFT([_hso_preparecomplete_value], 4000),
             [hso_processnostepfield],
-            [_hso_processnostepfield_value],
+            LEFT([_hso_processnostepfield_value], 4000),
             [hso_productgroupsnl],
-            [_hso_productgroupsnl_value],
+            LEFT([_hso_productgroupsnl_value], 4000),
             [hso_profitlosseuro],
             [hso_profitlosspercent],
-            [hso_projectdescription],
+            LEFT([hso_projectdescription], 4000),
             [hso_projectgeneral],
             [_hso_projectgeneral_value],
             [hso_projectphase],
-            [_hso_projectphase_value],
+            LEFT([_hso_projectphase_value], 4000),
             [hso_projectpreparationmeeting],
             [hso_projectreportdate],
             [hso_purchaseeuro],
             [hso_purchasepercent],
             [hso_remainingcostseuro],
             [hso_remainingcostspercent],
-            [hso_remarksroughestimate],
+            LEFT([hso_remarksroughestimate], 4000),
             [_hso_reportperiod_value],
             [hso_riskeuro],
             [hso_riskpercent],
-            [hso_scopeofworkvanoord],
+            LEFT([hso_scopeofworkvanoord], 4000),
             [hso_setautonumber],
-            [_hso_setautonumber_value],
+            LEFT([_hso_setautonumber_value], 4000),
             [hso_sitesupervisioncostseuro],
             [hso_sitesupervisioncostspercent],
             [hso_specificinvestmenteuro],
             [hso_specificinvestmentpercent],
             [hso_stagegate],
-            [_hso_stagegate_value],
+            LEFT([_hso_stagegate_value], 4000),
             [hso_stagegatecopy],
-            [_hso_stagegatecopy_value],
+            LEFT([_hso_stagegatecopy_value], 4000),
             [hso_stagegatesnapshot],
-            [_hso_stagegatesnapshot_value],
+            LEFT([_hso_stagegatesnapshot_value], 4000),
             [hso_subareaid],
             [_hso_subareaid_value],
             [hso_substatusreason],
-            [_hso_substatusreason_value],
+            LEFT([_hso_substatusreason_value], 4000),
             [hso_tenderdate],
             [hso_tenderenddate],
             [hso_tendersubmissionplace],
             [hso_tendertype],
-            [_hso_tendertype_value],
+            LEFT([_hso_tendertype_value], 4000),
             [hso_tendervalidity],
             [_hso_tmpapprovalinitiator_value],
             [_hso_tmpnonstandardprojectsnapshot_value],
@@ -373,7 +375,7 @@ BEGIN
             [hso_totaleuro],
             [hso_totalpercent],
             [hso_typeofcontract],
-            [_hso_typeofcontract_value],
+            LEFT([_hso_typeofcontract_value], 4000),
             [hso_valueofsubcontractseuro],
             [hso_valueofsubcontractspercent],
             [hso_valueoftotalworksvoparteuro],
@@ -381,7 +383,7 @@ BEGIN
             [hso_vanoordentityid],
             [_hso_vanoordentityid_value],
             [hso_vanoordsubmittingactingas],
-            [_hso_vanoordsubmittingactingas_value],
+            LEFT([_hso_vanoordsubmittingactingas_value], 4000),
             [hso_vobusinessunitid],
             [_hso_vobusinessunitid_value],
             [hso_voshareineuro],
@@ -390,7 +392,7 @@ BEGIN
             [hso_withholdingtaxpercent],
             [hso_workingcapitaleuro],
             [hso_year],
-            [_hso_year_value],
+            LEFT([_hso_year_value], 4000),
             [_transactioncurrencyid_value],
             [_createdby_value],
             [createdon],
@@ -400,9 +402,9 @@ BEGIN
             [_modifiedonbehalfby_value],
             [_ownerid_value],
             [statecode],
-            [_statecode_value],
+            LEFT([_statecode_value], 4000),
             [statuscode],
-            [_statuscode_value],
+            LEFT([_statuscode_value], 4000),
             [timezoneruleversionnumber],
             [versionnumber],
             HASHBYTES(
@@ -414,20 +416,20 @@ BEGIN
                 + ISNULL([hso_activetimeregistrationid], '')
                 + ISNULL([_hso_activetimeregistrationid_value], '')
                 + ISNULL(CAST([hso_additionalreason] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_additionalreason_value], '')
+                + ISNULL(CAST(LEFT([_hso_additionalreason_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([hso_alternatekeyperiod], '')
                 + ISNULL([hso_alternatekeystatus], '')
                 + ISNULL([hso_alternatekeytendertype], '')
                 + ISNULL([hso_alternatekeyyear], '')
                 + ISNULL(CAST([hso_anonymizedata] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_anonymizedata_value], '')
-                + ISNULL([hso_approvalinitiatorremarks], '')
+                + ISNULL(CAST(LEFT([_hso_anonymizedata_value], 4000) AS NVARCHAR(4000)), '')
+                + ISNULL(CAST(LEFT([hso_approvalinitiatorremarks], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_approvalstatus] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_approvalstatus_value], '')
+                + ISNULL(CAST(LEFT([_hso_approvalstatus_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_approvalstatussg2c] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_approvalstatussg2c_value], '')
+                + ISNULL(CAST(LEFT([_hso_approvalstatussg2c_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_approvalworkflowinprogress] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_approvalworkflowinprogress_value], '')
+                + ISNULL(CAST(LEFT([_hso_approvalworkflowinprogress_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([hso_areaid], '')
                 + ISNULL([_hso_areaid_value], '')
                 + ISNULL(CONVERT(NVARCHAR(19), [hso_awarddateexpected], 120), '')
@@ -442,21 +444,21 @@ BEGIN
                 + ISNULL(CAST([hso_cashflowarplpercent] AS NVARCHAR(50)), '')
                 + ISNULL([_hso_commercialresponsibleid_value], '')
                 + ISNULL(CAST([hso_contractconditions] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_contractconditions_value], '')
+                + ISNULL(CAST(LEFT([_hso_contractconditions_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([hso_countryid], '')
                 + ISNULL([_hso_countryid_value], '')
                 + ISNULL(CAST([hso_depreciationinvestmenteuro] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_depreciationinvestmentpercent] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_designresponsibilityyn] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_designresponsibilityyn_value], '')
+                + ISNULL(CAST(LEFT([_hso_designresponsibilityyn_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_durationofcontract] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_exchangerate] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_expectedpricelevelcompetitioneuro] AS NVARCHAR(50)), '')
                 + ISNULL(CONVERT(NVARCHAR(19), [hso_expectedstartofwork], 120), '')
                 + ISNULL(CAST([hso_formofcontract] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_formofcontract_value], '')
+                + ISNULL(CAST(LEFT([_hso_formofcontract_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_formoftender] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_formoftender_value], '')
+                + ISNULL(CAST(LEFT([_hso_formoftender_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([hso_frommobdemob], '')
                 + ISNULL([hso_fullclientprojectname], '')
                 + ISNULL(CAST([hso_inflationeuro] AS NVARCHAR(50)), '')
@@ -466,7 +468,7 @@ BEGIN
                 + ISNULL([hso_latitudedms], '')
                 + ISNULL(CAST([hso_latitudeminutes] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_latitudenorthsouth] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_latitudenorthsouth_value], '')
+                + ISNULL(CAST(LEFT([_hso_latitudenorthsouth_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_latitudeseconds] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_localtaxeseuro] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_localtaxespercent] AS NVARCHAR(50)), '')
@@ -475,83 +477,83 @@ BEGIN
                 + ISNULL(CAST([hso_longitudedegrees] AS NVARCHAR(50)), '')
                 + ISNULL([hso_longitudedms], '')
                 + ISNULL(CAST([hso_longitudeeastwest] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_longitudeeastwest_value], '')
+                + ISNULL(CAST(LEFT([_hso_longitudeeastwest_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_longitudeminutes] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_longitudeseconds] AS NVARCHAR(50)), '')
                 + ISNULL([_hso_mackleyautonumber_value], '')
                 + ISNULL(CAST([hso_mackleystatus] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_mackleystatus_value], '')
+                + ISNULL(CAST(LEFT([_hso_mackleystatus_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_mainequipmentareuro] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_mainequipmentarpercent] AS NVARCHAR(50)), '')
                 + ISNULL([hso_mainnonstandardprojectid], '')
                 + ISNULL([_hso_mainnonstandardprojectid_value], '')
                 + ISNULL(CAST([hso_marketdrivers] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_marketdrivers_value], '')
+                + ISNULL(CAST(LEFT([_hso_marketdrivers_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_maxfinancingeur] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_maxfinancingpercent] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_mobdemobeuro] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_mobdemobpercent] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_negotiatecomplete] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_negotiatecomplete_value], '')
+                + ISNULL(CAST(LEFT([_hso_negotiatecomplete_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([_hso_nonstandardid_value], '')
                 + ISNULL(CAST([hso_nonstandardprojectsnapshot] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_nonstandardprojectsnapshot_value], '')
+                + ISNULL(CAST(LEFT([_hso_nonstandardprojectsnapshot_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_onhold] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_onhold_value], '')
+                + ISNULL(CAST(LEFT([_hso_onhold_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_onholdreason] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_onholdreason_value], '')
+                + ISNULL(CAST(LEFT([_hso_onholdreason_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_overheadexpenseseuro] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_overheadexpensespercent] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_period] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_period_value], '')
+                + ISNULL(CAST(LEFT([_hso_period_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_pq] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_pq_value], '')
-                + ISNULL(CAST([hso_pqremarks] AS NVARCHAR(4000)), '')
+                + ISNULL(CAST(LEFT([_hso_pq_value], 4000) AS NVARCHAR(4000)), '')
+                + ISNULL(CAST(LEFT([hso_pqremarks], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_preparecomplete] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_preparecomplete_value], '')
+                + ISNULL(CAST(LEFT([_hso_preparecomplete_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_processnostepfield] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_processnostepfield_value], '')
+                + ISNULL(CAST(LEFT([_hso_processnostepfield_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_productgroupsnl] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_productgroupsnl_value], '')
+                + ISNULL(CAST(LEFT([_hso_productgroupsnl_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_profitlosseuro] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_profitlosspercent] AS NVARCHAR(50)), '')
-                + ISNULL([hso_projectdescription], '')
+                + ISNULL(CAST(LEFT([hso_projectdescription], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([hso_projectgeneral], '')
                 + ISNULL([_hso_projectgeneral_value], '')
                 + ISNULL(CAST([hso_projectphase] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_projectphase_value], '')
+                + ISNULL(CAST(LEFT([_hso_projectphase_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CONVERT(NVARCHAR(19), [hso_projectpreparationmeeting], 120), '')
                 + ISNULL(CONVERT(NVARCHAR(19), [hso_projectreportdate], 120), '')
                 + ISNULL(CAST([hso_purchaseeuro] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_purchasepercent] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_remainingcostseuro] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_remainingcostspercent] AS NVARCHAR(50)), '')
-                + ISNULL([hso_remarksroughestimate], '')
+                + ISNULL(CAST(LEFT([hso_remarksroughestimate], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([_hso_reportperiod_value], '')
                 + ISNULL(CAST([hso_riskeuro] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_riskpercent] AS NVARCHAR(50)), '')
-                + ISNULL([hso_scopeofworkvanoord], '')
+                + ISNULL(CAST(LEFT([hso_scopeofworkvanoord], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_setautonumber] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_setautonumber_value], '')
+                + ISNULL(CAST(LEFT([_hso_setautonumber_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_sitesupervisioncostseuro] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_sitesupervisioncostspercent] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_specificinvestmenteuro] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_specificinvestmentpercent] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_stagegate] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_stagegate_value], '')
+                + ISNULL(CAST(LEFT([_hso_stagegate_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_stagegatecopy] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_stagegatecopy_value], '')
+                + ISNULL(CAST(LEFT([_hso_stagegatecopy_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_stagegatesnapshot] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_stagegatesnapshot_value], '')
+                + ISNULL(CAST(LEFT([_hso_stagegatesnapshot_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([hso_subareaid], '')
                 + ISNULL([_hso_subareaid_value], '')
                 + ISNULL(CAST([hso_substatusreason] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_substatusreason_value], '')
+                + ISNULL(CAST(LEFT([_hso_substatusreason_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CONVERT(NVARCHAR(19), [hso_tenderdate], 120), '')
                 + ISNULL(CONVERT(NVARCHAR(19), [hso_tenderenddate], 120), '')
                 + ISNULL([hso_tendersubmissionplace], '')
                 + ISNULL(CAST([hso_tendertype] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_tendertype_value], '')
+                + ISNULL(CAST(LEFT([_hso_tendertype_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_tendervalidity] AS NVARCHAR(20)), '')
                 + ISNULL([_hso_tmpapprovalinitiator_value], '')
                 + ISNULL([_hso_tmpnonstandardprojectsnapshot_value], '')
@@ -562,7 +564,7 @@ BEGIN
                 + ISNULL(CAST([hso_totaleuro] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_totalpercent] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_typeofcontract] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_typeofcontract_value], '')
+                + ISNULL(CAST(LEFT([_hso_typeofcontract_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_valueofsubcontractseuro] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_valueofsubcontractspercent] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_valueoftotalworksvoparteuro] AS NVARCHAR(50)), '')
@@ -570,7 +572,7 @@ BEGIN
                 + ISNULL([hso_vanoordentityid], '')
                 + ISNULL([_hso_vanoordentityid_value], '')
                 + ISNULL(CAST([hso_vanoordsubmittingactingas] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_vanoordsubmittingactingas_value], '')
+                + ISNULL(CAST(LEFT([_hso_vanoordsubmittingactingas_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([hso_vobusinessunitid], '')
                 + ISNULL([_hso_vobusinessunitid_value], '')
                 + ISNULL(CAST([hso_voshareineuro] AS NVARCHAR(50)), '')
@@ -579,7 +581,7 @@ BEGIN
                 + ISNULL(CAST([hso_withholdingtaxpercent] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_workingcapitaleuro] AS NVARCHAR(50)), '')
                 + ISNULL(CAST([hso_year] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_year_value], '')
+                + ISNULL(CAST(LEFT([_hso_year_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL([_transactioncurrencyid_value], '')
                 + ISNULL([_createdby_value], '')
                 + ISNULL(CONVERT(NVARCHAR(19), [createdon], 120), '')
@@ -589,12 +591,12 @@ BEGIN
                 + ISNULL([_modifiedonbehalfby_value], '')
                 + ISNULL([_ownerid_value], '')
                 + ISNULL(CAST([statecode] AS NVARCHAR(20)), '')
-                + ISNULL([_statecode_value], '')
+                + ISNULL(CAST(LEFT([_statecode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([statuscode] AS NVARCHAR(20)), '')
-                + ISNULL([_statuscode_value], '')
+                + ISNULL(CAST(LEFT([_statuscode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([timezoneruleversionnumber] AS NVARCHAR(20)), '')
                 + ISNULL(CAST([versionnumber] AS NVARCHAR(20)), '')
-            ) AS [Hash]
+            ) AS [dwh_hash]
         FROM [staged].[dyn_EntityNonStandardProject]
 
         IF OBJECT_ID(@schema + '.' + @table) IS NULL
@@ -610,12 +612,12 @@ BEGIN
         UPDATE [processed].[dyn_nonstandardproject]
         SET
             [dwh_valid_to] = DATEADD(DAY, -1, @process_run_date),
-            [ProcessRunID] = @process_run_id,
+            [dwh_process_run_id] = @process_run_id,
             [dwh_active] = 0
         FROM #temp_dyn_nonstandardproject AS [T]
-        LEFT JOIN [processed].[dyn_nonstandardproject] AS [P] ON [T].[AK_nonstandardproject] = [P].[AK_nonstandardproject]
+        LEFT JOIN [processed].[dyn_nonstandardproject] AS [P] ON [T].[ak_nonstandardproject] = [P].[ak_nonstandardproject]
         WHERE
-            [T].[Hash] != [P].[Hash]
+            [T].[dwh_hash] != [P].[dwh_hash]
             AND [P].[dwh_active] = 1
         SELECT @updated = @@ROWCOUNT
 
@@ -623,12 +625,12 @@ BEGIN
         UPDATE [processed].[dyn_nonstandardproject]
         SET
             [dwh_valid_to] = DATEADD(DAY, -1, @process_run_date),
-            [ProcessRunID] = @process_run_id,
+            [dwh_process_run_id] = @process_run_id,
             [dwh_active] = 0
         FROM [processed].[dyn_nonstandardproject] AS [P]
-        LEFT JOIN #temp_dyn_nonstandardproject AS [T] ON [T].[AK_nonstandardproject] = [P].[AK_nonstandardproject]
+        LEFT JOIN #temp_dyn_nonstandardproject AS [T] ON [T].[ak_nonstandardproject] = [P].[ak_nonstandardproject]
         WHERE
-            [T].[AK_nonstandardproject] IS NULL
+            [T].[ak_nonstandardproject] IS NULL
             AND [P].[dwh_active] = 1
         SELECT @deleted = @@ROWCOUNT
 
@@ -638,7 +640,8 @@ BEGIN
             [dwh_valid_from],
             [dwh_valid_to],
             [dwh_active],
-            [AK_nonstandardproject],
+            [dwh_process_run_id],
+            [ak_nonstandardproject],
             [projectnumber],
             [name],
             [exchangerate1],
@@ -825,14 +828,14 @@ BEGIN
             [statuscode_value],
             [timezoneruleversionnumber],
             [versionnumber],
-            [Hash],
-            [ProcessRunID]
+            [dwh_hash]            
         )
         SELECT
             @process_run_date AS [dwh_valid_from],
             NULL AS [dwh_valid_to],
             1 AS [dwh_active],
-            [T].[AK_nonstandardproject],
+            @process_run_id AS [dwh_process_run_id],
+            [T].[ak_nonstandardproject],
             [T].[projectnumber],
             [T].[name],
             [T].[exchangerate1],
@@ -1019,15 +1022,14 @@ BEGIN
             [T].[statuscode_value],
             [T].[timezoneruleversionnumber],
             [T].[versionnumber],
-            [T].[Hash],
-            @process_run_id AS [ProcessRunID]
+            [T].[dwh_hash]
         FROM #temp_dyn_nonstandardproject AS [T]
-        LEFT JOIN [processed].[dyn_nonstandardproject] AS [P] ON [T].[AK_nonstandardproject] = [P].[AK_nonstandardproject]
+        LEFT JOIN [processed].[dyn_nonstandardproject] AS [P] ON [T].[ak_nonstandardproject] = [P].[ak_nonstandardproject]
         WHERE
-            [P].[AK_nonstandardproject] IS NULL
+            [P].[ak_nonstandardproject] IS NULL
             OR (
-                [T].[Hash] != [P].[Hash]
-                AND [P].[ProcessRunID] = @process_run_id
+                [T].[dwh_hash] != [P].[dwh_hash]
+                AND [P].[dwh_process_run_id] = @process_run_id
             )
         SELECT @inserted = @@ROWCOUNT
 
@@ -1041,8 +1043,6 @@ BEGIN
             @rows_affected_insert = @inserted,
             @rows_affected_update = @updated,
             @rows_affected_delete = @deleted
-
-
     END TRY
     BEGIN CATCH
         SET @error_number = ERROR_NUMBER();

@@ -3,9 +3,11 @@ CREATE PROCEDURE [processed].[sp_load_dyn_bondguarantee]
     @process_run_id UNIQUEIDENTIFIER
 AS
 BEGIN
+    -- Abort and rollback for all errors, not only the ones captured by BEGIN TRY
+    SET XACT_ABORT ON;
     DECLARE
         @schema NVARCHAR(20) = 'processed',
-        @table NVARCHAR(20) = 'dyn_bondguarantee',
+        @table NVARCHAR(60) = 'dyn_bondguarantee',
 
         @inserted INT = 0,
         @updated INT = 0,
@@ -24,7 +26,7 @@ BEGIN
 
         CREATE TABLE #temp_dyn_bondguarantee
         (
-            [AK_bondguarantee] NVARCHAR(36),
+            [ak_bondguarantee] NVARCHAR(36),
             [name] NVARCHAR(450),
             [exchangerate] DECIMAL(18, 10),
             [amount] DECIMAL(18, 2),
@@ -52,8 +54,7 @@ BEGIN
             [statuscode] INT,
             [statuscode_value] NVARCHAR(4000),
             [versionnumber] BIGINT,
-            [ProcessRunId_source] INT,
-            [Hash] VARBINARY(8000) NOT NULL
+            [dwh_hash] VARBINARY(8000) NOT NULL
         )
 
         -- Insert data from staging table into temp table
@@ -68,11 +69,11 @@ BEGIN
             [hso_areaid],
             [_hso_areaid_value],
             [hso_bondguarantee],
-            [_hso_bondguarantee_value],
+            LEFT([_hso_bondguarantee_value], 4000),
             [hso_percentcontractvalue],
             [hso_projectid],
             [_hso_projectid_value],
-            [hso_type],
+            LEFT([hso_type], 4000),
             [hso_validitydays],
             [_transactioncurrencyid_value],
             [_createdby_value],
@@ -84,11 +85,10 @@ BEGIN
             [_modifiedonbehalfby_value],
             [_ownerid_value],
             [statecode],
-            [_statecode_value],
+            LEFT([_statecode_value], 4000),
             [statuscode],
-            [_statuscode_value],
+            LEFT([_statuscode_value], 4000),
             [versionnumber],
-            [ProcessRunId],
             HASHBYTES(
                 'MD5',
                 ISNULL([hso_bondguaranteeid], '')
@@ -99,11 +99,11 @@ BEGIN
                 + ISNULL([hso_areaid], '')
                 + ISNULL([_hso_areaid_value], '')
                 + ISNULL(CAST([hso_bondguarantee] AS NVARCHAR(20)), '')
-                + ISNULL([_hso_bondguarantee_value], '')
+                + ISNULL(CAST(LEFT([_hso_bondguarantee_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_percentcontractvalue] AS NVARCHAR(50)), '')
                 + ISNULL([hso_projectid], '')
                 + ISNULL([_hso_projectid_value], '')
-                + ISNULL([hso_type], '')
+                + ISNULL(CAST(LEFT([hso_type], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([hso_validitydays] AS NVARCHAR(50)), '')
                 + ISNULL([_transactioncurrencyid_value], '')
                 + ISNULL([_createdby_value], '')
@@ -115,12 +115,11 @@ BEGIN
                 + ISNULL([_modifiedonbehalfby_value], '')
                 + ISNULL([_ownerid_value], '')
                 + ISNULL(CAST([statecode] AS NVARCHAR(20)), '')
-                + ISNULL([_statecode_value], '')
+                + ISNULL(CAST(LEFT([_statecode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([statuscode] AS NVARCHAR(20)), '')
-                + ISNULL([_statuscode_value], '')
+                + ISNULL(CAST(LEFT([_statuscode_value], 4000) AS NVARCHAR(4000)), '')
                 + ISNULL(CAST([versionnumber] AS NVARCHAR(20)), '')
-                + ISNULL(CAST([ProcessRunId] AS NVARCHAR(20)), '')
-            ) AS [Hash]
+            ) AS [dwh_hash]
         FROM [staged].[dyn_EntityBondguarantee]
 
         IF OBJECT_ID(@schema + '.' + @table) IS NULL
@@ -136,12 +135,12 @@ BEGIN
         UPDATE [processed].[dyn_bondguarantee]
         SET
             [dwh_valid_to] = DATEADD(DAY, -1, @process_run_date),
-            [ProcessRunID] = @process_run_id,
+            [dwh_process_run_id] = @process_run_id,
             [dwh_active] = 0
         FROM #temp_dyn_bondguarantee AS [T]
-        LEFT JOIN [processed].[dyn_bondguarantee] AS [P] ON [T].[AK_bondguarantee] = [P].[AK_bondguarantee]
+        LEFT JOIN [processed].[dyn_bondguarantee] AS [P] ON [T].[ak_bondguarantee] = [P].[ak_bondguarantee]
         WHERE
-            [T].[Hash] != [P].[Hash]
+            [T].[dwh_hash] != [P].[dwh_hash]
             AND [P].[dwh_active] = 1
         SELECT @updated = @@ROWCOUNT
 
@@ -149,12 +148,12 @@ BEGIN
         UPDATE [processed].[dyn_bondguarantee]
         SET
             [dwh_valid_to] = DATEADD(DAY, -1, @process_run_date),
-            [ProcessRunID] = @process_run_id,
+            [dwh_process_run_id] = @process_run_id,
             [dwh_active] = 0
         FROM [processed].[dyn_bondguarantee] AS [P]
-        LEFT JOIN #temp_dyn_bondguarantee AS [T] ON [T].[AK_bondguarantee] = [P].[AK_bondguarantee]
+        LEFT JOIN #temp_dyn_bondguarantee AS [T] ON [T].[ak_bondguarantee] = [P].[ak_bondguarantee]
         WHERE
-            [T].[AK_bondguarantee] IS NULL
+            [T].[ak_bondguarantee] IS NULL
             AND [P].[dwh_active] = 1
         SELECT @deleted = @@ROWCOUNT
 
@@ -164,7 +163,8 @@ BEGIN
             [dwh_valid_from],
             [dwh_valid_to],
             [dwh_active],
-            [AK_bondguarantee],
+            [dwh_process_run_id],
+            [ak_bondguarantee],
             [name],
             [exchangerate],
             [amount],
@@ -192,15 +192,14 @@ BEGIN
             [statuscode],
             [statuscode_value],
             [versionnumber],
-            [ProcessRunId_source],
-            [Hash],
-            [ProcessRunID]
+            [dwh_hash]            
         )
         SELECT
             @process_run_date AS [dwh_valid_from],
             NULL AS [dwh_valid_to],
             1 AS [dwh_active],
-            [T].[AK_bondguarantee],
+            @process_run_id AS [dwh_process_run_id],
+            [T].[ak_bondguarantee],
             [T].[name],
             [T].[exchangerate],
             [T].[amount],
@@ -228,16 +227,14 @@ BEGIN
             [T].[statuscode],
             [T].[statuscode_value],
             [T].[versionnumber],
-            [T].[ProcessRunId_source],
-            [T].[Hash],
-            @process_run_id AS [ProcessRunID]
+            [T].[dwh_hash]
         FROM #temp_dyn_bondguarantee AS [T]
-        LEFT JOIN [processed].[dyn_bondguarantee] AS [P] ON [T].[AK_bondguarantee] = [P].[AK_bondguarantee]
+        LEFT JOIN [processed].[dyn_bondguarantee] AS [P] ON [T].[ak_bondguarantee] = [P].[ak_bondguarantee]
         WHERE
-            [P].[AK_bondguarantee] IS NULL
+            [P].[ak_bondguarantee] IS NULL
             OR (
-                [T].[Hash] != [P].[Hash]
-                AND [P].[ProcessRunID] = @process_run_id
+                [T].[dwh_hash] != [P].[dwh_hash]
+                AND [P].[dwh_process_run_id] = @process_run_id
             )
         SELECT @inserted = @@ROWCOUNT
 
@@ -251,8 +248,6 @@ BEGIN
             @rows_affected_insert = @inserted,
             @rows_affected_update = @updated,
             @rows_affected_delete = @deleted
-
-
     END TRY
     BEGIN CATCH
         SET @error_number = ERROR_NUMBER();

@@ -26,17 +26,17 @@
 									"type": "Expression"
 								}
 							},
-							"use_case_code": {
-								"type": "String",
-								"value": {
-									"value": "@pipeline().parameters.use_case_code",
-									"type": "Expression"
-								}
-							},
 							"process_run_id": {
 								"type": "Guid",
 								"value": {
 									"value": "@pipeline().parameters.process_run_id",
+									"type": "Expression"
+								}
+							},
+							"system_code": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.system_code",
 									"type": "Expression"
 								}
 							}
@@ -535,12 +535,12 @@
 															"value": "@pipeline().parameters.mdb_dbname",
 															"type": "Expression"
 														},
-														"use_case_code": {
-															"value": "@pipeline().parameters.use_case_code",
-															"type": "Expression"
-														},
 														"process_run_id": {
 															"value": "@pipeline().parameters.process_run_id",
+															"type": "Expression"
+														},
+														"system_code": {
+															"value": "@pipeline().parameters.system_code",
 															"type": "Expression"
 														}
 													}
@@ -562,10 +562,10 @@
 			"process_run_date": {
 				"type": "string"
 			},
-			"use_case_code": {
+			"mdb_dbname": {
 				"type": "string"
 			},
-			"mdb_dbname": {
+			"system_code": {
 				"type": "string"
 			}
 		},

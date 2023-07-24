@@ -18,15 +18,6 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderStoredProcedureName": "[elt].[spLookupLevels]",
-						"storedProcedureParameters": {
-							"use_case_code": {
-								"type": "String",
-								"value": {
-									"value": "@pipeline().parameters.use_case_code",
-									"type": "Expression"
-								}
-							}
-						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -123,7 +114,7 @@
 										"use_case_code": {
 											"type": "String",
 											"value": {
-												"value": "@pipeline().parameters.use_case_code",
+												"value": "@pipeline().parameters.system_code",
 												"type": "Expression"
 											}
 										}
@@ -165,7 +156,7 @@
 				"type": "string",
 				"defaultValue": "processed"
 			},
-			"use_case_code": {
+			"system_code": {
 				"type": "string"
 			}
 		},
