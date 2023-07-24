@@ -94,6 +94,7 @@
     <Build Include="modelled\Tables\DimSubArea.sql" />
     <Build Include="modelled\Tables\DimTendertype.sql" />
     <Build Include="Security\elt.sql" />
+    <Build Include="Security\modelled.sql.sql" />
     <Build Include="Security\processed.sql" />
     <Build Include="Security\audit.sql" />
     <Build Include="processed\Tables\dyn_account.sql" />
