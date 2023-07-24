@@ -93,6 +93,12 @@
     <Build Include="modelled\Functions\fn_get_easter_date.sql" />
     <Build Include="modelled\StoredProcedures\sp_populate_dimdate.sql" />
     <Build Include="modelled\Tables\DimDate.sql" />
+    <Build Include="modelled\StoredProcedures\sp_load_DimArea.sql" />
+    <Build Include="modelled\StoredProcedures\sp_load_DimSubArea.sql" />
+    <Build Include="modelled\StoredProcedures\sp_load_DimTenderType.sql" />
+    <Build Include="modelled\Tables\DimArea.sql" />
+    <Build Include="modelled\Tables\DimSubArea.sql" />
+    <Build Include="modelled\Tables\DimTendertype.sql" />
     <Build Include="Security\elt.sql" />
     <Build Include="Security\modelled.sql" />
     <Build Include="Security\processed.sql" />

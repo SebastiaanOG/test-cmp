@@ -1,11 +1,11 @@
-CREATE PROCEDURE [modelled].[sp_load_DimSubArea]           -- CHANGE INTO DIMENSION NAME
+CREATE PROCEDURE [modelled].[sp_load_DimTenderType]           -- CHANGE INTO DIMENSION NAME
     @process_run_date DATE,
     @process_run_id UNIQUEIDENTIFIER
 AS
     BEGIN
         DECLARE
             @schema NVARCHAR(20) = 'modelled',
-            @table NVARCHAR(20) = 'DimSubArea',            -- CHANGE INTO DIMENSION NAME
+            @table NVARCHAR(20) = 'DimTenderType',            -- CHANGE INTO DIMENSION NAME
 
             @inserted INT = 0,
             @updated INT = 0,
@@ -16,8 +16,8 @@ AS
         DECLARE @merge_results TABLE
         (
             action_type VARCHAR(50),
-            inserted_ak_subarea VARCHAR(50) NULL,
-            deleted_ak_subarea VARCHAR(50) NULL
+            inserted_ak_tendertype VARCHAR(50) NULL,
+            deleted_ak_tendertype VARCHAR(50) NULL
         );
 
         BEGIN TRY
@@ -25,22 +25,39 @@ AS
         ---- Query the dataset to fill #temp_DimSource: Source is processed layer data.
         ---- In a full delta, only select dwh_active = 1.
 
-        DROP TABLE IF EXISTS #subarea_active
+        DROP TABLE IF EXISTS #tendertype
 
-        SELECT
-             [dwh_valid_from]
-            ,[dwh_valid_to]
-            ,[dwh_active]
-            ,[dwh_process_run_id]
-            ,HASHBYTES(
-                'MD5', [name]
-            )                           AS [dwh_hash]
-            ,[ak_subarea]
-            ,[name]                     AS [subarea_name]
-        
-        INTO #subarea_active
-        FROM [processed].[dyn_subarea]
-        WHERE dwh_active = 1
+        SELECT 
+            tendertype              AS ak_tendertype,
+            tendertype_value        AS tendertype_name,
+            -- TODO TenderType sort values do not exists in the database.
+            CASE 
+                WHEN tendertype_value = 'Prospect' THEN 1
+                WHEN tendertype_value = 'Budget' THEN 2
+                WHEN tendertype_value = 'Tender' THEN 3
+                WHEN tendertype_value = 'N/A' THEN 4
+                ELSE 5
+            END                     AS tendertype_sort,
+            HASHBYTES('MD5', 
+                CONCAT(tendertype_value, 
+                CASE 
+                    WHEN tendertype_value = 'Prospect' THEN 1
+                    WHEN tendertype_value = 'Budget' THEN 2
+                    WHEN tendertype_value = 'Tender' THEN 3
+                    WHEN tendertype_value = 'N/A' THEN 4
+                    ELSE 5
+                END)) AS dwh_hash
+
+        INTO #tendertype
+        FROM (
+            SELECT 
+                tendertype, 
+                tendertype_value, 
+                ROW_NUMBER() OVER (PARTITION BY tendertype ORDER BY dwh_valid_from DESC) as [row]
+            FROM processed.dyn_project
+            WHERE tendertype IS NOT NULL  
+        ) ProjectTenderTypes 
+        WHERE [row] = 1 -- take last value per ak_tendertype
 
         --- Check if the dimension exists ---
         IF OBJECT_ID(@schema + '.' + @table) IS NULL
@@ -53,9 +70,9 @@ AS
         END
 
         -- Synchronize the target table with refreshed data from source table
-        MERGE modelled.DimSubArea AS DESTINATION
-        USING #subarea_active AS SOURCE
-        ON (DESTINATION.ak_subarea = SOURCE.ak_subarea) 
+        MERGE modelled.DimTenderType AS DESTINATION
+        USING #tendertype AS SOURCE
+        ON (DESTINATION.ak_tendertype = SOURCE.ak_tendertype) 
         -- When records are matched, update the records if there is any change, keep valid_from
         -- When dwh_active = 0, update dwh_valid_from
         WHEN MATCHED AND DESTINATION.dwh_hash <> SOURCE.dwh_hash OR DESTINATION.dwh_active = 0
@@ -65,16 +82,18 @@ AS
             ,DESTINATION.[dwh_valid_from] = CASE WHEN DESTINATION.dwh_active = 0 THEN @process_run_date ELSE DESTINATION.dwh_valid_from END
             ,DESTINATION.[dwh_valid_to] = NULL
             ,DESTINATION.[dwh_active] = 1
-            ,DESTINATION.[subarea_name] = SOURCE.[subarea_name]
+            ,DESTINATION.[tendertype_name] = SOURCE.[tendertype_name]
+            ,DESTINATION.[tendertype_sort] = SOURCE.[tendertype_sort]
+
                   
         WHEN NOT MATCHED BY TARGET 
         THEN INSERT 
-            (dwh_valid_from, dwh_valid_to, dwh_active, dwh_process_run_id, dwh_hash, ak_subarea, subarea_name) 
+            (dwh_valid_from, dwh_valid_to, dwh_active, dwh_process_run_id, dwh_hash, ak_tendertype, tendertype_name, tendertype_sort) 
         VALUES 
-            (@process_run_date, NULL, 1, @process_run_id, SOURCE.dwh_hash, SOURCE.ak_subarea, SOURCE.subarea_name)
+            (@process_run_date, NULL, 1, @process_run_id, SOURCE.dwh_hash, SOURCE.ak_tendertype, SOURCE.tendertype_name, SOURCE.tendertype_name)
 
         -- When there is a row that exists in target and same record does not exist in source then delete this record target
-        WHEN NOT MATCHED BY SOURCE AND DESTINATION.pk_subarea > 0 AND DESTINATION.dwh_active = 1
+        WHEN NOT MATCHED BY SOURCE AND DESTINATION.pk_tendertype > 0 AND DESTINATION.dwh_active = 1
          THEN UPDATE SET 
              DESTINATION.[dwh_valid_to] = DATEADD(day, -1 , @process_run_date)
             ,DESTINATION.[dwh_active] = 0
@@ -83,15 +102,15 @@ AS
         -- one of three values for each row: 'INSERT', 'UPDATE', or 'DELETE' according to the action that was performed on that row
         OUTPUT 
             $action, 
-            INSERTED.ak_subarea,
-            DELETED.ak_subarea
+            INSERTED.ak_tendertype,
+            DELETED.ak_tendertype
         INTO @merge_results;
        
         COMMIT
 		
-		SELECT @deleted = COUNT(deleted_ak_subarea) FROM @merge_results WHERE action_type = 'DELETE'
-        SELECT @inserted = COUNT(inserted_ak_subarea) FROM @merge_results WHERE action_type = 'INSERT'
-        SELECT @updated = COUNT(inserted_ak_subarea) FROM @merge_results WHERE action_type = 'UPDATE'
+		SELECT @deleted = COUNT(deleted_ak_tendertype) FROM @merge_results WHERE action_type = 'DELETE'
+        SELECT @inserted = COUNT(inserted_ak_tendertype) FROM @merge_results WHERE action_type = 'INSERT'
+        SELECT @updated = COUNT(inserted_ak_tendertype) FROM @merge_results WHERE action_type = 'UPDATE'
 
         -- Log process result
         EXECUTE [audit].[spInsertDataLogProcessed]

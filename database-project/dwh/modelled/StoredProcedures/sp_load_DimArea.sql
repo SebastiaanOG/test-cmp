@@ -1,4 +1,4 @@
-CREATE OR ALTER PROCEDURE [modelled].[sp_load_DimArea]           -- CHANGE INTO DIMENSION NAME
+CREATE PROCEDURE [modelled].[sp_load_DimArea]           -- CHANGE INTO DIMENSION NAME
     @process_run_date DATE,
     @process_run_id UNIQUEIDENTIFIER
 AS
@@ -83,14 +83,13 @@ AS
         USING #area_active AS SOURCE
         ON (DESTINATION.ak_area = SOURCE.ak_area) 
         -- When records are matched, update the records if there is any change
-        WHEN MATCHED AND DESTINATION.dwh_hash <> SOURCE.dwh_hash
+        WHEN MATCHED AND DESTINATION.dwh_hash <> SOURCE.dwh_hash OR DESTINATION.dwh_active = 0
         THEN UPDATE SET 
-             DESTINATION.[dwh_valid_from] = @process_run_date
-            ,DESTINATION.[dwh_valid_to] = NULL
-            ,DESTINATION.[dwh_active] = 1
-            ,DESTINATION.[dwh_process_run_id] = @process_run_id
+             DESTINATION.[dwh_process_run_id] = @process_run_id
             ,DESTINATION.[dwh_hash] = SOURCE.dwh_hash
-            ,DESTINATION.ak_area = SOURCE.ak_area
+            ,DESTINATION.[dwh_valid_from] = CASE WHEN DESTINATION.dwh_active = 0 THEN @process_run_date ELSE DESTINATION.dwh_valid_from END
+            ,DESTINATION.[dwh_valid_to] = NULL
+            ,DESTINATION.[dwh_active] = 1        
             ,DESTINATION.area_name = SOURCE.area_name
             ,DESTINATION.area_groupname = SOURCE.area_groupname
             ,DESTINATION.area_abbrevation = SOURCE.area_abbrevation
