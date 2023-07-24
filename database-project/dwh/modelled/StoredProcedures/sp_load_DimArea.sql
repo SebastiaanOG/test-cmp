@@ -22,6 +22,7 @@ AS
 
         BEGIN TRY
         BEGIN TRANSACTION
+
         ---- Query the dataset to fill #temp_DimSource: Source is processed layer data.
         ---- In a full delta, only select dwh_active = 1.
 

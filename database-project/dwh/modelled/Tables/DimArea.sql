@@ -15,8 +15,6 @@
 , CONSTRAINT [PK_modelled.DimArea] PRIMARY KEY CLUSTERED ([pk_area] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 100, DATA_COMPRESSION = PAGE))
 GO
 
-GO
-
 exec sys.sp_addextendedproperty @name=N'Table Name', @value=N'DimArea', @level0type=N'SCHEMA', @level0name=modelled, @level1type=N'TABLE', @level1name=DimArea
 GO
 exec sys.sp_addextendedproperty @name=N'Table Type', @value=N'Dimension', @level0type=N'SCHEMA', @level0name=modelled, @level1type=N'TABLE', @level1name=DimArea
@@ -206,24 +204,4 @@ GO
 exec sys.sp_addextendedproperty @name=N'ETL Rules', @value=N'Zie Comments', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimArea', @level2type=N'COLUMN', @level2name=N'area_groupname'; 
 GO
 exec sys.sp_addextendedproperty @name=N'ETL Rules', @value=N'IF(origional areaname in (''Subsidiaries'',''WICKS'',''Dravosa'' then areaname else ''Van Oord'' AS Company', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimArea', @level2type=N'COLUMN', @level2name=N'company'; 
-GO
-SET IDENTITY_INSERT modelled.DimArea ON;  
-GO
-INSERT INTO [modelled].[DimArea]
- (    [pk_area]
-      ,[dwh_valid_from] 
-      ,[dwh_valid_to]
-      ,[dwh_active]
-      ,[ak_area]
-      ,[area_name]
-      ,[area_groupname]
-      ,[area_abbrevation]
-      ,[area_businessunit]
-      ,[area_owner]
-      ,[company]
- )
-VALUES 
-   (-1, '1900-01-01', NULL, 1, -1, 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown'),
-   (-2, '1900-01-01', NULL, 1, -2, 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty')   
-
 GO
