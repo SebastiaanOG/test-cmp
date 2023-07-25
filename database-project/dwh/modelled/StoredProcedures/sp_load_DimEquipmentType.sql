@@ -71,8 +71,6 @@ AS
              DESTINATION.[dwh_valid_to] = DATEADD(day, -1 , @process_run_date)
             ,DESTINATION.[dwh_active] = 0
 
-        -- $action specifies a column of type nvarchar(10) in the OUTPUT clause that returns 
-        -- one of three values for each row: 'INSERT', 'UPDATE', or 'DELETE' according to the action that was performed on that row
         OUTPUT 
             $action, 
             INSERTED.ak_equipmenttype,
