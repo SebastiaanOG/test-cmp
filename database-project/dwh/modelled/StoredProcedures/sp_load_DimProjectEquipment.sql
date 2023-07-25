@@ -1,4 +1,4 @@
-CREATE OR ALTER PROCEDURE [modelled].[sp_load_DimProjectEquipment]
+CREATE PROCEDURE [modelled].[sp_load_DimProjectEquipment]
     @process_run_date DATE,
     @process_run_id UNIQUEIDENTIFIER
 AS
