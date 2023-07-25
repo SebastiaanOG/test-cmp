@@ -1,11 +1,11 @@
-CREATE PROCEDURE [modelled].[sp_load_DimTenderType]           -- CHANGE INTO DIMENSION NAME
+CREATE PROCEDURE [modelled].[sp_load_DimTenderType]
     @process_run_date DATE,
     @process_run_id UNIQUEIDENTIFIER
 AS
     BEGIN
         DECLARE
             @schema NVARCHAR(20) = 'modelled',
-            @table NVARCHAR(20) = 'DimTenderType',            -- CHANGE INTO DIMENSION NAME
+            @table NVARCHAR(20) = 'DimTenderType',
 
             @inserted INT = 0,
             @updated INT = 0,
@@ -22,15 +22,13 @@ AS
 
         BEGIN TRY
         BEGIN TRANSACTION
-        ---- Query the dataset to fill #temp_DimSource: Source is processed layer data.
-        ---- In a full delta, only select dwh_active = 1.
 
         DROP TABLE IF EXISTS #tendertype
 
         SELECT 
             tendertype              AS ak_tendertype,
             tendertype_value        AS tendertype_name,
-            -- TODO TenderType sort values do not exists in the database.
+            -- TODO ! TenderType sort values do not exists in the database.
             CASE 
                 WHEN tendertype_value = 'Prospect' THEN 1
                 WHEN tendertype_value = 'Budget' THEN 2
@@ -59,7 +57,7 @@ AS
         ) ProjectTenderTypes 
         WHERE [row] = 1 -- take last value per ak_tendertype
 
-        --- Check if the dimension exists ---
+        --- Check if the dimension exists
         IF OBJECT_ID(@schema + '.' + @table) IS NULL
         BEGIN
             DECLARE
@@ -98,8 +96,6 @@ AS
              DESTINATION.[dwh_valid_to] = DATEADD(day, -1 , @process_run_date)
             ,DESTINATION.[dwh_active] = 0
 
-        -- $action specifies a column of type nvarchar(10) in the OUTPUT clause that returns 
-        -- one of three values for each row: 'INSERT', 'UPDATE', or 'DELETE' according to the action that was performed on that row
         OUTPUT 
             $action, 
             INSERTED.ak_tendertype,

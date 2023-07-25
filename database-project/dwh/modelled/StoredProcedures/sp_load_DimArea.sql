@@ -1,11 +1,11 @@
-CREATE PROCEDURE [modelled].[sp_load_DimArea]           -- CHANGE INTO DIMENSION NAME
+CREATE PROCEDURE [modelled].[sp_load_DimArea]
     @process_run_date DATE,
     @process_run_id UNIQUEIDENTIFIER
 AS
     BEGIN
         DECLARE
             @schema NVARCHAR(20) = 'modelled',
-            @table NVARCHAR(20) = 'DimArea',            -- CHANGE INTO DIMENSION NAME
+            @table NVARCHAR(20) = 'DimArea',
 
             @inserted INT = 0,
             @updated INT = 0,
@@ -22,10 +22,7 @@ AS
 
         BEGIN TRY
         BEGIN TRANSACTION
-
-        ---- Query the dataset to fill #temp_DimSource: Source is processed layer data.
-        ---- In a full delta, only select dwh_active = 1.
-
+    
         DROP TABLE IF EXISTS #area_active
 
         SELECT
@@ -67,9 +64,8 @@ AS
         FROM [processed].[dyn_area]
         WHERE dwh_active = 1
 
-        -- SELECT * FROM #area_active
 
-        --- Check if the dimension exists ---
+        --- Check if the dimension exists
         IF OBJECT_ID(@schema + '.' + @table) IS NULL
         BEGIN
             DECLARE
@@ -110,9 +106,6 @@ AS
              DESTINATION.[dwh_valid_to] = @process_run_date
             ,DESTINATION.[dwh_active] = 0
 
-        -- THEN DELETE 
-        -- $action specifies a column of type nvarchar(10) in the OUTPUT clause that returns 
-        -- one of three values for each row: 'INSERT', 'UPDATE', or 'DELETE' according to the action that was performed on that row
         OUTPUT 
             $action, 
             INSERTED.ak_area,
