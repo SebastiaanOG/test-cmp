@@ -26,26 +26,50 @@ AS
         DROP TABLE IF EXISTS #projectequipment
 
         SELECT 
-            ak_quantitiesequipment            AS [ak_projectequipment],
-            [name]                            AS [projectequipment_description],
-            groupid_value                     AS [projectequipment_activity],
-            workelementid_value               AS [projectequipment_product_services],
-            scopeid_value                     AS [projectequipment_scope],
-            soiltype_value                    AS [projectequipment_soiltype],
-            quantityvo                        AS [dredging_volume],
-            unitid_value                      AS [dredging_volume_unit],
-            equipmentremarks                  AS [projectequipment_remarks],
-            equipmentid_value                 AS [equipment_name]
+            ak_quantitiesequipment                  AS [ak_projectequipment]
+            ,[name]                                 AS [projectequipment_description]
+            ,groupid_value                          AS [projectequipment_activity]
+            ,workelementid_value                    AS [projectequipment_product_services]
+            ,scopeid_value                          AS [projectequipment_scope]
+            ,soiltype_value                         AS [soiltype]
+            ,quantityvo                             AS [dredging_volume]
+            ,unitid_value                           AS [dredging_volume_unit]
+            ,equipmentremarks                       AS [projectequipment_remarks]
+            ,equipmentid_value                      AS [equipment_name]
+            ,ISNULL(equipment_category, 'Empty')    AS [equipment_unit_category]
+            ,HASHBYTES('MD5', 
+                CONCAT(
+                    [name]             
+                    ,groupid_value      
+                    ,workelementid_value
+                    ,scopeid_value      
+                    ,soiltype_value     
+                    ,quantityvo         
+                    ,unitid_value       
+                    ,equipmentremarks   
+                    ,equipmentid_value  
+                    ,ISNULL(equipment_category, 'Empty')
+                
+                )            
+            )                                   AS [dwh_hash]
 
-
-            --HASHBYTES('MD5', [name])          AS [dwh_hash]
-        -- INTO #projectequipment
-        FROM processed.dyn_quantitiesequipment
+        INTO #projectequipment
+        FROM processed.dyn_quantitiesequipment projectequipment
+        LEFT JOIN
+            [reference].equipment_category equipment_category on
+            ((equipment_category.equipment_scope = projectequipment.scopeid_value) OR (equipment_category.equipment_scope = 'Empty' AND projectequipment.scopeid_value IS NULL)) AND
+            ((equipment_category.equipment_activity = projectequipment.groupid_value) OR (equipment_category.equipment_activity = 'Empty' AND projectequipment.groupid_value IS NULL)) AND
+            ((equipment_category.equipment_product_services = projectequipment.workelementid_value) OR (equipment_category.equipment_product_services = 'Empty' AND projectequipment.workelementid_value IS NULL))
         WHERE dwh_active = 1
 
-        SELECT TOP 10 * FROM processed.dyn_quantitiesequipment
+        --- Check if the join did not cause duplicates (because of reference table)
+        IF EXISTS (SELECT ak_projectequipment FROM #projectequipment GROUP BY ak_projectequipment HAVING COUNT(*) > 1)
+        BEGIN
+            DECLARE @ErrorMessage NVARCHAR(256) = 'Duplicate rows in project equipment, problably due to non-unique join to equipment_category';
+            THROW 50000, @ErrorMessage, 1;
+        END
 
-        --- Check if the dimension exists ---
+        --- Check if the dimension exists
         IF OBJECT_ID(@schema + '.' + @table) IS NULL
         BEGIN
             DECLARE
@@ -68,14 +92,57 @@ AS
             ,DESTINATION.[dwh_valid_from] = CASE WHEN DESTINATION.dwh_active = 0 THEN @process_run_date ELSE DESTINATION.dwh_valid_from END
             ,DESTINATION.[dwh_valid_to] = NULL
             ,DESTINATION.[dwh_active] = 1
-            ,DESTINATION.[projectequipment_name] = SOURCE.[projectequipment_name]
-
-                  
+            ,DESTINATION.[ak_projectequipment] = SOURCE.[ak_projectequipment]
+            ,DESTINATION.[projectequipment_description] = SOURCE.[projectequipment_description]
+            ,DESTINATION.[projectequipment_activity] = SOURCE.[projectequipment_activity]
+            ,DESTINATION.[projectequipment_product_services] = SOURCE.[projectequipment_product_services]
+            ,DESTINATION.[projectequipment_scope] = SOURCE.[projectequipment_scope]
+            ,DESTINATION.[soiltype] = SOURCE.[soiltype]
+            ,DESTINATION.[dredging_volume] = SOURCE.[dredging_volume]
+            ,DESTINATION.[dredging_volume_unit] = SOURCE.[dredging_volume_unit]
+            ,DESTINATION.[projectequipment_remarks] = SOURCE.[projectequipment_remarks]
+            ,DESTINATION.[equipment_name] = SOURCE.[equipment_name]
+            ,DESTINATION.[equipment_unit_category] = SOURCE.[equipment_unit_category]
+                
         WHEN NOT MATCHED BY TARGET 
         THEN INSERT 
-            (dwh_valid_from, dwh_valid_to, dwh_active, dwh_process_run_id, dwh_hash, ak_projectequipment, projectequipment_name) 
+            (
+                dwh_valid_from
+                ,dwh_valid_to
+                ,dwh_active
+                ,dwh_process_run_id
+                ,dwh_hash
+                ,ak_projectequipment
+                ,projectequipment_description
+                ,projectequipment_activity
+                ,projectequipment_product_services
+                ,projectequipment_scope
+                ,soiltype
+                ,dredging_volume
+                ,dredging_volume_unit
+                ,projectequipment_remarks
+                ,equipment_name
+                ,equipment_unit_category
+            ) 
         VALUES 
-            (@process_run_date, NULL, 1, @process_run_id, SOURCE.dwh_hash, SOURCE.ak_projectequipment, SOURCE.projectequipment_name)
+            (
+                @process_run_date
+                ,NULL
+                ,1
+                ,@process_run_id
+                ,SOURCE.dwh_hash
+                ,SOURCE.ak_projectequipment
+                ,SOURCE.projectequipment_description
+                ,SOURCE.projectequipment_activity
+                ,SOURCE.projectequipment_product_services
+                ,SOURCE.projectequipment_scope
+                ,SOURCE.soiltype
+                ,SOURCE.dredging_volume
+                ,SOURCE.dredging_volume_unit
+                ,SOURCE.projectequipment_remarks
+                ,SOURCE.equipment_name
+                ,SOURCE.equipment_unit_category                
+            )
 
         -- When there is a row that exists in target and same record does not exist in source then delete this record target
         WHEN NOT MATCHED BY SOURCE AND DESTINATION.pk_projectequipment > 0 AND DESTINATION.dwh_active = 1

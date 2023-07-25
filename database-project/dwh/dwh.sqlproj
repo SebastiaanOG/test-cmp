@@ -59,11 +59,13 @@
     <Folder Include="modelled\Functions" />
     <Folder Include="modelled\StoredProcedures" />
     <Folder Include="modelled\Tables" />
+    <Folder Include="PostDeploy\reference" />
     <Folder Include="Properties" />
     <Folder Include="elt\" />
     <Folder Include="elt\Tables\" />
     <Folder Include="audit\" />
     <Folder Include="audit\Tables\" />
+    <Folder Include="reference" />
     <Folder Include="Security\" />
     <Folder Include="elt\StoredProcedures\" />
     <Folder Include="audit\StoredProcedures\" />
@@ -105,6 +107,13 @@
     <Build Include="modelled\Tables\DimProjectEquipment.sql" />
     <Build Include="modelled\Tables\DimSubArea.sql" />
     <Build Include="modelled\Tables\DimTendertype.sql" />
+    <Build Include="PostDeploy\reference\pd_contractvalue_class.sql" />
+    <Build Include="PostDeploy\reference\pd_dredgingcategory_defaults.sql" />
+    <Build Include="reference\contractvalue_class.sql" />
+    <Build Include="reference\country.sql" />
+    <Build Include="reference\dredgingcategory_defaults.sql" />
+    <Build Include="reference\equipment_category.sql" />
+    <Build Include="reference\projectstage.sql" />
     <Build Include="Security\elt.sql" />
     <Build Include="Security\modelled.sql" />
     <Build Include="Security\processed.sql" />
@@ -225,6 +234,7 @@
     <Build Include="processed\StoredProcedures\sp_load_dyn_workelement.sql">
       <SuppressTSqlWarnings>71502</SuppressTSqlWarnings>
     </Build>
+    <Build Include="Security\reference.sql" />
     <None Include="elt\StoredProcedures\Processed\cmptest.sql" />
   </ItemGroup>
   <ItemGroup>
@@ -234,6 +244,9 @@
     <None Include="PostDeploy\pd_ProcessedTables.sql" />
     <None Include="PostDeploy\pd_AuthSynapseWS.sql" />
     <None Include="PostDeploy\pd_ExecuteStoreProcedures.sql" />
+    <None Include="PostDeploy\reference\pd_country.sql" />
+    <None Include="PostDeploy\reference\pd_projectstage.sql" />
+    <None Include="PostDeploy\reference\pd_equipment_category.sql" />
   </ItemGroup>
   <Import Condition="'$(NetCoreBuild)' == 'true'" Project="$(NETCoreTargetsPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
