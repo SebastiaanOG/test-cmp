@@ -1,5 +1,5 @@
 TRUNCATE TABLE [reference].[projectstage]
-
+GO
 INSERT INTO [reference].[projectstage]
     ([AK_statuscode]
     ,[AK_typetender]
@@ -45,5 +45,3 @@ VALUES
     ,('Unsuccessful Tender','Prospect','Unsuccessful')
     ,('Unsuccessful Tender','Tender','Unsuccessful')           
 GO
-
-

@@ -1,5 +1,5 @@
 TRUNCATE TABLE [reference].[dredgingcategory_defaults]
-
+GO
 INSERT INTO [reference].[dredgingcategory_defaults]
     ([dredgingcategory]
     ,[default_dredgingcategory_duration]

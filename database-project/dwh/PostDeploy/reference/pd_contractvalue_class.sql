@@ -1,5 +1,5 @@
 TRUNCATE TABLE [reference].[contractvalue_class]
-
+GO
 INSERT INTO [reference].[contractvalue_class]
     ([contractvalue_class]
     ,[total_VO_share_from]

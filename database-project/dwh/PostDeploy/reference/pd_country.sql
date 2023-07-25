@@ -1,5 +1,5 @@
 TRUNCATE TABLE [reference].[country]
-
+GO
 INSERT INTO [reference].[country]
     ([country]  ,[region_NL],[region_DR] ,[region_OW],[region_OF],[subregion_OF])
 VALUES

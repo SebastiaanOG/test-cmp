@@ -1,5 +1,5 @@
 TRUNCATE TABLE [reference].[equipment_category]
-
+GO
 INSERT INTO [reference].[equipment_category]
            ([equipment_scope] ,
 	        [equipment_activity] ,
@@ -140,4 +140,5 @@ VALUES
     ,('Transport & Installation','WTG''s','WTG''s','Wind Turbine Generator WTG')		
     ,('Transport & Installation','WTG''s','Empty','Wind Turbine Generator WTG')		
     ,('Transport & Installation','Empty','Empty','Empty')		
-    ,('Empty','Empty','Empty','Empty')		
+    ,('Empty','Empty','Empty','Empty')
+GO
