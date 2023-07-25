@@ -22,6 +22,7 @@ BEGIN
     VALUES 
     (-1, '1900-01-01', NULL, 1, -1, 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown'),
     (-2, '1900-01-01', NULL, 1, -2, 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty')
+    SET IDENTITY_INSERT modelled.DimArea OFF;  
 END
 
 IF (SELECT COUNT(*) FROM modelled.DimSubArea WHERE pk_subarea < 0) != 2
@@ -39,7 +40,8 @@ BEGIN
 
     VALUES 
     (-1, '1900-01-01', NULL, 1, NULL, NULL, -1, 'Unknown'),
-    (-2, '1900-01-01', NULL, 1, NULL, NULL, -2, 'Empty')    
+    (-2, '1900-01-01', NULL, 1, NULL, NULL, -2, 'Empty')   
+    SET IDENTITY_INSERT modelled.DimSubArea OFF;   
 END
 
 IF (SELECT COUNT(*) FROM modelled.DimTenderType WHERE pk_tendertype < 0) != 2
@@ -58,6 +60,7 @@ BEGIN
     VALUES 
     (-1, '1900-01-01', NULL, 1, NULL, NULL, 'Unknown', 2147483646),
     (-2, '1900-01-01', NULL, 1, NULL, NULL, 'Empty', 2147483647)
+    SET IDENTITY_INSERT modelled.DimTendertype OFF;
 END
 
 
@@ -82,6 +85,7 @@ BEGIN
     VALUES 
         (-1, '1900-01-01', -1, 1, 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown'),
         (-2, '1900-01-01', -2, 1, 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty')
+    SET IDENTITY_INSERT [modelled].[DimProjectEquipment] OFF; 
 END
 
 IF (SELECT COUNT(*) FROM modelled.DimEquipmentType WHERE pk_equipmenttype < 0) != 2
@@ -97,6 +101,7 @@ BEGIN
     VALUES 
         (-1, '1900-01-01', -1, 1, 'Unknown'),
         (-2, '1900-01-01', -2, 1, 'Empty')
+    SET IDENTITY_INSERT [modelled].[DimEquipmentType] OFF; 
 END
 
 IF (SELECT COUNT(*) FROM modelled.DimEquipmentObject WHERE pk_equipmentobject < 0) != 2
@@ -115,4 +120,5 @@ BEGIN
     VALUES 
         (-1, '1900-01-01', -1, 1, 'Unknown', 'Unknown', 'Unknown', 'Unknown'),
         (-2, '1900-01-01', -2, 1, 'Empty', 'Empty', 'Empty', 'Empty')
+    SET IDENTITY_INSERT [modelled].[DimEquipmentObject] OFF; 
 END
