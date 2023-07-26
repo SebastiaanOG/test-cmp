@@ -5,7 +5,7 @@ INSERT INTO [reference].[projectstage]
     ,[AK_typetender]
     ,[projectstage])
 VALUES 
-    ('Alternative','Tender','Tender')
+     ('Alternative','Tender','Tender')
     ,('Analyse','Budget','Budget')
     ,('Analyse','Tender','Tender')
     ,('Negotiate','Budget','Budget')

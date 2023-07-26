@@ -3,7 +3,7 @@ GO
 INSERT INTO [reference].[country]
     ([country]  ,[region_NL],[region_DR] ,[region_OW],[region_OF],[subregion_OF])
 VALUES
-    ('Afghanistan',NULL,NULL,NULL,'Middle east','North Europe')
+     ('Afghanistan',NULL,NULL,NULL,'Middle east','North Europe')
     ,('Åland Islands','EUR','EUR','EUR',NULL,'Middle East')
     ,('Albania','EUR','EUR','EUR','East Europe','South Europe')
     ,('Algeria','EUR','EUR','EUR','South Europe','North West Africa')

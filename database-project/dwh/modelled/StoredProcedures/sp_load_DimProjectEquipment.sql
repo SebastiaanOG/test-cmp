@@ -26,32 +26,32 @@ AS
         DROP TABLE IF EXISTS #projectequipment
 
         SELECT 
-            ak_quantitiesequipment                  AS [ak_projectequipment]
-            ,[name]                                 AS [projectequipment_description]
-            ,groupid_value                          AS [projectequipment_activity]
-            ,workelementid_value                    AS [projectequipment_product_services]
-            ,scopeid_value                          AS [projectequipment_scope]
-            ,soiltype_value                         AS [soiltype]
-            ,quantityvo                             AS [dredging_volume]
-            ,unitid_value                           AS [dredging_volume_unit]
-            ,equipmentremarks                       AS [projectequipment_remarks]
-            ,equipmentid_value                      AS [equipment_name]
-            ,ISNULL(equipment_category, 'Empty')    AS [equipment_unit_category]
+            projectequipment.ak_quantitiesequipment                     AS [ak_projectequipment]
+            ,projectequipment.[name]                                    AS [projectequipment_description]
+            ,projectequipment.groupid_value                             AS [projectequipment_activity]
+            ,projectequipment.workelementid_value                       AS [projectequipment_product_services]
+            ,projectequipment.scopeid_value                             AS [projectequipment_scope]
+            ,projectequipment.soiltype_value                            AS [soiltype]
+            ,projectequipment.quantityvo                                AS [dredging_volume]
+            ,projectequipment.unitid_value                              AS [dredging_volume_unit]
+            ,projectequipment.equipmentremarks                          AS [projectequipment_remarks]
+            ,projectequipment.equipmentid_value                         AS [equipment_name]
+            ,ISNULL(equipment_category.equipment_category, 'Empty')     AS [equipment_unit_category]
             ,HASHBYTES('MD5', 
                 CONCAT(
-                    [name]             
-                    ,groupid_value      
-                    ,workelementid_value
-                    ,scopeid_value      
-                    ,soiltype_value     
-                    ,quantityvo         
-                    ,unitid_value       
-                    ,equipmentremarks   
-                    ,equipmentid_value  
-                    ,ISNULL(equipment_category, 'Empty')
+                     projectequipment.[name]             
+                    ,projectequipment.groupid_value      
+                    ,projectequipment.workelementid_value
+                    ,projectequipment.scopeid_value      
+                    ,projectequipment.soiltype_value     
+                    ,projectequipment.quantityvo         
+                    ,projectequipment.unitid_value       
+                    ,projectequipment.equipmentremarks   
+                    ,projectequipment.equipmentid_value  
+                    ,ISNULL(equipment_category.equipment_category, 'Empty')
                 
                 )            
-            )                                   AS [dwh_hash]
+            )                                                           AS [dwh_hash]
 
         INTO #projectequipment
         FROM processed.dyn_quantitiesequipment projectequipment

@@ -66,6 +66,7 @@
     <Folder Include="audit\" />
     <Folder Include="audit\Tables\" />
     <Folder Include="reference" />
+    <Folder Include="reference\Tables" />
     <Folder Include="Security\" />
     <Folder Include="elt\StoredProcedures\" />
     <Folder Include="audit\StoredProcedures\" />
@@ -107,11 +108,11 @@
     <Build Include="modelled\Tables\DimProjectEquipment.sql" />
     <Build Include="modelled\Tables\DimSubArea.sql" />
     <Build Include="modelled\Tables\DimTendertype.sql" />
-    <Build Include="reference\contractvalue_class.sql" />
-    <Build Include="reference\country.sql" />
-    <Build Include="reference\dredgingcategory_defaults.sql" />
-    <Build Include="reference\equipment_category.sql" />
-    <Build Include="reference\projectstage.sql" />
+    <Build Include="reference\Tables\contractvalue_class.sql" />
+    <Build Include="reference\Tables\country.sql" />
+    <Build Include="reference\Tables\dredgingcategory_defaults.sql" />
+    <Build Include="reference\Tables\equipment_category.sql" />
+    <Build Include="reference\Tables\projectstage.sql" />
     <Build Include="Security\elt.sql" />
     <Build Include="Security\modelled.sql" />
     <Build Include="Security\processed.sql" />
