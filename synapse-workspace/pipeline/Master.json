@@ -28,6 +28,10 @@
 						"mdb_dbname": {
 							"value": "@pipeline().parameters.mdb_dbname",
 							"type": "Expression"
+						},
+						"use_case_code": {
+							"value": "@pipeline().parameters.use_case_code",
+							"type": "Expression"
 						}
 					}
 				}
@@ -183,6 +187,11 @@
 			},
 			"system_code": {
 				"type": "string"
+			}
+		},
+		"variables": {
+			"process_run_id": {
+				"type": "String"
 			}
 		},
 		"variables": {
