@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Lookup - UseCaseEntity sources",
+				"name": "Lookup - Systems",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -18,15 +18,6 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderStoredProcedureName": "[elt].[spLookupActiveSystems]",
-						"storedProcedureParameters": {
-							"UseCaseCode": {
-								"type": "String",
-								"value": {
-									"value": "@pipeline().parameters.use_case_code",
-									"type": "Expression"
-								}
-							}
-						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -48,7 +39,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Lookup - UseCaseEntity sources",
+						"activity": "Lookup - Systems",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -57,7 +48,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Lookup - UseCaseEntity sources').output.value",
+						"value": "@activity('Lookup - Systems').output.value",
 						"type": "Expression"
 					},
 					"batchCount": 50,
@@ -194,9 +185,6 @@
 				"type": "string"
 			},
 			"mdb_dbname": {
-				"type": "string"
-			},
-			"use_case_code": {
 				"type": "string"
 			}
 		},

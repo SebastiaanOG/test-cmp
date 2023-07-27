@@ -1,21 +1,14 @@
-CREATE PROCEDURE [elt].[spCopyRawToStg] @process_run_date DATE, @pipeline_run_id uniqueidentifier, @use_case_code varchar(max), @layer_name nvarchar(max)
+CREATE PROCEDURE [elt].[spCopyRawToStg] @process_run_date DATE, @pipeline_run_id uniqueidentifier,  @layer_name nvarchar(max), @system_code NVARCHAR(MAX)
 AS
    BEGIN
         WITH CTE
-                AS (SELECT DISTINCT
-                    vcm.SystemName,
-                    vcm.SystemCode,
-                    vcm.SystemType,
-                    vcm.SchemaName,
-                    vcm.EntityName,
-                    vcm.UseCaseCode,
-                    ue.Active,
-                    ue.CopyToStg
-                FROM elt.vwMetaDataRaw vcm
-                INNER JOIN elt.UseCaseEntity ue ON vcm.UseCaseCode = ue.UseCaseCode AND vcm.EntityName = ue.EntityName
-                WHERE vcm.UseCaseCode = @use_case_code
-                    AND ue.Active = 1
-                    AND ue.CopyToStg = 1
+                AS (SELECT DISTINCT 
+                        vcm.SystemName,
+						vcm.SystemCode, 
+                        vcm.SystemType,
+						vcm.SchemaName,
+                        vcm.EntityName
+                 FROM elt.vwMetaDataRaw vcm where vcm.SystemCode = @system_code
                 )
              SELECT vcm.SystemName AS source_system_name, 
                     [elt].[fnCreateStagedFileName](vcm.EntityName, vcm.SchemaName, r.IncrementColumnName, @process_run_date, r.IncrementRange) AS source_entity_file_name, 
@@ -25,8 +18,7 @@ AS
 					vcm.SystemName AS system_name,
 					vcm.EntityName AS entity_name,
                     [elt].[fnCreateEntityStructure](vcm.SystemName, vcm.SchemaName, vcm.EntityName) AS sink_entity_structure, 
-                    [elt].[fnCreateEntityTranslator](vcm.SystemName, vcm.SchemaName, vcm.EntityName) AS source_sink_mapping,
-                    vcm.UseCaseCode AS use_case_code
+                    [elt].[fnCreateEntityTranslator](vcm.SystemName, vcm.SchemaName, vcm.EntityName) AS source_sink_mapping
                     --CASE
                     --    WHEN r.IncrementColumnName IS NOT NULL
                     --    THEN 'yes'
@@ -43,5 +35,7 @@ AS
 						ON ms.SystemName = vcm.SystemName
 						and ms.SystemCode = r.SystemCode
 						and ms.[Active] =1
+            WHERE r.CopyToStg = 1
+			 AND r.IsActive = 1
             ORDER BY vcm.SystemName ASC;
     END;

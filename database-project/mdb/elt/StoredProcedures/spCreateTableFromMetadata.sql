@@ -36,7 +36,8 @@ BEGIN
 																			ELSE CONCAT('(',  t.[CharacterMaximumLength], ')')
 																		END
 																		, ' '
-																		, IIF(t.[IsNullable] = 'NO', 'NOT NULL', 'NULL')
+																		, IIF(t.[IsNullable] = 0, 'NOT NULL', 'NULL')
+																		, IIF(t.[IsPrimaryKey] = 1, ' PRIMARY KEY', '') -- Add primary key constraint if IsPrimaryKey is 1
 																  )
 											)
 										  , ','

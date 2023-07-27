@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT * FROM elt.UseCaseEntity\nWHERE Active = 1 AND SystemCode = 'snp'",
+						"sqlReaderQuery": "SELECT * FROM elt.MetadataTables\nWHERE IsActive = 1 AND SystemCode = 'snp'",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},

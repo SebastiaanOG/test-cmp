@@ -1,0 +1,83 @@
+name: Build and publish copy databases of dwh for testing and development purposes
+
+on:
+  workflow_dispatch:
+    inputs:
+      dwh_clone:
+        description: 'Name of the copy database for dwh'
+        required: true
+
+jobs:
+  check_branch_and_db:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Only allow feature branches to use this workflow and deploy only on a copy of dwh
+          run: |
+            if [[ "${{ github.ref }}" != "refs/heads/feature/"* ]]; then
+              echo "ERROR: You can only trigger this workflow on a feature branch"
+              exit 1
+            elif [[ "${{ github.event.inputs.dwh_clone }}" == 'dwh' ]]; then
+              echo "ERROR: You cannot trigger this workflow on dwh but you can do it on a copy of dwh"
+              exit 1
+            fi  
+
+  build:  
+  # MSBuild for sqldb.sln doesn't work on windows-latest
+    runs-on: windows-2019
+    needs: [check_branch_and_db]
+    steps:
+    - name: Checkout this repository | Required to build projects
+      uses: actions/checkout@v1
+    
+    - name: Setup MSBuild | Required to build db projects
+      uses: microsoft/setup-msbuild@v1.1
+      with:
+        msbuild-architecture: x64
+    
+    - name: Build database project | Build the projects from the sln file
+      run: msbuild database-project\dwh\dwh.sqlproj /p:Configuration=Release
+    
+    - name: Publish build artifacts for ${{ github.event.inputs.dwh_clone }} | Upload dacpac files to workflow run
+      uses: actions/upload-artifact@master
+      with:
+        name: ${{ github.event.inputs.dwh_clone }}
+        path: ${{ github.workspace }}\database-project\dwh\bin\Release\
+
+  # Release on the target environment
+  release:
+    runs-on: self-hosted
+    needs: [build]
+    environment: "does_not_support"
+
+    steps:
+    - name: Download the artifact for ${{ github.event.inputs.dwh_clone }} | Download dacpac files on self-hosted runner
+      uses: actions/download-artifact@v2.0.6
+      with:
+        name: ${{ github.event.inputs.dwh_clone }}
+        
+    - name: Download and add sqlpackage on self-hosted runner
+      run: |
+        curl "https://go.microsoft.com/fwlink/?linkid=2143497" -4 -sL -o '/tmp/sqlpackage.zip'
+        unzip /tmp/sqlpackage.zip -d $HOME/sqlpackage
+        chmod +x $HOME/sqlpackage/sqlpackage
+        sudo ln -sf $HOME/sqlpackage/sqlpackage /usr/local/bin
+        sqlpackage /version
+        
+    - name: Install Azure CLI on self-hosted runner
+      run: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
+    - name: Use credentials | Log in into Azure
+      uses: azure/login@v1
+      with:
+        creds: '{"clientId":"${{ vars.SP_ID }}","clientSecret":"${{ secrets.SP_SECRET }}","subscriptionId":"${{ vars.SUBSCRIPTION_ID }}","tenantId":"${{ vars.TENANT_ID }}"}'
+  
+    - name: Publish ${{ github.event.inputs.dwh_clone }} | Publishes dacpac files to target dbs
+      uses: azure/sql-action@v2.1.1
+      with:
+        connection-string: 'Server=tcp:${{ vars.SQL_SERVER }}.database.windows.net,1433;Initial Catalog=${{ github.event.inputs.dwh_clone }};Authentication=Active Directory Service Principal;User ID=${{ vars.SP_ID }};Password=${{ secrets.SP_SECRET }};'
+        path: '${{ github.workspace }}/dwh.dacpac'
+        action: 'Publish'
+
+    - name: Logout from Azure 
+      run: |
+         az logout

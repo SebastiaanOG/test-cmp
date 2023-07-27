@@ -3,7 +3,7 @@ name: Deployment of Synapse workspace
 on:
   push:
     branches:
-      # Synapse development is directly integrated with git
+      - development
       - uat
       - main
     paths:
@@ -21,10 +21,10 @@ jobs:
         run: |
           echo "ERROR: You can only merge into main from uat."
           exit 1
-      - name: if 'uat' branch then only allow 'dev' to merge 
-        if: github.base_ref == 'uat' && github.head_ref != 'dev'
+      - name: if 'uat' branch then only allow 'development' to merge 
+        if: github.base_ref == 'uat' && github.head_ref != 'development'
         run: |
-          echo "ERROR: You can only merge into uat from dev."
+          echo "ERROR: You can only merge into uat from development."
           exit 1
   
   init:
@@ -46,7 +46,7 @@ jobs:
 
   deployment:
     runs-on: self-hosted
-    needs: init
+    needs: [check_branch, init] 
     environment: "${{needs.init.outputs.environment}}"
     steps:
     - name: Pre-run | Checkout repository

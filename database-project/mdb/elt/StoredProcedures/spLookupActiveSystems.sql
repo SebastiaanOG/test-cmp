@@ -1,8 +1,5 @@
-CREATE PROCEDURE [elt].[spLookupActiveSystems] ( @UseCaseCode	nvarchar(128) )
+CREATE PROCEDURE [elt].[spLookupActiveSystems] 
 AS
 SELECT DISTINCT ms.*
-FROM [elt].[UseCaseEntity] uc
-INNER JOIN elt.metadatasystem ms
-    ON uc.SystemCode = ms.SystemCode
-    AND uc.Active = 1
-    AND uc.UseCaseCode = @UseCaseCode
+FROM [elt].[MetadataSystem] ms
+WHERE ms.Active = 1

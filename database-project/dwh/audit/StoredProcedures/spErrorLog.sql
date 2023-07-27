@@ -1,5 +1,5 @@
 ﻿CREATE PROCEDURE [audit].[spErrorLog]
-    @ProcessID AS UNIQUEIDENTIFIER,
+    @ProcessRunID AS UNIQUEIDENTIFIER,
     @Schema AS VARCHAR(100),
     @EntityName AS VARCHAR(100),
     @ErrorCode INT,
@@ -18,7 +18,7 @@ BEGIN
         [ErrorType]
     )
     VALUES (
-        @ProcessID,
+        @ProcessRunID,
         @Schema,
         @EntityName,
         @ErrorCode,
