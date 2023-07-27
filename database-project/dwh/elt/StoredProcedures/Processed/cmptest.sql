@@ -3,8 +3,8 @@ CREATE PROCEDURE [processed].[cmptest]
         @ProcessRunID      INT
 ,       @PipelineRunID      uniqueidentifier
 ,       @TaskName           VARCHAR(100)
-,	@Schema varchar(max) = 'processed'
-,	@EntityName varchar(max) = 'cmptest'
+,       @Schema varchar(max) = 'processed'
+,       @EntityName varchar(max) = 'cmptest'
 AS
 BEGIN
 DECLARE @InputInsertedRows       INT = 0
@@ -15,7 +15,7 @@ DECLARE @InputInsertedRows       INT = 0
  
 
 BEGIN TRY  
-	BEGIN TRANSACTION
+    BEGIN TRANSACTION
 
         TRUNCATE TABLE IF EXISTS [processed].[cmptest]
 
@@ -59,16 +59,16 @@ BEGIN CATCH
         END
 END CATCH  
 
-		SELECT
-		@ProcessRunID		AS [ProcessRunID]
-		,'cmp-test' AS [SourceSchema]
-		,'fuel_prices'         AS [SourceTable]
-		,'processed'              AS [SinkSchema]
-		,'cmptest'      AS [SinkTable]
-		,@TaskName		    AS TaskName
-		,@InputInsertedRows	AS RowsWritten
-		,@InputUpdatedRows 	AS RowsUpdated
-		,@InputDeletedRows 	AS RowsDeleted
-		,@ErrorDescription	AS ErrorDescription
-		,@ErrorCode       	AS ErrorCode
+        SELECT
+        @ProcessRunID           AS [ProcessRunID]
+        ,'cmp-test'             AS [SourceSchema]
+        ,'fuel_prices'          AS [SourceTable]
+        ,'processed'            AS [SinkSchema]
+        ,'cmptest'              AS [SinkTable]
+        ,@TaskName              AS TaskName
+        ,@InputInsertedRows     AS RowsWritten
+        ,@InputUpdatedRows      AS RowsUpdated
+        ,@InputDeletedRows      AS RowsDeleted
+        ,@ErrorDescription      AS ErrorDescription
+        ,@ErrorCode             AS ErrorCode
 END

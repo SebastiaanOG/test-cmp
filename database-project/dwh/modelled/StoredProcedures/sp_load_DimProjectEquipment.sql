@@ -157,8 +157,8 @@ AS
         INTO @merge_results;
        
         COMMIT
-		
-		SELECT @deleted = COUNT(deleted_ak_projectequipment) FROM @merge_results WHERE action_type = 'DELETE'
+        
+        SELECT @deleted = COUNT(deleted_ak_projectequipment) FROM @merge_results WHERE action_type = 'DELETE'
         SELECT @inserted = COUNT(inserted_ak_projectequipment) FROM @merge_results WHERE action_type = 'INSERT'
         SELECT @updated = COUNT(inserted_ak_projectequipment) FROM @merge_results WHERE action_type = 'UPDATE'
 

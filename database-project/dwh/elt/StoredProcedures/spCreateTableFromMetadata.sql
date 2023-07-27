@@ -9,31 +9,31 @@ AS
         
 
 
-	BEGIN TRY
-		BEGIN TRANSACTION
-	EXEC(@drop_table_script)	
-		COMMIT TRANSACTION
-		BEGIN TRANSACTION
-	EXEC(@create_table_script)	
-		COMMIT TRANSACTION
+    BEGIN TRY
+        BEGIN TRANSACTION
+    EXEC(@drop_table_script)    
+        COMMIT TRANSACTION
+        BEGIN TRANSACTION
+    EXEC(@create_table_script)    
+        COMMIT TRANSACTION
 
 
-	END TRY
+    END TRY
 
-	BEGIN CATCH
-		DECLARE
-			@ErrorMessage     NVARCHAR(MAX)
-			, @ErrorSeverity  TINYINT
-			, @ErrorState     TINYINT
-			, @ErrorLine	  TINYINT
+    BEGIN CATCH
+        DECLARE
+            @ErrorMessage     NVARCHAR(MAX)
+            , @ErrorSeverity  TINYINT
+            , @ErrorState     TINYINT
+            , @ErrorLine      TINYINT
 
-		SET @ErrorMessage  = ERROR_MESSAGE()
-		SET @ErrorSeverity = ERROR_SEVERITY()
-		SET @ErrorState    = ERROR_STATE()
-		SET @ErrorLine	   = ERROR_LINE()
-		
-		RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState, @ErrorLine)
+        SET @ErrorMessage   = ERROR_MESSAGE()
+        SET @ErrorSeverity  = ERROR_SEVERITY()
+        SET @ErrorState     = ERROR_STATE()
+        SET @ErrorLine      = ERROR_LINE()
+        
+        RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState, @ErrorLine)
 
-		ROLLBACK TRANSACTION
+        ROLLBACK TRANSACTION
 
-	END CATCH
+    END CATCH
