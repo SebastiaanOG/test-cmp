@@ -186,9 +186,6 @@
 			},
 			"mdb_dbname": {
 				"type": "string"
-			},
-			"use_case_code": {
-				"type": "string"
 			}
 		},
 		"folder": {
