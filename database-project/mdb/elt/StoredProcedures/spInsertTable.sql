@@ -67,7 +67,6 @@ IF EXISTS (SELECT top 1 * from elt.MetadataTables
 	SET @TableActive = 0
 	END
 
-
 IF NOT EXISTS (SELECT top 1 * from elt.MetadataStructure  
 				WHERE [SystemCode] = @SystemCode
 				AND [SystemName] = @SystemName

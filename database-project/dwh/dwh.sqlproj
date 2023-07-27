@@ -55,16 +55,20 @@
   <Import Condition="'$(NetCoreBuild)' != 'true' AND '$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <Import Condition="'$(NetCoreBuild)' != 'true' AND '$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
+<<<<<<< HEAD
     <Folder Include="modelled" />
     <Folder Include="modelled\Functions" />
     <Folder Include="modelled\StoredProcedures" />
     <Folder Include="modelled\Tables" />
     <Folder Include="PostDeploy\reference" />
+=======
+>>>>>>> main
     <Folder Include="Properties" />
     <Folder Include="elt\" />
     <Folder Include="elt\Tables\" />
     <Folder Include="audit\" />
     <Folder Include="audit\Tables\" />
+<<<<<<< HEAD
     <Folder Include="reference" />
     <Folder Include="reference\Tables" />
     <Folder Include="Security\" />
@@ -74,6 +78,12 @@
     <Folder Include="processed\Tables\" />
     <Folder Include="processed\StoredProcedures\" />
     <Folder Include="PostDeploy" />
+=======
+    <Folder Include="Security\" />
+    <Folder Include="elt\StoredProcedures\" />
+    <Folder Include="audit\StoredProcedures\" />
+    <Folder Include="PostDeploy"/>
+>>>>>>> main
   </ItemGroup>
   <ItemGroup>
     <Build Include="elt\Tables\ProcessedTables.sql" />
@@ -89,6 +99,7 @@
     <Build Include="audit\StoredProcedures\spStartPipelineRun.sql" />
     <Build Include="audit\StoredProcedures\spInsertDataLogStorage.sql" />
     <Build Include="audit\StoredProcedures\spInsertDataLogStaged.sql" />
+<<<<<<< HEAD
     <Build Include="audit\StoredProcedures\spInsertDataLogProcessed.sql" />
     <Build Include="audit\StoredProcedures\spErrorLog.sql" />
     <Build Include="audit\StoredProcedures\spEndProcessRun.sql" />
@@ -235,10 +246,19 @@
     </Build>
     <Build Include="Security\reference.sql" />
     <None Include="dwh.publish.xml" />
+=======
+    <Build Include="audit\StoredProcedures\spErrorLog.sql" />
+    <Build Include="audit\StoredProcedures\spEndProcessRun.sql" />
+    <Build Include="audit\StoredProcedures\spEndPipelineRun.sql" />
+    <Build Include="Security\elt.sql" />
+    <Build Include="Security\processed.sql" />
+    <Build Include="Security\audit.sql" />
+>>>>>>> main
     <None Include="elt\StoredProcedures\Processed\cmptest.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="PostDeploy\pd_Main.sql">
+<<<<<<< HEAD
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </PostDeploy>
     <None Include="PostDeploy\pd_ProcessedTables.sql" />
@@ -250,6 +270,12 @@
     <None Include="PostDeploy\pd_ModelledTables.sql" />
     <None Include="PostDeploy\reference\pd_contractvalue_class.sql" />
     <None Include="PostDeploy\reference\pd_dredgingcategory_defaults.sql" />
+=======
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </PostDeploy>
+    <None Include="PostDeploy\pd_ProcessedTables.sql"/>
+    <None Include="PostDeploy\pd_AuthSynapseWS.sql"/>
+>>>>>>> main
   </ItemGroup>
   <Import Condition="'$(NetCoreBuild)' == 'true'" Project="$(NETCoreTargetsPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
