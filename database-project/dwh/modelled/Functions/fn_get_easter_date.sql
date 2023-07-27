@@ -12,7 +12,7 @@
             Add d + e - o to March 22                               Easter Sunday (Gregorian calendar)
 
 https://www.sqlservercentral.com/scripts/calculating-easter-in-sql
-            
+
 */
 
 CREATE FUNCTION modelled.fn_get_easter_date

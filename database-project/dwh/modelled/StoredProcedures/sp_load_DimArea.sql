@@ -22,7 +22,7 @@ AS
 
         BEGIN TRY
         BEGIN TRANSACTION
-    
+
         DROP TABLE IF EXISTS #area_active
 
         SELECT
@@ -31,7 +31,7 @@ AS
             ,[dwh_active]
             ,[dwh_process_run_id]
             ,HASHBYTES(
-                'MD5', 
+                'MD5',
                 CONCAT(
                     [name]
                     ,areaabbreviation
@@ -55,11 +55,11 @@ AS
 
 
             ,CASE
-                WHEN [name] IN ('Subsidiaries','WICKS','Dravosa') THEN [name] 
-                ELSE 'Van Oord' 
+                WHEN [name] IN ('Subsidiaries','WICKS','Dravosa') THEN [name]
+                ELSE 'Van Oord'
             END                             AS [company]
-                    
-        
+
+
         INTO #area_active
         FROM [processed].[dyn_area]
         WHERE dwh_active = 1
@@ -78,15 +78,15 @@ AS
         -- Synchronize the target table with refreshed data from source table
         MERGE modelled.DimArea AS DESTINATION
         USING #area_active AS SOURCE
-        ON (DESTINATION.ak_area = SOURCE.ak_area) 
+        ON (DESTINATION.ak_area = SOURCE.ak_area)
         -- When records are matched, update the records if there is any change
         WHEN MATCHED AND DESTINATION.dwh_hash <> SOURCE.dwh_hash OR DESTINATION.dwh_active = 0
-        THEN UPDATE SET 
+        THEN UPDATE SET
              DESTINATION.[dwh_process_run_id] = @process_run_id
             ,DESTINATION.[dwh_hash] = SOURCE.dwh_hash
             ,DESTINATION.[dwh_valid_from] = CASE WHEN DESTINATION.dwh_active = 0 THEN @process_run_date ELSE DESTINATION.dwh_valid_from END
             ,DESTINATION.[dwh_valid_to] = NULL
-            ,DESTINATION.[dwh_active] = 1        
+            ,DESTINATION.[dwh_active] = 1
             ,DESTINATION.area_name = SOURCE.area_name
             ,DESTINATION.area_groupname = SOURCE.area_groupname
             ,DESTINATION.area_abbrevation = SOURCE.area_abbrevation
@@ -94,27 +94,27 @@ AS
             ,DESTINATION.area_owner = SOURCE.area_owner
             ,DESTINATION.company = SOURCE.company
         -- When no records are matched, insert the incoming records from source table to target table
-        WHEN NOT MATCHED BY TARGET 
-        THEN INSERT 
-            (dwh_valid_from, dwh_valid_to, dwh_active, dwh_process_run_id, dwh_hash, ak_area, area_name, area_groupname, area_abbrevation, area_businessunit, area_owner, company) 
-        VALUES 
+        WHEN NOT MATCHED BY TARGET
+        THEN INSERT
+            (dwh_valid_from, dwh_valid_to, dwh_active, dwh_process_run_id, dwh_hash, ak_area, area_name, area_groupname, area_abbrevation, area_businessunit, area_owner, company)
+        VALUES
             (@process_run_date, NULL, 1, @process_run_id, SOURCE.dwh_hash, SOURCE.ak_area, SOURCE.area_name, SOURCE.area_groupname, SOURCE.area_abbrevation, SOURCE.area_businessunit, SOURCE.area_owner, SOURCE.company)
 
         -- When there is a row that exists in target and same record does not exist in source then delete this record target
         WHEN NOT MATCHED BY SOURCE AND DESTINATION.pk_area > 0 AND DESTINATION.dwh_active = 1
-         THEN UPDATE SET 
+         THEN UPDATE SET
              DESTINATION.[dwh_valid_to] = @process_run_date
             ,DESTINATION.[dwh_active] = 0
 
-        OUTPUT 
-            $action, 
+        OUTPUT
+            $action,
             INSERTED.ak_area,
             DELETED.ak_area
         INTO @merge_results;
 
         COMMIT
-		
-		SELECT @deleted = COUNT(deleted_ak_area) FROM @merge_results WHERE action_type = 'DELETE'
+
+        SELECT @deleted = COUNT(deleted_ak_area) FROM @merge_results WHERE action_type = 'DELETE'
         SELECT @inserted = COUNT(inserted_ak_area) FROM @merge_results WHERE action_type = 'INSERT'
         SELECT @updated = COUNT(inserted_ak_area) FROM @merge_results WHERE action_type = 'UPDATE'
 

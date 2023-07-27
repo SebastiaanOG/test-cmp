@@ -3,8 +3,8 @@ CREATE PROCEDURE [processed].[cmptest]
         @ProcessRunID      INT
 ,       @PipelineRunID      uniqueidentifier
 ,       @TaskName           VARCHAR(100)
-,	@Schema varchar(max) = 'processed'
-,	@EntityName varchar(max) = 'cmptest'
+,       @Schema varchar(max) = 'processed'
+,       @EntityName varchar(max) = 'cmptest'
 AS
 BEGIN
 DECLARE @InputInsertedRows       INT = 0
@@ -12,10 +12,10 @@ DECLARE @InputInsertedRows       INT = 0
 ,       @InputDeletedRows        INT = 0
 ,       @ErrorCode          INT = 0
 ,       @ErrorDescription   VARCHAR(MAX)
- 
 
-BEGIN TRY  
-	BEGIN TRANSACTION
+
+BEGIN TRY
+    BEGIN TRANSACTION
 
         TRUNCATE TABLE IF EXISTS [processed].[cmptest]
 
@@ -45,30 +45,30 @@ BEGIN TRY
         ,       [V].[Diesel_2]
         ,       [V].[Lpg_3]
         FROM    [cmp-test].[fuel_prices] V
-        
+
         COMMIT
 
 END TRY
-BEGIN CATCH  
+BEGIN CATCH
         SELECT  @ErrorCode = ERROR_NUMBER()
-        ,       @ErrorDescription = ERROR_MESSAGE();  
+        ,       @ErrorDescription = ERROR_MESSAGE();
 
-        IF @@TRANCOUNT > 0  
+        IF @@TRANCOUNT > 0
         BEGIN
-                ROLLBACK TRANSACTION; 
+                ROLLBACK TRANSACTION;
         END
-END CATCH  
+END CATCH
 
-		SELECT
-		@ProcessRunID		AS [ProcessRunID]
-		,'cmp-test' AS [SourceSchema]
-		,'fuel_prices'         AS [SourceTable]
-		,'processed'              AS [SinkSchema]
-		,'cmptest'      AS [SinkTable]
-		,@TaskName		    AS TaskName
-		,@InputInsertedRows	AS RowsWritten
-		,@InputUpdatedRows 	AS RowsUpdated
-		,@InputDeletedRows 	AS RowsDeleted
-		,@ErrorDescription	AS ErrorDescription
-		,@ErrorCode       	AS ErrorCode
+        SELECT
+        @ProcessRunID           AS [ProcessRunID]
+        ,'cmp-test'             AS [SourceSchema]
+        ,'fuel_prices'          AS [SourceTable]
+        ,'processed'            AS [SinkSchema]
+        ,'cmptest'              AS [SinkTable]
+        ,@TaskName              AS TaskName
+        ,@InputInsertedRows     AS RowsWritten
+        ,@InputUpdatedRows      AS RowsUpdated
+        ,@InputDeletedRows      AS RowsDeleted
+        ,@ErrorDescription      AS ErrorDescription
+        ,@ErrorCode             AS ErrorCode
 END
