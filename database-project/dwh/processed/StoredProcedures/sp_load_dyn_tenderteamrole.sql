@@ -136,7 +136,7 @@ BEGIN
             [statuscode],
             [statuscode_value],
             [versionnumber],
-            [dwh_hash]            
+            [dwh_hash]
         )
         SELECT
             @process_run_date AS [dwh_valid_from],

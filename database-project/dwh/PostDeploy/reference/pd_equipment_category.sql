@@ -2,12 +2,12 @@ TRUNCATE TABLE [reference].[equipment_category]
 GO
 INSERT INTO [reference].[equipment_category]
 (
-    [equipment_scope], 
-    [equipment_activity], 
-    [equipment_product_services], 
+    [equipment_scope],
+    [equipment_activity],
+    [equipment_product_services],
     [equipment_category]
 )
-VALUES 
+VALUES
      ('Decommisioning','Cables','Export','Export cables')
     ,('Decommisioning','Cables','Infield','Inter array cables')
     ,('Decommisioning','Cables','Interconnector','Non wind related high voltage cables')

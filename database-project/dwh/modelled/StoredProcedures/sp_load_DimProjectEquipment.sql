@@ -25,7 +25,7 @@ AS
 
         DROP TABLE IF EXISTS #projectequipment
 
-        SELECT 
+        SELECT
             projectequipment.ak_quantitiesequipment                     AS [ak_projectequipment]
             ,projectequipment.[name]                                    AS [projectequipment_description]
             ,projectequipment.groupid_value                             AS [projectequipment_activity]
@@ -37,20 +37,20 @@ AS
             ,projectequipment.equipmentremarks                          AS [projectequipment_remarks]
             ,projectequipment.equipmentid_value                         AS [equipment_name]
             ,ISNULL(equipment_category.equipment_category, 'Empty')     AS [equipment_unit_category]
-            ,HASHBYTES('MD5', 
+            ,HASHBYTES('MD5',
                 CONCAT(
-                     projectequipment.[name]             
-                    ,projectequipment.groupid_value      
+                     projectequipment.[name]
+                    ,projectequipment.groupid_value
                     ,projectequipment.workelementid_value
-                    ,projectequipment.scopeid_value      
-                    ,projectequipment.soiltype_value     
-                    ,projectequipment.quantityvo         
-                    ,projectequipment.unitid_value       
-                    ,projectequipment.equipmentremarks   
-                    ,projectequipment.equipmentid_value  
+                    ,projectequipment.scopeid_value
+                    ,projectequipment.soiltype_value
+                    ,projectequipment.quantityvo
+                    ,projectequipment.unitid_value
+                    ,projectequipment.equipmentremarks
+                    ,projectequipment.equipmentid_value
                     ,ISNULL(equipment_category.equipment_category, 'Empty')
-                
-                )            
+
+                )
             )                                                           AS [dwh_hash]
 
         INTO #projectequipment
@@ -82,11 +82,11 @@ AS
         -- Synchronize the target table with refreshed data from source table
         MERGE modelled.DimProjectEquipment AS DESTINATION
         USING #projectequipment AS SOURCE
-        ON (DESTINATION.ak_projectequipment = SOURCE.ak_projectequipment) 
+        ON (DESTINATION.ak_projectequipment = SOURCE.ak_projectequipment)
         -- When records are matched, update the records if there is any change, keep valid_from
         -- When dwh_active = 0, update dwh_valid_from
         WHEN MATCHED AND DESTINATION.dwh_hash <> SOURCE.dwh_hash OR DESTINATION.dwh_active = 0
-        THEN UPDATE SET 
+        THEN UPDATE SET
              DESTINATION.[dwh_process_run_id] = @process_run_id
             ,DESTINATION.[dwh_hash] = SOURCE.dwh_hash
             ,DESTINATION.[dwh_valid_from] = CASE WHEN DESTINATION.dwh_active = 0 THEN @process_run_date ELSE DESTINATION.dwh_valid_from END
@@ -103,9 +103,9 @@ AS
             ,DESTINATION.[projectequipment_remarks] = SOURCE.[projectequipment_remarks]
             ,DESTINATION.[equipment_name] = SOURCE.[equipment_name]
             ,DESTINATION.[equipment_unit_category] = SOURCE.[equipment_unit_category]
-                
-        WHEN NOT MATCHED BY TARGET 
-        THEN INSERT 
+
+        WHEN NOT MATCHED BY TARGET
+        THEN INSERT
             (
                 dwh_valid_from
                 ,dwh_valid_to
@@ -123,8 +123,8 @@ AS
                 ,projectequipment_remarks
                 ,equipment_name
                 ,equipment_unit_category
-            ) 
-        VALUES 
+            )
+        VALUES
             (
                 @process_run_date
                 ,NULL
@@ -141,23 +141,23 @@ AS
                 ,SOURCE.dredging_volume_unit
                 ,SOURCE.projectequipment_remarks
                 ,SOURCE.equipment_name
-                ,SOURCE.equipment_unit_category                
+                ,SOURCE.equipment_unit_category
             )
 
         -- When there is a row that exists in target and same record does not exist in source then delete this record target
         WHEN NOT MATCHED BY SOURCE AND DESTINATION.pk_projectequipment > 0 AND DESTINATION.dwh_active = 1
-         THEN UPDATE SET 
+         THEN UPDATE SET
              DESTINATION.[dwh_valid_to] = DATEADD(day, -1 , @process_run_date)
             ,DESTINATION.[dwh_active] = 0
 
-        OUTPUT 
-            $action, 
+        OUTPUT
+            $action,
             INSERTED.ak_projectequipment,
             DELETED.ak_projectequipment
         INTO @merge_results;
-       
+
         COMMIT
-        
+
         SELECT @deleted = COUNT(deleted_ak_projectequipment) FROM @merge_results WHERE action_type = 'DELETE'
         SELECT @inserted = COUNT(inserted_ak_projectequipment) FROM @merge_results WHERE action_type = 'INSERT'
         SELECT @updated = COUNT(inserted_ak_projectequipment) FROM @merge_results WHERE action_type = 'UPDATE'

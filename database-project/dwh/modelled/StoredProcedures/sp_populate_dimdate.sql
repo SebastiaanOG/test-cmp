@@ -57,33 +57,33 @@ if not exists (select top 1 pk_date from modelled.DimDate)
                 begin
                     set @Year = @LoopYear
                     set @QuarterNumber = DATEPART(Q,@LoopDate)
-                    set @QuarterName = 
+                    set @QuarterName =
                     case
                         when @QuarterNumber = 1 then 'First Quarter'
                         when @QuarterNumber = 2 then 'Second Quarter'
                         when @QuarterNumber = 3 then 'Thirth Quarter'
                         when @QuarterNumber = 4 then 'Fourth Quarter'
                     end
-                    set @QuarterNameShort = 
+                    set @QuarterNameShort =
                     case
                         when @QuarterNumber = 1 then 'Q1'
                         when @QuarterNumber = 2 then 'Q2'
                         when @QuarterNumber = 3 then 'Q3'
                         when @QuarterNumber = 4 then 'Q4'
-                    end                    
+                    end
                     set @MonthNumber = DATEPART(MM,@LoopDate)
                     set @MonthName = lower(DATENAME(MM,@LoopDate))
                     set @MonthNameShort = SUBSTRING(@MonthName,1,3)
                     set @WeekNumber = DATEPART(ISOWW, @LoopDate)
                     set @WeekNumberSunday = case when SUBSTRING((LOWER(DATENAME(WEEKDAY,@LoopDate))),1,2) = 'su' and DATEPART(DAYOFYear,@LoopDate) = 1 then 1
-                                           when SUBSTRING((LOWER(DATENAME(WEEKDAY,@LoopDate))),1,2) = 'su' then DATEPART(ISOWW, @LoopDate) +  1 
-                                           else DATEPART(ISOWW, @LoopDate) end 
+                                           when SUBSTRING((LOWER(DATENAME(WEEKDAY,@LoopDate))),1,2) = 'su' then DATEPART(ISOWW, @LoopDate) +  1
+                                           else DATEPART(ISOWW, @LoopDate) end
                     set @Date = @LoopDate
                     set @dayName = LOWER(DATENAME(WEEKDAY,@LoopDate))
                     set @dayNameShort = SUBSTRING(@dayName,1,2)
                     set @dayNumberYear = DATEPART(DAYOFYear,@LoopDate)
                     set @dayNumberMonth = DATEPART(DAY,@LoopDate)
-                    set @DayNumberMonthSuffix =  CASE 
+                    set @DayNumberMonthSuffix =  CASE
                         WHEN DATEPART(DD,@LoopDate) IN (11,12,13) THEN CAST(DATEPART(DD,@LoopDate) AS VARCHAR) + 'th'
                         WHEN RIGHT(DATEPART(DD,@LoopDate),1) = 1 THEN CAST(DATEPART(DD,@LoopDate) AS VARCHAR) + 'st'
                         WHEN RIGHT(DATEPART(DD,@LoopDate),1) = 2 THEN CAST(DATEPART(DD,@LoopDate) AS VARCHAR) + 'nd'
@@ -123,16 +123,16 @@ if not exists (select top 1 pk_date from modelled.DimDate)
                     if (@dayNumberYear = 1 and @MonthNumber = 1) set @IndDutchHoliday = 'yes'
                     if (@dayNumberYear = 1 and @MonthNumber = 1) set @HolidayName = 'New Year''s Day'
                     if @LoopDate = @EasterDate set @IndDutchHoliday = 'yes'
-                    if @LoopDate = @EasterDate set @HolidayName = 'Easter day' 
+                    if @LoopDate = @EasterDate set @HolidayName = 'Easter day'
                     if @LoopDate = DATEADD(D,1,@EasterDate) set @IndDutchHoliday = 'yes'
-                    if @LoopDate = DATEADD(D,1,@EasterDate) set @HolidayName = 'Easter Monday' 
+                    if @LoopDate = DATEADD(D,1,@EasterDate) set @HolidayName = 'Easter Monday'
                     if (@dayNumberMonth = 27 and @MonthNumber = 4 and SUBSTRING((LOWER(DATENAME(WEEKDAY,@LoopDate))),1,2) <> 'su') set  @IndDutchHoliday = 'yes'
                     if (@dayNumberMonth = 27 and @MonthNumber = 4 and SUBSTRING((LOWER(DATENAME(WEEKDAY,@LoopDate))),1,2) <> 'su') set @HolidayName = 'King''s day'
                     if (@dayNumberMonth = 26 and @MonthNumber = 4 and SUBSTRING((LOWER(DATENAME(WEEKDAY,dateadd(day, 1,@LoopDate)))),1,2) = 'su') set  @IndDutchHoliday = 'yes'
                     if (@dayNumberMonth = 26 and @MonthNumber = 4 and SUBSTRING((LOWER(DATENAME(WEEKDAY,dateadd(day, 1,@LoopDate)))),1,2) = 'su') set @HolidayName = 'King''s day'
                     if (@dayNumberMonth = 5 and @MonthNumber = 5 and @Year % 5 = 0) set  @IndDutchHoliday = 'yes'
                     if (@dayNumberMonth = 5 and @MonthNumber = 5 and @Year % 5 = 0) set  @HolidayName = 'Liberation Day'
-                
+
                     if @LoopDate = DATEADD(D,-2,@EasterDate) set @IndDutchHoliday = 'no' -- No day off
                     if @LoopDate = DATEADD(D,-2,@EasterDate) set @HolidayName = 'Good Friday'
                     if @LoopDate = DATEADD(D,39,@EasterDate) set @IndDutchHoliday = 'yes'
@@ -151,18 +151,18 @@ if not exists (select top 1 pk_date from modelled.DimDate)
                     if (@dayNumberMonth = 31 and @MonthNumber = 10)  set @HolidayName = 'Haloween'
                     set @YearQuarter = (year(@LoopDate) * 100) + DATEPART(Q,@LoopDate)
                     set @YearMonth =  (year(@LoopDate) * 100) + month(@LoopDate)
-                    if @MonthNumber = 1 and @WeekNumber > 50 
+                    if @MonthNumber = 1 and @WeekNumber > 50
                         begin
                             set @YearWeek = (year(@LoopDate) - 1) * 100 + @WeekNumber
                             set @YearWeekSunday = (year(@LoopDate) - 1) * 100 + @WeekNumberSunday
                         end
                     else
-                        begin                
+                        begin
                             set @YearWeek = year(@LoopDate)  * 100 + @WeekNumber
                             set @YearWeekSunday = (year(@LoopDate) - 1) * 100 + @WeekNumberSunday
                         end
                     set @IndLeapYear = 'no'
-                    if ((@Year % 4 = 0 and @Year % 100 != 0) or (@Year % 400 = 0)) set @IndLeapYear = 'yes'                        
+                    if ((@Year % 4 = 0 and @Year % 100 != 0) or (@Year % 400 = 0)) set @IndLeapYear = 'yes'
                     INSERT INTO modelled.[DimDate]
                        ( [pk_date]
                         ,[year]
@@ -215,21 +215,21 @@ if not exists (select top 1 pk_date from modelled.DimDate)
                         ,@dayNumberWeekSunday
                         ,@DayOfWeekInMonth
                         ,@DayOfWeekInYear
-                        ,@IndFirstDayOfMonth    
-                        ,@IndLastDayOfMonth                         
-                        ,@IndWeekendDay            
-                        ,@IndWeekDay     
-                        ,@IndDutchHoliday      
-                        ,@HolidayName            
-                        ,@YearQuarter            
-                        ,@YearMonth                
-                        ,@YearWeek                
+                        ,@IndFirstDayOfMonth
+                        ,@IndLastDayOfMonth
+                        ,@IndWeekendDay
+                        ,@IndWeekDay
+                        ,@IndDutchHoliday
+                        ,@HolidayName
+                        ,@YearQuarter
+                        ,@YearMonth
+                        ,@YearWeek
                         ,@YearWeekSunday
-                        ,@IndLeapYear    
+                        ,@IndLeapYear
                         )
-                
+
                     set @LoopDate = DATEADD(DD,1,@LoopDate)
                 end
             set @LoopYear = DATEPART(YEAR,@LoopDate)
-        end    
+        end
     end

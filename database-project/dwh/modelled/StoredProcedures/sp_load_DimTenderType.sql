@@ -25,20 +25,20 @@ AS
 
         DROP TABLE IF EXISTS #tendertype
 
-        SELECT 
+        SELECT
             tendertype              AS ak_tendertype,
             tendertype_value        AS tendertype_name,
             -- TODO ! TenderType sort values do not exists in the database.
-            CASE 
+            CASE
                 WHEN tendertype_value = 'Prospect' THEN 1
                 WHEN tendertype_value = 'Budget' THEN 2
                 WHEN tendertype_value = 'Tender' THEN 3
                 WHEN tendertype_value = 'N/A' THEN 4
                 ELSE 5
             END                     AS tendertype_sort,
-            HASHBYTES('MD5', 
-                CONCAT(tendertype_value, 
-                CASE 
+            HASHBYTES('MD5',
+                CONCAT(tendertype_value,
+                CASE
                     WHEN tendertype_value = 'Prospect' THEN 1
                     WHEN tendertype_value = 'Budget' THEN 2
                     WHEN tendertype_value = 'Tender' THEN 3
@@ -48,13 +48,13 @@ AS
 
         INTO #tendertype
         FROM (
-            SELECT 
-                tendertype, 
-                tendertype_value, 
+            SELECT
+                tendertype,
+                tendertype_value,
                 ROW_NUMBER() OVER (PARTITION BY tendertype ORDER BY dwh_valid_from DESC) as [row]
             FROM processed.dyn_project
-            WHERE tendertype IS NOT NULL  
-        ) ProjectTenderTypes 
+            WHERE tendertype IS NOT NULL
+        ) ProjectTenderTypes
         WHERE [row] = 1 -- take last value per ak_tendertype
 
         --- Check if the dimension exists
@@ -70,11 +70,11 @@ AS
         -- Synchronize the target table with refreshed data from source table
         MERGE modelled.DimTenderType AS DESTINATION
         USING #tendertype AS SOURCE
-        ON (DESTINATION.ak_tendertype = SOURCE.ak_tendertype) 
+        ON (DESTINATION.ak_tendertype = SOURCE.ak_tendertype)
         -- When records are matched, update the records if there is any change, keep valid_from
         -- When dwh_active = 0, update dwh_valid_from
         WHEN MATCHED AND DESTINATION.dwh_hash <> SOURCE.dwh_hash OR DESTINATION.dwh_active = 0
-        THEN UPDATE SET 
+        THEN UPDATE SET
              DESTINATION.[dwh_process_run_id] = @process_run_id
             ,DESTINATION.[dwh_hash] = SOURCE.dwh_hash
             ,DESTINATION.[dwh_valid_from] = CASE WHEN DESTINATION.dwh_active = 0 THEN @process_run_date ELSE DESTINATION.dwh_valid_from END
@@ -83,27 +83,27 @@ AS
             ,DESTINATION.[tendertype_name] = SOURCE.[tendertype_name]
             ,DESTINATION.[tendertype_sort] = SOURCE.[tendertype_sort]
 
-                  
-        WHEN NOT MATCHED BY TARGET 
-        THEN INSERT 
-            (dwh_valid_from, dwh_valid_to, dwh_active, dwh_process_run_id, dwh_hash, ak_tendertype, tendertype_name, tendertype_sort) 
-        VALUES 
+
+        WHEN NOT MATCHED BY TARGET
+        THEN INSERT
+            (dwh_valid_from, dwh_valid_to, dwh_active, dwh_process_run_id, dwh_hash, ak_tendertype, tendertype_name, tendertype_sort)
+        VALUES
             (@process_run_date, NULL, 1, @process_run_id, SOURCE.dwh_hash, SOURCE.ak_tendertype, SOURCE.tendertype_name, SOURCE.tendertype_name)
 
         -- When there is a row that exists in target and same record does not exist in source then delete this record target
         WHEN NOT MATCHED BY SOURCE AND DESTINATION.pk_tendertype > 0 AND DESTINATION.dwh_active = 1
-         THEN UPDATE SET 
+         THEN UPDATE SET
              DESTINATION.[dwh_valid_to] = DATEADD(day, -1 , @process_run_date)
             ,DESTINATION.[dwh_active] = 0
 
-        OUTPUT 
-            $action, 
+        OUTPUT
+            $action,
             INSERTED.ak_tendertype,
             DELETED.ak_tendertype
         INTO @merge_results;
-       
+
         COMMIT
-        
+
         SELECT @deleted = COUNT(deleted_ak_tendertype) FROM @merge_results WHERE action_type = 'DELETE'
         SELECT @inserted = COUNT(inserted_ak_tendertype) FROM @merge_results WHERE action_type = 'INSERT'
         SELECT @updated = COUNT(inserted_ak_tendertype) FROM @merge_results WHERE action_type = 'UPDATE'

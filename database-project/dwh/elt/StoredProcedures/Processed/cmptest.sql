@@ -12,9 +12,9 @@ DECLARE @InputInsertedRows       INT = 0
 ,       @InputDeletedRows        INT = 0
 ,       @ErrorCode          INT = 0
 ,       @ErrorDescription   VARCHAR(MAX)
- 
 
-BEGIN TRY  
+
+BEGIN TRY
     BEGIN TRANSACTION
 
         TRUNCATE TABLE IF EXISTS [processed].[cmptest]
@@ -45,19 +45,19 @@ BEGIN TRY
         ,       [V].[Diesel_2]
         ,       [V].[Lpg_3]
         FROM    [cmp-test].[fuel_prices] V
-        
+
         COMMIT
 
 END TRY
-BEGIN CATCH  
+BEGIN CATCH
         SELECT  @ErrorCode = ERROR_NUMBER()
-        ,       @ErrorDescription = ERROR_MESSAGE();  
+        ,       @ErrorDescription = ERROR_MESSAGE();
 
-        IF @@TRANCOUNT > 0  
+        IF @@TRANCOUNT > 0
         BEGIN
-                ROLLBACK TRANSACTION; 
+                ROLLBACK TRANSACTION;
         END
-END CATCH  
+END CATCH
 
         SELECT
         @ProcessRunID           AS [ProcessRunID]
