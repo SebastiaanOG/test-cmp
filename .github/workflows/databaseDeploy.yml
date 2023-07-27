@@ -21,10 +21,10 @@ jobs:
           run: |
             echo "ERROR: You can only merge into main from uat."
             exit 1
-        - name: if 'uat' branch then only allow 'dev' to merge 
-          if: github.base_ref == 'uat' && github.head_ref != 'dev'
+        - name: if 'uat' branch then only allow 'development' to merge 
+          if: github.base_ref == 'uat' && github.head_ref != 'development'
           run: |
-             echo "ERROR: You can only merge into uat from dev."
+             echo "ERROR: You can only merge into uat from development."
              exit 1
 
   init:
@@ -52,6 +52,7 @@ jobs:
        
   # MSBuild for sqldb.sln doesn't work on windows-latest
     runs-on: windows-2019
+    needs: [check_branch]
     steps:
     - name: Checkout this repository | Required to build projects
       uses: actions/checkout@v1
@@ -61,8 +62,8 @@ jobs:
       with:
         msbuild-architecture: x64
     
-    - name: Build database project | Build the projects from the sln file
-      run: msbuild database-project\sqldb.sln /p:Configuration=Release
+    - name: Build database project | Build the projects from sqlproj 
+      run: msbuild database-project\${{ matrix.name }}\${{ matrix.name }}.sqlproj /p:Configuration=Release
     
     - name: Publish build artifacts for ${{ matrix.name }} | Upload dacpac files to workflow run
       uses: actions/upload-artifact@master

@@ -35,7 +35,7 @@
 					"sink": {
 						"type": "AzureSqlSink",
 						"preCopyScript": {
-							"value": "@{concat('TRUNCATE TABLE', ' ', concat(pipeline().parameters.layer_name, '.', pipeline().parameters.use_case_code, '_', pipeline().parameters.entity_name))}",
+							"value": "@{concat('TRUNCATE TABLE', ' ', concat(pipeline().parameters.layer_name, '.', pipeline().parameters.system_code, '_', pipeline().parameters.entity_name))}",
 							"type": "Expression"
 						},
 						"writeBehavior": "insert",
@@ -67,7 +67,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"table_name": {
-								"value": "@concat(pipeline().parameters.use_case_code, '_', pipeline().parameters.entity_name)",
+								"value": "@concat(pipeline().parameters.system_code, '_', pipeline().parameters.entity_name)",
 								"type": "Expression"
 							},
 							"structure": {
@@ -202,7 +202,7 @@
 							"system_code": {
 								"type": "String",
 								"value": {
-									"value": "@pipeline().parameters.use_case_code",
+									"value": "@pipeline().parameters.system_code",
 									"type": "Expression"
 								}
 							},
@@ -316,12 +316,12 @@
 			"dwh_dbname": {
 				"type": "string"
 			},
-			"use_case_code": {
-				"type": "string"
-			},
 			"layer_name": {
 				"type": "string",
 				"defaultValue": "staged"
+			},
+			"system_code": {
+				"type": "string"
 			}
 		},
 		"folder": {

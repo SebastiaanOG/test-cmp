@@ -33,17 +33,17 @@
 									"type": "Expression"
 								}
 							},
-							"use_case_code": {
-								"type": "String",
-								"value": {
-									"value": "@pipeline().parameters.use_case_code",
-									"type": "Expression"
-								}
-							},
 							"layer_name": {
 								"type": "String",
 								"value": {
 									"value": "@pipeline().parameters.layer_name",
+									"type": "Expression"
+								}
+							},
+							"system_code": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.system_code",
 									"type": "Expression"
 								}
 							}
@@ -144,8 +144,8 @@
 										"value": "@pipeline().parameters.dwh_dbname",
 										"type": "Expression"
 									},
-									"use_case_code": {
-										"value": "@pipeline().parameters.use_case_code",
+									"system_code": {
+										"value": "@pipeline().parameters.system_code",
 										"type": "Expression"
 									}
 								}
@@ -157,13 +157,9 @@
 		],
 		"parameters": {
 			"process_run_id": {
-				"type": "string",
-				"defaultValue": "-1"
-			},
-			"process_run_date": {
 				"type": "string"
 			},
-			"use_case_code": {
+			"process_run_date": {
 				"type": "string"
 			},
 			"mdb_dbname": {
@@ -175,6 +171,9 @@
 			"layer_name": {
 				"type": "string",
 				"defaultValue": "staged"
+			},
+			"system_code": {
+				"type": "string"
 			}
 		},
 		"folder": {

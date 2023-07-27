@@ -5,7 +5,7 @@
     [EntityName] NVARCHAR (64) NOT NULL,
     [Name] NVARCHAR (128) NOT NULL,
     [SemanticName] NVARCHAR (128) NULL,
-    [DataType] NVARCHAR (16) NOT NULL,
+    [DataType] NVARCHAR (20) NOT NULL,
     [CharacterMaximumLength] BIGINT NULL,
     [IsNullable] NVARCHAR (4) NOT NULL,
     [OrdinalPosition] INT NOT NULL,

@@ -65,6 +65,8 @@
     <Folder Include="PostDeploy" />
   </ItemGroup>
   <ItemGroup>
+    <Build Include="elt\Functions\fnCreateStagingFileName.sql" />
+    <Build Include="elt\Functions\fnCreateStagingFolderPath.sql" />
     <Build Include="elt\Functions\fnSnCreateEntityTranslator.sql" />
     <Build Include="elt\StoredProcedures\spSnCreateTruncateTempTables.sql" />
     <Build Include="elt\StoredProcedures\spSnDropTempTablesAndViews.sql" />
@@ -77,8 +79,6 @@
     <Build Include="elt\Tables\MetadataTables.sql" />
     <Build Include="elt\Tables\MetadataSystem.sql" />
     <Build Include="elt\Tables\MetadataStructure.sql" />
-    <Build Include="elt\Tables\UseCase.sql" />
-    <Build Include="elt\Tables\UseCaseEntity.sql" />
     <Build Include="elt\Views\vwMetaDataRaw.sql" />
     <Build Include="elt\Functions\fnCreateSQLServerQuery.sql" />
     <Build Include="elt\Functions\fnCreateTableName.sql" />

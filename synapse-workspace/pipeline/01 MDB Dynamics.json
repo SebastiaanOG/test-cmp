@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT SCHEMA_NAME(T.schema_id) AS [SCHEMA_NAME],\n\t\tT.name AS [TABLE_NAME], \n       I.rows AS [ROWCOUNT] \nFROM   sys.tables AS T \n       INNER JOIN sys.sysindexes AS I \n               ON T.object_id = I.id \n                  AND I.indid < 2\nWHERE i.rows > 0",
+						"sqlReaderQuery": "SELECT SCHEMA_NAME(T.schema_id) AS [SCHEMA_NAME],\n\t\tT.name AS [TABLE_NAME], \n       I.rows AS [ROWCOUNT] \nFROM   sys.tables AS T \n       INNER JOIN sys.sysindexes AS I \n               ON T.object_id = I.id \n                  AND I.indid < 2\nWHERE i.rows > 0;",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -64,7 +64,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "@concat('SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = ',  '''' , string(item().Table_name) , '''' , 'AND TABLE_SCHEMA = ', '''' , string(item().Schema_name) , '''' )",
+										"value": "SELECT\nTABLE_CATALOG,\nTABLE_SCHEMA,\nTABLE_NAME,\nCOLUMN_NAME,\nORDINAL_POSITION,\nCOLUMN_DEFAULT,\nIS_NULLABLE,\nDATA_TYPE,\nCHARACTER_MAXIMUM_LENGTH,\nCHARACTER_OCTET_LENGTH,\nNUMERIC_PRECISION,\nNUMERIC_PRECISION_RADIX,\nNUMERIC_SCALE,\nDATETIME_PRECISION,\nCHARACTER_SET_CATALOG,\nCHARACTER_SET_NAME,\nCOLLATION_CATALOG,\nCOLLATION_SCHEMA,\nCOLLATION_NAME,\nDOMAIN_CATALOG,\nDOMAIN_SCHEMA,\nDOMAIN_NAME,\nCASE WHEN COLUMN_NAME IN (\nSELECT COLUMN_NAME\nFROM INFORMATION_SCHEMA.TABLE_CONSTRAINTS AS TC\nINNER JOIN INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS KU\nON TC.CONSTRAINT_TYPE = 'PRIMARY KEY'\nAND TC.CONSTRAINT_NAME = KU.CONSTRAINT_NAME\nAND TC.TABLE_SCHEMA = '@{item().Schema_name}'\nAND TC.TABLE_NAME = '@{item().Table_name}'\n)\nTHEN 1 ELSE 0 END AS IS_PRIMARY_KEY\nFROM INFORMATION_SCHEMA.COLUMNS\nWHERE TABLE_SCHEMA = '@{item().Schema_name}'\nAND TABLE_NAME = '@{item().Table_name}'",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
