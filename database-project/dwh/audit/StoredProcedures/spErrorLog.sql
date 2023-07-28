@@ -11,6 +11,7 @@ BEGIN
     INSERT INTO [audit].ProcessError
     (
         [ProcessRunID],
+        [ExecutionTime],
         [Schema],
         [EntityName],
         [ErrorCode],
@@ -19,6 +20,7 @@ BEGIN
     )
     VALUES (
         @ProcessRunID,
+        GETDATE(),
         @Schema,
         @EntityName,
         @ErrorCode,
