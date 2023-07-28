@@ -5,7 +5,7 @@ INSERT INTO [reference].[dredgingcategory_defaults]
     ,[default_dredgingcategory_duration]
     ,[default_days_to_startdate_of_work]
     ,[default_days_to_tenderdate]
-    ,[default_winning_chance_%]
+    ,[default_winning_chance_percent]
     ,[default_contract_value]
     ,[default_VO_contact_value])
 VALUES
