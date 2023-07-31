@@ -7,16 +7,6 @@
 			"metadata": "Workspace name",
 			"defaultValue": "sywsvocmpdevweu001"
 		},
-		"ls_source_cmptest_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'ls_source_cmptest'",
-			"defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=sql-vo-cmp-dev-weu-001.database.windows.net;Initial Catalog=cmp-test"
-		},
-		"ls_source_dynamics_connectionString": {
-			"type": "secureString",
-			"metadata": "Secure string for 'connectionString' of 'ls_source_dynamics'",
-			"defaultValue": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=sql-vo-dyn-acc-weu-001.database.windows.net;Initial Catalog=Dyn01DataDb01A"
-		},
 		"ls_sqldb_dwh_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'ls_sqldb_dwh'",
@@ -35,6 +25,14 @@
 		"ls_kv_cmp_properties_typeProperties_baseUrl": {
 			"type": "secureString",
 			"metadata": "Secure string for 'baseUrl' of 'ls_kv_cmp'"
+		},
+		"ls_source_cmptest_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "ls-source-cmptest-connectionString"
+		},
+		"ls_source_dynamics_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "ls-source-dynamics-connectionString"
 		},
 		"ls_source_servicenow_tableapi_http_properties_typeProperties_url": {
 			"type": "string",
@@ -3327,15 +3325,6 @@
 							"source": {
 								"type": "AzureSqlSource",
 								"sqlReaderStoredProcedureName": "[elt].[spLookupLevels]",
-								"storedProcedureParameters": {
-									"use_case_code": {
-										"type": "String",
-										"value": {
-											"value": "@pipeline().parameters.system_code",
-											"type": "Expression"
-										}
-									}
-								},
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -4222,7 +4211,14 @@
 				],
 				"type": "AzureSqlDatabase",
 				"typeProperties": {
-					"connectionString": "[parameters('ls_source_cmptest_connectionString')]"
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "ls_kv_cmp",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('ls_source_cmptest_properties_typeProperties_connectionString_secretName')]"
+					}
 				},
 				"connectVia": {
 					"referenceName": "AutoResolveIntegrationRuntime",
@@ -4230,7 +4226,8 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
+				"[concat(variables('workspaceId'), '/linkedServices/ls_kv_cmp')]"
 			]
 		},
 		{
@@ -4244,7 +4241,14 @@
 				],
 				"type": "AzureSqlDatabase",
 				"typeProperties": {
-					"connectionString": "[parameters('ls_source_dynamics_connectionString')]"
+					"connectionString": {
+						"type": "AzureKeyVaultSecret",
+						"store": {
+							"referenceName": "ls_kv_cmp",
+							"type": "LinkedServiceReference"
+						},
+						"secretName": "[parameters('ls_source_dynamics_properties_typeProperties_connectionString_secretName')]"
+					}
 				},
 				"connectVia": {
 					"referenceName": "AutoResolveIntegrationRuntime",
@@ -4252,7 +4256,8 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+				"[concat(variables('workspaceId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
+				"[concat(variables('workspaceId'), '/linkedServices/ls_kv_cmp')]"
 			]
 		},
 		{

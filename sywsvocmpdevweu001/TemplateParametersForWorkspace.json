@@ -5,12 +5,6 @@
 		"workspaceName": {
 			"value": "sywsvocmpdevweu001"
 		},
-		"ls_source_cmptest_connectionString": {
-			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=sql-vo-cmp-dev-weu-001.database.windows.net;Initial Catalog=cmp-test"
-		},
-		"ls_source_dynamics_connectionString": {
-			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=sql-vo-dyn-acc-weu-001.database.windows.net;Initial Catalog=Dyn01DataDb01A"
-		},
 		"ls_sqldb_dwh_connectionString": {
 			"value": "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=sql-vo-cmp-dev-weu-001.database.windows.net;Initial Catalog=@{linkedService().dbname}"
 		},
@@ -22,6 +16,12 @@
 		},
 		"ls_kv_cmp_properties_typeProperties_baseUrl": {
 			"value": ""
+		},
+		"ls_source_cmptest_properties_typeProperties_connectionString_secretName": {
+			"value": "ls-source-cmptest-connectionString"
+		},
+		"ls_source_dynamics_properties_typeProperties_connectionString_secretName": {
+			"value": "ls-source-dynamics-connectionString"
 		},
 		"ls_source_servicenow_tableapi_http_properties_typeProperties_url": {
 			"value": "https://vanoorddev.service-now.com/api/now/table/"
