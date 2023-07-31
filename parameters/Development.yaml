@@ -1,0 +1,6 @@
+ls_kv_cmp_properties_typeProperties_baseUrl: "https://kv-vo-cmp-dev-weu-001.vault.azure.net/"
+ls_source_servicenow_tableapi_http_properties_typeProperties_url: "https://vanoorddev.service-now.com/api/now/table/"
+ls_source_servicenow_tableapi_rest_properties_typeProperties_url: "https://vanoorddev.service-now.com/api/now/table/"
+ls_st_datalake_properties_typeProperties_url: "https://stvocmpdevweu002.dfs.core.windows.net/"
+ls_sqldb_dwh_connectionString: "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=sql-vo-cmp-dev-weu-001.database.windows.net;Initial Catalog=@{linkedService().dbname}"
+ls_sqldb_mdb_connectionString: "Integrated Security=False;Encrypt=True;Connection Timeout=30;Data Source=sql-vo-cmp-dev-weu-001.database.windows.net;Initial Catalog=@{linkedService().dbname}"
