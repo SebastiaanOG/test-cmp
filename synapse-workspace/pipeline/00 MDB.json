@@ -18,6 +18,15 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderStoredProcedureName": "[elt].[spLookupActiveSystems]",
+						"storedProcedureParameters": {
+							"SystemCode": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.system_code",
+									"type": "Expression"
+								}
+							}
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -185,6 +194,9 @@
 				"type": "string"
 			},
 			"mdb_dbname": {
+				"type": "string"
+			},
+			"system_code": {
 				"type": "string"
 			}
 		},

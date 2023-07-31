@@ -28,6 +28,10 @@
 						"mdb_dbname": {
 							"value": "@pipeline().parameters.mdb_dbname",
 							"type": "Expression"
+						},
+						"system_code": {
+							"value": "@pipeline().parameters.system_code",
+							"type": "Expression"
 						}
 					}
 				}
