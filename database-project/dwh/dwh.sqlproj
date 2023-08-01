@@ -247,7 +247,6 @@
     </Build>
     <Build Include="Security\reference.sql" />
     <None Include="dwh.publish.xml" />
-    <None Include="elt\StoredProcedures\Processed\cmptest.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="PostDeploy\pd_Main.sql">

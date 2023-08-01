@@ -39,13 +39,6 @@
 									"value": "@pipeline().parameters.system_code",
 									"type": "Expression"
 								}
-							},
-							"process_run_id": {
-								"type": "Guid",
-								"value": {
-									"value": "@pipeline().parameters.process_run_id",
-									"type": "Expression"
-								}
 							}
 						},
 						"queryTimeout": "02:00:00",
@@ -343,166 +336,6 @@
 										]
 									},
 									{
-										"value": "cmptest",
-										"activities": [
-											{
-												"name": "Execute Pipeline 12",
-												"type": "ExecutePipeline",
-												"dependsOn": [],
-												"userProperties": [],
-												"typeProperties": {
-													"pipeline": {
-														"referenceName": "12 SourceToRaw CMP test",
-														"type": "PipelineReference"
-													},
-													"waitOnCompletion": true,
-													"parameters": {
-														"source_entity_structure": {
-															"value": "@json(item().source_entity_structure)",
-															"type": "Expression"
-														},
-														"source_entity_query": {
-															"value": "@item().source_entity_query",
-															"type": "Expression"
-														},
-														"sink_entity_file_name": {
-															"value": "@item().sink_entity_file_name",
-															"type": "Expression"
-														},
-														"sink_entity_folder_path": {
-															"value": "@item().sink_entity_folder_path",
-															"type": "Expression"
-														},
-														"sink_entity_structure": {
-															"value": "@json(item().sink_entity_structure)",
-															"type": "Expression"
-														},
-														"source_sink_mapping": {
-															"value": "@json(item().source_sink_mapping)",
-															"type": "Expression"
-														},
-														"process_run_id": {
-															"value": "@pipeline().parameters.process_run_id",
-															"type": "Expression"
-														}
-													}
-												}
-											},
-											{
-												"name": "spUpdateLastIncrement 12",
-												"type": "SqlServerStoredProcedure",
-												"dependsOn": [
-													{
-														"activity": "Execute Pipeline 12",
-														"dependencyConditions": [
-															"Succeeded"
-														]
-													}
-												],
-												"policy": {
-													"timeout": "7.00:00:00",
-													"retry": 0,
-													"retryIntervalInSeconds": 30,
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"storedProcedureName": "[elt].[spUpdateLastIncrement]",
-													"storedProcedureParameters": {
-														"source_system_name": {
-															"value": {
-																"value": "@item().source_system_name",
-																"type": "Expression"
-															},
-															"type": "String"
-														},
-														"source_entity_name": {
-															"value": {
-																"value": "@item().source_entity_name",
-																"type": "Expression"
-															},
-															"type": "String"
-														},
-														"source_entity_increment_column": {
-															"value": {
-																"value": "@item().source_entity_increment_column",
-																"type": "Expression"
-															},
-															"type": "String"
-														}
-													}
-												},
-												"linkedServiceName": {
-													"referenceName": "ls_sqldb_mdb",
-													"type": "LinkedServiceReference",
-													"parameters": {
-														"dbname": {
-															"value": "@pipeline().parameters.mdb_dbname",
-															"type": "Expression"
-														}
-													}
-												}
-											},
-											{
-												"name": "spUpdateLastProcessRun 12",
-												"type": "SqlServerStoredProcedure",
-												"dependsOn": [
-													{
-														"activity": "spUpdateLastIncrement 12",
-														"dependencyConditions": [
-															"Succeeded"
-														]
-													}
-												],
-												"policy": {
-													"timeout": "7.00:00:00",
-													"retry": 0,
-													"retryIntervalInSeconds": 30,
-													"secureOutput": false,
-													"secureInput": false
-												},
-												"userProperties": [],
-												"typeProperties": {
-													"storedProcedureName": "[elt].[spUpdateLastProcessRun]",
-													"storedProcedureParameters": {
-														"process_run_date": {
-															"value": {
-																"value": "@pipeline().parameters.process_run_date",
-																"type": "Expression"
-															},
-															"type": "DateTime"
-														},
-														"source_system_name": {
-															"value": {
-																"value": "@item().source_system_name",
-																"type": "Expression"
-															},
-															"type": "String"
-														},
-														"source_entity_name": {
-															"value": {
-																"value": "@item().source_entity_name",
-																"type": "Expression"
-															},
-															"type": "String"
-														}
-													}
-												},
-												"linkedServiceName": {
-													"referenceName": "ls_sqldb_mdb",
-													"type": "LinkedServiceReference",
-													"parameters": {
-														"dbname": {
-															"value": "@pipeline().parameters.mdb_dbname",
-															"type": "Expression"
-														}
-													}
-												}
-											}
-										]
-									},
-									{
 										"value": "snp",
 										"activities": [
 											{
@@ -574,11 +407,6 @@
 			},
 			"system_code": {
 				"type": "string"
-			}
-		},
-		"variables": {
-			"process_run_id": {
-				"type": "String"
 			}
 		},
 		"variables": {
