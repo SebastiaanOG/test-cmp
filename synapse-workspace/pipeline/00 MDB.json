@@ -111,42 +111,6 @@
 										]
 									},
 									{
-										"value": "cmptest",
-										"activities": [
-											{
-												"name": "Execute Pipeline 02 MDB CMP Test",
-												"type": "ExecutePipeline",
-												"dependsOn": [],
-												"userProperties": [],
-												"typeProperties": {
-													"pipeline": {
-														"referenceName": "02 MDB CMP test",
-														"type": "PipelineReference"
-													},
-													"waitOnCompletion": true,
-													"parameters": {
-														"system_code": {
-															"value": "@item().systemcode",
-															"type": "Expression"
-														},
-														"system_name": {
-															"value": "@item().systemname",
-															"type": "Expression"
-														},
-														"system_type": {
-															"value": "@item().systemtype",
-															"type": "Expression"
-														},
-														"mdb_dbname": {
-															"value": "@pipeline().parameters.mdb_dbname",
-															"type": "Expression"
-														}
-													}
-												}
-											}
-										]
-									},
-									{
 										"value": "snp",
 										"activities": [
 											{
