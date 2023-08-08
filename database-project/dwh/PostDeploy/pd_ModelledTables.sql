@@ -23,8 +23,6 @@ VALUES
     (2,'DimDate','sp_populate_dimdate','processed',1,'Stored procedure to load DimDate'),
     (3,'FactProjects','sp_load_FactProjects','processed',1,'Stored procedure to load FactProjects')
 
-
-
 -- Add empty and unknowns to Dimensions
 IF (SELECT COUNT(*) FROM modelled.DimArea WHERE pk_area < 0) != 2
 BEGIN
@@ -144,4 +142,123 @@ BEGIN
         (-1, '1900-01-01', -1, 1, 'Unknown', 'Unknown', 'Unknown', 'Unknown'),
         (-2, '1900-01-01', -2, 1, 'Empty', 'Empty', 'Empty', 'Empty')
     SET IDENTITY_INSERT [modelled].[DimEquipmentObject] OFF;
+
+END
+
+IF (SELECT COUNT(*) FROM modelled.DimContractValueClass WHERE pk_contractvalue_class < 0) != 2
+BEGIN
+    SET IDENTITY_INSERT [modelled].[DimContractValueClass] ON;
+    INSERT INTO [modelled].[DimContractValueClass]
+    (    [pk_contractvalue_class]
+        ,[rk_contractvalue_class]
+        ,[dwh_valid_from]
+        ,[dwh_active]
+        ,[contractvalue_class]
+        ,sort_contractvalue_class
+        ,total_VO_share_from
+        ,total_VO_share_to
+    )
+    VALUES
+        (-1, -1, '1900-01-01', 1, 'Unknown', 2147483646, -2, -1),
+        (-2, -2, '1900-01-01', 1, 'Empty', 2147483647, -3, -2)
+    SET IDENTITY_INSERT [modelled].[DimContractValueClass] OFF;
+
+END
+
+IF (SELECT COUNT(*) FROM modelled.DimDredgingCategory WHERE pk_dredgingcategory < 0) != 2
+BEGIN
+    SET IDENTITY_INSERT [modelled].[DimDredgingCategory] ON;
+    INSERT INTO [modelled].[DimDredgingCategory]
+    (    [pk_dredgingcategory]
+        ,[ak_dredgingcategory]
+        ,[dwh_valid_from]
+        ,[dwh_active]
+        ,[dredgingcategory_name]
+    )
+    VALUES
+        (-1, -1, '1900-01-01', 1, 'Unknown'),
+        (-2, -2, '1900-01-01', 1, 'Empty')
+    SET IDENTITY_INSERT [modelled].[DimDredgingCategory] OFF;
+
+END
+
+IF (SELECT COUNT(*) FROM modelled.DimProject WHERE pk_project < 0) != 2
+BEGIN
+    SET IDENTITY_INSERT [modelled].[DimProject] ON;
+    INSERT INTO [modelled].[DimProject]
+    (    [pk_project]
+        ,[ak_project]
+        ,[dwh_valid_from]
+        ,[dwh_active]
+        ,[project_number]
+        ,[project_name]
+        ,[project_description]
+        ,[winning_chance_description]
+        ,[going_ahead_chance_description]
+        ,[productgroups_nl]
+        ,[dredging_category]
+        ,[tender_type]
+    )
+    VALUES
+        (-1, -1, '1900-01-01', 1, 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown'),
+        (-2, -2, '1900-01-01', 1, 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty')
+    SET IDENTITY_INSERT [modelled].[DimProject] OFF;
+END
+
+IF (SELECT COUNT(*) FROM modelled.DimProjectStatus WHERE pk_projectstatus < 0) != 2
+BEGIN
+    SET IDENTITY_INSERT [modelled].[DimProjectStatus] ON;
+    INSERT INTO [modelled].[DimProjectStatus]
+    (    [pk_projectstatus]
+        ,[ak_projectstatus]
+        ,[dwh_valid_from]
+        ,[dwh_active]
+        ,[projectstatus_name]
+        ,[projectphase]
+        ,[stagegate_name]
+    )
+    VALUES
+        (-1, -1, '1900-01-01', 1, 'Unknown', 'Unknown', 'Unknown'),
+        (-2, -2, '1900-01-01', 1, 'Empty', 'Empty', 'Empty')
+    SET IDENTITY_INSERT [modelled].[DimProjectStatus] OFF;
+END
+
+IF (SELECT COUNT(*) FROM modelled.DimProjectStatus WHERE pk_projectstatus < 0) != 2
+BEGIN
+    SET IDENTITY_INSERT [modelled].[DimProjectStatus] ON;
+    INSERT INTO [modelled].[DimProjectStatus]
+    (    [pk_projectstatus]
+        ,[ak_projectstatus]
+        ,[dwh_valid_from]
+        ,[dwh_active]
+        ,[projectstatus_name]
+        ,[projectphase]
+        ,[stagegate_name]
+    )
+    VALUES
+        (-1, -1, '1900-01-01', 1, 'Unknown', 'Unknown', 'Unknown'),
+        (-2, -2, '1900-01-01', 1, 'Empty', 'Empty', 'Empty')
+    SET IDENTITY_INSERT [modelled].[DimProjectStatus] OFF;
+END
+
+
+IF (SELECT COUNT(*) FROM modelled.DimCountry WHERE pk_country < 0) != 2
+BEGIN
+    SET IDENTITY_INSERT [modelled].[DimCountry] ON;
+    INSERT INTO [modelled].[DimCountry]
+    (    [pk_country]
+        ,[ak_country]
+        ,[dwh_valid_from]
+        ,[dwh_active]
+        ,[country_name]
+        ,[region_NL]
+        ,[region_DR]
+        ,[region_OF]
+        ,[region_OW]
+        ,[subregion_OF]
+    )
+    VALUES
+        (-1, -1, '1900-01-01', 1, 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown'),
+        (-2, -2, '1900-01-01', 1, 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty')
+    SET IDENTITY_INSERT [modelled].[DimCountry] OFF;
 END

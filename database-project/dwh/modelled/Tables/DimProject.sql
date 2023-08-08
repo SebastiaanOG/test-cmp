@@ -15,7 +15,7 @@ CREATE TABLE modelled.DimProject (
 ,  [going_ahead_chance_percent]  int   NULL
 ,  [going_ahead_chance_description]  nvarchar(4000)   NULL
 ,  [productgroups_nl]  nvarchar(4000)   NULL
-,  [dredging_categoy]  nvarchar(4000)   NULL
+,  [dredging_category]  nvarchar(4000)   NULL
 ,  [tender_type]  nvarchar(4000)   NULL
 , CONSTRAINT [PK_modelled.DimProject] PRIMARY KEY CLUSTERED ([pk_project] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 100, DATA_COMPRESSION = PAGE))
 GO
@@ -66,7 +66,7 @@ exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'chance of going 
 GO
 exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'productgroups nl', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimProject', @level2type=N'COLUMN', @level2name=N'productgroups_nl'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'dredging categoy', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimProject', @level2type=N'COLUMN', @level2name=N'dredging_categoy'; 
+exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'dredging categoy', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimProject', @level2type=N'COLUMN', @level2name=N'dredging_category'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'tender type', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimProject', @level2type=N'COLUMN', @level2name=N'tender_type'; 
 GO
@@ -102,7 +102,7 @@ exec sys.sp_addextendedproperty @name=N'Description', @value=N'chance of going a
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'productgroups nl', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimProject', @level2type=N'COLUMN', @level2name=N'productgroups_nl'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Description', @value=N'dredging categoy', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimProject', @level2type=N'COLUMN', @level2name=N'dredging_categoy'; 
+exec sys.sp_addextendedproperty @name=N'Description', @value=N'dredging categoy', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimProject', @level2type=N'COLUMN', @level2name=N'dredging_category'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'tender type', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimProject', @level2type=N'COLUMN', @level2name=N'tender_type'; 
 GO
@@ -152,7 +152,7 @@ exec sys.sp_addextendedproperty @name=N'Source System', @value=N'DWH', @level0ty
 GO
 exec sys.sp_addextendedproperty @name=N'Source System', @value=N'DWH', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimProject', @level2type=N'COLUMN', @level2name=N'productgroups_nl'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Source System', @value=N'DWH', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimProject', @level2type=N'COLUMN', @level2name=N'dredging_categoy'; 
+exec sys.sp_addextendedproperty @name=N'Source System', @value=N'DWH', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimProject', @level2type=N'COLUMN', @level2name=N'dredging_category'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Source System', @value=N'DWH', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimProject', @level2type=N'COLUMN', @level2name=N'tender_type'; 
 GO
@@ -176,7 +176,7 @@ exec sys.sp_addextendedproperty @name=N'Source Schema', @value=N'processed', @le
 GO
 exec sys.sp_addextendedproperty @name=N'Source Schema', @value=N'processed', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimProject', @level2type=N'COLUMN', @level2name=N'productgroups_nl'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Source Schema', @value=N'processed', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimProject', @level2type=N'COLUMN', @level2name=N'dredging_categoy'; 
+exec sys.sp_addextendedproperty @name=N'Source Schema', @value=N'processed', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimProject', @level2type=N'COLUMN', @level2name=N'dredging_category'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Source Schema', @value=N'processed', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimProject', @level2type=N'COLUMN', @level2name=N'tender_type'; 
 GO
@@ -200,7 +200,7 @@ exec sys.sp_addextendedproperty @name=N'Source Table', @value=N'dyn_project', @l
 GO
 exec sys.sp_addextendedproperty @name=N'Source Table', @value=N'dyn_project', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimProject', @level2type=N'COLUMN', @level2name=N'productgroups_nl'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Source Table', @value=N'dyn_project', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimProject', @level2type=N'COLUMN', @level2name=N'dredging_categoy'; 
+exec sys.sp_addextendedproperty @name=N'Source Table', @value=N'dyn_project', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimProject', @level2type=N'COLUMN', @level2name=N'dredging_category'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Source Table', @value=N'dyn_project', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimProject', @level2type=N'COLUMN', @level2name=N'tender_type'; 
 GO
@@ -224,7 +224,7 @@ exec sys.sp_addextendedproperty @name=N'Source Field Name', @value=N'chanceofgoi
 GO
 exec sys.sp_addextendedproperty @name=N'Source Field Name', @value=N'productgroupsnl_value', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimProject', @level2type=N'COLUMN', @level2name=N'productgroups_nl'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Source Field Name', @value=N'dredgingcategory_value', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimProject', @level2type=N'COLUMN', @level2name=N'dredging_categoy'; 
+exec sys.sp_addextendedproperty @name=N'Source Field Name', @value=N'dredgingcategory_value', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimProject', @level2type=N'COLUMN', @level2name=N'dredging_category'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Source Field Name', @value=N'tendertype_value', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimProject', @level2type=N'COLUMN', @level2name=N'tender_type'; 
 GO
@@ -248,7 +248,7 @@ exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'nvarchar(4000
 GO
 exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'nvarchar(4000)', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimProject', @level2type=N'COLUMN', @level2name=N'productgroups_nl'; 
 GO
-exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'nvarchar(4000)', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimProject', @level2type=N'COLUMN', @level2name=N'dredging_categoy'; 
+exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'nvarchar(4000)', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimProject', @level2type=N'COLUMN', @level2name=N'dredging_category'; 
 GO
 exec sys.sp_addextendedproperty @name=N'Source Datatype', @value=N'nvarchar(4000)', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimProject', @level2type=N'COLUMN', @level2name=N'tender_type'; 
 GO

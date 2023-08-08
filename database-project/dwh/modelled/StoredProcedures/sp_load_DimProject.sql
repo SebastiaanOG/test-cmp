@@ -65,7 +65,7 @@ AS
                 WHEN chanceofgoingahead_value = 'Very High' THEN 100
             END                                                 AS [going_ahead_chance_percent]
             ,[productgroupsnl_value]                            AS [productgroups_nl]
-            ,[dredgingcategory_value]                           AS [dredging_categoy]
+            ,[dredgingcategory_value]                           AS [dredging_category]
             ,[tendertype_value]                                 AS [tender_type]
 
         INTO #project_active
@@ -104,7 +104,7 @@ AS
             ,DESTINATION.[going_ahead_chance_percent] = SOURCE.[going_ahead_chance_percent]
             ,DESTINATION.[going_ahead_chance_description] = SOURCE.[going_ahead_chance_description]
             ,DESTINATION.[productgroups_nl] = SOURCE.[productgroups_nl]
-            ,DESTINATION.[dredging_categoy] = SOURCE.[dredging_categoy]
+            ,DESTINATION.[dredging_category] = SOURCE.[dredging_category]
             ,DESTINATION.[tender_type] = SOURCE.[tender_type]
                   
         WHEN NOT MATCHED BY TARGET 
@@ -125,7 +125,7 @@ AS
             ,going_ahead_chance_percent
             ,going_ahead_chance_description
             ,productgroups_nl
-            ,dredging_categoy
+            ,dredging_category
             ,tender_type            
         ) 
         VALUES 
@@ -145,7 +145,7 @@ AS
             ,SOURCE.[going_ahead_chance_percent]
             ,SOURCE.[going_ahead_chance_description]
             ,SOURCE.[productgroups_nl]
-            ,SOURCE.[dredging_categoy]
+            ,SOURCE.[dredging_category]
             ,SOURCE.[tender_type]
         )
         -- When there is a row that exists in target and same record does not exist in source then delete this record target

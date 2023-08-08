@@ -88,7 +88,7 @@ AS
         THEN INSERT
             (dwh_valid_from, dwh_valid_to, dwh_active, dwh_process_run_id, dwh_hash, ak_tendertype, tendertype_name, tendertype_sort)
         VALUES
-            (@process_run_date, NULL, 1, @process_run_id, SOURCE.dwh_hash, SOURCE.ak_tendertype, SOURCE.tendertype_name, SOURCE.tendertype_name)
+            (@process_run_date, NULL, 1, @process_run_id, SOURCE.dwh_hash, SOURCE.ak_tendertype, SOURCE.tendertype_name, SOURCE.tendertype_sort)
 
         -- When there is a row that exists in target and same record does not exist in source then delete this record target
         WHEN NOT MATCHED BY SOURCE AND DESTINATION.pk_tendertype > 0 AND DESTINATION.dwh_active = 1
