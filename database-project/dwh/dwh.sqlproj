@@ -76,6 +76,7 @@
     <Folder Include="PostDeploy" />
   </ItemGroup>
   <ItemGroup>
+    <Build Include="elt\Tables\ModelledTables.sql" />
     <Build Include="elt\Tables\ProcessedTables.sql" />
     <Build Include="audit\Tables\ProcessRun.sql" />
     <Build Include="audit\Tables\ProcessError.sql" />
@@ -252,12 +253,12 @@
     <PostDeploy Include="PostDeploy\pd_Main.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </PostDeploy>
-    <None Include="PostDeploy\pd_ProcessedTables.sql" />
     <None Include="PostDeploy\pd_AuthSynapseWS.sql" />
     <None Include="PostDeploy\pd_ExecuteStoreProcedures.sql" />
     <None Include="PostDeploy\reference\pd_country.sql" />
     <None Include="PostDeploy\reference\pd_projectstage.sql" />
     <None Include="PostDeploy\reference\pd_equipment_category.sql" />
+    <None Include="PostDeploy\pd_ProcessedTables.sql" />
     <None Include="PostDeploy\pd_ModelledTables.sql" />
     <None Include="PostDeploy\reference\pd_contractvalue_class.sql" />
     <None Include="PostDeploy\reference\pd_dredgingcategory_defaults.sql" />

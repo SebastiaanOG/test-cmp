@@ -1,5 +1,28 @@
 -- This file contains SQL statements that will be executed after the build script.
 
+/* Truncate before insert */
+TRUNCATE TABLE [elt].[ModelledTables]
+
+/*Insert records to pickup in the processed layer */
+INSERT
+    [elt].[ModelledTables] ([Level], [EntityName], [StoredProcedureName], [Schema], [Active], [Comment]) 
+
+VALUES
+    (2,'DimArea','sp_load_DimArea','modelled',1,'Stored procedure to load DimArea'),
+    (2,'DimContractValueClass','sp_load_DimContractValueClass','modelled',1,'Stored procedure to load DimContractValueClass'),
+    (2,'DimCountry','sp_load_DimCountry','modelled',1,'Stored procedure to load DimCountry'),
+    (2,'DimDredgingCategory','sp_load_DimDredgingCategory','modelled',1,'Stored procedure to load DimDredgingCategory'),
+    (2,'DimEquipmentObject','sp_load_DimEquipmentObject','modelled',1,'Stored procedure to load DimEquipmentObject'),
+    (2,'DimEquipmentType','sp_load_DimEquipmentType','modelled',1,'Stored procedure to load DimEquipmentType'),
+    (2,'DimProject','sp_load_DimProject','modelled',1,'Stored procedure to load DimProject'),
+    (2,'DimProjectEquipment','sp_load_DimProjectEquipment','modelled',1,'Stored procedure to load DimProjectEquipment'),
+    (2,'DimProjectStatus','sp_load_DimProjectStatus','modelled',1,'Stored procedure to load DimProjectStatus'),
+    (2,'DimStage','sp_load_DimStage','modelled',1,'Stored procedure to load DimStage'),
+    (2,'DimSubArea','sp_load_DimSubArea','modelled',1,'Stored procedure to load DimSubArea'),
+    (2,'DimTenderType','sp_load_DimTenderType','modelled',1,'Stored procedure to load DimTenderType'),
+    (2,'DimDate','sp_populate_dimdate','processed',1,'Stored procedure to load DimDate'),
+    (3,'FactProjects','sp_load_FactProjects','processed',1,'Stored procedure to load FactProjects')
+
 
 
 -- Add empty and unknowns to Dimensions
