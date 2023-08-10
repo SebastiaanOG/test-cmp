@@ -1,0 +1,49 @@
+name: CI checks for the Synapse workspace
+
+on:
+  pull_request:
+    paths:
+      - scripts/synapse_naming_convention/**
+      - synapse-workspace/**
+  push:
+    paths:
+      - scripts/synapse_naming_convention/**
+      - synapse-workspace/**
+
+jobs:
+  check_naming_convention:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r scripts/synapse_naming_convention/requirements.txt
+
+      - name: Test the naming convention script.
+        run: |
+          pytest scripts/synapse_naming_convention/tests.py
+      - name: Run naming convention check
+        run: |
+          python scripts/synapse_naming_convention/main.py \
+          --root synapse-workspace\
+          --exclude dataset/ds_datalake_json.json\
+          --exclude dataset/ds_source_servicenow_tableapi_http.json\
+          --exclude dataset/ds_datalake.json\
+          --exclude dataset/ds_datalake_json_utf_8.json\
+          --exclude dataset/ds_source_servicenow_tableapi_rest.json\
+          --exclude dataset/ds_datalake_delete.json\
+          --exclude linkedService/ls_source_servicenow_tableapi_rest.json\
+          --exclude linkedService/ls_source_servicenow_tableapi_http.json\
+          --exclude linkedService/sywsvocmpdevweu001-WorkspaceDefaultStorage.json\
+          --exclude linkedService/sywsvocmpdevweu001-WorkspaceDefaultSqlServer.json\
+          --exclude managedVirtualNetwork/default/managedPrivateEndpoint/synapse-ws-sql--sywsvocmpdevweu001.json\
+          --exclude managedVirtualNetwork/default/managedPrivateEndpoint/mpe_sywsvocmpdevweu001_dynamics_sql.json\
+          --exclude managedVirtualNetwork/default/managedPrivateEndpoint/mpe_sywsvocmpdevweu001_dwh_sql.json\
+          --exclude managedVirtualNetwork/default/managedPrivateEndpoint/synapse-ws-sqlOnDemand--sywsvocmpdevweu001.json\
+          --exclude trigger/t_master_daily_07.json
