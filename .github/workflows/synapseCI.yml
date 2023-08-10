@@ -47,5 +47,4 @@ jobs:
           --exclude managedVirtualNetwork/default/managedPrivateEndpoint/synapse-ws-sql--sywsvocmpdevweu001.json \
           --exclude managedVirtualNetwork/default/managedPrivateEndpoint/mpe_sywsvocmpdevweu001_dynamics_sql.json \
           --exclude managedVirtualNetwork/default/managedPrivateEndpoint/mpe_sywsvocmpdevweu001_dwh_sql.json \
-          --exclude managedVirtualNetwork/default/managedPrivateEndpoint/synapse-ws-sqlOnDemand--sywsvocmpdevweu001.json \
           --exclude trigger/t_master_daily_07.json
