@@ -5,10 +5,12 @@ on:
     paths:
       - scripts/synapse_naming_convention/**
       - synapse-workspace/**
+      - .github/workflows/synapseCI.yml
   push:
     paths:
       - scripts/synapse_naming_convention/**
       - synapse-workspace/**
+      - .github/workflows/synapseCI.yml
 
 jobs:
   check_naming_convention:
