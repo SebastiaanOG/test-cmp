@@ -31,19 +31,19 @@ jobs:
       - name: Run naming convention check
         run: |
           python scripts/synapse_naming_convention/main.py \
-          --root synapse-workspace\
-          --exclude dataset/ds_datalake_json.json\
-          --exclude dataset/ds_source_servicenow_tableapi_http.json\
-          --exclude dataset/ds_datalake.json\
-          --exclude dataset/ds_datalake_json_utf_8.json\
-          --exclude dataset/ds_source_servicenow_tableapi_rest.json\
-          --exclude dataset/ds_datalake_delete.json\
-          --exclude linkedService/ls_source_servicenow_tableapi_rest.json\
-          --exclude linkedService/ls_source_servicenow_tableapi_http.json\
-          --exclude linkedService/sywsvocmpdevweu001-WorkspaceDefaultStorage.json\
-          --exclude linkedService/sywsvocmpdevweu001-WorkspaceDefaultSqlServer.json\
-          --exclude managedVirtualNetwork/default/managedPrivateEndpoint/synapse-ws-sql--sywsvocmpdevweu001.json\
-          --exclude managedVirtualNetwork/default/managedPrivateEndpoint/mpe_sywsvocmpdevweu001_dynamics_sql.json\
-          --exclude managedVirtualNetwork/default/managedPrivateEndpoint/mpe_sywsvocmpdevweu001_dwh_sql.json\
-          --exclude managedVirtualNetwork/default/managedPrivateEndpoint/synapse-ws-sqlOnDemand--sywsvocmpdevweu001.json\
+          --root synapse-workspace \
+          --exclude dataset/ds_datalake_json.json \
+          --exclude dataset/ds_source_servicenow_tableapi_http.json \
+          --exclude dataset/ds_datalake.json \
+          --exclude dataset/ds_datalake_json_utf_8.json \
+          --exclude dataset/ds_source_servicenow_tableapi_rest.json \
+          --exclude dataset/ds_datalake_delete.json \
+          --exclude linkedService/ls_source_servicenow_tableapi_rest.json \
+          --exclude linkedService/ls_source_servicenow_tableapi_http.json \
+          --exclude linkedService/sywsvocmpdevweu001-WorkspaceDefaultStorage.json \
+          --exclude linkedService/sywsvocmpdevweu001-WorkspaceDefaultSqlServer.json \
+          --exclude managedVirtualNetwork/default/managedPrivateEndpoint/synapse-ws-sql--sywsvocmpdevweu001.json \
+          --exclude managedVirtualNetwork/default/managedPrivateEndpoint/mpe_sywsvocmpdevweu001_dynamics_sql.json \
+          --exclude managedVirtualNetwork/default/managedPrivateEndpoint/mpe_sywsvocmpdevweu001_dwh_sql.json \
+          --exclude managedVirtualNetwork/default/managedPrivateEndpoint/synapse-ws-sqlOnDemand--sywsvocmpdevweu001.json \
           --exclude trigger/t_master_daily_07.json
