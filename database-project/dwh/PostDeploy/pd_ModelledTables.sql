@@ -20,8 +20,13 @@ VALUES
     (2,'DimStage','sp_load_DimStage','modelled',1,'Stored procedure to load DimStage'),
     (2,'DimSubArea','sp_load_DimSubArea','modelled',1,'Stored procedure to load DimSubArea'),
     (2,'DimTenderType','sp_load_DimTenderType','modelled',1,'Stored procedure to load DimTenderType'),
-    (2,'DimDate','sp_populate_dimdate','processed',1,'Stored procedure to load DimDate'),
-    (3,'FactProjects','sp_load_FactProjects','processed',1,'Stored procedure to load FactProjects')
+    (3,'FactProjects','sp_load_FactProjects','modelled',1,'Stored procedure to load FactProjects')
+
+-- Populate DimDate if empty
+IF (SELECT COUNT(*) FROM modelled.DimDate) = 0
+BEGIN
+    EXEC modelled.sp_populate_dimdate
+END
 
 -- Add empty and unknowns to Dimensions
 IF (SELECT COUNT(*) FROM modelled.DimArea WHERE pk_area < 0) != 2
