@@ -1,6 +1,6 @@
 CREATE PROCEDURE [elt].[spLookupStoredProcedures]
     @level INT,
-    @use_case_code nvarchar(MAX)
+    @use_case_code nvarchar(MAX),
     @layer_name NVARCHAR(50)
 AS
 BEGIN
