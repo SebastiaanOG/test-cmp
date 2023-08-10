@@ -1,5 +1,5 @@
 {
-	"name": "30 StagedToProcessed",
+	"name": "40 ProcessedToModelled",
 	"properties": {
 		"activities": [
 			{
@@ -63,7 +63,7 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "Execute Pipeline 31 StagedToProcessed",
+							"name": "Execute Pipeline 41 ProcessedToModelled",
 							"type": "ExecutePipeline",
 							"dependsOn": [
 								{
@@ -76,7 +76,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"pipeline": {
-									"referenceName": "31 StagedToProcessed - Stored Procedures",
+									"referenceName": "41 ProcessedToModelled - Stored Procedures",
 									"type": "PipelineReference"
 								},
 								"waitOnCompletion": true,
@@ -91,6 +91,10 @@
 									},
 									"dwh_dbname": {
 										"value": "@pipeline().parameters.dwh_dbname",
+										"type": "Expression"
+									},
+									"layer_name": {
+										"value": "@pipeline().parameters.layer_name",
 										"type": "Expression"
 									},
 									"process_run_date": {
@@ -174,19 +178,14 @@
 			},
 			"layer_name": {
 				"type": "string",
-				"defaultValue": "processed"
+				"defaultValue": "modelled"
 			},
 			"system_code": {
 				"type": "string"
 			}
 		},
-		"variables": {
-			"process_run_date": {
-				"type": "String"
-			}
-		},
 		"folder": {
-			"name": "ELT DWH/30 StagedToProcessed"
+			"name": "ELT DWH/40 ProcessedToModelled"
 		},
 		"annotations": [],
 		"lastPublishTime": "2020-10-15T16:10:33Z"

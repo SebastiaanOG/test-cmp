@@ -1,5 +1,5 @@
 {
-	"name": "31 StagedToProcessed - Stored Procedures",
+	"name": "41 ProcessedToModelled - Stored Procedures",
 	"properties": {
 		"activities": [
 			{
@@ -81,7 +81,7 @@
 			},
 			"layer_name": {
 				"type": "string",
-				"defaultValue": "processed"
+				"defaultValue": "modelled"
 			},
 			"process_run_date": {
 				"type": "string"
@@ -93,7 +93,7 @@
 			}
 		},
 		"folder": {
-			"name": "ELT DWH/30 StagedToProcessed"
+			"name": "ELT DWH/40 ProcessedToModelled"
 		},
 		"annotations": [],
 		"lastPublishTime": "2020-10-15T16:10:32Z"
