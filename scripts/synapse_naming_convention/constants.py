@@ -3,8 +3,8 @@ LOCATIONS = ["dwh", "mdb", "dynamics", "servicenow", "datalake", "cmp", "cmptest
 OBJECT_TYPES = ["table", "sp", "parquet", "json"]
 TRIGGERABLE_PIPELINES = ["dyn", "snp", "master"]
 FREQUENCIES = ["hourly", "daily", "monthly"]
-SYNAPSE_WORKSPACES = ["sywsvocmpdevweu001"]  # TODO make environment specific?
-DESTINATIONS = ["stvocmpdevweu002"]  # TODO better name?
+SYNAPSE_WORKSPACES = ["sywsvocmpdevweu001"]  # TODO should the other environment also be here?
+DESTINATIONS = ["stvocmpdevweu002"]
 ENDPOINT_TYPES = ["blob", "dfs", "sql"]
 
 # Error messages
