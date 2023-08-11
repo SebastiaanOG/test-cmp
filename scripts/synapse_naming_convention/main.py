@@ -9,6 +9,10 @@ import parse
 
 
 def main() -> None:
+    """
+    This is a CI/CD check that ensure that all the Synapse resource follow our naming convention.
+    """
+
     args = parse_args()
 
     synapse_root = args.root
@@ -57,12 +61,21 @@ def main() -> None:
 
 def parse_args() -> Namespace:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--root", type=Path, required=True)
+    parser.add_argument(
+        "--root", 
+        type=Path, 
+        required=True,
+        help="The absolute path to the root directory of Synapse.",
+    )
     parser.add_argument(
         "--exclude",
         dest="excluded",
         action="append",
-        help="Path to exclude from validation.",
+        help=(
+            "Path to exclude from validation."
+            "Can be used multiple time to exclude multiple file."
+            "The path must be relative to the root directory of Synapse"
+        ),
         default=[],
     )
 
