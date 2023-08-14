@@ -4,6 +4,8 @@ The key idea here are as follows:
 - Be strict for all the newly created resource and force them to adhere to the naming convention.
 - Ignore the current violations that cannot easily be changed.
 
+A full description of the naming convention can be found in the wiki ([link](https://dev.azure.com/vanoord/Data%20and%20Analytics/_wiki/wikis/Compass.wiki/416/Naming-conventions)).
+
 ## Usage
 You can call the script as follows:
 
