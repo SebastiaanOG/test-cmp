@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [elt].[spLookupLevels] @layer_name NVARCHAR(50)
+CREATE PROCEDURE [elt].[spLookupLevels] @layer_name NVARCHAR(50)
 AS
 BEGIN
     IF @layer_name = 'processed'
