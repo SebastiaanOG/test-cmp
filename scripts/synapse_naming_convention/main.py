@@ -90,24 +90,7 @@ def check_linked_service_names(name: str) -> list[str]:
         errors.append(constants.NAME_DOES_NOT_MATCH_PATTERN_ERROR_MSG)
         return errors
 
-    errors += _check_location_type_for_errors(parsed_name["location_type"])
-    errors += _check_location_for_errors(parsed_name["location"])
-
     return errors
-
-
-def _check_location_type_for_errors(location_type: str) -> list[str]:
-    if location_type not in constants.LOCATION_TYPES:
-        return [constants.UNKNOWN_LOCATION_TYPE_ERROR_MSG]
-
-    return []
-
-
-def _check_location_for_errors(location: str) -> list[str]:
-    if location not in constants.LOCATIONS:
-        return [constants.UNKNOWN_LOCATION_ERROR_MSG]
-
-    return []
 
 
 def check_dataset_names(name: str) -> list[str]:
@@ -117,19 +100,8 @@ def check_dataset_names(name: str) -> list[str]:
     if parsed_name is None:
         return [constants.NAME_DOES_NOT_MATCH_PATTERN_ERROR_MSG]
 
-    errors += _check_location_type_for_errors(parsed_name["location_type"])
-    errors += _check_location_for_errors(parsed_name["location"])
-    errors += _check_object_type_for_errors(parsed_name["object_type"])
 
     return errors
-
-
-def _check_object_type_for_errors(object_type: str) -> list[str]:
-    if object_type not in constants.OBJECT_TYPES:
-        return [constants.UNKNOWN_OBJECT_TYPE_ERROR_MSG]
-
-    return []
-
 
 def check_pipelines_names(name: str, parent_pipeline_names: list[str]) -> list[str]:
     if name == "Master.json":
@@ -201,12 +173,6 @@ def check_trigger_name(name: str) -> list[str]:
     if parsed_name is None:
         return [constants.NAME_DOES_NOT_MATCH_PATTERN_ERROR_MSG]
 
-    if parsed_name["pipeline"] not in constants.TRIGGERABLE_PIPELINES:
-        errors.append(constants.UNKNOWN_TRIGGERABLE_PIPELINE_ERROR_MSG)
-
-    if parsed_name["frequency"] not in constants.FREQUENCIES:
-        errors.append(constants.UNKNOWN_FREQUENCY_ERROR_MSG)
-
     if not is_valid_time(parsed_name["time"]):
         errors.append(constants.INVALID_TIME_FORMAT)
 
@@ -228,15 +194,6 @@ def check_managed_private_endpoint_name(name: str) -> list[str]:
 
     if parsed_name is None:
         return [constants.NAME_DOES_NOT_MATCH_PATTERN_ERROR_MSG]
-
-    if parsed_name["origin"] not in constants.SYNAPSE_WORKSPACES:
-        errors.append(constants.UNKNOWN_SYNAPSE_WORKSPACE_ERROR_MSG)
-
-    if parsed_name["destination"] not in constants.DESTINATIONS:
-        errors.append(constants.UNKNOWN_DESTINATION_ERROR_MSG)
-
-    if parsed_name["endpoint_type"] not in constants.ENDPOINT_TYPES:
-        errors.append(constants.UNKNOWN_ENDPOINT_TYPE_ERROR_MSG)
 
     return errors
 

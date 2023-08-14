@@ -54,8 +54,6 @@ def test_check_pipelines_names_for_parent(name: str, expected: bool) -> None:
         ("ds_datalake.json", [constants.NAME_DOES_NOT_MATCH_PATTERN_ERROR_MSG]),
         ("ds_datalake_delete.json", [constants.NAME_DOES_NOT_MATCH_PATTERN_ERROR_MSG]),
         ("ds_source_cmptest.json", [constants.NAME_DOES_NOT_MATCH_PATTERN_ERROR_MSG]),
-        ("ds_unknown_mdb_table.json", [constants.UNKNOWN_LOCATION_TYPE_ERROR_MSG]),
-        ("ds_sql_unknown_table.json", [constants.UNKNOWN_LOCATION_ERROR_MSG]),
     ],
 )
 def test_check_dataset_names(name: str, expected: bool) -> None:
@@ -75,8 +73,6 @@ def test_check_dataset_names(name: str, expected: bool) -> None:
         ("ls_st_datalake", [constants.NAME_DOES_NOT_MATCH_PATTERN_ERROR_MSG]),
         ("st_datalake.json", [constants.NAME_DOES_NOT_MATCH_PATTERN_ERROR_MSG]),
         ("some random name", [constants.NAME_DOES_NOT_MATCH_PATTERN_ERROR_MSG]),
-        ("ls_unknownType_mdb.json", [constants.UNKNOWN_LOCATION_TYPE_ERROR_MSG]),
-        ("ls_st_unknownLocation.json", [constants.UNKNOWN_LOCATION_ERROR_MSG]),
     ],
 )
 def test_check_linked_service_names(name: str, expected: list[str]) -> None:
@@ -90,11 +86,6 @@ def test_check_linked_service_names(name: str, expected: list[str]) -> None:
         ("t_dyn_daily_07_00.json", []),
         ("t_dyn_hourly_07_00.json", []),
         ("t_dyn_monthly_07_00.json", []),
-        ("t_dyn_unknown_07_00.json", [constants.UNKNOWN_FREQUENCY_ERROR_MSG]),
-        (
-            "t_unknown_daily_07_00.json",
-            [constants.UNKNOWN_TRIGGERABLE_PIPELINE_ERROR_MSG],
-        ),
         ("t_dyn_daily_07_61.json", [constants.INVALID_TIME_FORMAT]),
         ("t_dyn_daily_42_00.json", [constants.INVALID_TIME_FORMAT]),
         ("t_dyn_daily_42.json", [constants.INVALID_TIME_FORMAT]),
@@ -111,20 +102,8 @@ def test_check_trigger_name(name: str, expected: list[str]) -> None:
     [
         ("mpe_sywsvocmpdevweu001_stvocmpdevweu002_dfs.json", []),
         (
-            "mpe_unknown_stvocmpdevweu002_dfs.json",
-            [constants.UNKNOWN_SYNAPSE_WORKSPACE_ERROR_MSG],
-        ),
-        (
-            "mpe_sywsvocmpdevweu001_unknown_dfs.json",
-            [constants.UNKNOWN_DESTINATION_ERROR_MSG],
-        ),
-        (
             "mpe_sywsvocmpdevweu001_stvocmpdevweu002_dfs",
             [constants.NAME_DOES_NOT_MATCH_PATTERN_ERROR_MSG],
-        ),
-        (
-            "mpe_sywsvocmpdevweu001_stvocmpdevweu002_unknown.json",
-            [constants.UNKNOWN_ENDPOINT_TYPE_ERROR_MSG],
         ),
     ],
 )
