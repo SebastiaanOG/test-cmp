@@ -20,7 +20,8 @@ VALUES
     (2,'DimStage','sp_load_DimStage','modelled',1,'Stored procedure to load DimStage'),
     (2,'DimSubArea','sp_load_DimSubArea','modelled',1,'Stored procedure to load DimSubArea'),
     (2,'DimTenderType','sp_load_DimTenderType','modelled',1,'Stored procedure to load DimTenderType'),
-    (3,'FactProjects','sp_load_FactProjects','modelled',1,'Stored procedure to load FactProjects')
+    (3,'FactProjects','sp_load_FactProjects','modelled',1,'Stored procedure to load FactProjects'),
+    (3,'FactProjectEquipments','sp_load_FactProjectEquipments','modelled',1,'Stored procedure to load FactProjectEquipments')
 
 -- Populate DimDate if empty
 IF (SELECT COUNT(*) FROM modelled.DimDate) = 0
