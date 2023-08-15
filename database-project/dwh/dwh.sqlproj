@@ -59,6 +59,7 @@
     <Folder Include="modelled\Functions" />
     <Folder Include="modelled\StoredProcedures" />
     <Folder Include="modelled\Tables" />
+    <Folder Include="modelled\Views" />
     <Folder Include="PostDeploy\reference" />
     <Folder Include="Properties" />
     <Folder Include="elt\" />
@@ -109,6 +110,7 @@
     <Build Include="modelled\Tables\DimProjectEquipment.sql" />
     <Build Include="modelled\Tables\DimSubArea.sql" />
     <Build Include="modelled\Tables\DimTendertype.sql" />
+    <Build Include="modelled\Views\DimDateView.sql" />
     <Build Include="reference\Tables\contractvalue_class.sql" />
     <Build Include="reference\Tables\country.sql" />
     <Build Include="reference\Tables\dredgingcategory_defaults.sql" />
@@ -400,7 +402,7 @@
     <None Include="PostDeploy\reference\pd_country.sql" />
     <None Include="PostDeploy\reference\pd_projectstage.sql" />
     <None Include="PostDeploy\reference\pd_equipment_category.sql" />
-    <None Include="PostDeploy\pd_ProcessedTables.sql"  />
+    <None Include="PostDeploy\pd_ProcessedTables.sql" />
     <None Include="PostDeploy\pd_ModelledTables.sql" />
     <None Include="PostDeploy\reference\pd_contractvalue_class.sql" />
     <None Include="PostDeploy\reference\pd_dredgingcategory_defaults.sql" />
@@ -410,7 +412,7 @@
     <None Include="PostDeploy\reference\pd_equipment_category.sql" />
     <None Include="PostDeploy\pd_ModelledTables.sql" />
     <None Include="PostDeploy\reference\pd_contractvalue_class.sql" />
-    <None Include="PostDeploy\reference\pd_dredgingcategory_defaults.sql"  />
+    <None Include="PostDeploy\reference\pd_dredgingcategory_defaults.sql" />
   </ItemGroup>
   <Import Condition="'$(NetCoreBuild)' == 'true'" Project="$(NETCoreTargetsPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
