@@ -29,7 +29,6 @@ def main() -> None:
         "pipeline": partial(
             check_pipelines_names, parent_pipeline_names=parent_pipeline_names
         ),
-        "trigger": check_trigger_name,
     }
 
     configs_with_errors = []
