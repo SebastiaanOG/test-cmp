@@ -38,7 +38,6 @@ jobs:
           pytest
           
       - name: Run naming convention check
-        working-directory: scripts/synapse_naming_convention
         run: |
           python scripts/synapse_naming_convention/main.py \
           --root synapse-workspace \
