@@ -27,14 +27,18 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install dependencies
+        working-directory: scripts/synapse_naming_convention
         run: |
           python -m pip install --upgrade pip
-          pip install -r scripts/synapse_naming_convention/requirements.txt
-
+          pip install -r requirements.txt
+        
       - name: Test the naming convention script.
+        working-directory: scripts/synapse_naming_convention
         run: |
-          pytest scripts/synapse_naming_convention/tests.py
+          pytest
+          
       - name: Run naming convention check
+        working-directory: scripts/synapse_naming_convention
         run: |
           python scripts/synapse_naming_convention/main.py \
           --root synapse-workspace \

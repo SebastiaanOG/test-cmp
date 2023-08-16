@@ -126,7 +126,7 @@ def _get_parent_pipeline_names(pipeline_dir: Path) -> list[str]:
     for file in pipeline_dir.glob("*.json"):
         parsed_name = _parse_parent_pipeline(file.name)
 
-        if parsed_name is not None:
+        if parsed_name is not None and parsed_name["index"][-1] == "0":
             parent_pipeline_names.append(parsed_name["name"])
 
     return parent_pipeline_names
