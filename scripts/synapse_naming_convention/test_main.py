@@ -131,4 +131,4 @@ def test__get_parent_pipeline_names(tmp_path: Path, file_names: list[str], expec
 
     parent_names = main._get_parent_pipeline_names(tmp_path)
 
-    assert expected_parent_names == parent_names
+    assert sorted(expected_parent_names) == sorted(parent_names)
