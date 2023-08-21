@@ -1,0 +1,15 @@
+[tool.pytest.ini_options]
+addopts = "--cov --cov-report=html --cov-fail-under=100"
+
+[tool.coverage.report]
+exclude_also = [
+    "def main()",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+    "def parse_args()"
+    ]
