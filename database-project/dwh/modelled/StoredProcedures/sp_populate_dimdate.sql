@@ -179,8 +179,8 @@ if not exists (select top 1 pk_date from modelled.DimDate)
                         ,[day_number_in_year]
                         ,[day_number_in_month]
                         ,[day_in_month_suffix]
-                        ,[day_numer_in_week]
-                        ,[day_numer_in_week_sunday]
+                        ,[day_number_in_week]
+                        ,[day_number_in_week_sunday]
                         ,[weekday_in_month]
                         ,[weekday_in_year]
                         ,[indicator_first_day_of_the_month]
@@ -193,7 +193,7 @@ if not exists (select top 1 pk_date from modelled.DimDate)
                         ,[year_and_month]
                         ,[year_and_week]
                         ,[year_and_week_sunday]
-                        ,[indicator_leap year]
+                        ,[indicator_leap_year]
                         )
                     VALUES
                         (@date

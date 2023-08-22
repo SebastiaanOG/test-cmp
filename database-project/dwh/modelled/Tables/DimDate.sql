@@ -15,8 +15,8 @@ CREATE TABLE modelled.DimDate (
 ,  [day_number_in_year]  smallint   NOT NULL
 ,  [day_number_in_month]  smallint   NOT NULL
 ,  [day_in_month_suffix]  nvarchar(10)   NOT NULL
-,  [day_numer_in_week]  tinyint   NOT NULL
-,  [day_numer_in_week_sunday]  tinyint   NOT NULL
+,  [day_number_in_week]  tinyint   NOT NULL
+,  [day_number_in_week_sunday]  tinyint   NOT NULL
 ,  [weekday_in_month]  nvarchar(5)   NOT NULL
 ,  [weekday_in_year]  nvarchar(5)   NOT NULL
 ,  [indicator_first_day_of_the_month]  nvarchar(3)   NOT NULL
@@ -29,7 +29,7 @@ CREATE TABLE modelled.DimDate (
 ,  [year_and_month]  int   NOT NULL
 ,  [year_and_week]  int   NOT NULL
 ,  [year_and_week_sunday]  int   NOT NULL
-,  [indicator_leap year]  nvarchar(3)   NOT NULL
+,  [indicator_leap_year]  nvarchar(3)   NOT NULL
 , CONSTRAINT [PK_modelled.DimDate] PRIMARY KEY CLUSTERED ([pk_date] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 100, DATA_COMPRESSION = PAGE) )
 GO
 
@@ -75,9 +75,9 @@ exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'day number in mo
 GO
 exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'day in month suffix', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'day_in_month_suffix';
 GO
-exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'day numer in week ISO', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'day_numer_in_week';
+exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'day numer in week ISO', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'day_number_in_week';
 GO
-exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'day numer in week Sunday', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'day_numer_in_week_sunday';
+exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'day numer in week Sunday', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'day_number_in_week_sunday';
 GO
 exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'weekday in month', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'weekday_in_month';
 GO
@@ -103,7 +103,7 @@ exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'year and week IS
 GO
 exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'year and week Sunday', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'year_and_week_sunday';
 GO
-exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'indicator leap year', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'indicator_leap year';
+exec sys.sp_addextendedproperty @name=N'Display Name', @value=N'indicator leap year', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'indicator_leap_year';
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'Primary key dimension = date', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'pk_date';
 GO
@@ -135,9 +135,9 @@ exec sys.sp_addextendedproperty @name=N'Description', @value=N'Field will hold d
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'Apply suffix as 1st, 2nd ,3rd etc', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'day_in_month_suffix';
 GO
-exec sys.sp_addextendedproperty @name=N'Description', @value=N'First Day Monday = 1 and Sunday=7', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'day_numer_in_week';
+exec sys.sp_addextendedproperty @name=N'Description', @value=N'First Day Monday = 1 and Sunday=7', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'day_number_in_week';
 GO
-exec sys.sp_addextendedproperty @name=N'Description', @value=N'First Day Sunday=1 and Saturday=7', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'day_numer_in_week_sunday';
+exec sys.sp_addextendedproperty @name=N'Description', @value=N'First Day Sunday=1 and Saturday=7', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'day_number_in_week_sunday';
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'1st Monday or 2nd Monday in Month', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'weekday_in_month';
 GO
@@ -163,7 +163,7 @@ exec sys.sp_addextendedproperty @name=N'Description', @value=N'202001, 202052 (w
 GO
 exec sys.sp_addextendedproperty @name=N'Description', @value=N'202001, 202052 (week starts on Sunday)', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'year_and_week_sunday';
 GO
-exec sys.sp_addextendedproperty @name=N'Description', @value=N'indicator leap year', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'indicator_leap year';
+exec sys.sp_addextendedproperty @name=N'Description', @value=N'indicator leap year', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'indicator_leap_year';
 GO
 exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'28-09-2023', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'pk_date';
 GO
@@ -195,9 +195,9 @@ exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'29', @level0ty
 GO
 exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'29', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'day_in_month_suffix';
 GO
-exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'2', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'day_numer_in_week';
+exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'2', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'day_number_in_week';
 GO
-exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'2', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'day_numer_in_week_sunday';
+exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'2', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'day_number_in_week_sunday';
 GO
 exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'2', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'weekday_in_month';
 GO
@@ -221,7 +221,7 @@ exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'202335', @leve
 GO
 exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'202335', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'year_and_week_sunday';
 GO
-exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'yes/no', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'indicator_leap year';
+exec sys.sp_addextendedproperty @name=N'Example Values', @value=N'yes/no', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'indicator_leap_year';
 GO
 exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'pk_date';
 GO
@@ -253,9 +253,9 @@ exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL'
 GO
 exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'day_in_month_suffix';
 GO
-exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'day_numer_in_week';
+exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'day_number_in_week';
 GO
-exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'day_numer_in_week_sunday';
+exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'day_number_in_week_sunday';
 GO
 exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'weekday_in_month';
 GO
@@ -281,5 +281,5 @@ exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL'
 GO
 exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'year_and_week_sunday';
 GO
-exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'indicator_leap year';
+exec sys.sp_addextendedproperty @name=N'Source System', @value=N'Derived in ETL', @level0type=N'SCHEMA', @level0name=N'modelled', @level1type=N'TABLE', @level1name=N'DimDate', @level2type=N'COLUMN', @level2name=N'indicator_leap_year';
 GO

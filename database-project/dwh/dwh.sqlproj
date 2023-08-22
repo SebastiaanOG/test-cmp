@@ -400,7 +400,7 @@
     <None Include="PostDeploy\reference\pd_country.sql" />
     <None Include="PostDeploy\reference\pd_projectstage.sql" />
     <None Include="PostDeploy\reference\pd_equipment_category.sql" />
-    <None Include="PostDeploy\pd_ProcessedTables.sql"  />
+    <None Include="PostDeploy\pd_ProcessedTables.sql" />
     <None Include="PostDeploy\pd_ModelledTables.sql" />
     <None Include="PostDeploy\reference\pd_contractvalue_class.sql" />
     <None Include="PostDeploy\reference\pd_dredgingcategory_defaults.sql" />
@@ -410,7 +410,7 @@
     <None Include="PostDeploy\reference\pd_equipment_category.sql" />
     <None Include="PostDeploy\pd_ModelledTables.sql" />
     <None Include="PostDeploy\reference\pd_contractvalue_class.sql" />
-    <None Include="PostDeploy\reference\pd_dredgingcategory_defaults.sql"  />
+    <None Include="PostDeploy\reference\pd_dredgingcategory_defaults.sql" />
   </ItemGroup>
   <Import Condition="'$(NetCoreBuild)' == 'true'" Project="$(NETCoreTargetsPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
@@ -428,5 +428,8 @@
       <SuppressMissingDependenciesErrors>False</SuppressMissingDependenciesErrors>
       <DatabaseVariableLiteralValue>dwh</DatabaseVariableLiteralValue>
     </ArtifactReference>
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="dwh.refactorlog" />
   </ItemGroup>
 </Project>
