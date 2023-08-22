@@ -1,4 +1,4 @@
-create procedure [modelled].[sp_populate_dimdate]
+CREATE PROCEDURE [modelled].[sp_populate_dimdate]
 --/*****************************************************
 --* Deze procedure fills the dimension DimDate         *
 --*                                                    *
@@ -75,14 +75,15 @@ if not exists (select top 1 pk_date from modelled.DimDate)
                     set @MonthName = lower(DATENAME(MM,@LoopDate))
                     set @MonthNameShort = SUBSTRING(@MonthName,1,3)
                     set @WeekNumber = DATEPART(ISOWW, @LoopDate)
-                    set @WeekNumberSunday = case when SUBSTRING((LOWER(DATENAME(WEEKDAY,@LoopDate))),1,2) = 'su' and DATEPART(DAYOFYear,@LoopDate) = 1 then 1
-                                           when SUBSTRING((LOWER(DATENAME(WEEKDAY,@LoopDate))),1,2) = 'su' then DATEPART(ISOWW, @LoopDate) +  1
-                                           else DATEPART(ISOWW, @LoopDate) end
                     set @Date = @LoopDate
                     set @dayName = LOWER(DATENAME(WEEKDAY,@LoopDate))
                     set @dayNameShort = SUBSTRING(@dayName,1,2)
                     set @dayNumberYear = DATEPART(DAYOFYear,@LoopDate)
                     set @dayNumberMonth = DATEPART(DAY,@LoopDate)
+                    set @WeekNumberSunday = case when SUBSTRING((LOWER(DATENAME(WEEKDAY,@LoopDate))),1,2) = 'su' 
+                                            and ((DATEPART(DAYOFYear,@LoopDate) <= 3) or (@dayNumberMonth >= 28 and @MonthNumber = 12)) then 1
+                                            when SUBSTRING((LOWER(DATENAME(WEEKDAY,@LoopDate))),1,2) = 'su' then DATEPART(ISOWW, @LoopDate) +  1 
+                                            else DATEPART(ISOWW, @LoopDate) end
                     set @DayNumberMonthSuffix =  CASE
                         WHEN DATEPART(DD,@LoopDate) IN (11,12,13) THEN CAST(DATEPART(DD,@LoopDate) AS VARCHAR) + 'th'
                         WHEN RIGHT(DATEPART(DD,@LoopDate),1) = 1 THEN CAST(DATEPART(DD,@LoopDate) AS VARCHAR) + 'st'
