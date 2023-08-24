@@ -4,6 +4,7 @@
 		"activities": [
 			{
 				"name": "Lookup - Systems",
+				"name": "Lookup - Systems",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -49,6 +50,7 @@
 				"dependsOn": [
 					{
 						"activity": "Lookup - Systems",
+						"activity": "Lookup - Systems",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -57,6 +59,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
+						"value": "@activity('Lookup - Systems').output.value",
 						"value": "@activity('Lookup - Systems').output.value",
 						"type": "Expression"
 					},

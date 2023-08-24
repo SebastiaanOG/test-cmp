@@ -382,6 +382,10 @@
 														"system_code": {
 															"value": "@pipeline().parameters.system_code",
 															"type": "Expression"
+														},
+														"system_code": {
+															"value": "@pipeline().parameters.system_code",
+															"type": "Expression"
 														}
 													}
 												}
@@ -398,15 +402,23 @@
 		"parameters": {
 			"process_run_id": {
 				"type": "string"
+				"type": "string"
 			},
 			"process_run_date": {
 				"type": "string"
 			},
 			"mdb_dbname": {
+			"mdb_dbname": {
 				"type": "string"
 			},
 			"system_code": {
+			"system_code": {
 				"type": "string"
+			}
+		},
+		"variables": {
+			"process_run_id": {
+				"type": "String"
 			}
 		},
 		"variables": {

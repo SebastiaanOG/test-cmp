@@ -177,6 +177,7 @@
 				"defaultValue": "processed"
 			},
 			"system_code": {
+			"system_code": {
 				"type": "string"
 			}
 		},
