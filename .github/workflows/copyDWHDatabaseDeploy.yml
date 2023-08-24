@@ -47,7 +47,7 @@ jobs:
   release:
     runs-on: self-hosted
     needs: [build]
-    environment: "does_not_support"
+    environment: "Unspecified"
 
     steps:
     - name: Download the artifact for ${{ github.event.inputs.dwh_clone }} | Download dacpac files on self-hosted runner

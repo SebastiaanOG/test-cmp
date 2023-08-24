@@ -7,5 +7,4 @@ CREATE TABLE [elt].[ProcessedTables](
     [Schema] [varchar](50) DEFAULT 'processed' NOT NULL,
     [Active] [bit] NOT NULL,
     [Comment] [nvarchar](255) NULL
-
 ) ON [PRIMARY];

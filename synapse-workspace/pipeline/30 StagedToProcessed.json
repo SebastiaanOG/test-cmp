@@ -18,6 +18,15 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderStoredProcedureName": "[elt].[spLookupLevels]",
+						"storedProcedureParameters": {
+							"layer_name": {
+								"type": "String",
+								"value": {
+									"value": "@pipeline().parameters.layer_name",
+									"type": "Expression"
+								}
+							}
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -83,6 +92,10 @@
 									"dwh_dbname": {
 										"value": "@pipeline().parameters.dwh_dbname",
 										"type": "Expression"
+									},
+									"process_run_date": {
+										"value": "@pipeline().parameters.process_run_date",
+										"type": "Expression"
 									}
 								}
 							}
@@ -115,6 +128,13 @@
 											"type": "String",
 											"value": {
 												"value": "@pipeline().parameters.system_code",
+												"type": "Expression"
+											}
+										},
+										"layer_name": {
+											"type": "String",
+											"value": {
+												"value": "@pipeline().parameters.layer_name",
 												"type": "Expression"
 											}
 										}
@@ -157,7 +177,13 @@
 				"defaultValue": "processed"
 			},
 			"system_code": {
+			"system_code": {
 				"type": "string"
+			}
+		},
+		"variables": {
+			"process_run_date": {
+				"type": "String"
 			}
 		},
 		"folder": {

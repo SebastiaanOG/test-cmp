@@ -34,24 +34,17 @@
 										"type": "Expression"
 									},
 									"storedProcedureParameters": {
-										"PipelineRunID": {
-											"type": "Guid",
+										"process_run_date": {
+											"type": "Datetime",
 											"value": {
-												"value": "@pipeline().RunId",
+												"value": "@pipeline().parameters.process_run_date",
 												"type": "Expression"
 											}
 										},
-										"ProcessRunID": {
+										"process_run_id": {
 											"type": "Guid",
 											"value": {
 												"value": "@pipeline().parameters.process_run_id",
-												"type": "Expression"
-											}
-										},
-										"TaskName": {
-											"type": "String",
-											"value": {
-												"value": "@item().Procedure",
 												"type": "Expression"
 											}
 										}
@@ -89,6 +82,14 @@
 			"layer_name": {
 				"type": "string",
 				"defaultValue": "processed"
+			},
+			"process_run_date": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"process_run_date": {
+				"type": "String"
 			}
 		},
 		"folder": {

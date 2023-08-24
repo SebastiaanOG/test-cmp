@@ -1,14 +1,41 @@
 -- This file contains SQL statements that will be executed after the build script.
 
+/* Truncate before insert */
+TRUNCATE TABLE [elt].[ModelledTables]
 
+/*Insert records to pickup in the processed layer */
+INSERT
+    [elt].[ModelledTables] ([Level], [EntityName], [StoredProcedureName], [Schema], [Active], [Comment]) 
+
+VALUES
+    (2,'DimArea','sp_load_DimArea','modelled',1,'Stored procedure to load DimArea'),
+    (2,'DimContractValueClass','sp_load_DimContractValueClass','modelled',1,'Stored procedure to load DimContractValueClass'),
+    (2,'DimCountry','sp_load_DimCountry','modelled',1,'Stored procedure to load DimCountry'),
+    (2,'DimDredgingCategory','sp_load_DimDredgingCategory','modelled',1,'Stored procedure to load DimDredgingCategory'),
+    (2,'DimEquipmentObject','sp_load_DimEquipmentObject','modelled',1,'Stored procedure to load DimEquipmentObject'),
+    (2,'DimEquipmentType','sp_load_DimEquipmentType','modelled',1,'Stored procedure to load DimEquipmentType'),
+    (2,'DimProject','sp_load_DimProject','modelled',1,'Stored procedure to load DimProject'),
+    (2,'DimProjectEquipment','sp_load_DimProjectEquipment','modelled',1,'Stored procedure to load DimProjectEquipment'),
+    (2,'DimProjectStatus','sp_load_DimProjectStatus','modelled',1,'Stored procedure to load DimProjectStatus'),
+    (2,'DimStage','sp_load_DimStage','modelled',1,'Stored procedure to load DimStage'),
+    (2,'DimSubArea','sp_load_DimSubArea','modelled',1,'Stored procedure to load DimSubArea'),
+    (2,'DimTenderType','sp_load_DimTenderType','modelled',1,'Stored procedure to load DimTenderType'),
+    (3,'FactProjects','sp_load_FactProjects','modelled',1,'Stored procedure to load FactProjects'),
+    (3,'FactProjectEquipments','sp_load_FactProjectEquipments','modelled',1,'Stored procedure to load FactProjectEquipments')
+
+-- Populate DimDate if empty
+IF (SELECT COUNT(*) FROM modelled.DimDate) = 0
+BEGIN
+    EXEC modelled.sp_populate_dimdate
+END
 
 -- Add empty and unknowns to Dimensions
 IF (SELECT COUNT(*) FROM modelled.DimArea WHERE pk_area < 0) != 2
 BEGIN
-    SET IDENTITY_INSERT modelled.DimArea ON;  
+    SET IDENTITY_INSERT modelled.DimArea ON;
     INSERT INTO [modelled].[DimArea]
     (    [pk_area]
-        ,[dwh_valid_from] 
+        ,[dwh_valid_from]
         ,[dwh_valid_to]
         ,[dwh_active]
         ,[ak_area]
@@ -19,15 +46,15 @@ BEGIN
         ,[area_owner]
         ,[company]
     )
-    VALUES 
+    VALUES
     (-1, '1900-01-01', NULL, 1, -1, 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown'),
     (-2, '1900-01-01', NULL, 1, -2, 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty')
-    SET IDENTITY_INSERT modelled.DimArea OFF;  
+    SET IDENTITY_INSERT modelled.DimArea OFF;
 END
 
 IF (SELECT COUNT(*) FROM modelled.DimSubArea WHERE pk_subarea < 0) != 2
 BEGIN
-    SET IDENTITY_INSERT modelled.DimSubArea ON;  
+    SET IDENTITY_INSERT modelled.DimSubArea ON;
     INSERT INTO [modelled].[DimSubArea]
     (    [pk_subarea]
         ,[dwh_valid_from]
@@ -38,15 +65,15 @@ BEGIN
         ,[ak_subarea]
         ,[subarea_name])
 
-    VALUES 
+    VALUES
     (-1, '1900-01-01', NULL, 1, NULL, NULL, -1, 'Unknown'),
-    (-2, '1900-01-01', NULL, 1, NULL, NULL, -2, 'Empty')   
-    SET IDENTITY_INSERT modelled.DimSubArea OFF;   
+    (-2, '1900-01-01', NULL, 1, NULL, NULL, -2, 'Empty')
+    SET IDENTITY_INSERT modelled.DimSubArea OFF;
 END
 
 IF (SELECT COUNT(*) FROM modelled.DimTenderType WHERE pk_tendertype < 0) != 2
 BEGIN
-    SET IDENTITY_INSERT modelled.DimTendertype ON;  
+    SET IDENTITY_INSERT modelled.DimTendertype ON;
     INSERT INTO [modelled].[DimTenderType]
     (      [pk_tendertype]
         ,[dwh_valid_from]
@@ -57,7 +84,7 @@ BEGIN
         ,[tendertype_name]
         ,[tendertype_sort]
     )
-    VALUES 
+    VALUES
     (-1, '1900-01-01', NULL, 1, NULL, NULL, 'Unknown', 2147483646),
     (-2, '1900-01-01', NULL, 1, NULL, NULL, 'Empty', 2147483647)
     SET IDENTITY_INSERT modelled.DimTendertype OFF;
@@ -66,7 +93,7 @@ END
 
 IF (SELECT COUNT(*) FROM modelled.DimProjectEquipment WHERE pk_projectequipment < 0) != 2
 BEGIN
-    SET IDENTITY_INSERT [modelled].[DimProjectEquipment] ON; 
+    SET IDENTITY_INSERT [modelled].[DimProjectEquipment] ON;
     INSERT INTO [modelled].[DimProjectEquipment]
     (   [pk_projectequipment]
         ,[dwh_valid_from]
@@ -82,15 +109,15 @@ BEGIN
         ,[equipment_unit_category]
         ,[equipment_name]
     )
-    VALUES 
+    VALUES
         (-1, '1900-01-01', -1, 1, 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown'),
         (-2, '1900-01-01', -2, 1, 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty')
-    SET IDENTITY_INSERT [modelled].[DimProjectEquipment] OFF; 
+    SET IDENTITY_INSERT [modelled].[DimProjectEquipment] OFF;
 END
 
 IF (SELECT COUNT(*) FROM modelled.DimEquipmentType WHERE pk_equipmenttype < 0) != 2
 BEGIN
-    SET IDENTITY_INSERT [modelled].[DimEquipmentType] ON; 
+    SET IDENTITY_INSERT [modelled].[DimEquipmentType] ON;
     INSERT INTO [modelled].[DimEquipmentType]
     (    [pk_equipmenttype]
         ,[dwh_valid_from]
@@ -98,15 +125,15 @@ BEGIN
         ,[ak_equipmenttype]
         ,[equipmenttype_name]
     )
-    VALUES 
+    VALUES
         (-1, '1900-01-01', -1, 1, 'Unknown'),
         (-2, '1900-01-01', -2, 1, 'Empty')
-    SET IDENTITY_INSERT [modelled].[DimEquipmentType] OFF; 
+    SET IDENTITY_INSERT [modelled].[DimEquipmentType] OFF;
 END
 
 IF (SELECT COUNT(*) FROM modelled.DimEquipmentObject WHERE pk_equipmentobject < 0) != 2
 BEGIN
-    SET IDENTITY_INSERT [modelled].[DimEquipmentObject] ON; 
+    SET IDENTITY_INSERT [modelled].[DimEquipmentObject] ON;
     INSERT INTO [modelled].[DimEquipmentObject]
     (    [pk_equipmentobject]
         ,[dwh_valid_from]
@@ -117,8 +144,127 @@ BEGIN
         ,[equipmentobject_type]
         ,[equipmentobject_code]
     )
-    VALUES 
+    VALUES
         (-1, '1900-01-01', -1, 1, 'Unknown', 'Unknown', 'Unknown', 'Unknown'),
         (-2, '1900-01-01', -2, 1, 'Empty', 'Empty', 'Empty', 'Empty')
-    SET IDENTITY_INSERT [modelled].[DimEquipmentObject] OFF; 
+    SET IDENTITY_INSERT [modelled].[DimEquipmentObject] OFF;
+
+END
+
+IF (SELECT COUNT(*) FROM modelled.DimContractValueClass WHERE pk_contractvalue_class < 0) != 2
+BEGIN
+    SET IDENTITY_INSERT [modelled].[DimContractValueClass] ON;
+    INSERT INTO [modelled].[DimContractValueClass]
+    (    [pk_contractvalue_class]
+        ,[rk_contractvalue_class]
+        ,[dwh_valid_from]
+        ,[dwh_active]
+        ,[contractvalue_class]
+        ,sort_contractvalue_class
+        ,total_VO_share_from
+        ,total_VO_share_to
+    )
+    VALUES
+        (-1, -1, '1900-01-01', 1, 'Unknown', 2147483646, -2, -1),
+        (-2, -2, '1900-01-01', 1, 'Empty', 2147483647, -3, -2)
+    SET IDENTITY_INSERT [modelled].[DimContractValueClass] OFF;
+
+END
+
+IF (SELECT COUNT(*) FROM modelled.DimDredgingCategory WHERE pk_dredgingcategory < 0) != 2
+BEGIN
+    SET IDENTITY_INSERT [modelled].[DimDredgingCategory] ON;
+    INSERT INTO [modelled].[DimDredgingCategory]
+    (    [pk_dredgingcategory]
+        ,[ak_dredgingcategory]
+        ,[dwh_valid_from]
+        ,[dwh_active]
+        ,[dredgingcategory_name]
+    )
+    VALUES
+        (-1, -1, '1900-01-01', 1, 'Unknown'),
+        (-2, -2, '1900-01-01', 1, 'Empty')
+    SET IDENTITY_INSERT [modelled].[DimDredgingCategory] OFF;
+
+END
+
+IF (SELECT COUNT(*) FROM modelled.DimProject WHERE pk_project < 0) != 2
+BEGIN
+    SET IDENTITY_INSERT [modelled].[DimProject] ON;
+    INSERT INTO [modelled].[DimProject]
+    (    [pk_project]
+        ,[ak_project]
+        ,[dwh_valid_from]
+        ,[dwh_active]
+        ,[project_number]
+        ,[project_name]
+        ,[project_description]
+        ,[winning_chance_description]
+        ,[going_ahead_chance_description]
+        ,[productgroups_nl]
+        ,[dredging_category]
+        ,[tender_type]
+    )
+    VALUES
+        (-1, -1, '1900-01-01', 1, 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown'),
+        (-2, -2, '1900-01-01', 1, 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty')
+    SET IDENTITY_INSERT [modelled].[DimProject] OFF;
+END
+
+IF (SELECT COUNT(*) FROM modelled.DimProjectStatus WHERE pk_projectstatus < 0) != 2
+BEGIN
+    SET IDENTITY_INSERT [modelled].[DimProjectStatus] ON;
+    INSERT INTO [modelled].[DimProjectStatus]
+    (    [pk_projectstatus]
+        ,[ak_projectstatus]
+        ,[dwh_valid_from]
+        ,[dwh_active]
+        ,[projectstatus_name]
+        ,[projectphase]
+        ,[stagegate_name]
+    )
+    VALUES
+        (-1, -1, '1900-01-01', 1, 'Unknown', 'Unknown', 'Unknown'),
+        (-2, -2, '1900-01-01', 1, 'Empty', 'Empty', 'Empty')
+    SET IDENTITY_INSERT [modelled].[DimProjectStatus] OFF;
+END
+
+IF (SELECT COUNT(*) FROM modelled.DimProjectStatus WHERE pk_projectstatus < 0) != 2
+BEGIN
+    SET IDENTITY_INSERT [modelled].[DimProjectStatus] ON;
+    INSERT INTO [modelled].[DimProjectStatus]
+    (    [pk_projectstatus]
+        ,[ak_projectstatus]
+        ,[dwh_valid_from]
+        ,[dwh_active]
+        ,[projectstatus_name]
+        ,[projectphase]
+        ,[stagegate_name]
+    )
+    VALUES
+        (-1, -1, '1900-01-01', 1, 'Unknown', 'Unknown', 'Unknown'),
+        (-2, -2, '1900-01-01', 1, 'Empty', 'Empty', 'Empty')
+    SET IDENTITY_INSERT [modelled].[DimProjectStatus] OFF;
+END
+
+
+IF (SELECT COUNT(*) FROM modelled.DimCountry WHERE pk_country < 0) != 2
+BEGIN
+    SET IDENTITY_INSERT [modelled].[DimCountry] ON;
+    INSERT INTO [modelled].[DimCountry]
+    (    [pk_country]
+        ,[ak_country]
+        ,[dwh_valid_from]
+        ,[dwh_active]
+        ,[country_name]
+        ,[region_NL]
+        ,[region_DR]
+        ,[region_OF]
+        ,[region_OW]
+        ,[subregion_OF]
+    )
+    VALUES
+        (-1, -1, '1900-01-01', 1, 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown', 'Unknown'),
+        (-2, -2, '1900-01-01', 1, 'Empty', 'Empty', 'Empty', 'Empty', 'Empty', 'Empty')
+    SET IDENTITY_INSERT [modelled].[DimCountry] OFF;
 END

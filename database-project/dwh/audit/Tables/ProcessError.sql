@@ -1,6 +1,7 @@
 ﻿CREATE TABLE [audit].[ProcessError] (
     [ProcessErrorID] INT IDENTITY (1, 1) NOT NULL,
     [ProcessRunID] UNIQUEIDENTIFIER NOT NULL,
+    [ExecutionTime] DATETIME2 (7) DEFAULT GETDATE(),
     [PackageName] VARCHAR (MAX) NULL,
     [Schema] NVARCHAR (100) NULL,
     [EntityName] VARCHAR (MAX) NOT NULL,

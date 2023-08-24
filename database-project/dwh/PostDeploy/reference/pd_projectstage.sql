@@ -4,7 +4,7 @@ INSERT INTO [reference].[projectstage]
     ([AK_statuscode]
     ,[AK_typetender]
     ,[projectstage])
-VALUES 
+VALUES
      ('Alternative','Tender','Tender')
     ,('Analyse','Budget','Budget')
     ,('Analyse','Tender','Tender')
@@ -43,5 +43,5 @@ VALUES
     ,('Unsuccessful PQ','Tender','Unsuccessful')
     ,('Unsuccessful Tender','Budget','Unsuccessful')
     ,('Unsuccessful Tender','Prospect','Unsuccessful')
-    ,('Unsuccessful Tender','Tender','Unsuccessful')           
+    ,('Unsuccessful Tender','Tender','Unsuccessful')
 GO

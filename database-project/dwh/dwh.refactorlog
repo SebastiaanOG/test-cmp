@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="11712fb4-8274-4240-90ee-cc1e3ac77bb9" ChangeDateTime="08/22/2023 06:29:55">
+    <Property Name="ElementName" Value="[modelled].[DimDate].[day_numer_in_week]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[modelled].[DimDate]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[day_number_in_week]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="8b618094-e9e7-4650-a68c-ac0b72e51981" ChangeDateTime="08/22/2023 06:30:07">
+    <Property Name="ElementName" Value="[modelled].[DimDate].[day_numer_in_week_sunday]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[modelled].[DimDate]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[day_number_in_week_sunday]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="fa946117-60d9-4d60-aecc-6c0e49329432" ChangeDateTime="08/22/2023 06:31:55">
+    <Property Name="ElementName" Value="[modelled].[DimDate].[indicator_leap year]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[modelled].[DimDate]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[indicator_leap_year]" />
+  </Operation>
+</Operations>

@@ -28,6 +28,10 @@
 						"mdb_dbname": {
 							"value": "@pipeline().parameters.mdb_dbname",
 							"type": "Expression"
+						},
+						"system_code": {
+							"value": "@pipeline().parameters.system_code",
+							"type": "Expression"
 						}
 					}
 				}
@@ -61,6 +65,10 @@
 						},
 						"mdb_dbname": {
 							"value": "@pipeline().parameters.mdb_dbname",
+							"type": "Expression"
+						},
+						"system_code": {
+							"value": "@pipeline().parameters.system_code",
 							"type": "Expression"
 						},
 						"system_code": {
@@ -108,6 +116,10 @@
 						"system_code": {
 							"value": "@pipeline().parameters.system_code",
 							"type": "Expression"
+						},
+						"system_code": {
+							"value": "@pipeline().parameters.system_code",
+							"type": "Expression"
 						}
 					}
 				}
@@ -147,6 +159,7 @@
 							"value": "@pipeline().parameters.dwh_dbname",
 							"type": "Expression"
 						},
+						"layer_name": "processed",
 						"system_code": {
 							"value": "@pipeline().parameters.system_code",
 							"type": "Expression"
@@ -162,12 +175,59 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "process_run_id",
 					"value": {
 						"value": "@pipeline().RunId",
 						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Execute 40 ProcessedToModelled",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Execute 30 StagedToProcessed",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "40 ProcessedToModelled",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"process_run_id": {
+							"value": "@variables('process_run_id')",
+							"type": "Expression"
+						},
+						"process_run_date": {
+							"value": "@pipeline().TriggerTime",
+							"type": "Expression"
+						},
+						"mdb_dbname": {
+							"value": "@pipeline().parameters.mdb_dbname",
+							"type": "Expression"
+						},
+						"dwh_dbname": {
+							"value": "@pipeline().parameters.dwh_dbname",
+							"type": "Expression"
+						},
+						"layer_name": "modelled",
+						"system_code": {
+							"value": "@pipeline().parameters.system_code",
+							"type": "Expression"
+						}
 					}
 				}
 			}
@@ -180,6 +240,9 @@
 			"dwh_dbname": {
 				"type": "string",
 				"defaultValue": "dwh"
+			},
+			"system_code": {
+				"type": "string"
 			},
 			"system_code": {
 				"type": "string"
